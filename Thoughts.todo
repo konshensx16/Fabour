@@ -1,0 +1,7 @@
+Entities:
+    ☐ Post
+        ID, Title, Description, CreatedAt, UpdatedAt
+    ☐ Category:
+        ID, postId, CreatedAt, UpdatedAt
+    ☐ User:
+        ID, username, email, password, CreatedAt, UpdatedAt
