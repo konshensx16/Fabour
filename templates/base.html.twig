@@ -16,6 +16,9 @@
         {% block javascripts %}{% endblock %}
             <script src="{{ asset('bundles/goswebsocket/js/vendor/autobahn.min.js') }}"></script>
             <script src="{{ asset('bundles/goswebsocket/js//gos_web_socket_client.js') }}"></script>
+            <script type="text/javascript">
+                var _WS_URI = "ws://{{ gos_web_socket_server_host }}:{{ gos_web_socket_server_port }}"
+            </script>
             <script type="text/javascript" src="{{ asset('build/app.js') }}"></script>
     </body>
 </html>

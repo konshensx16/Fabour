@@ -5,7 +5,7 @@ require("./bundles/goswebsocket/js/gos_web_socket_client.js")
 */
 
 // this could be turned into something more dynamic, by disabling shared configuration
-var webSocket = WS.connect("ws:127.0.0.1:8080")
+var webSocket = WS.connect(_WS_URI)
 
 webSocket.on("socket/connect", (session) => {
 	// client connected
@@ -14,6 +14,7 @@ webSocket.on("socket/connect", (session) => {
 	// everytime an event is published in this channel the function is executed
 	session.subscribe('acme/channel', (uri, payload) => {
 		console.log("recieved something in the acme channel " + payload.msg)
+		console.log(payload)
 	})
 
 	session.publish('acme/channel', "this is a message")
