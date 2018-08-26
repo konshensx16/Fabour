@@ -22,4 +22,13 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
+    /**
+    * @Route("/trigger", name="trigger_event")
+    */
+
+    public function triggerEvent()
+    {
+        
+    }
 }

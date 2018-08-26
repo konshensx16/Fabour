@@ -3,10 +3,19 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
+
+        <!-- need jQuery -->
+        {# <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> #}
         {% block javascripts %}{% endblock %}
+            <script src="{{ asset('bundles/goswebsocket/js/vendor/autobahn.min.js') }}"></script>
+            <script src="{{ asset('bundles/goswebsocket/js//gos_web_socket_client.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('build/app.js') }}"></script>
     </body>
 </html>

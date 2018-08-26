@@ -1,4 +1,7 @@
 {
+    "cboden/ratchet": {
+        "version": "v0.4.1"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -77,8 +80,26 @@
     "egulias/email-validator": {
         "version": "2.1.5"
     },
+    "evenement/evenement": {
+        "version": "v3.0.1"
+    },
     "fig/link-util": {
         "version": "1.0.0"
+    },
+    "gos/pnctl-event-loop-emitter": {
+        "version": "v0.1.7"
+    },
+    "gos/pubsub-router-bundle": {
+        "version": "v0.3.4"
+    },
+    "gos/web-socket-bundle": {
+        "version": "v1.8.13"
+    },
+    "gos/websocket-client": {
+        "version": "v0.1.2"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.4.2"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
@@ -107,6 +128,9 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/link": {
         "version": "1.0.0"
     },
@@ -115,6 +139,30 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
+    },
+    "ratchet/rfc6455": {
+        "version": "0.2.4"
+    },
+    "react/cache": {
+        "version": "v0.5.0"
+    },
+    "react/dns": {
+        "version": "v0.4.15"
+    },
+    "react/event-loop": {
+        "version": "v0.5.3"
+    },
+    "react/promise": {
+        "version": "v2.7.0"
+    },
+    "react/promise-timer": {
+        "version": "v1.5.0"
+    },
+    "react/socket": {
+        "version": "v1.0.0"
+    },
+    "react/stream": {
+        "version": "v1.0.0"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
@@ -375,6 +423,15 @@
             "branch": "master",
             "version": "3.3",
             "ref": "dae9b39fd6717970be7601101ce5aa960bf53d9a"
+        }
+    },
+    "symfony/webpack-encore-pack": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "b87dfd249390a7b534caa137450277930901236e"
         }
     },
     "symfony/yaml": {

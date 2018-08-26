@@ -5,3 +5,10 @@ Entities:
         ID, postId, CreatedAt, UpdatedAt
     ☐ User:
         ID, username, email, password, CreatedAt, UpdatedAt
+
+
+
+    ☐ Create the ItemsController and add Create, Update, Remove actions
+    
+  A topic is the server side representation of a pubsub channel
+  

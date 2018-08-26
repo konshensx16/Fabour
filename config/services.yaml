@@ -29,3 +29,23 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    acme_hello.topic_sample_service:
+        class: App\Topic\AcmeTopic
+        tags:
+            - { name: gos_web_socket.topic }
+
+    # gos_web_socket_server.client_event.listener:
+    #     class: Gos\Bundle\WebSocketBundle\Event\ClientEventListener
+    #     tags:
+    #          - { name: kernel.event_listener, event: 'gos_web_socket.client_connected', method: onClientConnect }
+    #          - { name: kernel.event_listener, event: 'gos_web_socket.client_disconnected', method: onClientDisconnect }
+    #          - { name: kernel.event_listener, event: 'gos_web_socket.client_error', method: onClientError }
+    #          - { name: kernel.event_listener, event: 'gos_web_socket.server_launched', method: onServerStart }
+    #          - { name: kernel.event_listener, event: 'gos_web_socket.client_rejected', method: onClientRejected }
+
+    # gos_web_socket.client_storage:
+    #     class: Gos\Bundle\WebSocketBundle\Client\ClientStorage
+    #     arguments:
+    #         - web_socket_server.client_storage.ttl
+    #         - monolog.logger.websocket
