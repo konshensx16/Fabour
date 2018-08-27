@@ -11,8 +11,18 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class AcmeTopic implements TopicInterface {
 
+	private $clients;
+
+	public function __construct()
+	{
+		$this->clients = new \SplObjectStorage();
+	}
+
 	public function onSubscribe(ConnectionInterface $connection, Topic $topic, WampRequest $request)
 	{
+		// store the newly connected client 
+		$this->clients->attach($connection);
+		dump($connection);
 		// send the message to all subscribers of this topic
 		$topic->broadcast([
 			'msg' => $connection->resourceId . " has joined " . $topic->getId()
@@ -22,12 +32,16 @@ class AcmeTopic implements TopicInterface {
 	// recieve a disconnect 
 	public function onUnsubscribe (ConnectionInterface $connection, Topic $topic, WampRequest $request)
 	{
+		// remove the connection when not subscribed anymore
+		// otherwise the counter will always go up
+		$this->clients->detach($connection);
 		$topic->broadcast([
 			'msg' => $connection->resourceId . " has left " . $topic->getId()
 		]);
 	}
 
 	// recieve publish request for this topic 
+	// this looks like the place where to send to count of connected clients
 	public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible)
 	{
 		$encoders = [new JsonEncoder()];
@@ -39,7 +53,7 @@ class AcmeTopic implements TopicInterface {
 
 		$topic->broadcast([
 			'msg' => $event,
-			'request' => $serializedData
+			'connectedClients' => $this->clients->count()
 		]);
 	}
 

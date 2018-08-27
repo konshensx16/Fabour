@@ -9,8 +9,11 @@
 </style>
 
 <div class="example-wrapper">
-	<strong>Client connected: <span id="connectedClientsCounter"></span></strong>
+	<strong>Connected clients: <span id="connectedClientsCounter"></span></strong>
 	{{ form(form) }}
+    <ul id="messagesList">
+        
+    </ul>
     <h1>Hello {{ controller_name }}! ✅</h1>
 
     This friendly message is coming from:

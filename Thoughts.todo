@@ -39,3 +39,4 @@ Entities:
          Well autowiring isn't anabled so that could be the source of the problemm trying to autowire it 
     ☐ Everything seems to be working fine no errors so far though i haven't tested anything yet, one thing currenctly not working is the onServeStart method not being recognized as a callback
     ☐ One thing i noted is that the connectedClientsCounter only update after i restart the server, the websocket server
+    ☐ http://socketo.me/docs/hello-world -> helpful for storing the connected clients in an splObjectStorage o send them messages later
