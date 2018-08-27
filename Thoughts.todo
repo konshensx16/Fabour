@@ -12,3 +12,30 @@ Entities:
     
   A topic is the server side representation of a pubsub channel
   
+  NOTES TO MYSELF:
+    trying to get the number of clients connected t the channel
+    ☐ Tried to get the number by INC++ the counter on each connect which didn't workm (always one 1) 
+    ☐ Might try to get the vale from the back-end, on each connect the back-end wil send us back the number of connected clients
+    ☐ The number of connected clients is the number of subscriptions ?? ABSOLUTELY FUCKING NOT 
+    ☐ Using events could be the better solution since it provides a onClientConnect method, but currenctly cannot get it to work because of this
+      Cannot autowire service "gos_web_socket_server.client_event.listener": argument "$clientStorage" of method 
+      ☐ Should probably debug the container and see if GOS has any services in there not nothing at all
+        Client storage service is defined in the container i can see it in the debugger, not really sure what that error above actually indicates
+         ---------------- ------------------------------------------------- 
+          Option           Value                                            
+         ---------------- ------------------------------------------------- 
+          Service ID       gos_web_socket.client_storage                    
+          Class            Gos\Bundle\WebSocketBundle\Client\ClientStorage  
+          Tags             -                                                
+          Calls            setStorageDriver                                 
+          Public           no                                               
+          Synthetic        no                                               
+          Lazy             no                                               
+          Shared           yes                                              
+          Abstract         no                                               
+          Autowired        no                                               
+          Autoconfigured   no                                               
+         ---------------- ------------------------------------------------- 
+         Well autowiring isn't anabled so that could be the source of the problemm trying to autowire it 
+    ☐ Everything seems to be working fine no errors so far though i haven't tested anything yet, one thing currenctly not working is the onServeStart method not being recognized as a callback
+    ☐ One thing i noted is that the connectedClientsCounter only update after i restart the server, the websocket server

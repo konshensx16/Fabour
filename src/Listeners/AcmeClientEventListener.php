@@ -14,7 +14,7 @@ class AcmeClientEventListener
 	{
 		$connection = $event->getConnection();
 
-		echo $connection->resourceId . " connected" . PHP_EOL;
+		echo $connection->resourceId . " has just connected" . PHP_EOL;
 	}
 
 	// called when client disconnects
@@ -22,7 +22,7 @@ class AcmeClientEventListener
 	{
 		$connection = $event->getConnection();
 
-		echo $connection->resourceId . " disconnected" . PHP_EOL;
+		echo $connection->resourceId . " has just disconnected" . PHP_EOL;
 	}
 
 	// called on a client error
