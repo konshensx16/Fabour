@@ -22,7 +22,6 @@ class AcmeTopic implements TopicInterface {
 	{
 		// store the newly connected client 
 		$this->clients->attach($connection);
-		dump($connection);
 		// send the message to all subscribers of this topic
 		$topic->broadcast([
 			'msg' => $connection->resourceId . " has joined " . $topic->getId()
@@ -53,7 +52,7 @@ class AcmeTopic implements TopicInterface {
 
 		$topic->broadcast([
 			'msg' => $event,
-			'connectedClients' => $this->clients->count()
+			'connectedClients' => $topic->count()
 		]);
 	}
 

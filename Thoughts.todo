@@ -13,7 +13,7 @@ Entities:
   A topic is the server side representation of a pubsub channel
   
   NOTES TO MYSELF:
-    trying to get the number of clients connected t the channel
+    trying to get the number of clients connected to the channel
     ☐ Tried to get the number by INC++ the counter on each connect which didn't workm (always one 1) 
     ☐ Might try to get the vale from the back-end, on each connect the back-end wil send us back the number of connected clients
     ☐ The number of connected clients is the number of subscriptions ?? ABSOLUTELY FUCKING NOT 
@@ -39,4 +39,36 @@ Entities:
          Well autowiring isn't anabled so that could be the source of the problemm trying to autowire it 
     ☐ Everything seems to be working fine no errors so far though i haven't tested anything yet, one thing currenctly not working is the onServeStart method not being recognized as a callback
     ☐ One thing i noted is that the connectedClientsCounter only update after i restart the server, the websocket server
-    ☐ http://socketo.me/docs/hello-world -> helpful for storing the connected clients in an splObjectStorage o send them messages later
+    ☐ http://socketo.me/docs/hello-world -> helpful for storing the connected clients in an splObjectStorage to send them messages later
+
+  RPC:
+    ✔ Maybe create an RPC that takes some sort of form (message form in my example) and send it to some_func and store stuff in the database @done (18-08-28 00:25)
+      ✔ Create the RPC class @done (18-08-28 00:19)
+      ✔ Register the RPC as service @done (18-08-28 00:22)
+      ✔ Register the service with pub-sub Router @done (18-08-28 00:25)
+      
+    ☐ Create a custom RPC that does something that could be used in real life
+      Take the message from the the message_form and store it in the databse using the RPC of course
+      ✔ Create the database @done (18-08-28 23:56)
+      ☐ Create the RPC
+        ✔ Create the storeMessage function @done (18-08-29 00:16)
+      ✔ Register the RPC as a service @done (18-08-29 00:18)
+      ✔ Register the service with pub-sub Router @done (18-08-29 00:18)
+      ☐ Serialize the from (not tested yet)
+        ☐ Not really sure if i want to serialize it or something else
+        ☐ The server side is still not getting anything, empty params
+        ☐ Maybe handle the form like in symfony regularly (this didnt work)
+      ☐ Maybe theres no way to send an entire form? gotta keep this idea in mind otherwise i might just keep searching for something that (might) not exist
+      ☐ According to MDN, you can send a String, Blob, ArrayBuffer (me, an intelectual, trying to send a formData)
+      ☐  Maybe i could use json to transmit objects (the form in this case)
+      ☐ The last function that i included (serializes formToJSON) sends everything including the inputs, submit button, and the csrf token, might need to remove the submit button\
+
+
+    ☐ Create a separate example that uses the same messages type and see what the form returns in that case
+      ☐ The request (ParameterBag) contains the same information as the formToJSON function returns 
+      ☐ Need to inject the decoded params to the Message entity, not sure how to do it
+      ☐ Usyally when doing ajax symfony takes care of the request since an HttpFoundation request is passed to the controller, in my case i'm only getting the inputs 
+      ☐ Maybe i could use the symfony deserializer (trying this right now before moving to other solutions)
+      ☐ Trying to get rid of the form[inputName] prefix, using the getBlockPrefix doesn't seem to be working for some strange reason 
+      ☐ Right now i will try to give the inputs a hardcoded name, then if it works i'll continue looking for a solution to the prefix stuff
+      ☐ What the fuck it's working now after wasting enormous hours ??????????? just using getBlockPrefix

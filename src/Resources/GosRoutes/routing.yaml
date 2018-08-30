@@ -2,3 +2,19 @@ acme_topic:
     channel: acme/channel
     handler:
         callback: 'acme.topic' #related to the getName of the topic
+
+acme_rpc:
+  channel: sample/{method}
+  handler:
+    callback: 'acme.rpc' #related to the getName
+  requirements:
+    method:
+      pattern: "[a-z_]+" # pattern could be any valid regex
+
+messages_manager_rpc:
+  channel: messagesManager/{method}
+  handler:
+    callback: 'messages_manager.rpc'
+  requirements:
+    method:
+      pattern: "[a-z_]+"

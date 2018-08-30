@@ -46,7 +46,5 @@ class AcmeClientEventListener
 	public function onServerStart(ServerEvent $event)
 	{
 		$event = $event->getEventLoop();
-
-		echo "Server was sucessfully started!" . PHP_EOL;
 	}
 }

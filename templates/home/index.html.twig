@@ -10,7 +10,9 @@
 
 <div class="example-wrapper">
 	<strong>Connected clients: <span id="connectedClientsCounter"></span></strong>
-	{{ form(form) }}
+    {{ form_start(form, { attr: {id: 'messages_form'}}) }}
+        {{form(form)}}
+	{{ form_end(form) }}
     <ul id="messagesList">
         
     </ul>

@@ -30,6 +30,9 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+
+
+    # i might create a seperate file for services if this one gets large enough to confuse me
     acme_hello.topic_sample_service:
         class: App\Topic\AcmeTopic
         tags:
@@ -46,3 +49,15 @@ services:
              - { name: kernel.event_listener, event: 'gos_web_socket.client_error', method: onClientError }
              - { name: kernel.event_listener, event: 'gos_web_socket.server_launched', method: onServerStart }
              - { name: kernel.event_listener, event: 'gos_web_socket.client_rejected', method: onClientRejected }
+
+    acme_hello.rpc_sample_service:
+        class: App\RPC\AcmeService
+        tags:
+            - { name: gos_web_socket.rpc}
+
+    messages_manager.rpc_service:
+        class: App\RPC\MessagesManagerRPC
+        arguments:
+            - '@form.factory'
+        tags:
+            - { name: gos_web_socket.rpc }
