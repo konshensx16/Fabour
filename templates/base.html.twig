@@ -8,17 +8,37 @@
     </head>
     <body>
         <div class="container">
+            <div class="navbar navbar-inverse navbar-collapse collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="{{ path('home.index') }}">Home</a></li>
+                    <li><a href="{{ path('conversation', {'id': 1}) }}">Conversation</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li>
+                            <a href="#">Logged in as {{ app.user.username }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('logout') }}">
+                                <strong>Logout</strong>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+
             {% block body %}{% endblock %}
         </div>
 
         <!-- need jQuery -->
         {# <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> #}
-        {% block javascripts %}{% endblock %}
+
             <script src="{{ asset('bundles/goswebsocket/js/vendor/autobahn.min.js') }}"></script>
             <script src="{{ asset('bundles/goswebsocket/js//gos_web_socket_client.js') }}"></script>
             <script type="text/javascript">
                 var _WS_URI = "ws://{{ gos_web_socket_server_host }}:{{ gos_web_socket_server_port }}"
             </script>
-            <script type="text/javascript" src="{{ asset('build/app.js') }}"></script>
+            {% block javascripts %}{% endblock %}
+            {#<script type="text/javascript" src="{{ asset('build/app.js') }}"></script>#}
     </body>
 </html>

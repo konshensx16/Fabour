@@ -20,6 +20,9 @@
     "doctrine/common": {
         "version": "v2.9.0"
     },
+    "doctrine/data-fixtures": {
+        "version": "v1.3.1"
+    },
     "doctrine/dbal": {
         "version": "v2.8.0"
     },
@@ -34,6 +37,15 @@
     },
     "doctrine/doctrine-cache-bundle": {
         "version": "1.3.3"
+    },
+    "doctrine/doctrine-fixtures-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "2ea6070ecf365f9a801ccaed4b31d4a3b7af5693"
+        }
     },
     "doctrine/doctrine-migrations-bundle": {
         "version": "1.2",
@@ -122,6 +134,9 @@
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
     },
+    "predis/predis": {
+        "version": "v1.1.1"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -171,6 +186,15 @@
             "branch": "master",
             "version": "5.2",
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
+        }
+    },
+    "snc/redis-bundle": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "e9c58bfc414cfb7f06e8e5ae9f589868498f5d6a"
         }
     },
     "swiftmailer/swiftmailer": {

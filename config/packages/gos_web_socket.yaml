@@ -6,3 +6,21 @@ gos_web_socket:
         router:
             resources:
                 - GosRoutes/routing.yaml
+    client:
+        firewall: main # i think this is the right value since i don't have a context for my firewall
+        session_handler: session.handler.pdo
+        storage:
+            driver: '@gos_web_socket.client_storage.driver.predis'
+
+# as of now im not sure if this is the right position for this!!
+snc_redis:
+    clients:
+        ws_client:
+            type: predis
+            alias: client_storage.driver #snc_redis.client_storage.driver
+            dsn: redis://127.0.0.1/2
+            logging: '%kernel.debug%'
+            options:
+                profile: 2.2
+                connection_timeout: 10
+                read_write_timeout: 30

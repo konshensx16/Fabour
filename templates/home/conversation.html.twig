@@ -1,0 +1,120 @@
+{% extends 'base.html.twig'%}
+
+{% block title %} Conversation {% endblock %}
+
+{% block body %}
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            Connected clients: <span id="connected_clients_counter"></span>
+        </div>
+
+        <div class="panel-body" id="messages_list" style="height: 65vh; overflow-y: scroll">
+
+        </div>
+
+        <div class="panel-footer" style="overflow: hidden;">
+            <div class="form-group">
+                {{ form_start(form, {'attr': {'id': 'message_form'}}) }}
+                    {{  form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        let webSocket = WS.connect(_WS_URI)
+        let $connected_clients = document.querySelector('#connected_clients_counter')
+        let $messageForm = document.querySelector('#message_form')
+
+        webSocket.on("socket/connect", function (session)
+        {
+            // subscribe and publish events down here
+            session.subscribe("conversation/channel", function (uri, payload)
+            {
+                setConnectedClientsCounter(payload.connectedClients)
+                console.log(uri, payload)
+                // set the content to the front end! AHHH i wish i was using vue right now :'(
+                if (payload.type === 'user_joined') {
+                    insertIncomingMessage(null, payload.user, 'user_joined')
+                } else if (payload.type === 'message')
+                {
+                    insertIncomingMessage(payload.msg['form[message]'], payload.user) // no third argument beucase it defaults to message
+                }
+            })
+
+            // maybe only publish when the form is submitted ?
+            $messageForm.addEventListener('submit', function (event)
+            {
+                event.preventDefault()
+                session.publish("conversation/channel", formToJSON(this))
+                // TODO: clear the input after sending the message and focus the input again
+                let messageInput = this.querySelector('#form_message')
+                messageInput.value = ''
+                messageInput.focus()
+            })
+
+        })
+
+        webSocket.on("socket/disconnect", function (error)
+        {
+            console.log("Disconnected " + error.reason + " With code " + error.code)
+        })
+
+        function setConnectedClientsCounter(count)
+        {
+            if ($connected_clients)
+            {
+                $connected_clients.innerHTML = count
+            }
+        }
+
+        const formToJSON = elements => [].reduce.call(elements, (data, element) => {
+            // TODO: change this to not include the submit button
+            data[element.name] = element.value;
+            return data;
+        }, {});
+
+        function insertIncomingMessage(message = null, sender = null, type = 'message') // maybe i can just pass an object that contains both??
+        {
+            let messagesList = document.querySelector('#messages_list')
+            if (messagesList)
+            {
+                /// XXX: append the new message to the messages list
+                let lineBreak = createElement('br')
+                let userSpan = createElement('span') // username !
+                let strong = createElement('strong')
+                let userSpanText = document.createTextNode(sender)
+                strong.appendChild(userSpanText)
+                userSpan.appendChild(strong)
+                let messageSpan = createElement('span') // message !
+                let messageSpanText
+                if (type === 'user_joined') {
+                    messageSpanText = document.createTextNode(' Has joined the channel');
+                } else if (type === 'message'){
+                    messageSpanText = document.createTextNode(': ' + message);
+                }
+                messageSpan.appendChild(messageSpanText)
+
+                messagesList.appendChild(userSpan)
+                messagesList.appendChild(messageSpan)
+
+                messagesList.appendChild(lineBreak)
+            }
+        }
+
+        /**
+         * Shortcut for creating html elements
+         * @param elementName
+         * @returns {HTMLAnchorElement | HTMLAppletElement | HTMLAreaElement | HTMLAudioElement | HTMLBaseElement | HTMLBaseFontElement | HTMLQuoteElement | HTMLBodyElement | HTMLBRElement | HTMLButtonElement | HTMLCanvasElement | HTMLTableCaptionElement | HTMLTableColElement | HTMLDataElement | HTMLDataListElement | HTMLModElement | HTMLDirectoryElement | HTMLDivElement | HTMLDListElement | HTMLEmbedElement | HTMLFieldSetElement | HTMLFontElement | HTMLFormElement | HTMLFrameElement | HTMLFrameSetElement | HTMLHeadingElement | HTMLHeadElement | HTMLHRElement | HTMLHtmlElement | HTMLIFrameElement | HTMLImageElement | HTMLInputElement | HTMLUnknownElement | HTMLLabelElement | HTMLLegendElement | HTMLLIElement | HTMLLinkElement | HTMLPreElement | HTMLMapElement | HTMLMarqueeElement | HTMLMenuElement | HTMLMetaElement | HTMLMeterElement | HTMLObjectElement | HTMLOListElement | HTMLOptGroupElement | HTMLOptionElement | HTMLOutputElement | HTMLParagraphElement | HTMLParamElement | HTMLPictureElement | HTMLProgressElement | HTMLScriptElement | HTMLSelectElement | HTMLSourceElement | HTMLSpanElement | HTMLStyleElement | HTMLTableElement | HTMLTableSectionElement | HTMLTableDataCellElement | HTMLTemplateElement | HTMLTextAreaElement | HTMLTableHeaderCellElement | HTMLTimeElement | HTMLTitleElement | HTMLTableRowElement | HTMLTrackElement | HTMLUListElement | HTMLVideoElement | MSHTMLWebViewElement | HTMLAnchorElement | HTMLAppletElement | HTMLAreaElement | HTMLAudioElement | HTMLBaseElement | HTMLBaseFontElement | HTMLQuoteElement | HTMLBodyElement | HTMLBRElement | HTMLButtonElement | HTMLCanvasElement | HTMLTableCaptionElement | HTMLTableColElement | HTMLDataElement | HTMLDataListElement | HTMLModElement | HTMLDirectoryElement | HTMLDivElement | HTMLDListElement | HTMLEmbedElement | HTMLFieldSetElement | HTMLFontElement | HTMLFormElement | HTMLFrameElement | HTMLFrameSetElement | HTMLHeadingElement | HTMLHeadElement | HTMLHRElement | HTMLHtmlElement | HTMLIFrameElement | HTMLImageElement | HTMLInputElement | HTMLUnknownElement | HTMLLabelElement | HTMLLegendElement | HTMLLIElement | HTMLLinkElement | HTMLPreElement | HTMLMapElement | HTMLMarqueeElement | HTMLMenuElement | HTMLMetaElement | HTMLMeterElement | HTMLObjectElement | HTMLOListElement | HTMLOptGroupElement | HTMLOptionElement | HTMLOutputElement | HTMLParagraphElement | HTMLParamElement | HTMLPictureElement | HTMLProgressElement | HTMLScriptElement | HTMLSelectElement | HTMLSourceElement | HTMLSpanElement | HTMLStyleElement | HTMLTableElement | HTMLTableSectionElement | HTMLTableDataCellElement | HTMLTemplateElement | HTMLTextAreaElement | HTMLTableHeaderCellElement | HTMLTimeElement | HTMLTitleElement | HTMLTableRowElement | HTMLTrackElement | HTMLUListElement | HTMLVideoElement | MSHTMLWebViewElement}
+         */
+        function createElement(elementName)
+        {
+            return document.createElement(elementName)
+        }
+    </script>
+{% endblock %}
+

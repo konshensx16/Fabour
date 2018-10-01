@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Item;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DomCrawler\Field\TextareaFormField;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Message;
 use App\Form\MessageType;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -18,8 +21,8 @@ use Symfony\Component\Serializer\Serializer;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/home", name="home")
-     * Probably won't need the request, just thorwing it in there
+     * @Route("/", name="home.index")
+     * Probably won't need the request, just throwing it in there
      */
     public function index(Request $request)
     {
@@ -34,6 +37,44 @@ class HomeController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/conversation/{id?}", name="conversation")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function conversation(Request $request, $id)
+    {
+        $form = $this->createFormBuilder()
+            ->add('message', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'Press return to send the message...',
+                    'autocomplete' => 'off'
+                ]
+            ])
+            ->add('send', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-info pull-right'
+                ]
+            ])
+            ->getForm()
+        ;
+
+
+//        dump($security->getUser()); this is working fine when in the controller
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            // XXX: handle the request
+            $em = $this->getDoctrine()->getManager();
+        }
+
+        return $this->render('home/conversation.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
 
     /**
     * @Route("/testType", name="testing_type")

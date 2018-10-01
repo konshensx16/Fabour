@@ -37,6 +37,12 @@ services:
         class: App\Topic\AcmeTopic
         tags:
             - { name: gos_web_socket.topic }
+    conversation.topic_service:
+        class: App\Topic\ConversationTopic
+        arguments:
+          - '@gos_web_socket.websocket.client_manipulator'
+        tags:
+            - { name: gos_web_socket.topic }
 
     gos_web_socket_server.client_event.listener:
         class: App\Listeners\AcmeClientEventListener
@@ -61,3 +67,31 @@ services:
             - '@form.factory'
         tags:
             - { name: gos_web_socket.rpc }
+#
+    pdo:
+        class: PDO
+        arguments:
+            - 'mysql:host=localhost;port=3306;dbname=websockets'
+            - 'root'
+            - '000000'
+        calls:
+            - [ setAttribute, [3, 2] ] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
+
+    session.handler.pdo:
+        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments: ['@pdo', {lock_mode: 0}]
+
+    gos_web_socket.client_storage.driver.predis:
+        class: 'Gos\Bundle\WebSocketBundle\Client\Driver\PredisDriver'
+        arguments:
+            - '@snc_redis.client_storage.driver'
+#            - '%web_socket_server.client_storage.prefix%' #(optionally)if you use prefix
+#
+#    gos_web_scocket.client_storage.driver.predis:
+#        class: Gos\Bundle\WebSocketBundle\Client\Driver\PredisDriver
+#        arguments:
+#            - '@snc_redis.cache'
+#            - '%web_socket_server.client_storage.prefix%' #(optionally)if you use prefix (not sure if i need this, don't know which prefix is he talking about)
+#
+#
+#    Redis: '@snc_redis.default'rver.client_storage.prefix%' #(optionally)if you use prefix

@@ -39,6 +39,8 @@ webSocket.on("socket/connect", function (session) {
 		event.preventDefault()
 		var formData = new FormData(this)
 		// console.log(JSON.stringify(formData)) # this code returned an empty object
+		// TODO: maybe i could use the formData instead of this formTpJSON function
+		// 		Probably can't since the info that imma send is just a string and not some sort of an object
 		var serilaizedData = JSON.stringify(formToJSON(this.elements))
 		console.log(serilaizedData)
 		// serialize the form, or just use a FormData

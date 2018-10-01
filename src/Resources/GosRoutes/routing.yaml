@@ -3,6 +3,11 @@ acme_topic:
     handler:
         callback: 'acme.topic' #related to the getName of the topic
 
+conversation_topic:
+    channel: conversation/channel
+    handler:
+        callback: 'conversation.topic'
+
 acme_rpc:
   channel: sample/{method}
   handler:

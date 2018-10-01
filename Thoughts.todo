@@ -36,7 +36,7 @@ Entities:
           Autowired        no                                               
           Autoconfigured   no                                               
          ---------------- ------------------------------------------------- 
-         Well autowiring isn't anabled so that could be the source of the problemm trying to autowire it 
+         Well autowiring isn't enabled so that could be the source of the problemm trying to autowire it
     ☐ Everything seems to be working fine no errors so far though i haven't tested anything yet, one thing currenctly not working is the onServeStart method not being recognized as a callback
     ☐ One thing i noted is that the connectedClientsCounter only update after i restart the server, the websocket server
     ☐ http://socketo.me/docs/hello-world -> helpful for storing the connected clients in an splObjectStorage to send them messages later
@@ -72,3 +72,38 @@ Entities:
       ☐ Trying to get rid of the form[inputName] prefix, using the getBlockPrefix doesn't seem to be working for some strange reason 
       ☐ Right now i will try to give the inputs a hardcoded name, then if it works i'll continue looking for a solution to the prefix stuff
       ☐ What the fuck it's working now after wasting enormous hours ??????????? just using getBlockPrefix
+      ☐ Maybe add more inputs (select, radio button, checkboxes etc...) and check wheter they work fine or not
+
+CREATING A USER SPACE:
+  ✔ Well nothing really to note here, just creating a basic user authentication system, maybe im gonna need to authorization too but nothing too fancy as of now @done (9/29/2018, 12:00:58 AM)
+  ✔ And creating a a fixture for two dummy users for testing purposes @done (9/29/2018, 12:00:58 AM)
+
+USER ACCESS:
+  Basic example:
+    - Users will join some sort of a room where they can chat together
+        Let's say that we have two rooms, the users in room1 should only be able to post and recieve messages of room1,but not from other rooms (room2 & room3)
+        Not sure if a conversation should have an id or not
+    - Each user has a friend list and they can only chat with other users in his friends list
+
+
+Websockets NOTES:
+  ✔ I need a way to send the connected clients count when the user connects @done (9/29/2018, 2:23:13 PM)
+    This works fine but i  must subscribe to a channel
+    basically i need to update the connect clients counter whenever something happens
+  ☐ Include the current user username when broadcasting a message (This is quite challenging)
+  ☐ Need to use a PdoSessionHandler for user authentication and user sharing because Ratchet uses that, (might want to check the docs for more info)
+  ☐ The current user is still being anon-xxxx when using the clientManipulator
+  ☐ Display a messae when a user joins or leaves the chat
+  ☐ Append incoming messages in the messagesList 
+  ☐ Session on subscribe triggers with onPublish event
+
+  ☐ Had to install redis-php to use it with the following command: pecl install redis
+  ☐ Adding this to composer.json didnt do much: "ext-redis": "*"
+    Maybe i need to add php-redis to php.ini (haven't tried this yet)
+    NOTES:
+      - So far i have php7.2-redis installed, also redis-server i think, and on the symfony level i have ext-redis installed ()
+      - Switching to mysql just to see if it makes any difference (nothing gonna happen i guess)
+
+
+      Jesus fucking christ the problem was when i try accessing it using the localhost it doesn't work but when i use the address 127.0.0.1 it does work 
+        - More debugging coming later

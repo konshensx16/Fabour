@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello!{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+        .error {color: red}
+    </style>
+
+    <div class="example-wrapper">
+        <h1>Login page! ✅</h1>
+
+        {% if error %}
+            <span class="error">{{ error.messageKey }}</span>
+        {% endif %}
+
+        {{ form_start(form) }}
+            {{ form_widget(form._username, {'attr': {'value': last_username}}) }}
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}

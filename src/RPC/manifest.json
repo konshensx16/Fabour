@@ -1,0 +1,46 @@
+// {
+// 	"name": "NaticeMessaging API video",
+// 	"version": "1.0",
+// 	"description": "A basic exxample using cpp",
+// 	"content_scripts": [
+// 		{
+// 			"matches": ["http://*/*", "https://*/*"], // thing will run everywhere, on every single link
+// 			"run_at": "document_idle",
+// 			"js": ["contentScript.js"]
+// 		}
+// 	],
+// 	"background": {
+// 		"scripts": ["background.js"],
+// 		"persistent": false
+// 	},
+// 	"permissions": [
+// 		"nativeMessaging"
+// 	],
+// 	"browser_action": {},
+// 	"manifest_version": 2
+// }
+
+{
+	"name": 	"Filezilla Launcher extension",
+	"version": 	"1.0",
+	"description":	"ERP is shit and this extension might help make it less shitier",
+	"content_scripts": [
+		{
+			"matches": ["http://erp.wewebcom.fr/*", "https://erp.wewebcom.fr/*"],
+			"run_at": "document_idle",
+			"js": 	   ["contentScript.js"]
+		}
+	],
+	"background": {
+		"scripts": ["background.js"],
+		"persitent": false
+	},
+	"icons": {
+	  	"128": "icon-128.png"
+	},
+	"permissions": [
+		"nativeMessaging"
+	],
+	"browser_action": {},
+	"manifest_version": 2
+}
