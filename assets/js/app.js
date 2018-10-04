@@ -47,6 +47,7 @@ webSocket.on("socket/connect", function (session) {
 		// so far the formData doesn't seem to be working, the back-end param is empty 
 		// maybe i dont need to serialize the form, but what do i need to do
 		// time for some battlefield :)
+		// i wonder what's the alternative of doing this in the controller??
 		session.call("messagesManager/store_message", {'form': serilaizedData})
 			// handle success & error 
 			.then(

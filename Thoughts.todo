@@ -107,3 +107,30 @@ Websockets NOTES:
 
       Jesus fucking christ the problem was when i try accessing it using the localhost it doesn't work but when i use the address 127.0.0.1 it does work 
         - More debugging coming later
+  ☐ Sending a message to a certain user! I need to create a more rebust system where i can utilize this !
+      ``` php
+      $user1 = $this->clientManipulator->findByUsername($topic, 'user1');
+        if (false !== $user1) {
+            $topic->broadcast('message', array(), array($user1['connection']->WAMP->sessionId));
+        }
+      ```
+
+MAKING A BLOG LIKE SYSTEM:
+  ✔ Creating couple of entities: @done (10/2/2018, 10:06:11 PM)
+    ✔ Creating the Post entity @done (10/2/2018, 10:06:12 PM)
+      Post will have an author (User) and also will have comments (Comment)
+      Might want to include the publishedAt just to make things more formal!
+      Relationships: 
+        Each Post has many Comments -> OneToMany()
+        Many Comment Belongs to one Post -> ManyToOne()
+        Each User has Many Comments
+        Many Posts belong to one User (keeping it simple here, not doing any collaborative bullshit)
+        Each User has many Posts up his ass 
+        IMPORTANT NOTE:
+          The property that has inversedBy will be the one that holds the foreign key on that Entity (table): e.g: post_id on the Comment entity
+    ✔ Creating the Comment entity @done (10/2/2018, 10:06:13 PM)
+    ✔ Might need to create some Voters for security reasons @done (10/2/2018, 10:06:14 PM)
+    ✘ Not sure if i want to create a seperate controller for comment or just do everything inside the PostController @cancelled (10/2/2018, 10:06:19 PM)
+          For now doing everyithng inside the PostController will change it later if needed
+
+    ☐ Notify the user that someone commented on his post!

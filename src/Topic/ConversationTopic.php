@@ -31,12 +31,11 @@ class ConversationTopic implements TopicInterface {
         // store the newly connected client
         $this->clients->attach($connection);
         $currentUser = $this->clientManipulator->getClient($connection);
-        dump($currentUser);
         // send the message to all subscribers of this topic
         $topic->broadcast([
             'type' => 'user_joined',
             // TODO: include the username
-            'user' => $currentUser->getUsername(),
+            'username' => $currentUser->getUsername(), // this will failed when using localhost instead of 127.0.0.1
             'msg' => $connection->resourceId . " has joined " . $topic->getId(),
             'connectedClients' => $topic->count()
         ]);
@@ -70,7 +69,7 @@ class ConversationTopic implements TopicInterface {
         $topic->broadcast([
             'type' => 'message', // this could be user_joined or just a message
             'msg' => $event,
-            'user' => $currentUser->getUsername(),
+            'username' => $currentUser->getUsername(),
             'connectedClients' => $topic->count()
         ]);
     }

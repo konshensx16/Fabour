@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            by {{ post.user }} - {{ post.title }}
+        </div>
+        <div class="panel-body">
+            Published on: {{ post.createdAt|date('Y-M-D hh:mm:ss') }}
+            <hr>
+            {{ post.content }}
+        </div>
+    </div>
+    {#Comment form will be here#}
+    <div style="overflow: hidden; margin-bottom: 30px;">
+        {{ form(comment_form) }}
+    </div>
+    {#Comments will be down here#}
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <strong>Post your thoughts on this.</strong>
+        </div>
+        <div class="panel-body">
+            {% if post.comments.count %}
+                {% for comment in post.comments %}
+                    <strong>{{ comment.user }}</strong>:
+                    {{ comment.content }}
+                {% endfor %}
+            {% else %}
+                This post has no comments, be the first.
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

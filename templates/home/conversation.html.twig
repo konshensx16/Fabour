@@ -39,10 +39,10 @@
                 console.log(uri, payload)
                 // set the content to the front end! AHHH i wish i was using vue right now :'(
                 if (payload.type === 'user_joined') {
-                    insertIncomingMessage(null, payload.user, 'user_joined')
+                    insertIncomingMessage(null, payload.username, 'user_joined')
                 } else if (payload.type === 'message')
                 {
-                    insertIncomingMessage(payload.msg['form[message]'], payload.user) // no third argument beucase it defaults to message
+                    insertIncomingMessage(payload.msg['form[message]'], payload.username) // no third argument because it defaults to message
                 }
             })
 

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Item;
+use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DomCrawler\Field\TextareaFormField;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -24,17 +25,10 @@ class HomeController extends AbstractController
      * @Route("/", name="home.index")
      * Probably won't need the request, just throwing it in there
      */
-    public function index(Request $request)
+    public function index(Request $request, PostRepository $postRepository)
     {
-        $message = new Message();
-        $form = $this->createForm(MessageType::class, $message);
-
-        $em = $this->getDoctrine()->getManager();
-        $posts = $em->getRepository(Item::class)->findAll();
-
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-            'form' => $form->createView()
+            'posts' => $postRepository->findAll()
         ]);
     }
 

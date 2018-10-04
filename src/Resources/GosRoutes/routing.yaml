@@ -23,3 +23,11 @@ messages_manager_rpc:
   requirements:
     method:
       pattern: "[a-z_]+"
+
+comment_manager_rpc:
+  channel: commentManager/{method}
+  handler:
+    callback: 'comment_manager.rpc'
+  requirements:
+    method:
+      pattern: "[a-z_]+"
