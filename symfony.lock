@@ -104,6 +104,9 @@
     "gos/pubsub-router-bundle": {
         "version": "v0.3.4"
     },
+    "gos/react-amqp": {
+        "version": "v0.1.2"
+    },
     "gos/web-socket-bundle": {
         "version": "v1.8.13"
     },

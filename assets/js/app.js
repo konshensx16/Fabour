@@ -17,52 +17,54 @@ webSocket.on("socket/connect", function (session) {
 	
 	// everytime an event is published in this channel the function is executed
 	session.subscribe('acme/channel', function (uri, payload) {
+
+		console.log(uri, payload);
 		
-		setClientCounter(payload.connectedClients)
+		// setClientCounter(payload.connectedClients)
 
 		// append the message to the messagesList
-		var messageListItem = document.createElement('li')
-		var messageListItemTextNode = document.createTextNode(payload.msg)
-		messageListItem.append(messageListItemTextNode)
-		messagesList.append(messageListItem)
+		// var messageListItem = document.createElement('li')
+		// var messageListItemTextNode = document.createTextNode(payload.msg)
+		// messageListItem.append(messageListItemTextNode)
+		// messagesList.append(messageListItem)
 	})
 
-	session.publish('acme/channel', 'This is a message')
-
-	// TODO: send the message from the interface
-	var messageBox = document.querySelector('#form_message')
-	var sendButton = document.querySelector('#form_send')
-
-	// listen when form submits
-	messageForm.addEventListener('submit', function (event)
-	{	
-		event.preventDefault()
-		var formData = new FormData(this)
-		// console.log(JSON.stringify(formData)) # this code returned an empty object
-		// TODO: maybe i could use the formData instead of this formTpJSON function
-		// 		Probably can't since the info that imma send is just a string and not some sort of an object
-		var serilaizedData = JSON.stringify(formToJSON(this.elements))
-		console.log(serilaizedData)
-		// serialize the form, or just use a FormData
-		// so far the formData doesn't seem to be working, the back-end param is empty 
-		// maybe i dont need to serialize the form, but what do i need to do
-		// time for some battlefield :)
-		// i wonder what's the alternative of doing this in the controller??
-		session.call("messagesManager/store_message", {'form': serilaizedData})
-			// handle success & error 
-			.then(
-				function(response)
-				{
-					// in case of success
-					console.log(response)
-				},
-				function(error)
-				{
-					// in case of error
-					console.error(error)
-				}
-			)
-	})
+	// session.publish('acme/channel', 'This is a message')
+    //
+	// // TODO: send the message from the interface
+	// var messageBox = document.querySelector('#form_message')
+	// var sendButton = document.querySelector('#form_send')
+    //
+	// // listen when form submits
+	// messageForm.addEventListener('submit', function (event)
+	// {
+	// 	event.preventDefault()
+	// 	var formData = new FormData(this)
+	// 	// console.log(JSON.stringify(formData)) # this code returned an empty object
+	// 	// TODO: maybe i could use the formData instead of this formTpJSON function
+	// 	// 		Probably can't since the info that imma send is just a string and not some sort of an object
+	// 	var serilaizedData = JSON.stringify(formToJSON(this.elements))
+	// 	console.log(serilaizedData)
+	// 	// serialize the form, or just use a FormData
+	// 	// so far the formData doesn't seem to be working, the back-end param is empty
+	// 	// maybe i dont need to serialize the form, but what do i need to do
+	// 	// time for some battlefield :)
+	// 	// i wonder what's the alternative of doing this in the controller??
+	// 	session.call("messagesManager/store_message", {'form': serilaizedData})
+	// 		// handle success & error
+	// 		.then(
+	// 			function(response)
+	// 			{
+	// 				// in case of success
+	// 				console.log(response)
+	// 			},
+	// 			function(error)
+	// 			{
+	// 				// in case of error
+	// 				console.error(error)
+	// 			}
+	// 		)
+	// })
 
 	// THIS CODE IS HERE FOR REFERENCES DNT FORGET TO CHANGE IT
 	/*

@@ -7,6 +7,9 @@ use App\Entity\Post;
 use App\Form\CommentType;
 use App\Form\PostType;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
+use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +19,22 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PostController extends AbstractController
 {
+    /**
+     * @var TopicManager
+     */
+    private $topicManager;
+    /**
+     * @var PusherDecorator
+     */
+    private $pusher;
+
+    public function __construct(TopicManager $topicManager, PusherDecorator $pusher)
+    {
+        $this->topicManager = $topicManager;
+        $this->pusher = $pusher;
+    }
+    
+
     /**
      * @Route("/create", name="create")
      */
@@ -68,6 +87,11 @@ class PostController extends AbstractController
 
     /**
      * @Route("/{id}", name="display")
+     * @param Request $request
+     * @param Post $post
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function display(Request $request, Post $post)
     {
@@ -83,18 +107,20 @@ class PostController extends AbstractController
             // TODO: find another (better) way to set the comment to the post!
             $comment->setPost($post);
             // TODO: change this to a transaction so in case of error the user will not be notified of the comment by error!
-            $em->persist($comment);
-            $em->flush();
-
-            // send a message to the user
-            // get the pusher service
-            /**
-             * @var PusherDecorator
-             */
-            $pusher = $this->get('gos_web_socket.wamp.pusher');
-
-            $pusher->push([/*the data*/], '', [/*route arguments*/]);
-
+//            $em->persist($comment);
+//            $em->flush();
+            /*
+            $topic = $this->topicManager->getTopic('acme/channel');
+            // this is going to broadcast to everyone i think ??
+            $topic->broadcast('Hello from the controller!');
+            */
+            // don't really need to catch anything! i was just testing if it throws any exceptions
+            try {
+                $this->pusher->push(['msg' => 'Hello from the controller'] , 'acme_topic');
+            } catch (\Exception $e)
+            {
+                $e->getTrace();
+            }
             $this->addFlash('success', 'Your comment was posted!');
         }
         return $this->render('post/display.html.twig', [

@@ -107,7 +107,7 @@ Websockets NOTES:
 
       Jesus fucking christ the problem was when i try accessing it using the localhost it doesn't work but when i use the address 127.0.0.1 it does work 
         - More debugging coming later
-  ☐ Sending a message to a certain user! I need to create a more rebust system where i can utilize this !
+  ☐ Way of sending a message to a certain user! I need to create a more rebust system where i can utilize this !
       ``` php
       $user1 = $this->clientManipulator->findByUsername($topic, 'user1');
         if (false !== $user1) {
@@ -134,3 +134,45 @@ MAKING A BLOG LIKE SYSTEM:
           For now doing everyithng inside the PostController will change it later if needed
 
     ☐ Notify the user that someone commented on his post!
+          - I think im gonna have to to create an RPC for this and not just a Topic
+          ☐ Create the RPC to handle notifying the publihser of the comment # still need to write the logic to this
+          ☐ Maybe handle the comment in the RPC too instead of the PostController # this might get canceled later, leaving it for now
+          ☐ As of now i'm trying to send the notification to ther user using the controller! because that's where im saving the Comment in the DB.
+
+          Just came across this in someones code 'dirtyseven' (a game made with goswebsocket), Broadcast a message from RPC to a Topic: 
+            - Here's what i need to do!
+              - Get the topicManager which a  thing that comes with ratchet in my RPC (CommentRPC)
+              - Get the channel with the follwoing code: $topicManager->getTopic('chanel/name');
+              - Then just broadcats on the topic that i just got!
+
+
+WHA THE FUCK ARE THOSE SHIT NOTES:
+  - Canot keep track of the notes im taking here :( 
+  ✔ Install php-amqp @done (10/7/2018, 9:54:51 PM)
+  ✔ Install composer require gos/react-amqp @done (10/7/2018, 11:15:02 PM)
+  Couple of stull that i did (IMPORTANT): 
+      Installed evenement/evenement 2.0.0
+      Downgraded react/event-loop from 0.5.something to 0.4.0
+      Installed gos/react-amqp
+
+  ☐ Configure the amqp for the websocket 
+      Couple of stuff i need to look up:
+          The entire configuration file is confusing the only easy thing there is the host : 127.0.0.1
+              Don't know what the port is supposed to be, for now i have just 8000 which seems to have froze everything as of now
+                Maybe the port should be the same as the ratchet port (8080): This doesn't work either!
+              Don't know what is the username and the password, (Probably the current user "logged in" credentials)
+                  YES: i need a way to provide the values 
+                  NO : what are those values then ?!?!
+              Don't know what the vhost is for, current value is /
+          Link to a document that might help: https://www.rabbitmq.com/uri-spec.html
+          
+        Accesing the rabbitmq-panel:
+          http://localhost:15672/
+          Credentials:
+            username: guest
+            password: guest
+        In the rabbitmq-panel i bound to gos_websocket_exchange to the gos_websocket (I think i know what i did here but i need further reading about this!)
+
+        EVERYTHING IS WORKING RIGHT NOW!!!!:
+
+        ☐ Send the notification only to the user that i want! (currently all subscribers get the notification)

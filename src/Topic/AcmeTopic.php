@@ -1,6 +1,7 @@
 <?php 
 namespace App\Topic;
 
+use Gos\Bundle\WebSocketBundle\Topic\PushableTopicInterface;
 use Gos\Bundle\WebSocketBundle\Topic\TopicInterface;
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\Topic;
@@ -9,7 +10,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class AcmeTopic implements TopicInterface {
+class AcmeTopic implements TopicInterface, PushableTopicInterface {
 
 	private $clients;
 
@@ -61,4 +62,10 @@ class AcmeTopic implements TopicInterface {
 	{
 		return 'acme.topic';
 	}
+
+	public function onPush(Topic $topic, WampRequest $request, $data, $provider)
+    {
+        // i think this is never executing
+        $topic->broadcast($data);
+    }
 }

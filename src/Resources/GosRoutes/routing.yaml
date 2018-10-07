@@ -1,5 +1,5 @@
 acme_topic:
-    channel: acme/channel
+    channel: 'acme/channel'
     handler:
         callback: 'acme.topic' #related to the getName of the topic
 

@@ -7,11 +7,6 @@ use Gos\Bundle\WebSocketBundle\Topic\PushableTopicInterface;
 use Ratchet\ConnectionInterface;
 use Gos\Bundle\WebSocketBundle\Router\WampRequest;
 use Ratchet\Wamp\Topic;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Doctrine\Common\Persistence\ObjectManager;
 
 
 // TODO: create the service for this RPC
@@ -35,8 +30,6 @@ class CommentRPC implements RPCInterface, PushableTopicInterface
         // i think i just want the user to be redirected to the Post and then add some sort
         //      of a hash tag to the URL so the page scroll to the comment in question!
         $currentUser = $this->clientManipulator->getClient($connection);
-        dump($currentUser);
-        dump($param);
     }
 
     public function getName()

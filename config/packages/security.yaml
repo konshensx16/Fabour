@@ -23,8 +23,8 @@ security:
                always_use_default_target_path: true
 
             logout:
-               path: /logout
-               target: /
+               path: logout
+               target: home.index
 
 
     # Easy way to control access for large sections of your site
