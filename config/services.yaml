@@ -47,6 +47,8 @@ services:
     # i think all these definitions could be moved to a separate file!
     acme_hello.topic_sample_service:
         class: App\Topic\AcmeTopic
+        arguments:
+            - '@gos_web_socket.websocket.client_manipulator'
         tags:
             - { name: gos_web_socket.topic }
     conversation.topic_service:

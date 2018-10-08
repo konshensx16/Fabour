@@ -176,3 +176,7 @@ WHA THE FUCK ARE THOSE SHIT NOTES:
         EVERYTHING IS WORKING RIGHT NOW!!!!:
 
         ☐ Send the notification only to the user that i want! (currently all subscribers get the notification)
+            So i can get the connection from the topic (people subscribed to the topic) and from that i have to figure out which one of em the send the message to
+            In my authentication system the username is unique so i can use that to fetch the user from the database without the need of an ID or anything 
+              What im about to do seems a bit naive but will try it first and see if it's going to work
+          

@@ -101,6 +101,15 @@ class PostController extends AbstractController
 
         $commentForm->handleRequest($request);
 
+        try {
+            $this->pusher->push([
+                'message' => $this->getUser()->getUsername() . ' just commented on your post: ' . $post->getTitle(),
+                'author' => $post->getUser()->getUsername()
+            ] , 'acme_topic');
+        } catch (\Exception $e)
+        {
+            $e->getTrace();
+        }
         if ($commentForm->isSubmitted()) {
             // handle the comment and shit
             $em = $this->getDoctrine()->getManager();
@@ -115,12 +124,6 @@ class PostController extends AbstractController
             $topic->broadcast('Hello from the controller!');
             */
             // don't really need to catch anything! i was just testing if it throws any exceptions
-            try {
-                $this->pusher->push(['msg' => 'Hello from the controller'] , 'acme_topic');
-            } catch (\Exception $e)
-            {
-                $e->getTrace();
-            }
             $this->addFlash('success', 'Your comment was posted!');
         }
         return $this->render('post/display.html.twig', [
