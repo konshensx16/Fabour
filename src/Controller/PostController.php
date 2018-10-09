@@ -101,15 +101,6 @@ class PostController extends AbstractController
 
         $commentForm->handleRequest($request);
 
-        try {
-            $this->pusher->push([
-                'message' => $this->getUser()->getUsername() . ' just commented on your post: ' . $post->getTitle(),
-                'author' => $post->getUser()->getUsername()
-            ] , 'acme_topic');
-        } catch (\Exception $e)
-        {
-            $e->getTrace();
-        }
         if ($commentForm->isSubmitted()) {
             // handle the comment and shit
             $em = $this->getDoctrine()->getManager();
@@ -118,11 +109,19 @@ class PostController extends AbstractController
             // TODO: change this to a transaction so in case of error the user will not be notified of the comment by error!
 //            $em->persist($comment);
 //            $em->flush();
-            /*
-            $topic = $this->topicManager->getTopic('acme/channel');
-            // this is going to broadcast to everyone i think ??
-            $topic->broadcast('Hello from the controller!');
-            */
+            // TODO: maybe all this code should be inside an event listener (onCommentPosted!)
+            // TODO: if the current logged in user in the author, then no need to send a notification!
+            if (!($this->getUser() === $post->getUser())) {
+                try {
+                    $this->pusher->push([
+                        'message' => $this->getUser()->getUsername() . ' just commented on your post: ' . $post->getTitle(),
+                        'author' => $post->getUser()->getUsername()
+                    ] , 'comment_topic');
+                } catch (\Exception $e)
+                {
+                    $e->getTrace();
+                }
+            }
             // don't really need to catch anything! i was just testing if it throws any exceptions
             $this->addFlash('success', 'Your comment was posted!');
         }

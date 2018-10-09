@@ -4,9 +4,10 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
         {% block stylesheets %}{% endblock %}
     </head>
-    <body>
+    <body id="main-page">
         <div class="container">
             <div class="navbar navbar-inverse navbar-collapse collapse" id="navbar">
                 <ul class="nav navbar-nav">

@@ -45,12 +45,13 @@ services:
 
     # i might create a seperate file for services if this one gets large enough to confuse me
     # i think all these definitions could be moved to a separate file!
-    acme_hello.topic_sample_service:
-        class: App\Topic\AcmeTopic
+    comment_topic.topic_service:
+        class: App\Topic\CommentTopic
         arguments:
             - '@gos_web_socket.websocket.client_manipulator'
         tags:
             - { name: gos_web_socket.topic }
+
     conversation.topic_service:
         class: App\Topic\ConversationTopic
         arguments:

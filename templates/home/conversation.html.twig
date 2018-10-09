@@ -36,7 +36,6 @@
             session.subscribe("conversation/channel", function (uri, payload)
             {
                 setConnectedClientsCounter(payload.connectedClients)
-                console.log(uri, payload)
                 // set the content to the front end! AHHH i wish i was using vue right now :'(
                 if (payload.type === 'user_joined') {
                     insertIncomingMessage(null, payload.username, 'user_joined')
@@ -45,7 +44,6 @@
                     insertIncomingMessage(payload.msg['form[message]'], payload.username) // no third argument because it defaults to message
                 }
             })
-
             // maybe only publish when the form is submitted ?
             $messageForm.addEventListener('submit', function (event)
             {
@@ -61,7 +59,7 @@
 
         webSocket.on("socket/disconnect", function (error)
         {
-            console.log("Disconnected " + error.reason + " With code " + error.code)
+            // TODO: make something else here instead of console.log()
         })
 
         function setConnectedClientsCounter(count)

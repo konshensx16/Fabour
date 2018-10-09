@@ -175,8 +175,21 @@ WHA THE FUCK ARE THOSE SHIT NOTES:
 
         EVERYTHING IS WORKING RIGHT NOW!!!!:
 
-        ☐ Send the notification only to the user that i want! (currently all subscribers get the notification)
+        ✔ Send the notification only to the user that i want! (currently all subscribers get the notification) @done (10/8/2018, 10:44:32 PM)
             So i can get the connection from the topic (people subscribed to the topic) and from that i have to figure out which one of em the send the message to
             In my authentication system the username is unique so i can use that to fetch the user from the database without the need of an ID or anything 
-              What im about to do seems a bit naive but will try it first and see if it's going to work
-          
+              What im about to do seems a bit naive but will try it first and see if it's going to work (This does work)
+        ✔ Visually display a notification for the user (UI and shit) @done (10/9/2018, 10:31:31 PM)
+          ✔ Create the css file (OP tbh just inline css would work!), maybe we can turn this into a plugin later lol @done (10/8/2018, 11:03:46 PM)
+              Might need to change some stuff later but for now everything seems to be okay!
+          ✔ Create the js @done (10/9/2018, 7:31:34 PM)
+              ✘ Not sure if i want to create a class @cancelled (10/8/2018, 11:09:29 PM)
+              ✔ Just do it in the same file without usign a class or a file @done (10/9/2018, 7:31:22 PM)
+              ✔ The user should be able to get notification anywhere when using the app so the code needs to be in the app.js file @done (10/9/2018, 7:45:29 PM)
+              ✘ The user should be able to click the notification which will take him to the post (Where the comment was posted) ~ postponed till i create the @cancelled (10/9/2018, 10:31:33 PM)
+
+
+        ✔ Create a seperate Topic for comments instead of using AcmeTopic @done (10/9/2018, 10:30:58 PM)
+          ✔ Create the Topic @done (10/9/2018, 10:30:58 PM)
+          ✔ Register the routes @done (10/9/2018, 10:30:59 PM)
+          ✔ Register the topic as a service @done (10/9/2018, 10:30:59 PM)

@@ -7,12 +7,8 @@ use Gos\Bundle\WebSocketBundle\Topic\TopicInterface;
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\Topic;
 use Gos\Bundle\WebSocketBundle\Router\WampRequest;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class AcmeTopic implements TopicInterface, PushableTopicInterface {
+class CommentTopic implements TopicInterface, PushableTopicInterface {
 
 	private $clients;
 
@@ -30,9 +26,6 @@ class AcmeTopic implements TopicInterface, PushableTopicInterface {
 		// store the newly connected client 
 		$this->clients->attach($connection);
 		// send the message to all subscribers of this topic
-//		$topic->broadcast([
-//			'msg' => $connection->resourceId . " has joined " . $topic->getId()
-//		]);
 	}
 
 	// recieve a disconnect 
@@ -41,22 +34,12 @@ class AcmeTopic implements TopicInterface, PushableTopicInterface {
 		// remove the connection when not subscribed anymore
 		// otherwise the counter will always go up
 		$this->clients->detach($connection);
-//		$topic->broadcast([
-//			'msg' => $connection->resourceId . " has left " . $topic->getId()
-//		]);
 	}
 
 	// recieve publish request for this topic 
 	// this looks like the place where to send to count of connected clients
 	public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible)
 	{
-		$encoders = [new JsonEncoder()];
-		$normalizers = [new ObjectNormalizer()];
-
-		$serializer = new Serializer($normalizers, $encoders);
-
-		$serializedData = $serializer->serialize($request, 'json');
-
 		$topic->broadcast([
 			'msg' => $event,
 			'connectedClients' => $topic->count()
@@ -66,7 +49,7 @@ class AcmeTopic implements TopicInterface, PushableTopicInterface {
 	// like RPC (Remote Procedure Call) will use to prefix the channel
 	public function getName()
 	{
-		return 'acme.topic';
+		return 'comment.topic';
 	}
 
     /**
@@ -79,12 +62,9 @@ class AcmeTopic implements TopicInterface, PushableTopicInterface {
    {
        // TODO: this only send to a single user, what if we had multiple users (like replies) ??
        // this should not failed and the user should never be null!
+       // get the user using the username
        $user = $this->clientManipulator->findByUsername($topic, $data['author']);
        $theUser = $user['connection']->WAMP->sessionId;
-       // get the user using the username
-       /** @var UserInterface $user */
-       dump($theUser);
-        // i think this is never executing
         $topic->broadcast($data['message'], [], [$theUser]);
     }
 }
