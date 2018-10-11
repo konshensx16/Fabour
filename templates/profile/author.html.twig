@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-sm-12">
+        <h4 class="text-center p10">
+            About the author
+        </h4>
+    </div>
+    <div class="col-sm-12">
+        <img src="{{ asset('assets/img/') ~ author.avatar }}" alt="User avatar" class="img-responsive img-circle center-block">
+    </div>
+    <div class="col-lg-12">
+        <a href="{{ path('profile.userProfile', {'username': author.username}) }}">
+            <h4 class="text-center p10">
+                {{ author.username }}
+            </h4>
+        </a>
+    </div>
+    <div class="col-lg-12">
+        <h4 class="text-center p10">
+            {% if author.about %}
+                {{ author.about }}
+            {% else %}
+                Well then, seems like somebody is hiding something!
+            {% endif %}
+        </h4>
+    </div>
+</div>

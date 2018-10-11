@@ -5,15 +5,14 @@ require("./bundles/goswebsocket/js/gos_web_socket_client.js")
 */ 
 
 // this could be turned into something more dynamic, by disabling shared configuration
-var webSocket = WS.connect(_WS_URI)
-var $connectedClientsCounter = document.getElementById('connectedClientsCounter')
+let webSocket = WS.connect(_WS_URI)
+let $connectedClientsCounter = document.getElementById('connectedClientsCounter')
 
 webSocket.on("socket/connect", function (session) {
 	// client connected
 	
 	// everytime an event is published in this channel the function is executed
 	session.subscribe('comment/channel', function (uri, payload) {
-        // TODO: remove the user joined messages
         notify(payload)
 	})
 
@@ -50,21 +49,21 @@ const formToJSON = elements => [].reduce.call(elements, (data, element) => {
  * @return {[type]}      [description]
  */
 /*
-var serialize = function (form) {
-	var field,
+let serialize = function (form) {
+	let field,
 		l,
 		s = [];
 
 	if (typeof form == 'object' && form.nodeName == "FORM") {
-		var len = form.elements.length;
+		let len = form.elements.length;
 
-		for (var i = 0; i < len; i++) {
+		for (let i = 0; i < len; i++) {
 			field = form.elements[i];
 			if (field.name && !field.disabled && field.type != 'button' && field.type != 'file' && field.type != 'hidden' && field.type != 'reset' && field.type != 'submit') {
 				if (field.type == 'select-multiple') {
 					l = form.elements[i].options.length;
 
-					for (var j = 0; j < l; j++) {
+					for (let j = 0; j < l; j++) {
 						if (field.options[j].selected) {
 							s[s.length] = encodeURIComponent(field.name) + "=" + encodeURIComponent(field.options[j].value);
 						}

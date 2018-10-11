@@ -105,10 +105,12 @@ class PostController extends AbstractController
             // handle the comment and shit
             $em = $this->getDoctrine()->getManager();
             // TODO: find another (better) way to set the comment to the post!
+            //      maybe i need a to set cascade to persist and remove (both Post and Comment for now)
+            //      Tbh, there's no way doctrine could figure out what the fuck im talking about in this place
             $comment->setPost($post);
             // TODO: change this to a transaction so in case of error the user will not be notified of the comment by error!
-//            $em->persist($comment);
-//            $em->flush();
+            $em->persist($comment);
+            $em->flush();
             // TODO: maybe all this code should be inside an event listener (onCommentPosted!)
             // TODO: if the current logged in user in the author, then no need to send a notification!
             if (!($this->getUser() === $post->getUser())) {

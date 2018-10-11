@@ -37,6 +37,16 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $locale;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $avatar = 'avatar.png';
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $about;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user")
      */
     private $posts;
@@ -212,6 +222,30 @@ class User implements UserInterface, \Serializable, EquatableInterface
                 $comment->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(string $avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getAbout(): ?string
+    {
+        return $this->about;
+    }
+
+    public function setAbout(string $about): self
+    {
+        $this->about = $about;
 
         return $this;
     }

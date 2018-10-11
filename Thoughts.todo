@@ -193,3 +193,36 @@ WHA THE FUCK ARE THOSE SHIT NOTES:
           ✔ Create the Topic @done (10/9/2018, 10:30:58 PM)
           ✔ Register the routes @done (10/9/2018, 10:30:59 PM)
           ✔ Register the topic as a service @done (10/9/2018, 10:30:59 PM)
+
+        ✔ Improve the post and all that @done (10/11/2018, 10:49:02 PM)
+          ✔ The blog post looks aweful i need to change it @done (10/11/2018, 10:49:01 PM)
+          ✔ Comments should have a created at field @done (10/11/2018, 10:49:01 PM)
+
+        ✔ User profile section: @done (10/11/2018, 10:53:12 PM)
+          ✔ Display the latest posts from the user @done (10/11/2018, 10:53:11 PM)
+            ✔ If the user hasn't posted anything yet then just display a joke or message saying check back later! @done (10/11/2018, 10:44:25 PM)
+            ✘ If the user has posts then good thing will be to display them in a pagination system (maybe just display 10 out of everythng each time)! @cancelled (10/11/2018, 10:53:05 PM)
+
+        ☐ Improve the user SYSTEM
+          ✔ The username and the email fields should be unique @done (10/11/2018, 10:14:45 PM)
+          ✔ Add avatar column to each user, and make default to something in the project @done (10/9/2018, 11:06:24 PM)
+          ☐ Create a user profile for each one
+            ✔ About section @done (10/10/2018, 11:19:44 PM)
+            ☐ When the account was created
+            ☐ Maybe last seen? last time the user was online
+            ☐ Where the user is from
+          ☐ Allow each user to change his profile
+          ✔ Users can check each other profiles @done (10/11/2018, 10:21:38 PM)
+            ✔ Display the current logged in user if the user tries to check his own profile, or just access the (/profile) @done (10/11/2018, 10:21:39 PM)
+              ✔ Display the profile of the given username (/profile/[username]) @done (10/11/2018, 10:21:43 PM)
+          ✔ Show a profile user section in the sidebar of each post @done (10/10/2018, 11:19:55 PM)
+            ✔ Create the controller to show the author of the post @done (10/10/2018, 11:19:56 PM)
+            ✔ Get the author of the post @done (10/10/2018, 11:21:10 PM)
+              ✘ I Might want to change what information i want to send to the view (no secrity threats at this point since everything is done server side) @cancelled (10/10/2018, 11:21:12 PM)
+          ✔ Initial profile should show just some basic informations, the rest is just posts published by the user @done (10/11/2018, 10:53:21 PM)
+
+        ☐ Improving the UI a lil bit (might just get another design and be done with it, ot take advantage of this to brush on my css skils :)) )
+          ✔ Adding the playfair display font (Going for minimalistic look for this one!): '@import url('https://fonts.googleapis.com/css?family=Playfair+Display');' @done (10/10/2018, 11:19:36 PM)
+          ✔ Create the user profile page @done (10/11/2018, 10:53:28 PM)
+          ☐ The user shoud be able to change his profile information in another page!
+          ☐ Add a WYSIWYG editor to the post.create so the user can customize his heading ad everything he likes

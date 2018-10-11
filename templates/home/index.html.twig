@@ -9,9 +9,9 @@
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <a href="{{ path('post.display', {'id': post.id}) }}"><strong>{{ post.title }}</strong></a> -
-                    published on: {{  post.createdAt|date('Y-M-d hh:mm:ss') }} by 
+                    published on: {{  post.createdAt|date('Y-M-d h:m:s') }} by
                     <strong>
-                        <a href="#">
+                        <a href="{{ path('profile.userProfile', {'username': post.user.username}) }}">
                             {{ post.user.username }}
                         </a>
                     </strong>

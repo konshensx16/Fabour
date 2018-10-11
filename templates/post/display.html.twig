@@ -3,39 +3,53 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block body %}
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message }}
+    <div class="row">
+        <div class="col-lg-9">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+                <!-- the actual blog post: title/author/date/content -->
+                <h1>{{ post.title }}</h1>
+                <p class="lead">by <a href="{{ path('profile.userProfile', {'username': post.user.username}) }}">{{ post.user.username }}</a>
+                </p>
+                <hr>
+                <p>
+                    <span class="glyphicon glyphicon-time"></span> Posted on {{ post.createdAt|date('Y-M-D h:m:s') }}
+                </p>
+                <hr>
+
+                {{ post.content }}
+
+                <hr>
+
+                <!-- the comment box -->
+                <div class="well" style="overflow: hidden;">
+                    <h4>Leave a Comment:</h4>
+                    {{ form(comment_form) }}
+                </div>
+
+                <hr>
+                {#Comments will be down here#}
+
+                {% if post.comments.count %}
+                    {% for comment in post.comments %}
+
+                        <h3>{{ comment.user }}
+                            <small>{{ comment.createdAt|date('Y-M-D h:m:s') }}</small>
+                        </h3>
+                        <p>{{ comment.content }}</p>
+                    {% endfor %}
+                {% else %}
+                    This post has no comments, be the first.
+                {% endif %}
         </div>
-    {% endfor %}
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            by {{ post.user }} - {{ post.title }}
-        </div>
-        <div class="panel-body">
-            Published on: {{ post.createdAt|date('Y-M-D hh:mm:ss') }}
-            <hr>
-            {{ post.content }}
-        </div>
-    </div>
-    {#Comment form will be here#}
-    <div style="overflow: hidden; margin-bottom: 30px;">
-        {{ form(comment_form) }}
-    </div>
-    {#Comments will be down here#}
-    <div class="panel panel-success">
-        <div class="panel-heading">
-            <strong>Post your thoughts on this.</strong>
-        </div>
-        <div class="panel-body">
-            {% if post.comments.count %}
-                {% for comment in post.comments %}
-                    <strong>{{ comment.user }}</strong>:
-                    {{ comment.content }}
-                {% endfor %}
-            {% else %}
-                This post has no comments, be the first.
-            {% endif %}
+        <div class="col-lg-3">
+            {{ render(controller(
+                'App\\Controller\\ProfileController::author',
+                { 'post': post}
+            )) }}
         </div>
     </div>
 

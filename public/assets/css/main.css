@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display');
+
 /*Not dealing small size screens right now*/
 .popup {
     z-index: 100;
@@ -19,4 +21,18 @@
 }
 .popup p {
     color: black;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6,
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+}
+
+.p10 {
+    padding: 10px;
+}
+
+p {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
 }
