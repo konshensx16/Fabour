@@ -211,7 +211,7 @@ WHA THE FUCK ARE THOSE SHIT NOTES:
             ☐ When the account was created
             ☐ Maybe last seen? last time the user was online
             ☐ Where the user is from
-          ☐ Allow each user to change his profile
+          ✔ Allow each user to change his profile @done (10/11/2018, 11:07:13 PM)
           ✔ Users can check each other profiles @done (10/11/2018, 10:21:38 PM)
             ✔ Display the current logged in user if the user tries to check his own profile, or just access the (/profile) @done (10/11/2018, 10:21:39 PM)
               ✔ Display the profile of the given username (/profile/[username]) @done (10/11/2018, 10:21:43 PM)
@@ -221,8 +221,79 @@ WHA THE FUCK ARE THOSE SHIT NOTES:
               ✘ I Might want to change what information i want to send to the view (no secrity threats at this point since everything is done server side) @cancelled (10/10/2018, 11:21:12 PM)
           ✔ Initial profile should show just some basic informations, the rest is just posts published by the user @done (10/11/2018, 10:53:21 PM)
 
-        ☐ Improving the UI a lil bit (might just get another design and be done with it, ot take advantage of this to brush on my css skils :)) )
+        ☐ Improving the UI a lil bit (might just get another design and be done with it, or take advantage of this to brush on my css skils :)) )
           ✔ Adding the playfair display font (Going for minimalistic look for this one!): '@import url('https://fonts.googleapis.com/css?family=Playfair+Display');' @done (10/10/2018, 11:19:36 PM)
           ✔ Create the user profile page @done (10/11/2018, 10:53:28 PM)
           ☐ The user shoud be able to change his profile information in another page!
           ☐ Add a WYSIWYG editor to the post.create so the user can customize his heading ad everything he likes
+DESIGN DRIVEN BACK-END:
+  This means that whatever theme (UI) i choose to use for the UI is what will determine the back-end functionality!
+  Link : http://themepixels.me/slim1.1/landing/ ~ Downloaded check the Desktop for both the rar and the "unrared" file (Might need to upload the file tot dropbox or google drive for future use)
+  ☐ Download the theme and implement it in the project!
+  ✔ Uplaod the file to dropbox or google drive after checking if it's the correct one! @done (10/13/2018, 5:38:52 PM) ! to dropbox
+  ✘ Create a custom page for the blog posts and post.create is non exist @cancelled (10/13/2018, 5:39:06 PM)
+  ✔ Check if all the required pages are there before creating any to avoid wasting time @done (10/13/2018, 5:39:15 PM)
+    Main pages that i need:
+      ✔ Profile page (Check the user profile) @done (10/13/2018, 5:35:11 PM)
+      ☐ Edit the user profile (if allowed of course)
+      ✔ Pubslish a post in the blog (Check if any WYSIWYG editor is embeded, if not TinyMCE will be used) @done (10/13/2018, 5:35:09 PM)
+      ✔ Edit a post (with the WYSIWYG editor) @done (10/13/2018, 5:35:08 PM)
+      ☐ Maybe a search page with filters and everything that is going to be created along the way
+      ✔ Profile views maybe ? @done (10/13/2018, 5:35:16 PM)
+      ☐ 
+
+  MIGRATING TO THE NEW DESING:
+    ✔ Remove everything related to the old desing and remove that simple bootsrap file @done (10/13/2018, 5:48:05 PM)
+    ✔ Make sure to all the file to git @done (10/13/2018, 5:48:02 PM)
+    ☐ Might need to use encore to maage everything since i have the scss files (just a thougth):
+      @critical NOTE: the "lib" folder is where all the js plugins live (don't remove it)
+      ✔ Import the new css and js and images files to the public/assets folder (NOTES: just checked the gitignore and it won't ingore these files) @done (10/13/2018, 5:48:08 PM)
+      ☐ Adapt the html pages to the new slim design (Don't move any further untill this is done, trust me!)
+        ✔ The login page (use the split desing) @done (10/13/2018, 6:02:55 PM)
+        ✔ The home index page @done (10/13/2018, 7:01:33 PM)
+          ✔ Change the design of the navbar before doing the posts (TOP TO BOTTOM) @done (10/13/2018, 7:01:34 PM)
+        ☐ The single blog page
+        ☐ The profile page
+      ☐ Create some other pages
+        ☐ A registration page where users can sign up
+          ✔ Create the controller and the user interface and leave them empty for now @done (10/13/2018, 6:00:29 PM)
+          ☐ Include this page in the access control so you don't go crazy later on!
+
+GLOBAL :
+  ☐ Replace the navbar pages with categories that the user can click on to get to a paeg with posts from the category
+
+
+POSTS:
+  ☐ Each post should have a category
+  ☐ In the index page posts contents  shoudln't exceed a certain limit!
+  ☐ Single Post display page:
+    ☐ Manage the alerts with the new design 
+    ☐ Change the look of the comments
+    ☐ Change the comment posting form!
+    ☐ Display a views counter
+    ☐ Display a bookmark option (if the users want to save this somewhere)
+    ☐ Display an add to friends button under the small profile section
+  
+Categories:
+  ☐ Maybe each category should have sub-categories ?? (Just a thought)
+    Arts & Entertainment
+    Industry
+    Innovation & Tech 
+    Life
+    Society
+
+  ✔ These should be loaded from a fixture since they're going to be fixed and never changing @done (10/13/2018, 8:44:36 PM)
+  ✔ Create the category table @done (10/13/2018, 6:48:58 PM)
+  ✔ Set up the Relationship: @done (10/13/2018, 6:48:59 PM)
+    Each post belongs to a category 
+    A categroy contains Many posts
+  ✘ Create a crud for the categories so i can change them @cancelled (10/13/2018, 8:44:40 PM)
+  ✘ Create an action to generate four categories @cancelled (10/13/2018, 8:45:09 PM)
+    No need for this since this is going to be static and never changing the during the entire web application life
+  ☐ Create a separate page where the user can see all the categories and even sub-categories in case of adding them. 
+
+Users:
+  ☐ 
+
+Profile:
+  ☐ 

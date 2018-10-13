@@ -16,7 +16,12 @@ class UserFormType extends AbstractType
         $builder
             ->add('_username', TextType::class)
             ->add('_password', PasswordType::class)
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Sign in',
+                'attr' => [
+                    'class' => 'btn btn-primary btn-block btn-signin'
+                ]
+            ])
         ;
     }
 

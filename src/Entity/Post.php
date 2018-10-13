@@ -40,6 +40,11 @@ class Post
     private $comments;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="posts", cascade={"persist", "remove"})
+     */
+    private $category;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $created_at;
@@ -131,6 +136,18 @@ class Post
                 $comment->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

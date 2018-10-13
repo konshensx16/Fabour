@@ -70,7 +70,7 @@ class ProfileController extends AbstractController
      */
     public function edit(Request $request, EntityManager $manager)
     {
-        // TODO: cehck if the user has enough permissions to change information
+        // TODO: check if the user has enough permissions to change information
         // the logged in user should be able to change his info
         // TODO: implement this action
         $user = $this->getUser();

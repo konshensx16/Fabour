@@ -1,0 +1,76 @@
+.slim-header {
+  background-color: #367EC1;
+  border-bottom-width: 0; }
+
+.slim-logo a {
+  color: #fff;
+  font-weight: 500; }
+
+.search-box {
+  border-width: 0;
+  background-color: #fff; }
+  .search-box .btn {
+    background-color: #367EC1; }
+
+.logged-user {
+  color: rgba(255, 255, 255, 0.75); }
+  .logged-user:hover, .logged-user:focus {
+    color: #fff; }
+  .logged-user img {
+    border-color: rgba(255, 255, 255, 0.5); }
+
+.header-notification {
+  color: rgba(255, 255, 255, 0.75); }
+  .header-notification .indicator {
+    background-color: #dc3545; }
+  .header-notification:hover, .header-notification:focus {
+    background-color: #3071ad;
+    color: #fff; }
+
+.slim-header-right .dropdown-a.show > a,
+.slim-header-right .dropdown-b.show > a {
+  background-color: #3071ad; }
+
+.slim-header-right .dropdown-c.show > a {
+  color: #fff; }
+
+.slim-header-right .dropdown-menu {
+  margin-top: 17px; }
+
+.slim-navbar {
+  background-color: #191F25;
+  border-bottom-width: 0; }
+  .slim-navbar .nav-item:hover, .slim-navbar .nav-item:focus {
+    background-color: #151a1f; }
+  .slim-navbar .nav-item.active .nav-link {
+    background-color: #151a1f;
+    background-image: none;
+    border-width: 1px;
+    color: #367EC1; }
+    .slim-navbar .nav-item.active .nav-link .icon {
+      color: #367EC1; }
+  .slim-navbar .nav-link {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #868ba1; }
+    .slim-navbar .nav-link .icon {
+      color: #868ba1; }
+    .slim-navbar .nav-link:hover, .slim-navbar .nav-link:focus {
+      background-color: #151a1f;
+      color: #868ba1; }
+  .slim-navbar .sub-item {
+    background-color: #191F25;
+    border-width: 0;
+    box-shadow: none; }
+    .slim-navbar .sub-item ul a {
+      color: #868ba1; }
+      .slim-navbar .sub-item ul a:hover, .slim-navbar .sub-item ul a:focus {
+        background-color: #191F25;
+        color: #1b84e7; }
+    .slim-navbar .sub-item .sub-with-sub ul {
+      background-color: #191F25;
+      border-width: 0;
+      box-shadow: none; }
+  .slim-navbar .mega-dropdown .sub-item .section-label {
+    color: #868ba1;
+    border-bottom-color: rgba(255, 255, 255, 0.08); }

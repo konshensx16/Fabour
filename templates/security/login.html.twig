@@ -1,24 +1,41 @@
-{% extends 'base.html.twig' %}
+{% extends 'base-logged-out.html.twig' %}
 
-{% block title %}Hello!{% endblock %}
+{% block title %}Sing in to your account!{% endblock %}
 
 {% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-        .error {color: red}
-    </style>
 
-    <div class="example-wrapper">
-        <h1>Login page! ✅</h1>
+    <div class="d-md-flex flex-row-reverse">
+        <div class="signin-right">
 
-        {% if error %}
-            <span class="error">{{ error.messageKey }}</span>
-        {% endif %}
+            <div class="signin-box">
+                <h2 class="signin-title-primary">Welcome back!</h2>
+                <h3 class="signin-title-secondary">Sign in to continue.</h3>
 
-        {{ form_start(form) }}
-            {{ form_widget(form._username, {'attr': {'value': last_username}}) }}
-        {{ form_end(form) }}
+                {% if error %}
+                    <span class="error">{{ error.messageKey }}</span>
+                {% endif %}
 
-    </div>
+                {{ form_start(form) }}
+                    {{ form_widget(form._username, {'attr': {'value': last_username}}) }}
+                {{ form_end(form) }}
+
+                <p class="mg-b-0">Don't have an account? <a href="{{ path('register.signup') }}">Sign Up</a></p>
+            </div>
+
+        </div><!-- signin-right -->
+        <div class="signin-left">
+            <div class="signin-box">
+                <h2 class="slim-logo"><a href="index.html">slim<span>.</span></a></h2>
+
+                <p>We are excited to launch our new company and product Slim. After being featured in too many magazines to mention and having created an online stir, we know that ThemePixels is going to be big. We also hope to win Startup Fictional Business of the Year this year.</p>
+
+                <p>Browse our site and see for yourself why you need Slim.</p>
+
+                <p><a href="" class="btn btn-outline-secondary pd-x-25">Learn More</a></p>
+
+                <p class="tx-12">&copy; Copyright 2018. All Rights Reserved.</p>
+            </div>
+        </div><!-- signin-left -->
+    </div><!-- d-flex -->
+
 {% endblock %}

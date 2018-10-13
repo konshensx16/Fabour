@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        {#Might want to do some SEO goodness in the process#}
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <!-- Vendor css -->
+        <link href="{{ asset('assets/lib/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/lib/Ionicons/css/ionicons.css') }}" rel="stylesheet">
+
+        <!-- Slim CSS -->
+        <link rel="stylesheet" href="{{ asset('assets/css/slim.css') }}">
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body id="main-page">
+
+        {% block body %}{% endblock %}
+        <!-- need jQuery -->
+            <script src="{{ asset('assets/lib/jquery/js/jquery.js') }}"></script>
+            <script src="{{ asset('assets/lib/popper.js/js/popper.js') }}"></script>
+            <script src="{{ asset('assets/lib/bootstrap/js/bootstrap.js') }}"></script>
+
+            <script src="{{ asset('assets/js/slim.js') }}"></script>
+        {# <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> #}
+            <script src="{{ asset('bundles/goswebsocket/js/vendor/autobahn.min.js') }}"></script>
+            <script src="{{ asset('bundles/goswebsocket/js//gos_web_socket_client.js') }}"></script>
+            <script type="text/javascript">
+                var _WS_URI = "ws://{{ gos_web_socket_server_host }}:{{ gos_web_socket_server_port }}"
+            </script>
+            <script type="text/javascript" src="{{ asset('build/app.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

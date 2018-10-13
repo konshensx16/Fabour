@@ -3,53 +3,85 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block body %}
+
     <div class="row">
-        <div class="col-lg-9">
+        <div class="col-lg-8">
             {% for message in app.flashes('success') %}
                 <div class="alert alert-success">
                     {{ message }}
                 </div>
             {% endfor %}
-                <!-- the actual blog post: title/author/date/content -->
-                <h1>{{ post.title }}</h1>
-                <p class="lead">by <a href="{{ path('profile.userProfile', {'username': post.user.username}) }}">{{ post.user.username }}</a>
-                </p>
-                <hr>
-                <p>
-                    <span class="glyphicon glyphicon-time"></span> Posted on {{ post.createdAt|date('Y-M-D h:m:s') }}
-                </p>
-                <hr>
+            <div class="card card-recommendation mg-t-20">
+                <div class="card-body pd-25">
+                    <div class="slim-card-title">{{ post.title }}</div>
+                    <div class="media align-items-center mg-y-25">
+                        <img src="http://via.placeholder.com/500x500" class="wd-40 rounded-circle" alt="">
+                        <div class="media-body mg-l-15">
+                            <h6 class="tx-14 mg-b-2">by <a href="{{ path('profile.userProfile', {'username': post.user.username }) }}">{{ post.user.username }}</a></h6>
+                            <p class="mg-b-0">{{ post.category }}</p>
+                        </div><!-- media-body -->
+                        <span class="tx-12">{{ post.createdAt|date('Y-M-d h:m:s')}}</span>
+                    </div><!-- media -->
+                    {{ post.content }}
+                </div><!-- card-body -->
 
-                {{ post.content }}
+            </div>
+            <div class="section-wrapper mg-t-20" style="overflow:hidden">
+                <label class="section-title">Have any thoughts on this?</label>
+                {{ form(comment_form) }}
+            </div>
+            <div class="section-wrapper mg-t-20">
+                <label class="section-title">Comments</label>
 
-                <hr>
+                <ul class="media-list-demo">
+                    {% if post.comments.count %}
+                        {% for comment in post.comments %}
+                            <li class="media">
+                                <img class="media-img" src="{{ asset('assets/img/') ~ comment.user.avatar }}" alt="Image">
+                                <div class="media-body">
+                                    <h6 class="tx-inverse mg-b-10">
+                                        <a href="{{ path('profile.userProfile', {'username': comment.user.username}) }}">
+                                            {{ comment.user.username }}
+                                        </a>
+                                        <small>{{ comment.createdAt|date('Y-M-D h:m:s') }}</small>
+                                    </h6>
+                                    {{ comment.content }}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        This post has no comments, be the first.
+                    {% endif %}
 
-                <!-- the comment box -->
-                <div class="well" style="overflow: hidden;">
-                    <h4>Leave a Comment:</h4>
-                    {{ form(comment_form) }}
-                </div>
-
-                <hr>
-                {#Comments will be down here#}
-
-                {% if post.comments.count %}
-                    {% for comment in post.comments %}
-
-                        <h3>{{ comment.user }}
-                            <small>{{ comment.createdAt|date('Y-M-D h:m:s') }}</small>
-                        </h3>
-                        <p>{{ comment.content }}</p>
-                    {% endfor %}
-                {% else %}
-                    This post has no comments, be the first.
-                {% endif %}
+                </ul>
+            </div>
         </div>
-        <div class="col-lg-3">
-            {{ render(controller(
-                'App\\Controller\\ProfileController::author',
-                { 'post': post}
-            )) }}
+        <div class="col-lg-4 mg-t-20">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-connection">
+                        <div class="row row-xs">
+                            <div class="col-4 tx-primary">129</div>
+                            <div class="col-8">people viewed this post!</div>
+                        </div><!-- row -->
+                        <hr>
+                        <div class="row row-xs">
+                            <div class="col-4 tx-purple">845</div>
+                            <div class="col-8">
+                                saves <br>
+                                <a href="">Bookmark this too</a>
+                            </div>
+                        </div><!-- row -->
+                    </div>
+                </div>
+                <div class="col-lg-12 mg-t-20">
+                    {{ render(controller(
+                        'App\\Controller\\ProfileController::author',
+                        { 'post': post}
+                    )) }}
+                </div>
+            </div>
+
         </div>
     </div>
 

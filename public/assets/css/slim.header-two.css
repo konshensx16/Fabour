@@ -1,0 +1,49 @@
+.slim-header {
+  background-color: #212529;
+  border-bottom-width: 0; }
+
+.slim-logo a {
+  color: #fff;
+  font-weight: 500; }
+
+.search-box {
+  border-width: 0;
+  background-color: #fff; }
+  .search-box .btn {
+    background-color: #212529; }
+
+.logged-user {
+  color: rgba(255, 255, 255, 0.75); }
+  .logged-user:hover, .logged-user:focus {
+    color: #fff; }
+  .logged-user img {
+    border-color: rgba(255, 255, 255, 0.5); }
+
+.header-notification {
+  color: rgba(255, 255, 255, 0.75); }
+  .header-notification .indicator {
+    background-color: #dc3545; }
+  .header-notification:hover, .header-notification:focus {
+    background-color: #16181b;
+    color: #fff; }
+
+.slim-header-right .dropdown-a.show > a,
+.slim-header-right .dropdown-b.show > a {
+  background-color: #16181b; }
+
+.slim-header-right .dropdown-c.show > a {
+  color: #fff; }
+
+.slim-header-right .dropdown-menu {
+  margin-top: 17px; }
+
+.slim-navbar .nav-item .nav-link .icon {
+  color: #868ba1; }
+
+.slim-navbar .nav-item.active .nav-link {
+  background-image: none;
+  background-color: transparent;
+  color: #1b84e7;
+  border-width: 1px; }
+  .slim-navbar .nav-item.active .nav-link .icon {
+    color: #1b84e7; }
