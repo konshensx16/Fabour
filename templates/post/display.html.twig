@@ -22,7 +22,7 @@
                         </div><!-- media-body -->
                         <span class="tx-12">{{ post.createdAt|date('Y-M-d h:m:s')}}</span>
                     </div><!-- media -->
-                    {{ post.content }}
+                    {{ post.content|raw }}
                 </div><!-- card-body -->
 
             </div>

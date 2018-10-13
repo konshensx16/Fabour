@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Post;
+use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\PostType;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
@@ -130,6 +131,18 @@ class PostController extends AbstractController
         return $this->render('post/display.html.twig', [
             'post' => $post,
             'comment_form' => $commentForm->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/user/{username}", name="userPosts")
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function userPosts(User $user)
+    {
+        return $this->render('post/userPosts.html.twig', [
+            'posts' => $user->getPosts(),
         ]);
     }
 }

@@ -119,3 +119,10 @@ services:
 #
 #
 #    Redis: '@snc_redis.default'rver.client_storage.prefix%' #(optionally)if you use prefix
+
+
+
+    twig.extension.date:
+        class: Twig_Extensions_Extension_Date
+        tags:
+            - { name: twig.extension }

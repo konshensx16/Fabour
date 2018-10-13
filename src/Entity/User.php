@@ -7,12 +7,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\EntityListeners({"App\Listeners\UserListener"})
  */
 class User implements UserInterface, \Serializable, EquatableInterface
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -45,6 +48,17 @@ class User implements UserInterface, \Serializable, EquatableInterface
      * @ORM\Column(type="text")
      */
     private $about;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
+
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $last_seen;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user")
@@ -246,6 +260,30 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function setAbout(string $about): self
     {
         $this->about = $about;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getLastSeen(): ?\DateTimeInterface
+    {
+        return $this->last_seen;
+    }
+
+    public function setLastSeen(\DateTimeInterface $last_seen): self
+    {
+        $this->last_seen = $last_seen;
 
         return $this;
     }

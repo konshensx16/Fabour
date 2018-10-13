@@ -5,10 +5,9 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Form\UserFormType;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -63,12 +62,10 @@ class ProfileController extends AbstractController
     /**
      * @Route("/edit/", name="edit")
      * @param Request $request
-     * @param EntityManager $manager
+     * @param EntityManagerInterface $manager
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function edit(Request $request, EntityManager $manager)
+    public function edit(Request $request, EntityManagerInterface $manager)
     {
         // TODO: check if the user has enough permissions to change information
         // the logged in user should be able to change his info

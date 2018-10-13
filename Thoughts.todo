@@ -245,22 +245,24 @@ DESIGN DRIVEN BACK-END:
   MIGRATING TO THE NEW DESING:
     ✔ Remove everything related to the old desing and remove that simple bootsrap file @done (10/13/2018, 5:48:05 PM)
     ✔ Make sure to all the file to git @done (10/13/2018, 5:48:02 PM)
-    ☐ Might need to use encore to maage everything since i have the scss files (just a thougth):
+    ☐ Might need to use encore to manage everything since i have the scss files (just a thougth):
       @critical NOTE: the "lib" folder is where all the js plugins live (don't remove it)
       ✔ Import the new css and js and images files to the public/assets folder (NOTES: just checked the gitignore and it won't ingore these files) @done (10/13/2018, 5:48:08 PM)
       ☐ Adapt the html pages to the new slim design (Don't move any further untill this is done, trust me!)
         ✔ The login page (use the split desing) @done (10/13/2018, 6:02:55 PM)
         ✔ The home index page @done (10/13/2018, 7:01:33 PM)
           ✔ Change the design of the navbar before doing the posts (TOP TO BOTTOM) @done (10/13/2018, 7:01:34 PM)
-        ☐ The single blog page
-        ☐ The profile page
-      ☐ Create some other pages
-        ☐ A registration page where users can sign up
+        ✔ The single blog page @done (10/13/2018, 9:01:00 PM)
+        ✔ The profile page @done (10/13/2018, 9:19:01 PM)
+      ✔ Create some other pages @done (10/13/2018, 9:19:03 PM)
+        ✔ A registration page where users can sign up @done (10/13/2018, 9:01:07 PM)
           ✔ Create the controller and the user interface and leave them empty for now @done (10/13/2018, 6:00:29 PM)
-          ☐ Include this page in the access control so you don't go crazy later on!
+          ✔ Include this page in the access control so you don't go crazy later on! @done (10/13/2018, 9:01:06 PM)
 
 GLOBAL :
   ☐ Replace the navbar pages with categories that the user can click on to get to a paeg with posts from the category
+    ✔ The names and the icons (Might want to change the icons later on) @done (10/13/2018, 9:01:36 PM)
+    
 
 
 POSTS:
@@ -290,10 +292,24 @@ Categories:
   ✘ Create a crud for the categories so i can change them @cancelled (10/13/2018, 8:44:40 PM)
   ✘ Create an action to generate four categories @cancelled (10/13/2018, 8:45:09 PM)
     No need for this since this is going to be static and never changing the during the entire web application life
-  ☐ Create a separate page where the user can see all the categories and even sub-categories in case of adding them. 
+  ☐ Create a separate page where the user can see all the categories and even sub-categories in case of adding them.
+    ☐ Makes links to the category and a page where the user can see all categories
 
 Users:
-  ☐ 
+  ✔ Each user should had a created at date. @done (10/13/2018, 9:30:30 PM)
+  ✔ Migrate fo the databse before creating the last_seen field @done (10/13/2018, 11:48:21 PM)
+  ✔ Each user should have a last seen field @done (10/13/2018, 11:48:23 PM)
+  ☐ As of now i think this should be done after the user login directly (Might need to change later if effects performance of SECURITY)
 
+  
 Profile:
-  ☐ 
+  ☐ Need to add profile views counter (how many peple viwed your profile) 
+      ✔ Make the UI with dummy data @done (10/13/2018, 11:50:23 PM)
+      ☐ Create the back-end stuff
+        ☐ Add the profile_views field to the databse 
+        ☐ INC the profile_views counter ony when other users view profile (owner should't INC the coutner, it's just plain stupid tbh)
+  ☐ Need to create the user edit page (currently doesn't exist)
+    ☐ Create the Type for the user which should contain all the fields that user can change (This will be last, since i haven't decided all the fields that i want to have)
+  ☐ When viewing someone else profile, display a button so the user can add him as a friend!
+  ✔ Need to change the desing of the profile page to the new slim @done (10/13/2018, 11:53:10 PM)
+

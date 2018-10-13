@@ -5,42 +5,255 @@
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-sm-3">
-            <img src="{{ asset('assets/img/') ~ profile.avatar }}" alt="{{ profile.username }}" class="img-circle img-responsive center-block">
-        </div>
-        <div class="col-sm-9">
-            <h4 class="p10">{{ profile.username }} profile!</h4>
-            <span class="p10"><strong>About:</strong></span>
-            <p class="p10">{{ profile.about }}</p>
-        </div>
+    <div class="slim-pageheader">
+        <h6 class="slim-pagetitle">My Profile</h6>
     </div>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <h2 class="p10">Latest posts from <strong>{{ profile.username }}</strong></h2>
-        </div>
-        <div class="col-sm-12">
-            {% if profile.posts %}
-                {% for post in profile.posts %}
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <a href="{{ path('post.display', {'id': post.id}) }}"><strong>{{ post.title }}</strong></a> -
-                            published on: {{  post.createdAt|date('Y-M-d h:m:s') }} by
-                            <strong>
-                                <a href="{{ path('profile.userProfile', {'username': post.user.username}) }}">
-                                    {{ post.user.username }}
-                                </a>
-                            </strong>
-                        </div>
-                        <div class="panel-body">
-                            {{ post.content }}
-                        </div>
+    <div class="row row-sm">
+        <div class="col-lg-8">
+            <div class="card card-profile">
+                <div class="card-body">
+                    <div class="media">
+                        <img src="http://via.placeholder.com/500x500" alt="">
+                        <div class="media-body">
+                            <h3 class="card-profile-name">{{ profile.username }}</h3>
+                            <p class="card-profile-position">Joined on: {{ profile.createdAt|date('Y-M-S h:m:s') }}</p>
+                            <p>Last seen: {{ profile.lastSeen|time_diff }}</p>
+
+                            <p class="mg-b-0">
+                                {{ profile.about }}
+                            </p>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                </div><!-- card-body -->
+                <div class="card-footer">
+                    <a href="" class="card-profile-direct">http://thmpxls.me/profile?id=katherine</a>
+                    <div>
+                        <a href="{{ path('profile.edit') }}">Edit Profile</a>
+                        <a href="">Profile Settings</a>
                     </div>
-                {% endfor %}
-            {% else %}
-                <h3 class="text-center">It seems like this user is quite busy and hasn't posted anything yet, Check back later maybe?</h3>
-            {% endif %}
-        </div>
+                </div><!-- card-footer -->
+            </div><!-- card -->
+
+            <div class="card card-latest-activity mg-t-20">
+                <div class="card-body">
+                    <div class="slim-card-title mg-b-20">Latest Posts</div>
+                    {% if profile.posts %}
+                        {% for post in profile.posts %}
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <a href="{{ path('post.display', {'id': post.id}) }}"><img src="{{ asset('assets/img/img0.jpg') }}" class="img-fit-cover" alt=""></a>
+                                </div><!-- col-4 -->
+                                <div class="col-md-8">
+                                    <div class="post-wrapper">
+                                        <a href="{{ path('post.display', {'id': post.id}) }}" class="activity-title">{{ post.title }}</a>
+                                        <p>
+                                            {{ post.content|length > 300 ? post.content|slice(0, 300) ~ '...' : post.content}}
+                                        </p>
+                                        <p class="mg-b-0">
+                                            <a href="" class="d-block">{{ post.user.username }} in {{ post.category }}</a>
+                                            <span>{{ post.createdAt|date('Y M d') }} .</span>
+                                        </p>
+                                    </div><!-- post-wrapper -->
+                                </div><!-- col-8 -->
+                            </div><!-- row -->
+                        {% endfor %}
+                    {% else %}
+                        <h3 class="text-center">Welp! there are no posts at the moment, check back later...</h3>
+                    {% endif %}
+
+
+
+                </div><!-- card-body -->
+                <div class="card-footer">
+                    <a href="{{ path('post.userPosts', {'username': profile.username }) }}">See all posts</a>
+                </div><!-- card-footer -->
+            </div><!-- card -->
+
+            <div class="card card-experience mg-t-20">
+                <div class="card-body">
+                    <div class="slim-card-title">Work Experience</div>
+                    <div class="media">
+                        <div class="experience-logo">
+                            <i class="icon ion-briefcase"></i>
+                        </div><!-- experience-logo -->
+                        <div class="media-body">
+                            <h6 class="position-name">Front-End Engineer / Web Developer</h6>
+                            <p class="position-company">Cebu Machine Intelligence, Inc.</p>
+                            <p class="position-year">Nov 2012 - Present (5 years +) &nbsp;-&nbsp; <a href="">Edit</a></p>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                </div><!-- card-body -->
+                <div class="card-footer">
+                    <a href="">Show more<span class="d-none d-sm-inline"> experiences (4)</span> <i class="fa fa-angle-down"></i></a>
+                    <a href="">Add new</a>
+                </div><!-- card-footer -->
+            </div><!-- card -->
+
+            <div class="card card-recommendation mg-t-20">
+                <div class="card-body pd-25">
+                    <div class="slim-card-title">Recommendations</div>
+                    <div class="media align-items-center mg-y-25">
+                        <img src="http://via.placeholder.com/500x500" class="wd-40 rounded-circle" alt="">
+                        <div class="media-body mg-l-15">
+                            <h6 class="tx-14 mg-b-2"><a href="">Rolando Paloso</a></h6>
+                            <p class="mg-b-0">Head Architect</p>
+                        </div><!-- media-body -->
+                        <span class="tx-12">Nov 20, 2017</span>
+                    </div><!-- media -->
+
+                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                    <p class="mg-b-0">Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</p>
+                </div><!-- card-body -->
+
+                <div class="card-footer pd-y-12 pd-x-25 bd-t bd-gray-300">
+                    <a href="">More recommendations (2) <i class="fa fa-angle-down"></i></a>
+                </div><!-- card-footer -->
+            </div>
+        </div><!-- col-8 -->
+
+        <div class="col-lg-4 mg-t-20 mg-lg-t-0">
+            <div class="card card-connection">
+                <div class="row row-xs">
+                    <div class="col-4 tx-primary">129</div>
+                    {% if profile == app.user %}
+                        <div class="col-8">people viewed your profile!</div>
+                    {% else %}
+                        <div class="col-8">people viewed {{ profile.username }}'s profile!</div>
+                    {% endif %}
+                </div><!-- row -->
+                <hr>
+                <div class="row row-xs">
+                    <div class="col-4 tx-purple">845</div>
+                    <div class="col-8">
+                        connections <br>
+                        <a href="">Grow your network</a>
+                    </div>
+                </div><!-- row -->
+            </div><!-- card -->
+
+            <div class="card card-people-list mg-t-20">
+                <div class="slim-card-title">People also viewed</div>
+                <div class="media-list">
+                    <div class="media">
+                        <img src="http://via.placeholder.com/500x500" alt="">
+                        <div class="media-body">
+                            <a href="">Adrian Monino</a>
+                            <p>Software Engineer</p>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                    <div class="media">
+                        <img src="http://via.placeholder.com/500x500" alt="">
+                        <div class="media-body">
+                            <a href="">Rolando Paloso</a>
+                            <p>Architect</p>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                    <div class="media">
+                        <img src="http://via.placeholder.com/500x500" alt="">
+                        <div class="media-body">
+                            <a href="">Joyce Chua</a>
+                            <p>Sales Representative</p>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                    <div class="media">
+                        <img src="http://via.placeholder.com/500x500" alt="">
+                        <div class="media-body">
+                            <a href="">Annalyn Mercado</a>
+                            <p>Sales Representative</p>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                    <div class="media">
+                        <img src="http://via.placeholder.com/500x500" alt="">
+                        <div class="media-body">
+                            <a href="">Maricel Pasilbas</a>
+                            <p>Sales Representative</p>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                </div><!-- media-list -->
+            </div><!-- card -->
+
+            <div class="card card-people-list mg-t-20">
+                <div class="slim-card-title">People you may know</div>
+                <div class="media-list">
+                    <div class="media">
+                        <img src="http://via.placeholder.com/500x500" alt="">
+                        <div class="media-body">
+                            <a href="">Amber Heard</a>
+                            <p>Software Engineer</p>
+                        </div><!-- media-body -->
+                        <a href=""><i class="icon ion-person-add tx-20"></i></a>
+                    </div><!-- media -->
+                    <div class="media">
+                        <img src="http://via.placeholder.com/500x500" alt="">
+                        <div class="media-body">
+                            <a href="">Richard Salomon</a>
+                            <p>Architect</p>
+                        </div><!-- media-body -->
+                        <a href=""><i class="icon ion-person-add tx-20"></i></a>
+                    </div><!-- media -->
+                    <div class="media">
+                        <img src="http://via.placeholder.com/500x500" alt="">
+                        <div class="media-body">
+                            <a href="">Warren Vito</a>
+                            <p>Sales Representative</p>
+                        </div><!-- media-body -->
+                        <a href=""><i class="icon ion-person-add tx-20"></i></a>
+                    </div><!-- media -->
+                    <div class="media">
+                        <img src="http://via.placeholder.com/500x500" alt="">
+                        <div class="media-body">
+                            <a href="">Charlene Plateros</a>
+                            <p>Sales Representative</p>
+                        </div><!-- media-body -->
+                        <a href=""><i class="icon ion-person-add tx-20"></i></a>
+                    </div><!-- media -->
+                    <div class="media">
+                        <img src="http://via.placeholder.com/500x500" alt="">
+                        <div class="media-body">
+                            <a href="">Allan Palban</a>
+                            <p>Sales Representative</p>
+                        </div><!-- media-body -->
+                        <a href=""><i class="icon ion-person-add tx-20"></i></a>
+                    </div><!-- media -->
+                </div><!-- media-list -->
+            </div><!-- card -->
+
+            <div class="card pd-25 mg-t-20">
+                <div class="slim-card-title">Contact &amp; Personal Info</div>
+
+                <div class="media-list mg-t-25">
+                    <div class="media">
+                        <div><i class="icon ion-link tx-24 lh-0"></i></div>
+                        <div class="media-body mg-l-15 mg-t-4">
+                            <h6 class="tx-14 tx-gray-700">Websites</h6>
+                            <a href="" class="d-block">http://themepixels.me</a>
+                            <a href="" class="d-block">http://themeforest.net</a>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                    <div class="media mg-t-25">
+                        <div><i class="icon ion-ios-telephone-outline tx-24 lh-0"></i></div>
+                        <div class="media-body mg-l-15 mg-t-4">
+                            <h6 class="tx-14 tx-gray-700">Phone Number</h6>
+                            <span class="d-block">+1 234 5678 910</span>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                    <div class="media mg-t-25">
+                        <div><i class="icon ion-ios-email-outline tx-24 lh-0"></i></div>
+                        <div class="media-body mg-l-15 mg-t-4">
+                            <h6 class="tx-14 tx-gray-700">Email Address</h6>
+                            <span class="d-block">yourname@sample.com</span>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                    <div class="media mg-t-25">
+                        <div><i class="icon ion-social-twitter tx-18 lh-0"></i></div>
+                        <div class="media-body mg-l-15 mg-t-2">
+                            <h6 class="tx-14 tx-gray-700">Twitter</h6>
+                            <a href="#" class="d-block">@themepixels</a>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                </div><!-- media-list -->
+            </div><!-- card -->
+        </div><!-- col-4 -->
     </div>
 {% endblock %}
