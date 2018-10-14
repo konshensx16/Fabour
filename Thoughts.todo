@@ -61,7 +61,7 @@ Entities:
       ☐ Maybe theres no way to send an entire form? gotta keep this idea in mind otherwise i might just keep searching for something that (might) not exist
       ☐ According to MDN, you can send a String, Blob, ArrayBuffer (me, an intelectual, trying to send a formData)
       ☐  Maybe i could use json to transmit objects (the form in this case)
-      ☐ The last function that i included (serializes formToJSON) sends everything including the inputs, submit button, and the csrf token, might need to remove the submit button\
+      ✔ The last function that i included (serializes formToJSON) sends everything including the inputs, submit button, and the csrf token, might need to remove the submit button\ @done (10/14/2018, 11:28:35 AM)
 
 
     ☐ Create a separate example that uses the same messages type and see what the form returns in that case
@@ -262,19 +262,27 @@ DESIGN DRIVEN BACK-END:
 GLOBAL :
   ☐ Replace the navbar pages with categories that the user can click on to get to a paeg with posts from the category
     ✔ The names and the icons (Might want to change the icons later on) @done (10/13/2018, 9:01:36 PM)
-    
+  ☐ Add an active class to the category that the user is currently browsing: https://stackoverflow.com/questions/5696526/add-active-class-to-link-with-sf2-and-twig
+  ☐ 
 
 
 POSTS:
-  ☐ Each post should have a category
-  ☐ In the index page posts contents  shoudln't exceed a certain limit!
+  ✔ Each post should have a category @done (10/14/2018, 12:09:32 PM)
+  ✔ In the index page posts contents  shoudln't exceed a certain limit! @done (10/14/2018, 12:09:35 PM)
   ☐ Single Post display page:
     ☐ Manage the alerts with the new design 
-    ☐ Change the look of the comments
-    ☐ Change the comment posting form!
+    ✔ Change the look of the comments @done (10/14/2018, 12:09:39 PM)
+    ✔ Change the comment posting form! @done (10/14/2018, 12:09:42 PM)
     ☐ Display a views counter
     ☐ Display a bookmark option (if the users want to save this somewhere)
     ☐ Display an add to friends button under the small profile section
+
+  ✔ Post create: @done (10/14/2018, 12:35:37 PM)
+    ✔ Include the WYSIWYG editor for the content @done (10/14/2018, 12:35:35 PM)
+    ✔ Adap the design to the new slim design @done (10/14/2018, 12:35:34 PM)
+    ✔ Add the category dropdown @done (10/14/2018, 12:35:33 PM)
+    ✘ CRAZY IDEA: create some sort of a draft system where the user work will be autosaved during the period he's working on it, and can always access it and continue working on it @cancelled (10/14/2018, 12:35:39 PM)
+
   
 Categories:
   ☐ Maybe each category should have sub-categories ?? (Just a thought)
@@ -300,6 +308,9 @@ Users:
   ✔ Migrate fo the databse before creating the last_seen field @done (10/13/2018, 11:48:21 PM)
   ✔ Each user should have a last seen field @done (10/13/2018, 11:48:23 PM)
     ☐ As of now i think this should be done after the user login directly (Might need to change later if effects performance of SECURITY)
+      This will run only after the user logs in, what if the user has been using the app for 12 hours? last_seen will be 12 hours in this even thought he's still using it
+      Using an authenticationSuccessHandler:
+        https://stackoverflow.com/questions/15908856/do-something-just-after-symfony2-login-success-and-before-redirect/15910602
 
   
 Profile:

@@ -17,7 +17,7 @@
                         <img src="http://via.placeholder.com/500x500" alt="">
                         <div class="media-body">
                             <h3 class="card-profile-name">{{ profile.username }}</h3>
-                            <p class="card-profile-position">Joined on: {{ profile.createdAt|date('Y-M-S h:m:s') }}</p>
+                            <p class="card-profile-position">Joined on: {{ profile.createdAt|date('Y-M-d h:m:s') }}</p>
                             <p>Last seen: {{ profile.lastSeen|time_diff }}</p>
 
                             <p class="mg-b-0">
@@ -70,46 +70,7 @@
                 </div><!-- card-footer -->
             </div><!-- card -->
 
-            <div class="card card-experience mg-t-20">
-                <div class="card-body">
-                    <div class="slim-card-title">Work Experience</div>
-                    <div class="media">
-                        <div class="experience-logo">
-                            <i class="icon ion-briefcase"></i>
-                        </div><!-- experience-logo -->
-                        <div class="media-body">
-                            <h6 class="position-name">Front-End Engineer / Web Developer</h6>
-                            <p class="position-company">Cebu Machine Intelligence, Inc.</p>
-                            <p class="position-year">Nov 2012 - Present (5 years +) &nbsp;-&nbsp; <a href="">Edit</a></p>
-                        </div><!-- media-body -->
-                    </div><!-- media -->
-                </div><!-- card-body -->
-                <div class="card-footer">
-                    <a href="">Show more<span class="d-none d-sm-inline"> experiences (4)</span> <i class="fa fa-angle-down"></i></a>
-                    <a href="">Add new</a>
-                </div><!-- card-footer -->
-            </div><!-- card -->
 
-            <div class="card card-recommendation mg-t-20">
-                <div class="card-body pd-25">
-                    <div class="slim-card-title">Recommendations</div>
-                    <div class="media align-items-center mg-y-25">
-                        <img src="http://via.placeholder.com/500x500" class="wd-40 rounded-circle" alt="">
-                        <div class="media-body mg-l-15">
-                            <h6 class="tx-14 mg-b-2"><a href="">Rolando Paloso</a></h6>
-                            <p class="mg-b-0">Head Architect</p>
-                        </div><!-- media-body -->
-                        <span class="tx-12">Nov 20, 2017</span>
-                    </div><!-- media -->
-
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                    <p class="mg-b-0">Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.</p>
-                </div><!-- card-body -->
-
-                <div class="card-footer pd-y-12 pd-x-25 bd-t bd-gray-300">
-                    <a href="">More recommendations (2) <i class="fa fa-angle-down"></i></a>
-                </div><!-- card-footer -->
-            </div>
         </div><!-- col-8 -->
 
         <div class="col-lg-4 mg-t-20 mg-lg-t-0">

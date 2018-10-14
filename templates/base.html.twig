@@ -18,14 +18,18 @@
         <div class="slim-header-left">
             <h2 class="slim-logo"><a href="{{ path('home.index') }}">slim<span>.</span></a></h2>
 
-            <div class="search-box">
-                <input type="text" class="form-control" placeholder="Search">
-                <button class="btn btn-primary"><i class="fa fa-search"></i></button>
-            </div><!-- search-box -->
+            {{ render(controller(
+                'App\\Controller\\SearchController::searchbar'
+            )) }}
 
         </div><!-- slim-header-left -->
 
         <div class="slim-header-right">
+            <div class="dropdown dropdown-b">
+                <a href="{{ path('post.create') }}" class="header-notification">
+                    <i class="icon ion-ios-paper-outline"></i>
+                </a>
+            </div>
             <div class="dropdown dropdown-b">
                 <a href="" class="header-notification" data-toggle="dropdown">
                     <i class="icon ion-ios-bell-outline"></i>
@@ -111,39 +115,39 @@
 <div class="slim-navbar">
     <div class="container-fluid">
         <ul class="nav">
-            <li class="nav-item active">
+            <li class="nav-item {{ app.request.get('_route') == '_list' ? 'active' }}">
                 <a class="nav-link" href="{{ path('category.category', {'slug': 'arts-and-entertainment'}) }}">
                     <i class="icon ion-ios-game-controller-b"></i>
                     <span>Arts & Entertainment</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ app.request.get('_route') == '_list' ? 'active' }}">
                 <a class="nav-link" href="{{ path('category.category', {'slug': 'industry'}) }}">
                     <i class="icon ion-ios-settings"></i>
                     <span>Industry</span>
                 </a>
 
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ app.request.get('_route') == '_list' ? 'active' }}">
                 <a class="nav-link" href="{{ path('category.category', {'slug': 'innovation-and-tech'}) }}">
                     <i class="icon ion-android-phone-portrait"></i>
                     <span>Innovation & Tech</span>
                 </a>
 
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ app.request.get('_route') == '_list' ? 'active' }}">
                 <a class="nav-link" href="{{ path('category.category', {'slug': 'life'}) }}">
                     <i class="icon ion-ios-heart"></i>
                     <span>Life</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ app.request.get('_route') == '_list' ? 'active' }}">
                 <a class="nav-link" href="{{ path('category.category', {'slug': 'society'}) }}">
                     <i class="icon ion-ios-people"></i>
                     <span>Society</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ app.request.get('_route') == '_list' ? 'active' }}">
                 <a class="nav-link" href="#">
                     <i class="icon ion-ios-arrow-right"></i>
                     <span>More</span>

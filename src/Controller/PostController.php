@@ -56,8 +56,7 @@ class PostController extends AbstractController
 
             $this->addFlash('success', 'Post published successfully!');
 
-            return $this->redirect($this->generateUrl('display', ['id' => $post->getId()]));
-
+            return $this->redirect($this->generateUrl('post.display', ['id' => $post->getId()]));
         }
         return $this->render('post/index.html.twig', [
             'form' => $form->createView()
