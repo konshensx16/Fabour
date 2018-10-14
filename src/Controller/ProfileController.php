@@ -34,12 +34,13 @@ class ProfileController extends AbstractController
      * @param UserRepository $userRepository
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function userProfile(Request $request, $username, UserRepository $userRepository)
+    public function userProfile(Request $request, $username, UserRepository $userRepository, EntityManagerInterface $entityManager)
     {
         // server-side rendering no need to worry about sensitive information getting out!
         // If the user is not logged in he will be redirected to somewhere else!
         // TODO: redirect the user to the login page if note authenticated!
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // TODO: Increment the views_counter for the user if someone is seeing this page
         // TODO: test this stuff further more, just to make sure everything is working fine!
         $user = null;
         // if no username, display the current logged in user
@@ -52,6 +53,16 @@ class ProfileController extends AbstractController
             $user = $userRepository->findOneBy([
                 'username' => $username
             ]);
+        }
+
+        if (!($user === $this->getUser())) {
+            // INC the counter
+            // TODO: only increment if not from the same IP address
+            $views_counter = $user->getViewsCounter();
+            $user->setViewsCounter(++$views_counter);
+
+            $entityManager->persist($user);
+            $entityManager->flush();
         }
 
         return $this->render('profile/userProfile.html.twig', [

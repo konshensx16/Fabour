@@ -21,7 +21,9 @@
                         </p>
                         <p>
                             <strong>
-                                {{ post.user.username }} in {{ post.category }}
+                                <a href="{{ path('profile.userProfile', {'username': post.user.username }) }}">{{ post.user.username }}</a>
+                                in
+                                <a href="{{ path('category.category', {'slug': post.category.slug }) }}">{{ post.category }}</a>
                             </strong>
                             <br>
                             <em>

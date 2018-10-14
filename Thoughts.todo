@@ -299,17 +299,35 @@ Users:
   ✔ Each user should had a created at date. @done (10/13/2018, 9:30:30 PM)
   ✔ Migrate fo the databse before creating the last_seen field @done (10/13/2018, 11:48:21 PM)
   ✔ Each user should have a last seen field @done (10/13/2018, 11:48:23 PM)
-  ☐ As of now i think this should be done after the user login directly (Might need to change later if effects performance of SECURITY)
+    ☐ As of now i think this should be done after the user login directly (Might need to change later if effects performance of SECURITY)
 
   
 Profile:
-  ☐ Need to add profile views counter (how many peple viwed your profile) 
+  ✔ Need to add profile views counter (how many peple viwed your profile) @done (10/14/2018, 10:45:34 AM)
       ✔ Make the UI with dummy data @done (10/13/2018, 11:50:23 PM)
       ☐ Create the back-end stuff
-        ☐ Add the profile_views field to the databse 
-        ☐ INC the profile_views counter ony when other users view profile (owner should't INC the coutner, it's just plain stupid tbh)
+        ✔ Add the profile_views field to the databse @done (10/14/2018, 10:37:18 AM)
+        ✔ INC the profile_views cunter ony when other users view profile (owner should't INC the coutner, it's just plain stupid tbh) @done (10/14/2018, 10:45:37 AM)
+          This will be done in the display user profile page, whenever this page opens up we increment the value after process the user (if the loggedf in user is just seeing his don't increment)
+        ☐ Only increment if the user is not using the same computer (refreshing the page will increase the counter unnecessarily )
   ☐ Need to create the user edit page (currently doesn't exist)
     ☐ Create the Type for the user which should contain all the fields that user can change (This will be last, since i haven't decided all the fields that i want to have)
   ☐ When viewing someone else profile, display a button so the user can add him as a friend!
   ✔ Need to change the desing of the profile page to the new slim @done (10/13/2018, 11:53:10 PM)
 
+
+Search:
+  ☐ Create a search controller which will act as the main search engine for the web app
+  ☐ Create the action to handle rendering the search input
+  ☐ Creat the action which handles the search 
+    ☐ This will redirect to another page containing all search results (Create and leave empty)
+    ☐ Probably will try to include typeahead authocomplete and blooddhound suggestions engine
+
+Friends:
+  ☐ Users should be able to add each other to friend list
+  ☐ Users can also chat with each other, might need to create a separate todo list for this since it's an entire system by itself
+
+Notifications:
+  Probably the only thing that i'm going to struggle with, i need to come up with a good design
+  ☐ Users should be able to get notifications about activity from other friends
+  ☐ 

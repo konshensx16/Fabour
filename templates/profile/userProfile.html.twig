@@ -115,7 +115,9 @@
         <div class="col-lg-4 mg-t-20 mg-lg-t-0">
             <div class="card card-connection">
                 <div class="row row-xs">
-                    <div class="col-4 tx-primary">129</div>
+                    <div class="col-4 tx-primary">
+                        {{ profile.viewsCounter }}
+                    </div>
                     {% if profile == app.user %}
                         <div class="col-8">people viewed your profile!</div>
                     {% else %}

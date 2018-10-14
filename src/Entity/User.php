@@ -54,11 +54,15 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     private $created_at;
 
-
     /**
      * @ORM\Column(type="datetime")
      */
     private $last_seen;
+
+    /**
+     * @ORM\Column(type="integer", options={"default": 0})
+     */
+    private $views_counter = 0;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user")
@@ -284,6 +288,18 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function setLastSeen(\DateTimeInterface $last_seen): self
     {
         $this->last_seen = $last_seen;
+
+        return $this;
+    }
+
+    public function getViewsCounter(): ?int
+    {
+        return $this->views_counter;
+    }
+
+    public function setViewsCounter(int $views_counter): self
+    {
+        $this->views_counter = $views_counter;
 
         return $this;
     }
