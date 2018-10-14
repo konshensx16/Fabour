@@ -13,6 +13,7 @@ webSocket.on("socket/connect", function (session) {
 	
 	// everytime an event is published in this channel the function is executed
 	session.subscribe('comment/channel', function (uri, payload) {
+		console.log(payload)
         notify(payload)
 	})
 

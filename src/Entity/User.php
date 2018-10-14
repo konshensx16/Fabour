@@ -68,15 +68,22 @@ class User implements UserInterface, \Serializable, EquatableInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user")
      */
     private $posts;
+
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="user")
+     */
+    private $bookmarks;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
     }
 
 
@@ -300,6 +307,37 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function setViewsCounter(int $views_counter): self
     {
         $this->views_counter = $views_counter;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Bookmark[]
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
+    }
+
+    public function addBookmark(Bookmark $bookmark): self
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks[] = $bookmark;
+            $bookmark->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): self
+    {
+        if ($this->bookmarks->contains($bookmark)) {
+            $this->bookmarks->removeElement($bookmark);
+            // set the owning side to null (unless already changed)
+            if ($bookmark->getUser() === $this) {
+                $bookmark->setUser(null);
+            }
+        }
 
         return $this;
     }

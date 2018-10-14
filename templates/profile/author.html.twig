@@ -1,7 +1,12 @@
 <div class="card-contact">
     <div class="tx-center">
-        <a href=""><img src="{{ asset('assets/img/') ~ author.avatar }}" class="card-img" alt="{{ author.username }}"></a>
-        <h5 class="mg-t-10 mg-b-5"><a href="{{ path('profile.userProfile', {'username': author.username }) }}" class="contact-name"></a></h5>
+        <a href="{{ path('profile.userProfile', {'username': author.username }) }}"><img src="{{ asset('assets/img/') ~ author.avatar }}" class="card-img" alt="{{ author.username }}"></a>
+        <h5 class="mg-t-10 mg-b-5">
+            <a href="{{ path('profile.userProfile', {'username': author.username }) }}" class="contact-name">{{ author.username }}</a>
+        </h5>
+
         <p>{{ author.about|length > 100 ? author.about|slice(0, 100) ~ '...' : author.about }}</p>
+
+        <a href="" class="btn btn-primary btn-signin">Add to friends</a>
     </div><!-- tx-center -->
 </div>

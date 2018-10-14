@@ -44,16 +44,28 @@ class Post
      */
     private $category;
 
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="post")
+     */
+    private $bookmarks;
+
     /**
      * @ORM\Column(type="datetime")
      */
     private $created_at;
+
+    /**
+     * @ORM\Column(type="integer", options={"default": 0})
+     */
+    private $views_counter = 0;
 
     // TODO: maybe create an updated at field that indicates when it was changed
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,6 +160,49 @@ class Post
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getViewsCounter(): ?int
+    {
+        return $this->views_counter;
+    }
+
+    public function setViewsCounter(int $views_counter): self
+    {
+        $this->views_counter = $views_counter;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Bookmark[]
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
+    }
+
+    public function addBookmark(Bookmark $bookmark): self
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks[] = $bookmark;
+            $bookmark->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookmark(Bookmark $bookmark): self
+    {
+        if ($this->bookmarks->contains($bookmark)) {
+            $this->bookmarks->removeElement($bookmark);
+            // set the owning side to null (unless already changed)
+            if ($bookmark->getPost() === $this) {
+                $bookmark->setPost(null);
+            }
+        }
 
         return $this;
     }

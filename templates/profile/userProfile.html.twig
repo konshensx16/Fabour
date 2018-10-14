@@ -40,7 +40,7 @@
                     <div class="slim-card-title mg-b-20">Latest Posts</div>
                     {% if profile.posts %}
                         {% for post in profile.posts %}
-                            <div class="row no-gutters">
+                            <div class="row no-gutters mg-b-20">
                                 <div class="col-md-4">
                                     <a href="{{ path('post.display', {'id': post.id}) }}"><img src="{{ asset('assets/img/img0.jpg') }}" class="img-fit-cover" alt=""></a>
                                 </div><!-- col-4 -->
@@ -59,7 +59,7 @@
                             </div><!-- row -->
                         {% endfor %}
                     {% else %}
-                        <h3 class="text-center">Welp! there are no posts at the moment, check back later...</h3>
+                        <h3>Welp! there are no posts at the moment, check back later...</h3>
                     {% endif %}
 
 

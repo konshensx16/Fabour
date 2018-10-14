@@ -270,12 +270,13 @@ POSTS:
   ✔ Each post should have a category @done (10/14/2018, 12:09:32 PM)
   ✔ In the index page posts contents  shoudln't exceed a certain limit! @done (10/14/2018, 12:09:35 PM)
   ☐ Single Post display page:
-    ☐ Manage the alerts with the new design 
+    ✔ Manage the alerts with the new design @done (10/14/2018, 3:54:02 PM)
     ✔ Change the look of the comments @done (10/14/2018, 12:09:39 PM)
     ✔ Change the comment posting form! @done (10/14/2018, 12:09:42 PM)
-    ☐ Display a views counter
+    ✔ Display a views counter @done (10/14/2018, 3:54:04 PM)
     ☐ Display a bookmark option (if the users want to save this somewhere)
-    ☐ Display an add to friends button under the small profile section
+    ✔ Display an add to friends button under the small profile section @done (10/14/2018, 4:02:01 PM)
+      From now on this goes under a separate list (FRIENDS todo list)
 
   ✔ Post create: @done (10/14/2018, 12:35:37 PM)
     ✔ Include the WYSIWYG editor for the content @done (10/14/2018, 12:35:35 PM)
@@ -312,7 +313,6 @@ Users:
       Using an authenticationSuccessHandler:
         https://stackoverflow.com/questions/15908856/do-something-just-after-symfony2-login-success-and-before-redirect/15910602
 
-  
 Profile:
   ✔ Need to add profile views counter (how many peple viwed your profile) @done (10/14/2018, 10:45:34 AM)
       ✔ Make the UI with dummy data @done (10/13/2018, 11:50:23 PM)
@@ -328,8 +328,9 @@ Profile:
 
 
 Search:
-  ☐ Create a search controller which will act as the main search engine for the web app
-  ☐ Create the action to handle rendering the search input
+  ✔ Create a search controller which will act as the main search engine for the web app @done (10/14/2018, 3:37:07 PM)
+  ✔ Create the action to handle rendering the search input @done (10/14/2018, 3:36:44 PM)
+    ☐ Not compeleted the form tags were causing problem in terms of UI
   ☐ Creat the action which handles the search 
     ☐ This will redirect to another page containing all search results (Create and leave empty)
     ☐ Probably will try to include typeahead authocomplete and blooddhound suggestions engine
@@ -342,3 +343,20 @@ Notifications:
   Probably the only thing that i'm going to struggle with, i need to come up with a good design
   ☐ Users should be able to get notifications about activity from other friends
   ☐ 
+
+Bookmarks:
+  ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)
+  ✔ The user cannot give a name to him bookmarks or anything (first i was tring to do something like youtube playlists but anymore :) ) @done (10/14/2018, 7:53:00 PM)
+  ✔ The bookmarks table should have a user_id and a post_id @done (10/14/2018, 7:52:57 PM)
+  ✔ When trying to get all the bookmarks the user_id is used @done (10/14/2018, 7:52:52 PM)
+  ✔ To find out whether the post_id & user_id is already there! @done (10/14/2018, 7:52:52 PM)
+  Relationship:
+    * @ORM\ManyToOne(targetEntity="App\Entity\Bookmark", mappedBy="user") Means will get all the posts in the bookmark
+    Each bookmark contains one User and one Post
+    Each Post belongs to multiple Bookmarks
+  ✔ Display the number of bookmarks for each post @done (10/14/2018, 7:44:10 PM)
+  ✔ Create the action to add the post to the bookmarks @done (10/14/2018, 7:52:19 PM)
+  ✔ Create a remove from bookmarks link if the user already have it boookmarked @done (10/14/2018, 11:21:22 PM)
+    ✔ Create a function in the repository to get the bookmark (using the user_id & post_id) @done (10/14/2018, 11:11:53 PM)
+    ✔ Remove the entity and redirect to the post for now @done (10/14/2018, 11:11:54 PM)
+  ✔ Display a remove from bookmarks if the post is already in the bookmarks @done (10/14/2018, 11:32:07 PM)

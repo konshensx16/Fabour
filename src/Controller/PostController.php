@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Bookmark;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\PostType;
+use App\Repository\BookmarkRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
 use Psr\Container\ContainerExceptionInterface;
@@ -65,6 +69,9 @@ class PostController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="edit")
+     * @param Request $request
+     * @param Post $post
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function edit(Request $request, Post $post)
     {
@@ -89,21 +96,28 @@ class PostController extends AbstractController
      * @Route("/{id}", name="display")
      * @param Request $request
      * @param Post $post
+     * @param EntityManagerInterface $em
+     * @param BookmarkRepository $bookmarkRepository
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    public function display(Request $request, Post $post)
+    public function display(Request $request, Post $post, EntityManagerInterface $em, BookmarkRepository $bookmarkRepository)
     {
         $comment = new Comment();
         // need the comment form
         $commentForm = $this->createForm(CommentType::class, $comment);
 
+        if (!($post->getUser() === $this->getUser())) {
+            // TODO: increment the vew counter for this post if not the publisher is viewing it
+            $currentViews = $post->getViewsCounter();
+            $post->setViewsCounter(++$currentViews);
+            $em->persist($post);
+            $em->flush(); // NOTE: put this somewhere else maybe?
+        }
+
         $commentForm->handleRequest($request);
 
         if ($commentForm->isSubmitted()) {
             // handle the comment and shit
-            $em = $this->getDoctrine()->getManager();
             // TODO: find another (better) way to set the comment to the post!
             //      maybe i need a to set cascade to persist and remove (both Post and Comment for now)
             //      Tbh, there's no way doctrine could figure out what the fuck im talking about in this place
@@ -129,8 +143,69 @@ class PostController extends AbstractController
         }
         return $this->render('post/display.html.twig', [
             'post' => $post,
-            'comment_form' => $commentForm->createView()
+            'comment_form' => $commentForm->createView(),
+            'bookmarked' => $bookmarkRepository->findByUserAndPost(
+                $this->getUser()->getId(),
+                $post->getId()
+            ),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/bookmark", name="bookmark")
+     * @param Request $request
+     * @param Post $post
+     * @param BookmarkRepository $bookmarkRepository
+     * @param EntityManagerInterface $entityManager
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function bookmark(Request $request, Post $post, BookmarkRepository $bookmarkRepository, EntityManagerInterface $entityManager)
+    {
+        // TODO: if the user already has then do nothing
+        // NOTE: This might throw an error if no results are returned, might want to do heavy tests on this!
+        $alreadyExists = $bookmarkRepository->findByUserAndPost(
+            $this->getUser()->getId(),
+            $post->getId()
+        );
+        if (!$alreadyExists) {
+
+            $bookmark = new Bookmark();
+
+            $bookmark->setUser($this->getUser());
+            $bookmark->setPost($post);
+
+            $entityManager->persist($bookmark);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Added to your bookmarks');
+
+        }
+
+        return $this->redirect($this->generateUrl('post.display', ['id' => $post->getId()]));
+    }
+
+    /**
+     * @Route("/{id}/unbookmark", name="unbookmark")
+     * @param Post $post
+     * @param BookmarkRepository $bookmarkRepository
+     * @param EntityManagerInterface $entityManager
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function unbookmark(Post $post, BookmarkRepository $bookmarkRepository, EntityManagerInterface $entityManager)
+    {
+        // TODO: remove the bookmark if exists
+        $bookmark = $bookmarkRepository->findByUserAndPost($this->getUser()->getId(), $post->getId());
+
+        if ($bookmark) {
+            // TODO: maybe use a transaction to be able to catch errors in case of any
+            $entityManager->remove($bookmark);
+            $entityManager->flush();
+        }
+
+
+        $this->addFlash('success', 'Removed from  your bookmarks');
+
+        return $this->redirect($this->generateUrl('post.display', ['id' => $post->getId()]));
     }
 
     /**
