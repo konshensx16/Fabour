@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Form\UserFormType;
+use App\Repository\UserRelationshipRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,12 +30,13 @@ class ProfileController extends AbstractController
 
     /**
      * @Route("/{username?}", name="userProfile")
-     * @param Request $request
      * @param $username
      * @param UserRepository $userRepository
+     * @param UserRelationshipRepository $userRelationshipRepository
+     * @param EntityManagerInterface $entityManager
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function userProfile(Request $request, $username, UserRepository $userRepository, EntityManagerInterface $entityManager)
+    public function userProfile($username, UserRepository $userRepository, UserRelationshipRepository $userRelationshipRepository, EntityManagerInterface $entityManager)
     {
         // server-side rendering no need to worry about sensitive information getting out!
         // If the user is not logged in he will be redirected to somewhere else!
@@ -66,7 +68,8 @@ class ProfileController extends AbstractController
         }
 
         return $this->render('profile/userProfile.html.twig', [
-            'profile' => $user
+            'profile' => $user,
+            'friends' => $userRelationshipRepository->findUsersWithTypeFriend($user->getId())
         ]);
     }
 

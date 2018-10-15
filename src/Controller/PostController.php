@@ -203,7 +203,7 @@ class PostController extends AbstractController
         }
 
 
-        $this->addFlash('success', 'Removed from  your bookmarks');
+        $this->addFlash('success', 'Removed from your bookmarks');
 
         return $this->redirect($this->generateUrl('post.display', ['id' => $post->getId()]));
     }

@@ -79,11 +79,17 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     private $bookmarks;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserRelationship", mappedBy="relatingUser")
+     */
+    private $friends;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
+        $this->friends = new ArrayCollection();
     }
 
 
@@ -336,6 +342,37 @@ class User implements UserInterface, \Serializable, EquatableInterface
             // set the owning side to null (unless already changed)
             if ($bookmark->getUser() === $this) {
                 $bookmark->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserRelationship[]
+     */
+    public function getFriends(): Collection
+    {
+        return $this->friends;
+    }
+
+    public function addFriend(UserRelationship $friend): self
+    {
+        if (!$this->friends->contains($friend)) {
+            $this->friends[] = $friend;
+            $friend->setRelatingUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFriend(UserRelationship $friend): self
+    {
+        if ($this->friends->contains($friend)) {
+            $this->friends->removeElement($friend);
+            // set the owning side to null (unless already changed)
+            if ($friend->getRelatingUser() === $this) {
+                $friend->setRelatingUser(null);
             }
         }
 

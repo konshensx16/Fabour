@@ -11,8 +11,8 @@
 
         {% if posts %}
             {% for post in posts %}
-                <div class="media media-demo">
-                    <div class="media-body mg-t-20 mg-sm-t-0">
+                <div class="media media-demo mg-t-20">
+                    <div class="media-body mg-sm-t-0">
                         <h5 class="tx-inverse mg-b-20">
                             <a href="{{ path('post.display', {'id': post.id}) }}">{{ post.title }}</a>
                         </h5>
