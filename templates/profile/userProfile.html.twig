@@ -99,9 +99,15 @@
                             friends in your list!
                         {% else %}
                             connections <br>
-                            <a class="btn btn-primary btn-signin mg-b-0" href="{{ path('friends.addAsFriend', {'id': profile.id}) }}">
-                                Add to friends
-                            </a>
+                            {% if isFriend %}
+                                <a class="btn btn-primary btn-signin mg-b-0" href="{{ path('friends.removeFriend', {'id': profile.id}) }}">
+                                    Remove from friends
+                                </a>
+                            {% else %}
+                                <a class="btn btn-primary btn-signin mg-b-0" href="{{ path('friends.addAsFriend', {'id': profile.id}) }}">
+                                    Add to friends
+                                </a>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div><!-- row -->

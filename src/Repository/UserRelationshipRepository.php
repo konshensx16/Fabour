@@ -36,8 +36,7 @@ class UserRelationshipRepository extends ServiceEntityRepository
             ->setParameter('relatedUser', $related_user_id)
             ->orderBy('u.id', 'ASC')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
     public function findUsersWithTypeFriend(int $user_id)
@@ -48,8 +47,7 @@ class UserRelationshipRepository extends ServiceEntityRepository
             ->setParameter('user_id', $user_id)
             ->setParameter('type', 'friend')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /**
@@ -67,9 +65,31 @@ class UserRelationshipRepository extends ServiceEntityRepository
             ->setParameter('user_id', $user_id)
             ->setParameter('type', 'pending')
             ->getQuery()
-            ->getResult()
+            ->getResult();
+    }
+
+    /**
+     * Gets a User|null based on type 'friend' and relatedUserId
+     * @param $relating_user_id
+     * @param $related_user_id
+     * @return mixed
+     * @throws NonUniqueResultException
+     */
+    public function findOneFriendById(int $relating_user_id, int $related_user_id)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.relatingUser = :relatingUser')
+            ->andWhere('u.relatedUser = :relatedUser')
+            ->andWhere('u.type = :type')
+            ->setParameter('relatingUser', $relating_user_id)
+            ->setParameter('relatedUser', $related_user_id)
+            ->setParameter('type', 'friend')
+            ->getQuery()
+            ->getOneOrNullResult()
         ;
     }
+
+
 
 //    public function findOneBySomeField($value): ?UserRelationship
 //    {

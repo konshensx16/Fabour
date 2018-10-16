@@ -35,6 +35,7 @@ class ProfileController extends AbstractController
      * @param UserRelationshipRepository $userRelationshipRepository
      * @param EntityManagerInterface $entityManager
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function userProfile($username, UserRepository $userRepository, UserRelationshipRepository $userRelationshipRepository, EntityManagerInterface $entityManager)
     {
@@ -45,6 +46,7 @@ class ProfileController extends AbstractController
         // TODO: Increment the views_counter for the user if someone is seeing this page
         // TODO: test this stuff further more, just to make sure everything is working fine!
         $user = null;
+        $relationship = null;
         // if no username, display the current logged in user
         if (!$username)
         {
@@ -55,6 +57,12 @@ class ProfileController extends AbstractController
             $user = $userRepository->findOneBy([
                 'username' => $username
             ]);
+            // TODO: check if the current user is friends with the $user
+            $relationship = $userRelationshipRepository->findOneFriendById(
+                $this->getUser()->getId(),
+                $user->getId()
+            );
+
         }
 
         if (!($user === $this->getUser())) {
@@ -67,9 +75,11 @@ class ProfileController extends AbstractController
             $entityManager->flush();
         }
 
+
         return $this->render('profile/userProfile.html.twig', [
             'profile' => $user,
-            'friends' => $userRelationshipRepository->findUsersWithTypeFriend($user->getId())
+            'friends' => $userRelationshipRepository->findUsersWithTypeFriend($user->getId()),
+            'isFriend' => (bool)$relationship
         ]);
     }
 

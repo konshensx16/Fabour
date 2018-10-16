@@ -171,7 +171,7 @@ WHA THE FUCK ARE THOSE SHIT NOTES:
           Credentials:
             username: guest
             password: guest
-        In the rabbitmq-panel i bound to gos_websocket_exchange to the gos_websocket (I think i know what i did here but i need further reading about this!)
+        In the rabbitmq-panel i bound the gos_websocket_exchange to the gos_websocket (I think i know what i did here but i need further reading about this!)
 
         EVERYTHING IS WORKING RIGHT NOW!!!!:
 
@@ -203,14 +203,14 @@ WHA THE FUCK ARE THOSE SHIT NOTES:
             ✔ If the user hasn't posted anything yet then just display a joke or message saying check back later! @done (10/11/2018, 10:44:25 PM)
             ✘ If the user has posts then good thing will be to display them in a pagination system (maybe just display 10 out of everythng each time)! @cancelled (10/11/2018, 10:53:05 PM)
 
-        ☐ Improve the user SYSTEM
+        ✔ Improve the user SYSTEM @done (10/16/2018, 9:07:10 PM)
           ✔ The username and the email fields should be unique @done (10/11/2018, 10:14:45 PM)
           ✔ Add avatar column to each user, and make default to something in the project @done (10/9/2018, 11:06:24 PM)
-          ☐ Create a user profile for each one
+          ✔ Create a user profile for each one @done (10/16/2018, 9:06:59 PM)
             ✔ About section @done (10/10/2018, 11:19:44 PM)
-            ☐ When the account was created
-            ☐ Maybe last seen? last time the user was online
-            ☐ Where the user is from
+            ✔ When the account was created @done (10/16/2018, 9:06:58 PM)
+            ✔ Maybe last seen? last time the user was online @done (10/16/2018, 9:07:00 PM)
+            ✘ Where the user is from @cancelled (10/16/2018, 9:07:02 PM)
           ✔ Allow each user to change his profile @done (10/11/2018, 11:07:13 PM)
           ✔ Users can check each other profiles @done (10/11/2018, 10:21:38 PM)
             ✔ Display the current logged in user if the user tries to check his own profile, or just access the (/profile) @done (10/11/2018, 10:21:39 PM)
@@ -225,11 +225,11 @@ WHA THE FUCK ARE THOSE SHIT NOTES:
           ✔ Adding the playfair display font (Going for minimalistic look for this one!): '@import url('https://fonts.googleapis.com/css?family=Playfair+Display');' @done (10/10/2018, 11:19:36 PM)
           ✔ Create the user profile page @done (10/11/2018, 10:53:28 PM)
           ☐ The user shoud be able to change his profile information in another page!
-          ☐ Add a WYSIWYG editor to the post.create so the user can customize his heading ad everything he likes
+          ✔ Add a WYSIWYG editor to the post.create so the user can customize his heading ad everything he likes @done (10/16/2018, 9:07:18 PM)
 DESIGN DRIVEN BACK-END:
   This means that whatever theme (UI) i choose to use for the UI is what will determine the back-end functionality!
   Link : http://themepixels.me/slim1.1/landing/ ~ Downloaded check the Desktop for both the rar and the "unrared" file (Might need to upload the file tot dropbox or google drive for future use)
-  ☐ Download the theme and implement it in the project!
+  ✔ Download the theme and implement it in the project! @done (10/16/2018, 9:07:25 PM)
   ✔ Uplaod the file to dropbox or google drive after checking if it's the correct one! @done (10/13/2018, 5:38:52 PM) ! to dropbox
   ✘ Create a custom page for the blog posts and post.create is non exist @cancelled (10/13/2018, 5:39:06 PM)
   ✔ Check if all the required pages are there before creating any to avoid wasting time @done (10/13/2018, 5:39:15 PM)
@@ -369,7 +369,10 @@ Friends:
       Only the user who get the request should be able to either accept or reject
   ✔ User shoud be able to accept pending requests @done (10/16/2018, 8:26:42 PM)
       ☐ Redirect to the user profile after approving the user request
-  ☐ User shoud be able to remove pending requests
+  ☐ User shoud be able to reject a pending requests
+  ✔ Users should be able to remove a user from his friends list @done (10/16/2018, 9:23:28 PM)
+      ✔ Maybe from the user profile? when viewing a friends profile the user should get a remove from friends option! @done (10/16/2018, 9:23:30 PM)
+        ✔ Send the information from the controller, maybe a boolean @done (10/16/2018, 9:23:32 PM)
 
 
 Notifications:

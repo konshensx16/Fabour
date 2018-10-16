@@ -131,7 +131,7 @@ class FriendsController extends AbstractController
 
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('profile.userProfile', $user->getId()));
+            return $this->redirect($this->generateUrl('profile.userProfile', ['id' => $user->getId()]));
         }
 
         return $this->json([
@@ -139,6 +139,83 @@ class FriendsController extends AbstractController
             'message' => 'Error! something happened!',
         ]);
 
+    }
+
+    /**
+     * @Route("/{id}/reject", name="rejectRequest")
+     * @param User $user
+     * @param UserRelationshipRepository $userRelationshipRepository
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function rejectRequest(User $user, UserRelationshipRepository $userRelationshipRepository, EntityManagerInterface $entityManager)
+    {
+        // check if the given user is actually a user or not
+        if (!$user instanceof UserInterface) {
+            return $this->redirect($this->generateUrl('login'));
+        }
+        $currentUser = $this->getUser();
+        // get the userRelationship from the database and then remove it
+        $relationship = $userRelationshipRepository->findByRelatingUserAndRelatedUser(
+            $user->getId(),
+            $currentUser->getId()
+        );
+        // check if the record exists
+        if ($relationship) {
+            // TODO: remove the record from the db
+            $entityManager->remove($relationship);
+
+            $entityManager->flush();
+
+            return $this->redirect($this->generateUrl('friends.pending', ['id' => $user->getId()]));
+        }
+
+        return $this->json([
+            'type' => 'error',
+            'message' => 'Error! something happened!',
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/remove", name="removeFriend")
+     * @param User $user
+     * @param UserRelationshipRepository $userRelationshipRepository
+     * @param EntityManagerInterface $entityManager
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function removeFriend(User $user, UserRelationshipRepository $userRelationshipRepository, EntityManagerInterface $entityManager)
+    {
+        // check if the given user is actually a user or not
+        if (!$user instanceof UserInterface) {
+            return $this->redirect($this->generateUrl('login'));
+        }
+        $currentUser = $this->getUser();
+        // get the userRelationship from the database and then remove it
+        $relationship = $userRelationshipRepository->findByRelatingUserAndRelatedUser(
+            $user->getId(),
+            $currentUser->getId()
+        );
+
+        $biDirectionalRelationship = $userRelationshipRepository->findByRelatingUserAndRelatedUser(
+            $currentUser->getId(),
+            $user->getId()
+        );
+        // check if the record exists
+        if ($relationship && $biDirectionalRelationship) {
+            // TODO: remove the two records from the db
+            $entityManager->remove($relationship);
+            $entityManager->remove($biDirectionalRelationship);
+
+            $entityManager->flush();
+
+            return $this->redirect($this->generateUrl('friends.pending', ['id' => $user->getId()]));
+        }
+
+        return $this->json([
+            'type' => 'error',
+            'message' => 'Error! something happened!',
+        ]);
     }
 
     /**
