@@ -269,12 +269,12 @@ GLOBAL :
 POSTS:
   ✔ Each post should have a category @done (10/14/2018, 12:09:32 PM)
   ✔ In the index page posts contents  shoudln't exceed a certain limit! @done (10/14/2018, 12:09:35 PM)
-  ☐ Single Post display page:
+  ✔ Single Post display page: @done (10/16/2018, 9:56:26 PM)
     ✔ Manage the alerts with the new design @done (10/14/2018, 3:54:02 PM)
     ✔ Change the look of the comments @done (10/14/2018, 12:09:39 PM)
     ✔ Change the comment posting form! @done (10/14/2018, 12:09:42 PM)
     ✔ Display a views counter @done (10/14/2018, 3:54:04 PM)
-    ☐ Display a bookmark option (if the users want to save this somewhere)
+    ✔ Display a bookmark option (if the users want to save this somewhere) @done (10/16/2018, 9:56:27 PM)
     ✔ Display an add to friends button under the small profile section @done (10/14/2018, 4:02:01 PM)
       From now on this goes under a separate list (FRIENDS todo list)
 
@@ -323,8 +323,12 @@ Profile:
         ☐ Only increment if the user is not using the same computer (refreshing the page will increase the counter unnecessarily )
   ☐ Need to create the user edit page (currently doesn't exist)
     ☐ Create the Type for the user which should contain all the fields that user can change (This will be last, since i haven't decided all the fields that i want to have)
-  ☐ When viewing someone else profile, display a button so the user can add him as a friend!
+  ✔ When viewing someone else profile, display a button so the user can add him as a friend! @done (10/16/2018, 9:31:08 PM)
   ✔ Need to change the desing of the profile page to the new slim @done (10/13/2018, 11:53:10 PM)
+  ☐ Display a card containing recently added friends
+    ✔ Infromation should be sent from the controller! (Get just the last five) @done (10/16/2018, 9:56:16 PM)
+    ☐ Display a small add to friends symbol if the user is not friends with those guys > might be hevay but might do it since it's just five people
+    
   BUGS:
     When the user doesn't exist, redirect to an error page or display an error page (404)
 
@@ -398,3 +402,7 @@ Bookmarks:
   ✔ Display a remove from bookmarks if the post is already in the bookmarks @done (10/14/2018, 11:32:07 PM)
 
   Messaging:
+
+BUGS:
+  Profile:
+    Users without any posts are not displaying the message, just empty space!

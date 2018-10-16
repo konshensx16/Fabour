@@ -62,7 +62,6 @@ class ProfileController extends AbstractController
                 $this->getUser()->getId(),
                 $user->getId()
             );
-
         }
 
         if (!($user === $this->getUser())) {
@@ -75,11 +74,14 @@ class ProfileController extends AbstractController
             $entityManager->flush();
         }
 
+        // TODO: Get the last five friends the user added
+        $recentlyAddedFriends = $userRelationshipRepository->findFriendsWithLimitById($user->getId(), 5);
 
         return $this->render('profile/userProfile.html.twig', [
             'profile' => $user,
             'friends' => $userRelationshipRepository->findUsersWithTypeFriend($user->getId()),
-            'isFriend' => (bool)$relationship
+            'isFriend' => (bool)$relationship,
+            'recentFriends' => $recentlyAddedFriends
         ]);
     }
 

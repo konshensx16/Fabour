@@ -14,7 +14,7 @@
             <div class="card card-profile">
                 <div class="card-body">
                     <div class="media">
-                        <img src="http://via.placeholder.com/500x500" alt="">
+                        <img src="{{ asset('assets/img/') ~ profile.avatar }}" alt="">
                         <div class="media-body">
                             <h3 class="card-profile-name">{{ profile.username }}</h3>
                             <p class="card-profile-position">Joined on: {{ profile.createdAt|date('Y-M-d h:m:s') }}</p>
@@ -42,16 +42,20 @@
                         {% for post in profile.posts %}
                             <div class="row no-gutters mg-b-20">
                                 <div class="col-md-4">
-                                    <a href="{{ path('post.display', {'id': post.id}) }}"><img src="{{ asset('assets/img/img0.jpg') }}" class="img-fit-cover" alt=""></a>
+                                    <a href="{{ path('post.display', {'id': post.id}) }}"><img
+                                                src="{{ asset('assets/img/img0.jpg') }}" class="img-fit-cover"
+                                                alt=""></a>
                                 </div><!-- col-4 -->
                                 <div class="col-md-8">
                                     <div class="post-wrapper">
-                                        <a href="{{ path('post.display', {'id': post.id}) }}" class="activity-title">{{ post.title }}</a>
+                                        <a href="{{ path('post.display', {'id': post.id}) }}"
+                                           class="activity-title">{{ post.title }}</a>
                                         <p>
-                                            {{ post.content|length > 300 ? post.content|slice(0, 300) ~ '...' : post.content}}
+                                            {{ post.content|length > 300 ? post.content|slice(0, 300) ~ '...' : post.content }}
                                         </p>
                                         <p class="mg-b-0">
-                                            <a href="" class="d-block">{{ post.user.username }} in {{ post.category }}</a>
+                                            <a href="" class="d-block">{{ post.user.username }}
+                                                in {{ post.category }}</a>
                                             <span>{{ post.createdAt|date('Y M d') }} .</span>
                                         </p>
                                     </div><!-- post-wrapper -->
@@ -61,7 +65,6 @@
                     {% else %}
                         <h3>Welp! there are no posts at the moment, check back later...</h3>
                     {% endif %}
-
 
 
                 </div><!-- card-body -->
@@ -100,11 +103,13 @@
                         {% else %}
                             connections <br>
                             {% if isFriend %}
-                                <a class="btn btn-primary btn-signin mg-b-0" href="{{ path('friends.removeFriend', {'id': profile.id}) }}">
+                                <a class="btn btn-primary btn-signin mg-b-0"
+                                   href="{{ path('friends.removeFriend', {'id': profile.id}) }}">
                                     Remove from friends
                                 </a>
                             {% else %}
-                                <a class="btn btn-primary btn-signin mg-b-0" href="{{ path('friends.addAsFriend', {'id': profile.id}) }}">
+                                <a class="btn btn-primary btn-signin mg-b-0"
+                                   href="{{ path('friends.addAsFriend', {'id': profile.id}) }}">
                                     Add to friends
                                 </a>
                             {% endif %}
@@ -114,43 +119,22 @@
             </div><!-- card -->
 
             <div class="card card-people-list mg-t-20">
-                <div class="slim-card-title">People also viewed</div>
+                <div class="slim-card-title">Recently became friends with</div>
                 <div class="media-list">
-                    <div class="media">
-                        <img src="http://via.placeholder.com/500x500" alt="">
-                        <div class="media-body">
-                            <a href="">Adrian Monino</a>
-                            <p>Software Engineer</p>
-                        </div><!-- media-body -->
-                    </div><!-- media -->
-                    <div class="media">
-                        <img src="http://via.placeholder.com/500x500" alt="">
-                        <div class="media-body">
-                            <a href="">Rolando Paloso</a>
-                            <p>Architect</p>
-                        </div><!-- media-body -->
-                    </div><!-- media -->
-                    <div class="media">
-                        <img src="http://via.placeholder.com/500x500" alt="">
-                        <div class="media-body">
-                            <a href="">Joyce Chua</a>
-                            <p>Sales Representative</p>
-                        </div><!-- media-body -->
-                    </div><!-- media -->
-                    <div class="media">
-                        <img src="http://via.placeholder.com/500x500" alt="">
-                        <div class="media-body">
-                            <a href="">Annalyn Mercado</a>
-                            <p>Sales Representative</p>
-                        </div><!-- media-body -->
-                    </div><!-- media -->
-                    <div class="media">
-                        <img src="http://via.placeholder.com/500x500" alt="">
-                        <div class="media-body">
-                            <a href="">Maricel Pasilbas</a>
-                            <p>Sales Representative</p>
-                        </div><!-- media-body -->
-                    </div><!-- media -->
+                    {% if recentFriends %}
+                        {% for item in recentFriends %}
+
+                            <div class="media">
+                                <img src="{{ asset('assets/img/') ~ item.relatedUser.avatar }}" alt="">
+                                <div class="media-body">
+                                    <a href="">{{ item.relatedUser.username }}</a>
+                                    <p>{{ item.updatedAt|time_diff }}</p>
+                                </div><!-- media-body -->
+                            </div><!-- media -->
+                        {% endfor %}
+                    {% else %}
+                        This users has not friends at the moment, maybe add him? :)
+                    {% endif %}
                 </div><!-- media-list -->
             </div><!-- card -->
 

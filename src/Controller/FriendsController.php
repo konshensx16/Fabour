@@ -131,7 +131,7 @@ class FriendsController extends AbstractController
 
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('profile.userProfile', ['id' => $user->getId()]));
+            return $this->redirect($this->generateUrl('profile.userProfile', ['username' => $user->getUsername()]));
         }
 
         return $this->json([

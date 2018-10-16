@@ -89,6 +89,30 @@ class UserRelationshipRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * Will get the some friends (limit) of some given user (using id)
+     * If limit is not set it's going to return just 100
+     * Returns UserRelationship[]|null
+     * @param int $user_id
+     * @param int $limit
+     * @return mixed
+     */
+    public function findFriendsWithLimitById(int $user_id, int $limit = 100)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.relatingUser = :user_id')
+            ->andWhere('u.type = :type')
+            ->setParameter('user_id', $user_id)
+            ->setParameter('type', 'friend')
+            ->orderBy('u.updated_at', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+
+    }
+
+
 
 
 //    public function findOneBySomeField($value): ?UserRelationship
