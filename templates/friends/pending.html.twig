@@ -8,20 +8,19 @@
 
     <div class="section-wrapper mg-t-20">
         <label class="section-title">Pending friends request</label>
-
         <div class="row">
             <div class="col-lg-12 mg-t-20 mg-lg-t-0">
                 {% if pending %}
                     <div class="list-group list-group-striped list-group-user">
                         {% for item in pending %}
                             <div class="list-group-item">
-                                <img src="{{ asset('assets/img/') ~ item.relatingUser.avatar }}" alt="{{ item.relatedUser }}">
+                                <img src="{{ asset('assets/img/') ~ item.relatingUser.avatar }}" alt="{{ item.relatingUser }}">
                                 <div class="user-name-address">
                                     <p>{{ item.relatingUser.username }}</p>
                                     <span>Request sent {{ item.updatedAt|time_diff }}</span>
                                 </div>
                                 <div class="user-btn-wrapper">
-                                    <a href="#" class="btn btn-outline-primary btn-icon">
+                                    <a href="{{ path('friends.approveRequest', {'id': item.relatingUser.id}) }}" class="btn btn-outline-primary btn-icon">
                                         <div class="tx-20"><i class="icon ion-ios-checkmark"></i></div>
                                     </a>
                                     <a href="#" class="btn btn-outline-danger btn-icon">

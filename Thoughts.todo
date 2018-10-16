@@ -263,7 +263,7 @@ GLOBAL :
   ☐ Replace the navbar pages with categories that the user can click on to get to a paeg with posts from the category
     ✔ The names and the icons (Might want to change the icons later on) @done (10/13/2018, 9:01:36 PM)
   ☐ Add an active class to the category that the user is currently browsing: https://stackoverflow.com/questions/5696526/add-active-class-to-link-with-sf2-and-twig
-  ☐ 
+  ☐ Add a pending icon in the navbar to display pending friend requests!
 
 
 POSTS:
@@ -341,7 +341,7 @@ Friends:
   ✔ The user cannot add himself as a friend @done (10/15/2018, 9:21:23 PM)
     ✔ In the UI don't display the button if the user is viewing his profile @done (10/15/2018, 9:21:23 PM)
     ✔ In the back-end check if the user is trying to add himself @done (10/15/2018, 9:21:22 PM)
-  ☐ Users should be able to add each other to friend list
+  ✔ Users should be able to add each other to friend list @done (10/16/2018, 8:26:00 PM)
   ✔ Users can also chat with each other, might need to create a separate todo list for this since it's an entire system by itself @done (10/15/2018, 8:36:51 PM)
   ✔ The 'friends' table: will be called 'UserRelationship' @done (10/15/2018, 9:21:28 PM)
     Schema:
@@ -362,6 +362,14 @@ Friends:
   ✔ Add two records to the database with status of pending... () @done (10/15/2018, 10:01:00 PM)
   ✔ Only display the number of users that are friends @done (10/15/2018, 10:36:14 PM)
   ✔ Add a update_at field that indicates when the request was sent, or after accepting when was the request accepted (Friends since functionality) @done (10/15/2018, 10:36:15 PM)
+  NOTE:
+    I was doing it wrong, i should only add one record to the database when the request is pending, and add another record once the request approved 
+    Why:
+      Because when inserting two record while still pending, both users will get the notication of accepting the other user, 
+      Only the user who get the request should be able to either accept or reject
+  ✔ User shoud be able to accept pending requests @done (10/16/2018, 8:26:42 PM)
+      ☐ Redirect to the user profile after approving the user request
+  ☐ User shoud be able to remove pending requests
 
 
 Notifications:

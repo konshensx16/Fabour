@@ -99,16 +99,46 @@ class FriendsController extends AbstractController
     /**
      * @Route("/{id}/approve", name="approveRequest")
      * @param User $user
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param UserRelationshipRepository $userRelationshipRepository
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function approveRequest(User $user)
+    public function approveRequest(User $user, UserRelationshipRepository $userRelationshipRepository, EntityManagerInterface $entityManager)
     {
         // check if the given user is actually a user or not
         if (!$user instanceof UserInterface) {
             return $this->redirect($this->generateUrl('login'));
         }
+        $currentUser = $this->getUser();
+        // get the userRelationship from the database and then change it's type
+        $relationship = $userRelationshipRepository->findByRelatingUserAndRelatedUser(
+            $user->getId(),
+            $currentUser->getId()
+        );
+        // check if the record exists
+        if ($relationship) {
+            // TODO: update the record type to friend
+            $relationship->setType(UserRelationship::FRIEND);
 
-        
+            // TODO: add another record for bi-directional relation
+            $newRelationship = new UserRelationship();
+            $newRelationship->setRelatingUser($currentUser);
+            $newRelationship->setRelatedUser($user);
+            $newRelationship->setType(UserRelationship::FRIEND);
+
+            $entityManager->persist($relationship);
+            $entityManager->persist($newRelationship);
+
+            $entityManager->flush();
+
+            return $this->redirect($this->generateUrl('profile.userProfile', $user->getId()));
+        }
+
+        return $this->json([
+            'type' => 'error',
+            'message' => 'Error! something happened!',
+        ]);
+
     }
 
     /**
