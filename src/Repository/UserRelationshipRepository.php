@@ -52,10 +52,17 @@ class UserRelationshipRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * Using the relatedUser_id because we want the record where the current logged in is mentioned
+     * which means will return where people wants to be friends with me, since im the related user
+     * TODO: check this heavily with multiple user to make sure it works and doesn't break under certain conditions
+     * @param int $user_id
+     * @return mixed
+     */
     public function findUsersWithTypePending(int $user_id)
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.relatingUser = :user_id')
+            ->andWhere('u.relatedUser = :user_id')
             ->andWhere('u.type = :type')
             ->setParameter('user_id', $user_id)
             ->setParameter('type', 'pending')

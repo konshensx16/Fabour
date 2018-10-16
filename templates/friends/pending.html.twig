@@ -15,9 +15,9 @@
                     <div class="list-group list-group-striped list-group-user">
                         {% for item in pending %}
                             <div class="list-group-item">
-                                <img src="http://via.placeholder.com/500x500" alt="{{ item.relatedUser }}">
+                                <img src="{{ asset('assets/img/') ~ item.relatingUser.avatar }}" alt="{{ item.relatedUser }}">
                                 <div class="user-name-address">
-                                    <p>{{ item.relatedUser.username }}</p>
+                                    <p>{{ item.relatingUser.username }}</p>
                                     <span>Request sent {{ item.updatedAt|time_diff }}</span>
                                 </div>
                                 <div class="user-btn-wrapper">

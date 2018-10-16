@@ -325,6 +325,8 @@ Profile:
     ☐ Create the Type for the user which should contain all the fields that user can change (This will be last, since i haven't decided all the fields that i want to have)
   ☐ When viewing someone else profile, display a button so the user can add him as a friend!
   ✔ Need to change the desing of the profile page to the new slim @done (10/13/2018, 11:53:10 PM)
+  BUGS:
+    When the user doesn't exist, redirect to an error page or display an error page (404)
 
 
 Search:
@@ -336,8 +338,31 @@ Search:
     ☐ Probably will try to include typeahead authocomplete and blooddhound suggestions engine
 
 Friends:
+  ✔ The user cannot add himself as a friend @done (10/15/2018, 9:21:23 PM)
+    ✔ In the UI don't display the button if the user is viewing his profile @done (10/15/2018, 9:21:23 PM)
+    ✔ In the back-end check if the user is trying to add himself @done (10/15/2018, 9:21:22 PM)
   ☐ Users should be able to add each other to friend list
-  ☐ Users can also chat with each other, might need to create a separate todo list for this since it's an entire system by itself
+  ✔ Users can also chat with each other, might need to create a separate todo list for this since it's an entire system by itself @done (10/15/2018, 8:36:51 PM)
+  ✔ The 'friends' table: will be called 'UserRelationship' @done (10/15/2018, 9:21:28 PM)
+    Schema:
+      RelatingUser -> User1 
+      RelatedUser -> User2
+      RelationType -> [friend, block, pending, etc..]
+    Relationship(DB):
+      Each user has multiple friends
+      Multiple friendships belongs to one User
+
+    How this will work:
+        First the user will send a friendship request
+        We'll add a row into the table with both users_id and set the type to 'pending'
+        When the user accepts the request we'll update the type to friend
+        If the users decides to reject the user request will just remove the row from the database
+
+  ☐ In case of mutual friends i need to cme up with somwthing in the future, for now just get this up and running tonight 
+  ✔ Add two records to the database with status of pending... () @done (10/15/2018, 10:01:00 PM)
+  ✔ Only display the number of users that are friends @done (10/15/2018, 10:36:14 PM)
+  ✔ Add a update_at field that indicates when the request was sent, or after accepting when was the request accepted (Friends since functionality) @done (10/15/2018, 10:36:15 PM)
+
 
 Notifications:
   Probably the only thing that i'm going to struggle with, i need to come up with a good design
@@ -360,3 +385,5 @@ Bookmarks:
     ✔ Create a function in the repository to get the bookmark (using the user_id & post_id) @done (10/14/2018, 11:11:53 PM)
     ✔ Remove the entity and redirect to the post for now @done (10/14/2018, 11:11:54 PM)
   ✔ Display a remove from bookmarks if the post is already in the bookmarks @done (10/14/2018, 11:32:07 PM)
+
+  Messaging:

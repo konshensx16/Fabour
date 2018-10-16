@@ -67,15 +67,10 @@ class FriendsController extends AbstractController
             //  also to take advantage of phpstorm autocomplete
             $friendship->setType(UserRelationship::PENDING);
 
-            $friendship1= new UserRelationship();
-            $friendship1->setRelatingUser($user);
-            $friendship1->setRelatedUser($currentUser);
             // using some constants from the userRelationship class just in case i wanted to change them later
             //  also to take advantage of phpstorm autocomplete
-            $friendship1->setType(UserRelationship::PENDING);
 
             $entityManager->persist($friendship);
-            $entityManager->persist($friendship1);
 
             $entityManager->flush();
         }
@@ -99,6 +94,21 @@ class FriendsController extends AbstractController
         return $this->render('friends/pending.html.twig', [
             'pending' => $result,
         ]);
+    }
+
+    /**
+     * @Route("/{id}/approve", name="approveRequest")
+     * @param User $user
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function approveRequest(User $user)
+    {
+        // check if the given user is actually a user or not
+        if (!$user instanceof UserInterface) {
+            return $this->redirect($this->generateUrl('login'));
+        }
+
+        
     }
 
     /**
