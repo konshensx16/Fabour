@@ -264,6 +264,7 @@ GLOBAL :
     ✔ The names and the icons (Might want to change the icons later on) @done (10/13/2018, 9:01:36 PM)
   ☐ Add an active class to the category that the user is currently browsing: https://stackoverflow.com/questions/5696526/add-active-class-to-link-with-sf2-and-twig
   ☐ Add a pending icon in the navbar to display pending friend requests!
+  ☐ Create an action to render notifcations, pending request, and new messages
 
 
 POSTS:
@@ -377,12 +378,16 @@ Friends:
   ✔ Users should be able to remove a user from his friends list @done (10/16/2018, 9:23:28 PM)
       ✔ Maybe from the user profile? when viewing a friends profile the user should get a remove from friends option! @done (10/16/2018, 9:23:30 PM)
         ✔ Send the information from the controller, maybe a boolean @done (10/16/2018, 9:23:32 PM)
-
+  ✔ Display an indicator when the user have pending requests @done (10/17/2018, 8:05:51 PM)
+      Might need to create an action to handle rendering everything related to the navbar (notifications, pending requests, messages)
+    
 
 Notifications:
   Probably the only thing that i'm going to struggle with, i need to come up with a good design
   ☐ Users should be able to get notifications about activity from other friends
-  ☐ 
+  ☐ User should get a realtime notification about pending friendship requests 
+    ☐ Create the FriendshipTopic which will broadcast information to all users (friend request, approved requests)
+      This could be used to increment the notification count in the title : http://roshiro.github.io/TitleNotifier.js/
 
 Bookmarks:
   ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)

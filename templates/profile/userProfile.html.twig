@@ -127,7 +127,7 @@
                             <div class="media">
                                 <img src="{{ asset('assets/img/') ~ item.relatedUser.avatar }}" alt="">
                                 <div class="media-body">
-                                    <a href="">{{ item.relatedUser.username }}</a>
+                                    <a href="{{ path('profile.userProfile', {'username': item.relatedUser.username}) }}">{{ item.relatedUser.username }}</a>
                                     <p>{{ item.updatedAt|time_diff }}</p>
                                 </div><!-- media-body -->
                             </div><!-- media -->

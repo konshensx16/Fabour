@@ -5,7 +5,7 @@ $(function(){
   /////////////////// START: TEMPLATE SETTINGS /////////////////////
   var loc    = window.location.pathname;
   var path   = loc.split('/');
-  var isRtl  = (path[2].indexOf('rtl') >= 0)? true : false;
+  // var isRtl  = (path[2].indexOf('rtl') >= 0)? true : false;
   var newloc = '';
 
   // inject additional link tag for header skin

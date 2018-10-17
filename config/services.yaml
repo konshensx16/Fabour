@@ -42,11 +42,23 @@ services:
             - '@gos_web_socket.wamp.topic_manager'
             - '@gos_web_socket.amqp.pusher'
 
+    App\Controller\FriendsController:
+        arguments:
+            - '@gos_web_socket.wamp.topic_manager'
+            - '@gos_web_socket.amqp.pusher'
+
 
     # i might create a seperate file for services if this one gets large enough to confuse me
     # i think all these definitions could be moved to a separate file!
     comment_topic.topic_service:
         class: App\Topic\CommentTopic
+        arguments:
+            - '@gos_web_socket.websocket.client_manipulator'
+        tags:
+            - { name: gos_web_socket.topic }
+
+
+    App\Topic\FriendshipTopic:
         arguments:
             - '@gos_web_socket.websocket.client_manipulator'
         tags:

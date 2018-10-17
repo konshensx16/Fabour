@@ -8,6 +8,11 @@ comment_topic:
     handler:
         callback: 'comment.topic' #related to the getName of the topic
 
+friendship_topic:
+    channel: 'friendship/channel'
+    handler:
+        callback: 'friendship.topic' #related to the getName of the topic
+
 conversation_topic:
     channel: conversation/channel
     handler:

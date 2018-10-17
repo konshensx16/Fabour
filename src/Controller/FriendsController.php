@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Entity\UserRelationship;
 use App\Repository\UserRelationshipRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
+use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -18,6 +20,22 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class FriendsController extends AbstractController
 {
     /**
+     * @var TopicManager
+     */
+    private $topicManager;
+    /**
+     * @var PusherDecorator
+     */
+    private $pusher;
+
+    public function __construct(TopicManager $topicManager, PusherDecorator $pusher)
+    {
+        $this->topicManager = $topicManager;
+        $this->pusher = $pusher;
+    }
+
+
+    /**
      * @Route("/friends", name="friends")
      */
     public function index()
@@ -28,6 +46,8 @@ class FriendsController extends AbstractController
     }
 
     /**
+     * Sends a friends request to the $user
+     *
      * @Route("/{id}/add", name="addAsFriend")
      * @param User $user
      * @param UserRelationshipRepository $userRelationshipRepository
@@ -69,13 +89,22 @@ class FriendsController extends AbstractController
 
             // using some constants from the userRelationship class just in case i wanted to change them later
             //  also to take advantage of phpstorm autocomplete
-
             $entityManager->persist($friendship);
-
             $entityManager->flush();
+
+            // TODO: send a real-time notification to the related user ($user)
+            try {
+                $this->pusher->push([
+                    'type' => 'sent_request',
+                    'message' => $currentUser->getUsername() . ' wants to add you to his friends list',
+                    'send_to_user' => $user->getUsername()
+                ], 'friendship_topic');
+            } catch (\Exception $e) {
+                $e->getTrace();
+            }
         }
 
-        dump($relationship); die;
+        return $this->redirect($this->generateUrl('profile.userProfile', ['username' => $user->getUsername()]));
     }
 
     /**
@@ -128,6 +157,17 @@ class FriendsController extends AbstractController
 
             $entityManager->persist($relationship);
             $entityManager->persist($newRelationship);
+
+            // TODO: send a real-time notification to the related user ($user)
+            try {
+                $this->pusher->push([
+                    'type' => 'approved_request',
+                    'message' => 'You\'re now a friend with ' . $currentUser->getUsername(),
+                    'send_to_user' => $user->getUsername()
+                ], 'friendship_topic');
+            } catch (\Exception $e) {
+                $e->getTrace();
+            }
 
             $entityManager->flush();
 
@@ -209,7 +249,7 @@ class FriendsController extends AbstractController
 
             $entityManager->flush();
 
-            return $this->redirect($this->generateUrl('friends.pending', ['id' => $user->getId()]));
+            return $this->redirect($this->generateUrl('profile.userProfile', ['username' => $user->getUsername()]));
         }
 
         return $this->json([

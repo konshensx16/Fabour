@@ -11,5 +11,7 @@
         "watch": "encore dev --watch",
         "build": "encore production"
     },
-    "dependencies": {}
+    "dependencies": {
+        "notyf": "^2.0.1"
+    }
 }

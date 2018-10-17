@@ -8,15 +8,23 @@ require("./bundles/goswebsocket/js/gos_web_socket_client.js")
 let webSocket = WS.connect(_WS_URI)
 let $connectedClientsCounter = document.getElementById('connectedClientsCounter')
 
-webSocket.on("socket/connect", function (session) {
-	// client connected
-	
-	// everytime an event is published in this channel the function is executed
-	session.subscribe('comment/channel', function (uri, payload) {
-		console.log(payload)
-        notify(payload)
-	})
 
+webSocket.on("socket/connect", function (session) {
+    let notification = new Notyf({
+        delay: 5000
+    })
+
+	session.subscribe('comment/channel', function (uri, payload) // payload is the message itself
+    {
+        notification.confirm(payload)
+    })
+    session.subscribe('friendship/channel', function (uri, payload) // payload is an object
+    {
+		// TODO: display a small notification for the user, maybe make it click-able
+        // client connected
+        // everytime an event is published in this channel the function is executed
+        notification.confirm(payload['0'])
+    })
 })
 
 webSocket.on("socket/disconnect", function (error) {
