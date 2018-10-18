@@ -287,12 +287,84 @@ POSTS:
 
   
 Categories:
-  ☐ Maybe each category should have sub-categories ?? (Just a thought)
+  ☐ Maybe each category should have sub-categories ?? (Just a thought) (Just still from medium)
     Arts & Entertainment
+      Art
+      BookmarksComics
+      Culture
+      Film  
+      Food
+      Gaming
+      Humour
+      Internet Culture
+      Lit
+      Music
+      Style
+      True Crime
+      TV
+      Writing
     Industry
+      BusinessDesign
+      Economy
+      Startups
+      Freelancing
+      Leadership
+      Marketing
+      Productivity
+      Work
     Innovation & Tech 
+      Artificial Intelligence
+      Blockchain
+      Cyreptycurrency
+      Cybersecurity
+      Data ScienceGadgets
+      Javascript
+      Machine Learning 
+      Math
+      Programming
+      Science
+      spaceTechnology
+      Visual Design
     Life
+      Addiction
+      Creativity
+      Disablity
+      Family
+      Health
+      Mental Health
+      Parenting
+      Personal Finance
+      Pets
+      Psychology
+      Relationships 
+      Self 
+      Sexuality
+      Travel
+      Wellness
     Society
+      Basic Income
+      Cities
+      Education
+      Environment
+      Equality
+      Future
+      Gun Control
+      History
+      Justice
+      Language
+      LGBTQIA
+      Media
+      Masculinity
+      Philosophy
+      Politics
+      Race 
+      Religion 
+      Transportation
+      Women
+      World
+
+  ✔ I should definetely do this using cascade operations (transitive persistence) @done (10/18/2018, 8:31:38 PM)
+    ✔ Add a subCategory function to the category class with name and slug (maybe other options too) as params @done (10/18/2018, 8:32:12 PM)
 
   ✔ These should be loaded from a fixture since they're going to be fixed and never changing @done (10/13/2018, 8:44:36 PM)
   ✔ Create the category table @done (10/13/2018, 6:48:58 PM)
@@ -385,9 +457,10 @@ Friends:
 Notifications:
   Probably the only thing that i'm going to struggle with, i need to come up with a good design
   ☐ Users should be able to get notifications about activity from other friends
-  ☐ User should get a realtime notification about pending friendship requests 
-    ☐ Create the FriendshipTopic which will broadcast information to all users (friend request, approved requests)
+  ✔ User should get a realtime notification about pending friendship requests @done (10/17/2018, 9:23:36 PM)
+    ✔ Create the FriendshipTopic which will broadcast information to all users (friend request, approved requests) @done (10/17/2018, 9:23:34 PM)
       This could be used to increment the notification count in the title : http://roshiro.github.io/TitleNotifier.js/
+  ☐ User should get a real-time notification when the other user accepts his pending request
 
 Bookmarks:
   ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)

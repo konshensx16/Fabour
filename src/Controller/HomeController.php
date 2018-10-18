@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Item;
+use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DomCrawler\Field\TextareaFormField;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -112,6 +115,25 @@ class HomeController extends AbstractController
         return $this->render('home/icons.html.twig', [
            'pending' => (bool)$result
         ]);
+    }
+
+    /**
+     * @Route("/testcascade/{id}", name="testCascade")
+     * @param EntityManagerInterface $entityManager
+     * @param Category $category
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function testCascade(EntityManagerInterface $entityManager, Category $category)
+    {
+
+        $entityManager->remove($category);
+        $entityManager->flush();
+
+        return $this->json(
+            [
+                'type' => 'hahah'
+            ]
+        );
     }
 
     /**

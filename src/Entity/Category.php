@@ -33,12 +33,18 @@ class Category
      */
     private $posts;
 
-    public function __construct(string $name, string $slug)
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SubCategory", mappedBy="category", cascade={"persist", "remove"})
+     */
+    private $subcategories;
+
+    public function __construct(string $name = null, string $slug = null)
     {
         $this->name = $name;
         $this->slug = $slug;
 
         $this->posts = new ArrayCollection();
+        $this->subcategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -104,5 +110,44 @@ class Category
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|SubCategory[]
+     */
+    public function getSubcategories(): Collection
+    {
+        return $this->subcategories;
+    }
+
+    public function addSubcategory(SubCategory $subcategory): self
+    {
+        if (!$this->subcategories->contains($subcategory)) {
+            $this->subcategories[] = $subcategory;
+            $subcategory->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubcategory(SubCategory $subcategory): self
+    {
+        if ($this->subcategories->contains($subcategory)) {
+            $this->subcategories->removeElement($subcategory);
+            // set the owning side to null (unless already changed)
+            if ($subcategory->getCategory() === $this) {
+                $subcategory->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function subCategory(string $name, string $slug)
+    {
+        $subCategory = new SubCategory($name, $slug);
+        $subCategory->setCategory($this);
+
+        $this->subcategories->add($subCategory);
     }
 }
