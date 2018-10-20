@@ -29,11 +29,6 @@ class Category
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="category")
-     */
-    private $posts;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\SubCategory", mappedBy="category", cascade={"persist", "remove"})
      */
     private $subcategories;

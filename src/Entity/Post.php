@@ -40,9 +40,9 @@ class Post
     private $comments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="posts", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\SubCategory", inversedBy="posts", cascade={"persist", "remove"})
      */
-    private $category;
+    private $subCategory;
 
 
     /**
@@ -203,6 +203,18 @@ class Post
                 $bookmark->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSubCategory(): ?SubCategory
+    {
+        return $this->subCategory;
+    }
+
+    public function setSubCategory(?SubCategory $subCategory): self
+    {
+        $this->subCategory = $subCategory;
 
         return $this;
     }

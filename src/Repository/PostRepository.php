@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +18,46 @@ class PostRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Post::class);
+    }
+
+    /**
+     * Returns Post[]|null of the most popular posts in a given category
+     * based on post views
+     * @param int $category_id
+     * @param int $limit
+     * @return mixed
+     */
+    public function findPopularPostsByCategoryWithLimit(int $category_id, int $limit)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->innerJoin('p.subCategory', 's', 'WITH', 's = p.subCategory')
+            ->innerJoin('s.category', 'c', 'WITH', 'c = s.category')
+            ->andWhere('c = :category_id')
+            ->setParameter('category_id', $category_id)
+            ->setMaxResults($limit)
+            ->orderBy('p.views_counter', 'DESC')
+            ->getQuery();
+        return $qb->getResult();
+    }
+
+    /**
+     * Gets the latest published posts in a category
+     * @param int $category_id
+     * @return mixed
+     */
+    public function findRecentPostsWithCategory(int $category_id)
+    {
+        $qb = $this->createQueryBuilder('p')
+        ->innerJoin('p.subCategory', 's', 'WITH', 's = p.subCategory')
+        ->innerJoin('s.category', 'c', 'WITH', 'c = s.category')
+        ->andWhere('s.category = :category_id')
+        ->setParameter('category_id', $category_id)
+        ->orderBy('p.created_at', 'DESC')
+        ->getQuery();
+
+        // i need to get the category just by using the sub_category
+        return $qb->getResult()
+        ;
     }
 
 //    /**

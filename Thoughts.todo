@@ -284,7 +284,11 @@ POSTS:
     ✔ Adap the design to the new slim design @done (10/14/2018, 12:35:34 PM)
     ✔ Add the category dropdown @done (10/14/2018, 12:35:33 PM)
     ✘ CRAZY IDEA: create some sort of a draft system where the user work will be autosaved during the period he's working on it, and can always access it and continue working on it @cancelled (10/14/2018, 12:35:39 PM)
-
+  ☐ Add the subcategory to each post, (Just doing what the last video in my channel was about)
+    ☐ Create the relationship between the tables
+  ✔ Change the fixture to use subCategories instead of category @done (10/18/2018, 9:32:32 PM)
+  ☐ Update all the views to render the sub_category instead of the category
+  ☐ Update the query to be based on the sub_category since the category was removed and you can only access it via the category itself 
   
 Categories:
   ☐ Maybe each category should have sub-categories ?? (Just a thought) (Just still from medium)

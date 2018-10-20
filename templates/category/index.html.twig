@@ -3,19 +3,70 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    {{ dump(category) }}
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="section-wrapper mg-t-20">
+        <label class="section-title">Popular posts in {{ category }}</label>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/CategoryController.php'|file_link(0) }}">src/Controller/CategoryController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/category/index.html.twig'|file_link(0) }}">templates/category/index.html.twig</a></code></li>
-    </ul>
-</div>
+        <div class="row">
+            {% if popular_posts %}
+                {% for post in popular_posts %}
+                    <div class="col-lg-3">
+                        <div class="card card-blog">
+                            <figure class="card-item-img bg-mantle">
+                                <img class="img-fluid" src="http://via.placeholder.com/1000x667" alt="Image">
+                            </figure>
+                            <div class="card-body">
+                                <p class="blog-category">by {{ post.user.username }}</p>
+                                <h5 class="blog-title"><a
+                                            href="{{ path('post.display', {'id': post.id}) }}">{{ post.title }}</a></h5>
+                                <p class="blog-text">
+                                    {{ post.content|length > 160 ? post.content|slice(0, 157) ~ '...' : post.content|e('html') }}
+                                </p>
+                                <p class="blog-links">
+                                    <a href="">{{ post.viewsCounter }} Views</a>
+                                    <a href="">{{ post.comments.count }} Comments</a>
+                                </p>
+                            </div><!-- card-body -->
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                There are no posts currently, check back later, or try another category :)
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="section-wrapper mg-t-20">
+        <label class="section-title">Recently published</label>
+
+        <div class="row">
+            {% if recentPosts %}
+                {% for post in recentPosts %}
+                    <div class="col-lg-6">
+                        <div class="card card-blog-split">
+                            <div class="row no-gutters">
+                                <div class="col-md-5 col-lg-6 col-xl-5">
+                                    <figure>
+                                        <img src="http://via.placeholder.com/1000x667" class="img-fit-cover" alt="">
+                                    </figure>
+                                </div><!-- col-4 -->
+                                <div class="col-md-7 col-lg-6 col-xl-7">
+                                    <p class="blog-category tx-danger">{{ post.subCategory }}</p>
+                                    <h5 class="blog-title"><a
+                                                href="{{ path('post.display', {'id': post.id}) }}">{{ post.title }}</a></h5>
+                                    <p class="blog-text">
+                                        {{ post.content|length > 255 ? post.content|slice(0, 253) ~ '...' : post.content|e('html') }}
+                                    </p>
+                                    <span class="blog-date">{{ post.createdAt|date('Y-m-d H:m') }}</span>
+                                </div><!-- col-8 -->
+                            </div><!-- row -->
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                There are no posts currently, check back later, or try another category :)
+            {% endif %}
+        </div>
+    </div>
+
 {% endblock %}

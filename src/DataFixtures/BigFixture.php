@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Post;
+use App\Entity\SubCategory;
 use App\Entity\User;
 use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
@@ -32,8 +33,14 @@ class BigFixture extends Fixture
     public function load(ObjectManager $manager)
     {
         $category = new Category('Arts & Entertainment', 'arts-and-entertainment');
-        $category->subCategory('Art', 'art');
-        $category->subCategory('Bookmarks', 'bookmarks');
+        $subCategory = new SubCategory('Art', 'art');
+        $subCategory->setCategory($category);
+        $category->addSubcategory($subCategory);
+
+        $subCategory2 = new SubCategory('Bookmarks', 'bookmarks');
+        $subCategory2->setCategory($category);
+        $category->addSubcategory($subCategory2);
+
         $category->subCategory('Comics', 'comics');
         $category->subCategory('Culture', 'culture');
         $category->subCategory('Film', 'film');
@@ -202,33 +209,7 @@ class BigFixture extends Fixture
                             elit. Aenean commodo ligula eget dolor. Aenean massa. 
                             Cum sociis natoque penatibus et magnis dis parturient 
                             montes, nascetur ridiculus mus. Donec quam felis, 
-                            ultricies nec, pellentesque eu, pretium quis, sem.</p>
-                            <table class="data">
-                              <tr>
-                                <th>Entry Header 1</th>
-                                <th>Entry Header 2</th>
-                                <th>Entry Header 3</th>
-                                <th>Entry Header 4</th>
-                              </tr>
-                              <tr>
-                                <td>Entry First Line 1</td>
-                                <td>Entry First Line 2</td>
-                                <td>Entry First Line 3</td>
-                                <td>Entry First Line 4</td>
-                              </tr>
-                              <tr>
-                                <td>Entry Line 1</td>
-                                <td>Entry Line 2</td>
-                                <td>Entry Line 3</td>
-                                <td>Entry Line 4</td>
-                              </tr>
-                              <tr>
-                                <td>Entry Last Line 1</td>
-                                <td>Entry Last Line 2</td>
-                                <td>Entry Last Line 3</td>
-                                <td>Entry Last Line 4</td>
-                              </tr>
-                            </table>
+                            ultricies nec, pellentesque eu, pretium quis, sem.</p> 
                             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing 
                             elit. Aenean commodo ligula eget dolor. Aenean massa. 
                             Cum sociis natoque penatibus et magnis dis parturient 
@@ -240,8 +221,49 @@ class BigFixture extends Fixture
             $user
         );
 
-        $post->setCategory(
-            $category
+        $post->setSubCategory(
+            $subCategory
+        );
+
+
+        $post1 = new Post();
+        $post1->setTitle('One more post for the culture');
+        $post1->setContent('<h1>Lorem ipsum dolor sit amet consectetuer adipiscing 
+                            elit</h1>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing 
+                            elit. Aenean commodo ligula eget dolor. Aenean massa 
+                            <strong>strong</strong>. Cum sociis natoque penatibus 
+                            et magnis dis parturient montes, nascetur ridiculus 
+                            mus. Donec quam felis, ultricies nec, pellentesque 
+                            eu, pretium quis, sem. Nulla consequat massa quis 
+                            enim. Donec pede justo, fringilla vel, aliquet nec, 
+                            vulputate eget, arcu. In enim justo, rhoncus ut, 
+                            imperdiet a, venenatis vitae, justo. Nullam dictum 
+                            felis eu pede <a class="external ext" href="#">link</a> 
+                            mollis pretium. Integer tincidunt. Cras dapibus. 
+                            Vivamus elementum semper nisi. Aenean vulputate 
+                            eleifend tellus. Aenean leo ligula, porttitor eu, 
+                            consequat vitae, eleifend ac, enim. Aliquam lorem ante, 
+                            dapibus in, viverra quis, feugiat a, tellus. Phasellus 
+                            viverra nulla ut metus varius laoreet. Quisque rutrum. 
+                            Aenean imperdiet. Etiam ultricies nisi vel augue. 
+                            Curabitur ullamcorper ultricies nisi.</p>
+                            <h1>Lorem ipsum dolor sit amet consectetuer adipiscing 
+                            elit</h1>
+                            <h2>Aenean commodo ligula eget dolor aenean massa</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing 
+                            elit. Aenean commodo ligula eget dolor. Aenean massa. 
+                            Cum sociis natoque penatibus et magnis dis parturient 
+                            montes, nascetur ridiculus mus. Donec quam felis, 
+                            ultricies nec, pellentesque eu, pretium quis, sem.</p>');
+
+        $post1->setCreatedAt(new \DateTime());
+        $post1->setUser(
+            $user
+        );
+
+        $post1->setSubCategory(
+            $subCategory2
         );
 
         $manager->persist($category);
@@ -256,6 +278,7 @@ class BigFixture extends Fixture
         $manager->persist($user3);
 
         $manager->persist($post);
+        $manager->persist($post1);
 
         $manager->flush();
     }

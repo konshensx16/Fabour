@@ -23,7 +23,7 @@
                             <strong>
                                 <a href="{{ path('profile.userProfile', {'username': post.user.username }) }}">{{ post.user.username }}</a>
                                 in
-                                <a href="{{ path('category.category', {'slug': post.category.slug }) }}">{{ post.category }}</a>
+                                <a href="{{ path('category.category', {'slug': post.subCategory.category.slug }) }}">{{ post.subCategory }}</a>
                             </strong>
                             <br>
                             <em>

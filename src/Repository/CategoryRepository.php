@@ -19,6 +19,17 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    /**
+     * Gets an array containing the most popular posts in the category _id
+     * based on post views
+     * @param int $getId
+     */
+    public function findPopularPostsById(int $getId)
+    {
+
+    }
+
+
 //    /**
 //     * @return Category[] Returns an array of Category objects
 //     */
