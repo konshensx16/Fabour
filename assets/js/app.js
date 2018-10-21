@@ -18,6 +18,11 @@ webSocket.on("socket/connect", function (session) {
     {
         notification.confirm(payload)
     })
+
+	session.subscribe('publications/channel', function (uri, payload) // payload is the message itself
+    {
+        notification.confirm(payload[0])
+    })
     session.subscribe('friendship/channel', function (uri, payload) // payload is an object
     {
 		// TODO: display a small notification for the user, maybe make it click-able

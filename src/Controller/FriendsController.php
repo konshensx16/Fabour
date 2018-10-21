@@ -96,7 +96,7 @@ class FriendsController extends AbstractController
             try {
                 $this->pusher->push([
                     'type' => 'sent_request',
-                    'message' => $currentUser->getUsername() . ' wants to add you to his friends list',
+                    'message' => $currentUser->getUsername() . ' wants to add you as a friend',
                     'send_to_user' => $user->getUsername()
                 ], 'friendship_topic');
             } catch (\Exception $e) {

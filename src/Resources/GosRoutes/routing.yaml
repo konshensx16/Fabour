@@ -18,6 +18,11 @@ conversation_topic:
     handler:
         callback: 'conversation.topic'
 
+publications_topic:
+    channel: publications/channel
+    handler:
+        callback: 'publications.topic'
+
 # RPC stuff, don't touch this in case of just a topic
 acme_rpc:
   channel: sample/{method}

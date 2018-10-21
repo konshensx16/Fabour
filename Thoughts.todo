@@ -471,6 +471,12 @@ Notifications:
       This could be used to increment the notification count in the title : http://roshiro.github.io/TitleNotifier.js/
   ✔ User should get a real-time notification when the other user accepts his pending request @done (10/20/2018, 1:53:26 AM)
   ☐ Friends should get notifications when another friend publishes something (maybe in the future add an options to disable this ? just a thought)
+    ☐ Right now do the real-time stuff first before creating the back-end stuff (db and controller)
+      Senario:
+        Get the username of all friends in this uer friends list
+        Use them to search for online users in the session
+        Add those users to the list of eligible receivers of the notification
+          ☐ Create a findFriendsById in the UserRelationship repository
 
 Bookmarks:
   ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)

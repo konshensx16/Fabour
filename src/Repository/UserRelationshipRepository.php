@@ -85,8 +85,7 @@ class UserRelationshipRepository extends ServiceEntityRepository
             ->setParameter('relatedUser', $related_user_id)
             ->setParameter('type', 'friend')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
     /**
@@ -107,8 +106,23 @@ class UserRelationshipRepository extends ServiceEntityRepository
             ->orderBy('u.updated_at', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+
+    }
+
+    /**
+     * Gets a list of users related to the $user_id
+     * @param int $user_id
+     * @return mixed
+     */
+    public function findUserFriendsById(int $user_id)
+    {
+        return $this->createQueryBuilder('ur')
+//            ->select('ur.relatedUser')
+            ->andWhere('ur.relatingUser = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->getQuery()
+            ->getResult();
 
     }
 

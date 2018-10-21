@@ -6,9 +6,11 @@ use App\Entity\Bookmark;
 use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Entity\UserRelationship;
 use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\BookmarkRepository;
+use App\Repository\UserRelationshipRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
@@ -41,10 +43,10 @@ class PostController extends AbstractController
     /**
      * @Route("/create", name="create")
      * @param Request $request
-     * @param ValidatorInterface $validator
+     * @param UserRelationshipRepository $userRelationshipRepository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function create(Request $request, ValidatorInterface $validator)
+    public function create(Request $request, UserRelationshipRepository $userRelationshipRepository)
     {
         // i need the form
         $post = new Post();
@@ -54,17 +56,37 @@ class PostController extends AbstractController
         ]);
 
         $form->handleRequest($request);
-        dump("hello: " . $form->isSubmitted());
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
             // handle the request and shit
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
-
-            $errors = $validator->validate($post);
-            dump($errors);
-
             $em->flush();
+
+            // TODO: send a notification to all friends of the publisher
+            // get all friends of the user
+            $friends = $userRelationshipRepository->findUserFriendsById($currentUser->getId());
+            // i only want the related user (just the username)
+            // create an array with tht related users usernames
+            $friendsNames = [];
+            /** @var UserRelationship $friend */
+            foreach ($friends as $friend) {
+                $friendsNames[] = $friend->getRelatedUser()->getUsername();
+            }
+            // send the notification
+            try {
+                $this->pusher->push([
+                    'type' => 'new_post',
+                    'message' => $currentUser->getUsername() . " Just published: " . $post->getTitle(),
+                    'friends' => $friendsNames
+                ] , 'publications_topic');
+            } catch (\Exception $e)
+            {
+                $e->getTrace();
+            }
+
 
             $this->addFlash('success', 'Post published successfully!');
 
