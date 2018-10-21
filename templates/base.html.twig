@@ -38,6 +38,12 @@
     <div class="container-fluid">
         <ul class="nav">
             <li class="nav-item {{ app.request.get('_route') == '_list' ? 'active' }}">
+                <a class="nav-link" href="{{ path('home.index') }}">
+                    <i class="icon ion-ios-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="nav-item {{ app.request.get('_route') == '_list' ? 'active' }}">
                 <a class="nav-link" href="{{ path('category.category', {'slug': 'arts-and-entertainment'}) }}">
                     <i class="icon ion-ios-game-controller-b"></i>
                     <span>Arts & Entertainment</span>

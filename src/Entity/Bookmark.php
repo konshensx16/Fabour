@@ -9,6 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Bookmark
 {
+    public function __construct()
+    {
+        $this->created_at = new \DateTime();
+    }
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -25,6 +30,11 @@ class Bookmark
      * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="bookmarks")
      */
     private $post;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
 
 
     public function getId(): ?int
@@ -52,6 +62,18 @@ class Bookmark
     public function setPost(?Post $post): self
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }

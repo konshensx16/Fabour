@@ -10,6 +10,7 @@ use App\Entity\UserRelationship;
 use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\BookmarkRepository;
+use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
@@ -81,9 +82,8 @@ class PostController extends AbstractController
                     'type' => 'new_post',
                     'message' => $currentUser->getUsername() . " Just published: " . $post->getTitle(),
                     'friends' => $friendsNames
-                ] , 'publications_topic');
-            } catch (\Exception $e)
-            {
+                ], 'publications_topic');
+            } catch (\Exception $e) {
                 $e->getTrace();
             }
 
@@ -162,9 +162,8 @@ class PostController extends AbstractController
                     $this->pusher->push([
                         'message' => $this->getUser()->getUsername() . ' just commented on your post: ' . $post->getTitle(),
                         'author' => $post->getUser()->getUsername()
-                    ] , 'comment_topic');
-                } catch (\Exception $e)
-                {
+                    ], 'comment_topic');
+                } catch (\Exception $e) {
                     $e->getTrace();
                 }
             }

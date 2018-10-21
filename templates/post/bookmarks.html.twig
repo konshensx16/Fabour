@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Bookmarks
+{% endblock %}
+
+{% block body %}
+    <div class="slim-pageheader">
+        <h6 class="slim-pagetitle">My Profile</h6>
+    </div>
+    <div class="card card-latest-activity mg-t-20">
+        <div class="card-body">
+            <div class="slim-card-title mg-b-20">Your bookmarks</div>
+            {% if bookmarks|length %}
+                {% for bookmark in bookmarks %}
+                    <div class="row no-gutters mg-b-20">
+                        <div class="col-md-4">
+                            <a href="{{ path('post.display', {'id': bookmark.post.id}) }}"><img
+                                        src="{{ asset('assets/img/img0.jpg') }}" class="img-fit-cover"
+                                        alt=""></a>
+                        </div><!-- col-4 -->
+                        <div class="col-md-8">
+                            <div class="post-wrapper">
+                                <a href="{{ path('post.display', {'id': bookmark.post.id}) }}"
+                                   class="activity-title">{{ bookmark.post.title }}</a>
+                                <p class="mg-b-0">
+                                    <a href="" class="d-block">{{ bookmark.post.user.username }}
+                                        in {{ bookmark.post.subCategory }}</a>
+                                    <span>Bookmarked: {{ bookmark.createdAt|time_diff }} .</span>
+                                </p>
+                            </div><!-- post-wrapper -->
+                        </div><!-- col-8 -->
+                    </div><!-- row -->
+                {% endfor %}
+            {% else %}
+                <h3>This place seems to empty... :(</h3>
+            {% endif %}
+        </div><!-- card-body -->
+    </div><!-- card -->
+{% endblock %}

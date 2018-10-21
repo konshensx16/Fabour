@@ -44,6 +44,18 @@ class BookmarkRepository extends ServiceEntityRepository
         }
     }
 
+    public function findBookmarksByUserId(int $user_id)
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.user = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->orderBy('b.created_at', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+
+    }
+
     /*
     public function findOneBySomeField($value): ?Bookmark
     {
