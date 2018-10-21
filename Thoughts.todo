@@ -349,7 +349,7 @@ Categories:
       Travel
       Wellness
     Society
-      Basic Income                                {{ dump(subCategory.category.slug) }}
+      Basic Income
 
       Cities
       Education
@@ -470,13 +470,13 @@ Notifications:
     ✔ Create the FriendshipTopic which will broadcast information to all users (friend request, approved requests) @done (10/17/2018, 9:23:34 PM)
       This could be used to increment the notification count in the title : http://roshiro.github.io/TitleNotifier.js/
   ✔ User should get a real-time notification when the other user accepts his pending request @done (10/20/2018, 1:53:26 AM)
-  ☐ Friends should get notifications when another friend publishes something (maybe in the future add an options to disable this ? just a thought)
-    ☐ Right now do the real-time stuff first before creating the back-end stuff (db and controller)
+  ✔ Friends should get notifications when another friend publishes something (maybe in the future add an options to disable this ? just a thought) @done (10/21/2018, 2:14:19 AM)
+    ✔ Right now do the real-time stuff first before creating the back-end stuff (db and controller) @done (10/21/2018, 2:14:18 AM)
       Senario:
         Get the username of all friends in this uer friends list
         Use them to search for online users in the session
         Add those users to the list of eligible receivers of the notification
-          ☐ Create a findFriendsById in the UserRelationship repository
+          ✔ Create a findFriendsById in the UserRelationship repository @done (10/21/2018, 2:14:16 AM)
 
 Bookmarks:
   ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)
@@ -499,5 +499,7 @@ Bookmarks:
 
 BUGS:
   Profile:
-    ☐ Users without any posts are not displaying the message, just empty space!
-    ☐ In the post.display, when the logged in user is the publisher of the post don't display a add to friends buutton
+    ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
+    ✔ In the post.display, when the logged in user is the publisher of the post don't display a add to friends button @done (10/21/2018, 2:24:32 AM)
+    ✔ In the userProfile the recent posts are in the opposite sense @done (10/21/2018, 2:24:30 AM)
+      ✔ Get just 10 posts for te profile @done (10/21/2018, 2:24:29 AM)

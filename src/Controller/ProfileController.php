@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Form\UserFormType;
 use App\Form\UserProfileType;
+use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,11 +36,12 @@ class ProfileController extends AbstractController
      * @param $username
      * @param UserRepository $userRepository
      * @param UserRelationshipRepository $userRelationshipRepository
+     * @param PostRepository $postRepository
      * @param EntityManagerInterface $entityManager
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function userProfile($username, UserRepository $userRepository, UserRelationshipRepository $userRelationshipRepository, EntityManagerInterface $entityManager)
+    public function userProfile($username, UserRepository $userRepository, UserRelationshipRepository $userRelationshipRepository, PostRepository $postRepository, EntityManagerInterface $entityManager)
     {
         // server-side rendering no need to worry about sensitive information getting out!
         // If the user is not logged in he will be redirected to somewhere else!
@@ -50,12 +52,9 @@ class ProfileController extends AbstractController
         $user = null;
         $relationship = null;
         // if no username, display the current logged in user
-        if (!$username)
-        {
+        if (!$username) {
             $user = $this->getUser();
-        }
-        else
-        {
+        } else {
             $user = $userRepository->findOneBy([
                 'username' => $username
             ]);
@@ -83,7 +82,8 @@ class ProfileController extends AbstractController
             'profile' => $user,
             'friends' => $userRelationshipRepository->findUsersWithTypeFriend($user->getId()),
             'isFriend' => (bool)$relationship,
-            'recentFriends' => $recentlyAddedFriends
+            'recentFriends' => $recentlyAddedFriends,
+            'recentPosts' => $postRepository->findRecentlyPublishedPostsWithUserIdWithLimit($user->getId(), 10),
         ]);
     }
 

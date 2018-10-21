@@ -6,7 +6,8 @@
         </h5>
 
         <p>{{ author.about|length > 100 ? author.about|slice(0, 100) ~ '...' : author.about }}</p>
-
-        <a href="" class="btn btn-primary btn-signin">Add to friends</a>
+        {% if author != app.user %}
+            <a href="{{ path('friends.addAsFriend', {'id': author.id}) }}" class="btn btn-primary btn-signin">Add to friends</a>
+        {% endif %}
     </div><!-- tx-center -->
 </div>

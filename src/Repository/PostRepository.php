@@ -60,6 +60,18 @@ class PostRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findRecentlyPublishedPostsWithUserIdWithLimit(int $user_id, int $limit)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.user = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->setMaxResults($limit)
+            ->orderBy('p.created_at', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Post[] Returns an array of Post objects
 //     */

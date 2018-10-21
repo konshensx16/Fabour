@@ -38,8 +38,8 @@
             <div class="card card-latest-activity mg-t-20">
                 <div class="card-body">
                     <div class="slim-card-title mg-b-20">Latest Posts</div>
-                    {% if profile.posts %}
-                        {% for post in profile.posts %}
+                    {% if recentPosts|length %}
+                        {% for post in recentPosts %}
                             <div class="row no-gutters mg-b-20">
                                 <div class="col-md-4">
                                     <a href="{{ path('post.display', {'id': post.id}) }}"><img
