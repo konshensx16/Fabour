@@ -3,21 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Entity\Item;
-use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DomCrawler\Field\TextareaFormField;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Message;
 use App\Form\MessageType;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -32,7 +27,7 @@ class HomeController extends AbstractController
     public function index(Request $request, PostRepository $postRepository)
     {
         return $this->render('home/index.html.twig', [
-            'posts' => $postRepository->findAll()
+            'posts' => $postRepository->findLatestPosts()
         ]);
     }
 

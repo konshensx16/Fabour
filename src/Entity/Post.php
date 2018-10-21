@@ -220,4 +220,9 @@ class Post
 
         return $this;
     }
+
+    public function __tostring()
+    {
+        return $this->title . ' by: ' . $this->user . PHP_EOL;
+    }
 }

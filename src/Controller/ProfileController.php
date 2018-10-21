@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\User;
 use App\Form\UserFormType;
 use App\Form\UserProfileType;
 use App\Repository\PostRepository;
@@ -127,6 +128,13 @@ class ProfileController extends AbstractController
         return $this->render('profile/author.html.twig', [
             // TODO: this will return the entire username i might need to send just the things i need
             'author' => $post->getUser()
+        ]);
+    }
+
+    public function profile(User $user)
+    {
+        return $this->render('profile/profile.html.twig', [
+            'profile' => $user,
         ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Entity\UserRelationship;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -124,6 +125,21 @@ class UserRelationshipRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
+    }
+
+
+    public function findFriendsByUsername(int $user_id, string $username)
+    {
+        $qb = $this->createQueryBuilder('ur')
+            ->innerJoin('ur.relatedUser', 'u', Join::WITH, 'ur.relatedUser = u.id')
+            ->andWhere('ur.relatingUser = :user_id')
+            ->andWhere('u.username like :username')
+            ->setParameter('user_id', $user_id)
+            ->setParameter('username', '%' . $username . '%');
+
+        return $qb
+            ->getQuery()
+            ->getResult();
     }
 
 

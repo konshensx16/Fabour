@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Post|null findOneBy(array $criteria, array $orderBy = null)
  * @method Post[]    findAll()
  * @method Post[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @property  findLatestPosts
  */
 class PostRepository extends ServiceEntityRepository
 {
@@ -66,6 +67,31 @@ class PostRepository extends ServiceEntityRepository
             ->andWhere('p.user = :user_id')
             ->setParameter('user_id', $user_id)
             ->setMaxResults($limit)
+            ->orderBy('p.created_at', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Used for a basic search using the name and some wild cards, ofc this is going to change later (be improved)
+     * @param string $query
+     * @return mixed
+     */
+    public function findPostsByName(string $query)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.title like :query')
+            ->orWhere('p.content like :query')
+            ->setParameter('query', '%' . $query . '%')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findLatestPosts()
+    {
+        return $this->createQueryBuilder('p')
             ->orderBy('p.created_at', 'DESC')
             ->getQuery()
             ->getResult()

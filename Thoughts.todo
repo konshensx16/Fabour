@@ -418,10 +418,17 @@ Profile:
 Search:
   ✔ Create a search controller which will act as the main search engine for the web app @done (10/14/2018, 3:37:07 PM)
   ✔ Create the action to handle rendering the search input @done (10/14/2018, 3:36:44 PM)
-    ☐ Not compeleted the form tags were causing problem in terms of UI
-  ☐ Creat the action which handles the search 
-    ☐ This will redirect to another page containing all search results (Create and leave empty)
+    ✔ Not compeleted the form tags were causing problem in terms of UI @done (10/21/2018, 12:21:40 PM)
+      Maybe i can just use an href with the input as query ?? (i don't like this!)
+      NOTE: i did nothing and it's working now ????
+  ✔ Creat the action which handles the search @done (10/21/2018, 4:03:17 PM)
+    ✔ This will redirect to another page containing all search results (Create and leave empty) @done (10/21/2018, 4:03:18 PM)
     ☐ Probably will try to include typeahead authocomplete and blooddhound suggestions engine
+  ✔ Render a side bar with all the different section and search results in it @done (10/21/2018, 4:03:23 PM)
+    ✔ Posts @done (10/21/2018, 4:03:24 PM)
+    ✔ Users @done (10/21/2018, 4:03:24 PM)
+    ✔ Friends (of the current logeed in user of course) @done (10/21/2018, 4:03:25 PM)
+      ✔ Create an action (ProfileControler::profile) to render each profile (passing the profile as an argument) @done (10/21/2018, 4:03:25 PM)
 
 Friends:
   ✔ The user cannot add himself as a friend @done (10/15/2018, 9:21:23 PM)
@@ -503,3 +510,4 @@ BUGS:
     ✔ In the post.display, when the logged in user is the publisher of the post don't display a add to friends button @done (10/21/2018, 2:24:32 AM)
     ✔ In the userProfile the recent posts are in the opposite sense @done (10/21/2018, 2:24:30 AM)
       ✔ Get just 10 posts for te profile @done (10/21/2018, 2:24:29 AM)
+    ✔ The posts in the index page are in reverse order (should be DESC) @done (10/21/2018, 3:42:13 PM)

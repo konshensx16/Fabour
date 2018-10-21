@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Searching for: {{ query }}
+{% endblock %}
+
+{% block body %}
+    <div class="slim-pageheader">
+        <h6 class="slim-pagetitle">Search results for {{ query }}</h6>
+    </div>
+    <div class="manager-wrapper">
+        <div class="manager-right">
+            <div class="card card-body">
+                {% if filter %}
+                    {% if filter == 'posts' %}
+                        <div class="slim-card-title mg-b-20">Viewing posts</div>
+                        {% if posts %}
+                            <div class="row">
+                                {% for post in posts %}
+                                    <div class="col-lg-3">
+                                        <div class="card card-blog">
+                                            <figure class="card-item-img bg-mantle">
+                                                <img class="img-fluid" src="http://via.placeholder.com/1000x667" alt="Image">
+                                            </figure>
+                                            <div class="card-body">
+                                                <p class="blog-category">by {{ post.user.username }}</p>
+                                                <h5 class="blog-title"><a
+                                                            href="{{ path('post.display', {'id': post.id}) }}">{{ post.title }}</a></h5>
+                                                <p class="blog-text">
+                                                    {{ post.content|length > 160 ? post.content|slice(0, 157) ~ '...' : post.content|e('html') }}
+                                                </p>
+                                                <p class="blog-links">
+                                                    <a href="">{{ post.viewsCounter }} Views</a>
+                                                    <a href="">{{ post.comments.count }} Comments</a>
+                                                </p>
+                                            </div><!-- card-body -->
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p>Sorry, no posts matched your query, check your spelling maybe? </p>
+                        {% endif %}
+                    {% elseif filter == 'users' %}
+                        <div class="slim-card-title mg-b-20">Viewing users</div>
+                        <div class="row row-sm">
+                            {% if users %}
+                                {% for profile in users %}
+                                    {{ render(controller(
+                                        'App\\Controller\\ProfileController::profile',
+                                        { 'user': profile }
+                                    )) }}
+                                {% endfor %}
+                            {% else %}
+                                <p>Sorry, no users matched your query, maybe try another username? </p>
+                            {% endif %}
+                        </div>
+                    {% elseif filter == 'friends' %}
+                        <div class="slim-card-title mg-b-20">Viewing your friends</div>
+                        <div class="row row-sm">
+                            {% if friends %}
+                                {% for userRelationship in friends %}
+                                    {{ render(controller(
+                                        'App\\Controller\\ProfileController::profile',
+                                        { 'user': userRelationship.relatedUser }
+                                    )) }}
+                                {% endfor %}
+                            {% else %}
+                                <p>Sorry, no users in your friends list matched your query, maybe you mispelled it? </p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+
+        </div><!-- manager-right -->
+        <div class="manager-left">
+            {#<a href="" class="btn btn-contact-new">Search</a>#}
+
+            {#<label class="section-label-sm mg-t-25">Results</label>#}
+            <nav class="nav">
+                {% if filter %}
+                    <a href="{{ path('search.handleSearch', {'query': query, 'filter': 'posts'}) }}"
+                       class="nav-link {{ filter == 'posts' ? 'active' }}">
+                        <span>Posts</span>
+                        <span>
+                            {{ filter == 'posts' ? posts|length : posts }}
+                        </span>
+                    </a>
+                    <a href="{{ path('search.handleSearch', {'query': query, 'filter': 'users'}) }}"
+                       class="nav-link {{ filter == 'users' ? 'active' }}">
+                        <span>Users</span>
+                        <span>
+                            {{ filter == 'users' ? users|length : users }}
+                        </span>
+                    </a>
+                    <a href="{{ path('search.handleSearch', {'query': query, 'filter': 'friends'}) }}"
+                       class="nav-link {{ filter == 'friends' ? 'active' }}">
+                        <span>Friends</span>
+                        <span>
+                            {{ filter == 'friends' ? friends|length : friends }}
+                        </span>
+                    </a>
+                {% endif %}
+            </nav>
+        </div><!-- manager-left -->
+    </div>
+{% endblock %}
+
