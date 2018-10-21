@@ -15,6 +15,7 @@ use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/post", name="post.")
@@ -35,24 +36,34 @@ class PostController extends AbstractController
         $this->topicManager = $topicManager;
         $this->pusher = $pusher;
     }
-    
+
 
     /**
      * @Route("/create", name="create")
+     * @param Request $request
+     * @param ValidatorInterface $validator
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function create(Request $request)
+    public function create(Request $request, ValidatorInterface $validator)
     {
         // i need the form
         $post = new Post();
 
-        $form = $this->createForm(PostType::class, $post);
+        $form = $this->createForm(PostType::class, $post, [
+            'action' => $this->generateUrl('post.create')
+        ]);
 
         $form->handleRequest($request);
+        dump("hello: " . $form->isSubmitted());
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             // handle the request and shit
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
+
+            $errors = $validator->validate($post);
+            dump($errors);
+
             $em->flush();
 
             $this->addFlash('success', 'Post published successfully!');

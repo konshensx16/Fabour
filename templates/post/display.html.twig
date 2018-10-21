@@ -18,7 +18,7 @@
                         <img src="http://via.placeholder.com/500x500" class="wd-40 rounded-circle" alt="">
                         <div class="media-body mg-l-15">
                             <h6 class="tx-14 mg-b-2">by <a href="{{ path('profile.userProfile', {'username': post.user.username }) }}">{{ post.user.username }}</a></h6>
-                            <p class="mg-b-0">{{ post.category }}</p>
+                            <p class="mg-b-0">{{ post.subCategory }}</p>
                         </div><!-- media-body -->
                         <span class="tx-12">{{ post.createdAt|date('Y-M-d h:m:s')}}</span>
                     </div><!-- media -->

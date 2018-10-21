@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Form\UserFormType;
+use App\Form\UserProfileType;
 use App\Repository\UserRelationshipRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/profile", name="profile.")
@@ -95,10 +97,13 @@ class ProfileController extends AbstractController
     {
         // TODO: check if the user has enough permissions to change information
         // the logged in user should be able to change his info
+
         // TODO: implement this action
         $user = $this->getUser();
-
-        $form = $this->createForm(UserFormType::class, $user);
+        if (!$user instanceof UserInterface) {
+            return false;
+        }
+        $form = $this->createForm(UserProfileType::class, $user);
 
         $form->handleRequest($request);
 

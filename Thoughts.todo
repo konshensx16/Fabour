@@ -284,11 +284,14 @@ POSTS:
     ✔ Adap the design to the new slim design @done (10/14/2018, 12:35:34 PM)
     ✔ Add the category dropdown @done (10/14/2018, 12:35:33 PM)
     ✘ CRAZY IDEA: create some sort of a draft system where the user work will be autosaved during the period he's working on it, and can always access it and continue working on it @cancelled (10/14/2018, 12:35:39 PM)
-  ☐ Add the subcategory to each post, (Just doing what the last video in my channel was about)
-    ☐ Create the relationship between the tables
+  ✔ Add the subcategory to each post, (Just doing what the last video in my channel was about) @done (10/21/2018, 1:20:17 AM)
+    ✔ Load the subcategories dynamically using ajax (try plain javascript first, in case i decided to get rid jquery later) @done (10/21/2018, 1:20:14 AM)
+    ✔ Create the relationship between the tables @done (10/20/2018, 9:10:38 PM)
   ✔ Change the fixture to use subCategories instead of category @done (10/18/2018, 9:32:32 PM)
-  ☐ Update all the views to render the sub_category instead of the category
-  ☐ Update the query to be based on the sub_category since the category was removed and you can only access it via the category itself 
+  ✔ Update all the views to render the sub_category instead of the category @done (10/20/2018, 1:48:21 AM)
+  ✔ Update the query to be based on the sub_category since the category was removed and you can only access it via the category itself @done (10/20/2018, 1:48:23 AM)
+    ✔ Learn about inner joins lol @done (10/20/2018, 1:48:24 AM)
+
   
 Categories:
   ☐ Maybe each category should have sub-categories ?? (Just a thought) (Just still from medium)
@@ -346,7 +349,8 @@ Categories:
       Travel
       Wellness
     Society
-      Basic Income
+      Basic Income                                {{ dump(subCategory.category.slug) }}
+
       Cities
       Education
       Environment
@@ -378,8 +382,9 @@ Categories:
   ✘ Create a crud for the categories so i can change them @cancelled (10/13/2018, 8:44:40 PM)
   ✘ Create an action to generate four categories @cancelled (10/13/2018, 8:45:09 PM)
     No need for this since this is going to be static and never changing the during the entire web application life
-  ☐ Create a separate page where the user can see all the categories and even sub-categories in case of adding them.
-    ☐ Makes links to the category and a page where the user can see all categories
+  ✔ Create a separate page where the user can see all the categories and even sub-categories in case of adding them. @done (10/20/2018, 1:48:41 AM)
+    ✔ Makes links to the category and a page where the user can see all categories @done (10/20/2018, 1:48:37 AM)
+  ☐ Maybe let the user see each category by itself e.g: if the user clicks art he should only see art, currently im showing the parent category 
 
 Users:
   ✔ Each user should had a created at date. @done (10/13/2018, 9:30:30 PM)
@@ -464,7 +469,8 @@ Notifications:
   ✔ User should get a realtime notification about pending friendship requests @done (10/17/2018, 9:23:36 PM)
     ✔ Create the FriendshipTopic which will broadcast information to all users (friend request, approved requests) @done (10/17/2018, 9:23:34 PM)
       This could be used to increment the notification count in the title : http://roshiro.github.io/TitleNotifier.js/
-  ☐ User should get a real-time notification when the other user accepts his pending request
+  ✔ User should get a real-time notification when the other user accepts his pending request @done (10/20/2018, 1:53:26 AM)
+  ☐ Friends should get notifications when another friend publishes something (maybe in the future add an options to disable this ? just a thought)
 
 Bookmarks:
   ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)
@@ -487,4 +493,5 @@ Bookmarks:
 
 BUGS:
   Profile:
-    Users without any posts are not displaying the message, just empty space!
+    ☐ Users without any posts are not displaying the message, just empty space!
+    ☐ In the post.display, when the logged in user is the publisher of the post don't display a add to friends buutton

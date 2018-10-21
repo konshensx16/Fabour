@@ -1,10 +1,39 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ dump(categories) }}
+    <div class="slim-pageheader">
+        <h6 class="slim-pagetitle">Explore all categories</h6>
+    </div>
+    {% if categories %}
+        {% for category in categories %}
+            {#Displaying big catagories#}
+            <div class="card card-people-list mg-b-20">
+                <div class="slim-card-title">{{ category }}</div>
+                <div class="media-list">
+                    {#render subCategories#}
+                    <div class="row">
+                        {% if category.subcategories %}
+                            {% for subCategory in category.subCategories %}
+                                <div class="col-lg-3">
+                                    <div class="card card-blog">
+                                        <figure class="card-item-img bg-mantle">
+                                            <img class="img-fluid" src="http://via.placeholder.com/1000x667" alt="{{ subCategory }}">
+                                        </figure>
+                                        <div class="card-body">
+                                            <h5 class="blog-title"><a href="{{ path('category.category', {'slug': subCategory.category.slug}) }}">{{ subCategory }}</a></h5>
+                                        </div><!-- card-body -->
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div><!-- media-list -->
+            </div><!-- card -->
+        {% endfor %}
+    {% endif %}
 {% endblock %}
 
 {% block title %}
-
+    Explore all categories
 {% endblock %}
 

@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends AbstractController
 {
     /**
-     * @Route("/{slug}", name="category")
+     * @Route("/single/{slug}", name="category")
      * @param Category $category
      * @param PostRepository $postRepository
      * @return \Symfony\Component\HttpFoundation\Response
@@ -34,6 +34,18 @@ class CategoryController extends AbstractController
             'category' => $category,
             'popular_posts' => $popularPosts,
             'recentPosts' => $recentPosts
+        ]);
+    }
+
+    /**
+     * @Route("/categories", name="categories")
+     * @param CategoryRepository $categoryRepository
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function allCategories(CategoryRepository $categoryRepository)
+    {
+        return $this->render('category/all.html.twig', [
+            'categories' => $categoryRepository->findAll(),
         ]);
     }
 

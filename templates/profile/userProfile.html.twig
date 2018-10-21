@@ -55,7 +55,7 @@
                                         </p>
                                         <p class="mg-b-0">
                                             <a href="" class="d-block">{{ post.user.username }}
-                                                in {{ post.category }}</a>
+                                                in {{ post.subCategory }}</a>
                                             <span>{{ post.createdAt|date('Y M d') }} .</span>
                                         </p>
                                     </div><!-- post-wrapper -->
@@ -123,7 +123,6 @@
                 <div class="media-list">
                     {% if recentFriends %}
                         {% for item in recentFriends %}
-
                             <div class="media">
                                 <img src="{{ asset('assets/img/') ~ item.relatedUser.avatar }}" alt="">
                                 <div class="media-body">

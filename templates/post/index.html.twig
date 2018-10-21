@@ -9,10 +9,10 @@
 
     <div class="section-wrapper mg-t-20">
         {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
 
-        {{ form_row(form.title) }}
-        {{ form_row(form.content) }}
-        {{ form_row(form.category) }}
+            <button type="submit" class="btn btn-primary btn-block btn-signin">Publish</button>
 
         {{ form_end(form) }}
     </div><!-- section-wrapper -->
@@ -23,11 +23,38 @@
 
 {% block javascripts %}
     <script src="{{ asset('assets/lib/medium-editor/js/medium-editor.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <script>
         $(function(){
             'use strict';
             // Inline editor
             var editor = new MediumEditor('.editable');
+
+            // TODO: change all the code below to non jquery code
+            var $post_category = $("#post_category")
+            var $token = $("#post_token")
+
+            $post_category.change(function ()
+            {
+                var $form = $(this).closest('form')
+
+                var data = {}
+
+                data[$token.attr('name')] = $token.val()
+                data[$post_category.attr('name')] = $post_category.val()
+
+                $.post($form.attr('action'), data).then(function (response)
+                {
+                    $("#post_subCategory").replaceWith(
+                        $(response).find("#post_subCategory")
+                    )
+                })
+            })
+
+            function log(msg)
+            {
+                console.log(msg)
+            }
         });
     </script>
 {% endblock %}

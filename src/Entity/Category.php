@@ -38,7 +38,6 @@ class Category
         $this->name = $name;
         $this->slug = $slug;
 
-        $this->posts = new ArrayCollection();
         $this->subcategories = new ArrayCollection();
     }
 
