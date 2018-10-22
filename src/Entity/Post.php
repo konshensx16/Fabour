@@ -14,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Post
 {
+    const POST_TYPE_ID = 'post';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

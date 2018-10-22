@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Bookmark
 {
+
+    const BOOKMARK_TYPE_ID = 'bookmark';
+
     public function __construct()
     {
         $this->created_at = new \DateTime();

@@ -484,6 +484,23 @@ Notifications:
         Use them to search for online users in the session
         Add those users to the list of eligible receivers of the notification
           ✔ Create a findFriendsById in the UserRelationship repository @done (10/21/2018, 2:14:16 AM)
+  Storing notifications in the back-end (comments, publications, friends approval, bookmarks of publications, etc...):
+    Database:
+      LINK : https://stackoverflow.com/questions/9735578/building-a-notification-system
+      LINK : http://blog.osmosys.asia/2017/04/26/design-notification-system/
+        NOTES ABOUT THE ABOVE BLOG POST:
+          One confusing thing is the entity_type_id and entity_type which are stored in the notification_object table,
+          The entity_id is a foreign key to the Entity that is being notified about, for example if it's a post , then the entity id will be a post_id,
+          if it's a comment it will be the comment_id etc..., 
+          entity_type_id is for identifying if it's either a Post, Comment, Bookmark etc...
+          enityt_type_id should be defined ina  config file, it's not something that can be stored in the database (could be but it's just stupid ,
+          i feel like it's better to do it in the server-side)
+          
+      Notification table:
+        id -> int (primary key)
+        notification -> string
+        type -> string (comment, friend_approval, etc...)
+        read -> true | false 
 
 Bookmarks:
   ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)
@@ -501,6 +518,12 @@ Bookmarks:
     ✔ Create a function in the repository to get the bookmark (using the user_id & post_id) @done (10/14/2018, 11:11:53 PM)
     ✔ Remove the entity and redirect to the post for now @done (10/14/2018, 11:11:54 PM)
   ✔ Display a remove from bookmarks if the post is already in the bookmarks @done (10/14/2018, 11:32:07 PM)
+  ✔ Create a page where the user can see all his bookmarks (Creating a controller but leaving some functions in the PostController) @done (10/21/2018, 4:56:00 PM)
+    ✔ Need to display the latest bookmarked post first @done (10/21/2018, 4:55:59 PM)
+  ✔ Add a created_at field to the bookmark so i can use to order the results, @done (10/21/2018, 4:55:50 PM)
+    And also display to the user when he added that post to the bookmarks (users like to have control over everything :) )
+  
+
 
   Messaging:
 

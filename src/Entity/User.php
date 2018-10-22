@@ -84,12 +84,18 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     private $friends;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\NotificationChange", mappedBy="actor")
+     */
+    private $notificationChanges;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
         $this->friends = new ArrayCollection();
+        $this->notificationChanges = new ArrayCollection();
     }
 
 
@@ -373,6 +379,37 @@ class User implements UserInterface, \Serializable, EquatableInterface
             // set the owning side to null (unless already changed)
             if ($friend->getRelatingUser() === $this) {
                 $friend->setRelatingUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|NotificationChange[]
+     */
+    public function getNotificationChanges(): Collection
+    {
+        return $this->notificationChanges;
+    }
+
+    public function addNotificationChange(NotificationChange $notificationChange): self
+    {
+        if (!$this->notificationChanges->contains($notificationChange)) {
+            $this->notificationChanges[] = $notificationChange;
+            $notificationChange->setActor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificationChange(NotificationChange $notificationChange): self
+    {
+        if ($this->notificationChanges->contains($notificationChange)) {
+            $this->notificationChanges->removeElement($notificationChange);
+            // set the owning side to null (unless already changed)
+            if ($notificationChange->getActor() === $this) {
+                $notificationChange->setActor(null);
             }
         }
 

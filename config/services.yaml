@@ -5,6 +5,11 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    post_type_id: 1
+    comment_type_id: 2
+    bookmark_type_id: 3
+    friendrequest_type_id: 4
+    friendapproval_type_id: 5
 
 services:
     # default configuration for services in *this* file

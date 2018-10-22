@@ -10,6 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class UserRelationship
 {
+    const FRIENDREQUEST_TYPE_ID = 'friendrequest';
+
+    const FRIENDAPPROVAL_TYPE_ID = 'friendapproval';
+
     const PENDING = 'pending';
 
     const FRIEND = 'friend';

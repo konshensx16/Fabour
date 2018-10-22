@@ -10,6 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Comment
 {
+
+    const COMMENT_TYPE_ID = 'comment';
+
     public function __construct()
     {
         $this->created_at = new \DateTime();

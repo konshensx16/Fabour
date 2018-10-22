@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Bookmark;
 use App\Entity\Comment;
+use App\Entity\Notification;
+use App\Entity\NotificationChange;
+use App\Entity\NotificationObject;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserRelationship;
@@ -65,6 +68,7 @@ class PostController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
+
 
             // TODO: send a notification to all friends of the publisher
             // get all friends of the user
@@ -155,6 +159,34 @@ class PostController extends AbstractController
             // TODO: change this to a transaction so in case of error the user will not be notified of the comment by error!
             $em->persist($comment);
             $em->flush();
+
+
+            // TODO: put this code in an event or a service and trigger the event
+            // NOTE: make sure to not make a typo as this wold ruin everything from this point on
+            $entity_type_id = $this->getEntityTypeId(Comment::COMMENT_TYPE_ID);
+            $notificationObject = new NotificationObject();
+
+            $notificationObject->setEntityTypeId($entity_type_id);
+            $notificationObject->setEntityId($comment->getId());
+            $notificationObject->setStatus(1); // not sure what this field is for
+
+            $notificationChange = new NotificationChange();
+            $notificationChange->setActor($this->getUser());
+            $notificationChange->setNotificationObject($notificationObject);
+            $notificationChange->setStatus(1);
+
+            $notification = new Notification();
+            $notification->setNotificationObject($notificationObject);
+            // this is the person who should get the notification, in this case all the friends ?
+            $notification->setNotifier($post->getUser());
+            $notification->setStatus(1);
+
+            $em->persist($notificationObject);
+            $em->persist($notificationChange);
+            $em->persist($notification);
+
+            $em->flush();
+
             // TODO: maybe all this code should be inside an event listener (onCommentPosted!)
             // TODO: if the current logged in user in the author, then no need to send a notification!
             if (!($this->getUser() === $post->getUser())) {
@@ -247,5 +279,21 @@ class PostController extends AbstractController
         return $this->render('post/userPosts.html.twig', [
             'posts' => $user->getPosts(),
         ]);
+    }
+
+    /**
+     * Gets the entity_type_id from the service container based the given $name
+     * Available entity types are
+     * Post
+     * Comment
+     * Bookmark
+     * FriendRequest
+     * FriendApproval
+     * @param string $name
+     * @return mixed
+     */
+    private function getEntityTypeId(string $name)
+    {
+        return $this->getParameter($name . '_type_id');
     }
 }
