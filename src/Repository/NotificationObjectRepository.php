@@ -26,18 +26,105 @@ class NotificationObjectRepository extends ServiceEntityRepository
      * @return NotificationObject[] Returns an array of NotificationObject objects
      */
 
-    public function findNotificationsByNotifiedId(int $notifier_id)
+    public function findNotificationsByNotifierId(int $notifier_id)
     {
         $qb = $this->createQueryBuilder('no')
-            ->innerJoin('no.notification', 'n', Join::WITH, 'no.id = n.notificationObject')
+            ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
             ->andWhere('n.notifier = :user_id')
             ->setParameter('user_id', $notifier_id)
             ->orderBy('no.created_at', 'DESC')
             ->setMaxResults(100);
-        dump($qb->getQuery()->getSQL());
         return $qb
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * $notifier_id is the person who will be notified
+     * @param int $notifier_id
+     * @return NotificationObject[] Returns an array of NotificationObject objects
+     */
+
+    public function findNotificationsByNotifierIdWithPost(int $notifier_id)
+    {
+        $qb = $this->createQueryBuilder('no')
+            ->select('no, p')
+            ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
+            ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p.id = no.entity_id')
+            ->andWhere('n.notifier = :user_id')
+            ->setParameter('user_id', $notifier_id)
+            ->orderBy('no.created_at', 'DESC')
+            ->setMaxResults(100);
+        dump($qb->getQuery()->getResult());
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * $notifier_id is the person who will be notified
+     * @param int $notifier_id
+     * @param int $entity_type_id
+     * @return NotificationObject[] Returns an array of NotificationObject objects
+     */
+
+    public function findNotificationsByNotifierIdWithComment(int $notifier_id, int $entity_type_id)
+    {
+        // TODO: use the entity_type and entity_type_id to group notifications
+        // in the blog post the fields to get are: notificationObjectId, entity_type_id, entity_id, notifier_id
+        // need to get the comment, the actor, (the notifier ?)
+        $qb = $this->createQueryBuilder('no')
+            ->select('actor.username', 'no.created_at')
+            ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
+            ->innerJoin('App\Entity\Comment', 'c', Join::WITH, 'c.id = no.entity_id')
+            ->innerJoin('no.notificationChange', 'ch')
+            ->innerJoin('ch.actor', 'actor')
+            ->andWhere('n.notifier = :user_id')
+            ->andWhere('no.entity_type_id = :entity_type_id')
+            ->setParameter('entity_type_id', $entity_type_id)
+            ->setParameter('user_id', $notifier_id)
+            ->orderBy('no.created_at', 'DESC')
+            ->setMaxResults(100);
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+    /**
+     * $notifier_id is the person who will be notified
+     * @param int $notifier_id
+     * @return NotificationObject[] Returns an array of NotificationObject objects
+     */
+
+    public function findNotificationsByNotifierIdWithBookmark(int $notifier_id)
+    {
+        $qb = $this->createQueryBuilder('no')
+            ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
+            ->innerJoin('App\Entity\Bookmark', 'b', Join::WITH, 'b.id = no.entity_id')
+            ->andWhere('n.notifier = :user_id')
+            ->setParameter('user_id', $notifier_id)
+            ->orderBy('no.created_at', 'DESC')
+            ->setMaxResults(100);
+        return $qb
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findNotificationsDetailsByNotifierId(int $user_id)
+    {
+        return $this->createQueryBuilder('no')
+            ->select('no.id', 'no.entity_id', 'no.entity_type_id')
+            ->innerJoin('App\Entity\Notification', 'n', Join::WITH, 'n.notificationObject = no')
+            ->andWhere('n.notifier = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->orderBy('no.created_at', 'DESC')
+            ->groupBy('no.entity_type_id', 'no.id')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
 

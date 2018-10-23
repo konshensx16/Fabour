@@ -495,12 +495,26 @@ Notifications:
           entity_type_id is for identifying if it's either a Post, Comment, Bookmark etc...
           enityt_type_id should be defined ina  config file, it's not something that can be stored in the database (could be but it's just stupid ,
           i feel like it's better to do it in the server-side)
+
+          Sending a notification about a new post:
+            create a NotificationObject 
+              INSERT the id, entity_type_id, post_id, status, createdAt
+                ☐ Inserting just one row because the post is just one
+            create a Notification change
+              INSERT id, notification_object_id, actor_id, status
+                ☐ Inserting just one record because the actor is just which is the person who published the post
+            create a Notification
+              INSERT id, notification_object_id, notifier_id, status
+                ☐ This will contain a N of records depending on how many users we want to notify (e.g: 100 friends in a user list )
           
       Notification table:
         id -> int (primary key)
         notification -> string
         type -> string (comment, friend_approval, etc...)
         read -> true | false 
+  ☐ Create a function in the repository to get all notification for a user!
+  ☐ Create 5 different functions to get each notication with the required entity, (for Post get the post, for Comment get the comment associated)
+    ☐ Create just 3 for now, friends stuff can wait a lil bit
 
 Bookmarks:
   ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)
