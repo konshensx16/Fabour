@@ -113,15 +113,20 @@ class NotificationObjectRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * This returns the
+     * @param int $user_id
+     * @return mixed
+     */
     public function findNotificationsDetailsByNotifierId(int $user_id)
     {
         return $this->createQueryBuilder('no')
-            ->select('no.id', 'no.entity_id', 'no.entity_type_id')
+            ->select('no.entity_type_id')
             ->innerJoin('App\Entity\Notification', 'n', Join::WITH, 'n.notificationObject = no')
             ->andWhere('n.notifier = :user_id')
             ->setParameter('user_id', $user_id)
-            ->orderBy('no.created_at', 'DESC')
-            ->groupBy('no.entity_type_id', 'no.id')
+//            ->orderBy('no.created_at', 'DESC')
+            ->groupBy('no.entity_type_id')
             ->getQuery()
             ->getResult()
         ;
