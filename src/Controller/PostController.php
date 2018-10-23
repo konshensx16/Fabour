@@ -69,17 +69,44 @@ class PostController extends AbstractController
             $em->persist($post);
             $em->flush();
 
-
             // TODO: send a notification to all friends of the publisher
             // get all friends of the user
             $friends = $userRelationshipRepository->findUserFriendsById($currentUser->getId());
+
+            // TODO: this code will have to move somewhere else
+            $notificationObject = new NotificationObject();
+            $notificationObject->setEntityId($post->getId());
+            $notificationObject->setEntityTypeId(
+                $this->getEntityTypeId('post')
+            );
+            $notificationObject->setStatus(1);
+
+            $notificationChange = new NotificationChange();
+            $notificationChange->setNotificationObject($notificationObject);
+            $notificationChange->setActor($currentUser);
+            $notificationChange->setStatus(1);
+
+            $em->persist($notificationObject);
+            $em->persist($notificationChange);
+
             // i only want the related user (just the username)
             // create an array with tht related users usernames
             $friendsNames = [];
             /** @var UserRelationship $friend */
             foreach ($friends as $friend) {
+                // create a notification for every friend on the list,
+                $notification = new Notification();
+                $notification->setNotificationObject($notificationObject);
+                // this is for every single friend in the list
+                $notification->setNotifier($friend->getRelatedUser());
+                $notification->setStatus(1);
+
+                $em->persist($notification);
+
                 $friendsNames[] = $friend->getRelatedUser()->getUsername();
             }
+
+            $em->flush();
             // send the notification
             try {
                 $this->pusher->push([

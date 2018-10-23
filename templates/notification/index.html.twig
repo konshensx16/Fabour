@@ -17,8 +17,15 @@
         </div>
 
         {% for item in result %}
-            <h1>{{ item.action }}</h1>
-            <h4>{{ item.date|time_diff }}</h4>
+            {% if 'id' in item|keys %}
+                <a href="{{ path('post.display', {'id': item.id}) }}">
+                    <h1>{{ item.action }}</h1>
+                    <h4>{{ item.date|time_diff }}</h4>
+                </a>
+            {% else %}
+                <h1>{{ item.action }}</h1>
+                <h4>{{ item.date|time_diff }}</h4>
+            {% endif %}
         {% endfor %}
     </div>
     {#{{ dump(notifications) }}#}

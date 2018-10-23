@@ -38,6 +38,18 @@ class NotificationController extends AbstractController
         foreach ($result as $item) {
             switch ($item['entity_type_id']) {
                 case 1:
+                    $postNotificationObjects = $notificationObjectRepository->findNotificationsByNotifierIdWithPost(
+                        $currentUser->getId(),
+                        $this->getEntityTypeId('post')
+                    );
+                    foreach ($postNotificationObjects as $post) {
+                        dump($post);
+                        $array[] = [
+                            'action' => $post['username'] . ' Just published a new post: "'. $post['title'] .'"',
+                            'date' => $post['created_at'],
+                            'id' => $post['id']
+                        ];
+                    }
                     break;
                 case 2:
                     // JASMINE COMMENTED ON YOUR POST!
@@ -55,40 +67,6 @@ class NotificationController extends AbstractController
             }
 
         }
-
-        /** @var NotificationObject $notification */
-//        foreach ($notifications as $notificationObject) {
-//            switch ($notificationObject->getEntityTypeId()) {
-//                case 1;
-//                    // post
-//                    $result = $notificationObjectRepository->findNotificationsByNotifierIdWithPost($currentUser->getId());
-//
-//                    break;
-//                case 2:
-//                    // comment
-//                    $commentNotificationObjects = $notificationObjectRepository->findNotificationsByNotifierIdWithComment(
-//                        $currentUser->getId(),
-//                        $this->getEntityTypeId('comment')
-//                    );
-//                    // this needs to be done outside
-//                    foreach ($commentNotificationObjects as $commentNotifObject)
-//                    {
-//                        dump($commentNotifObject);
-//                    }
-//                    break;
-//                case 3:
-//                    // bookmark
-//                    $result = $notificationObjectRepository->findNotificationsByNotifierIdWithBookmark($currentUser->getId());
-//
-//                    break;
-//                case 4:
-//                    // friendrequest
-//                    break;
-//                case 5:
-//                    // friendqpproval
-//                    break;
-//            }
-//        }
 
         return $this->render('notification/index.html.twig', [
             'controller_name' => 'NotificationController',

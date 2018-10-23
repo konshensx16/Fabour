@@ -42,20 +42,24 @@ class NotificationObjectRepository extends ServiceEntityRepository
     /**
      * $notifier_id is the person who will be notified
      * @param int $notifier_id
+     * @param int $entity_type_id
      * @return NotificationObject[] Returns an array of NotificationObject objects
      */
 
-    public function findNotificationsByNotifierIdWithPost(int $notifier_id)
+    public function findNotificationsByNotifierIdWithPost(int $notifier_id, int $entity_type_id)
     {
         $qb = $this->createQueryBuilder('no')
-            ->select('no, p')
+            ->select('actor.username', 'p.title', 'no.created_at', 'p.id')
             ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
             ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p.id = no.entity_id')
+            ->innerJoin('no.notificationChange', 'ch')
+            ->innerJoin('ch.actor', 'actor')
             ->andWhere('n.notifier = :user_id')
+            ->andWhere('no.entity_type_id = :entity_type_id')
             ->setParameter('user_id', $notifier_id)
+            ->setParameter('entity_type_id', $entity_type_id)
             ->orderBy('no.created_at', 'DESC')
             ->setMaxResults(100);
-        dump($qb->getQuery()->getResult());
         return $qb
             ->getQuery()
             ->getResult();
