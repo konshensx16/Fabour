@@ -16,15 +16,20 @@ webSocket.on("socket/connect", function (session) {
 
 	session.subscribe('comment/channel', function (uri, payload) // payload is the message itself
     {
+    	// TODO: Add the notification when recieved
         notification.confirm(payload)
+
+        addNotificationToList(payload);
     })
 
 	session.subscribe('publications/channel', function (uri, payload) // payload is the message itself
     {
+        // TODO: Add the notification when recieved
         notification.confirm(payload[0])
     })
     session.subscribe('friendship/channel', function (uri, payload) // payload is an object
     {
+        // TODO: Add the notification when recieved
 		// TODO: display a small notification for the user, maybe make it click-able
         // client connected
         // everytime an event is published in this channel the function is executed
@@ -126,4 +131,12 @@ function notify(message, time = 5000)
 		popupBox.remove()
 
 	}, time)
+}
+
+/**
+ * Adds an item to the notifications list
+ * @param payload
+ */
+function addNotificationToList(payload) {
+
 }

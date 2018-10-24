@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\NotificationObject;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -49,7 +50,7 @@ class NotificationObjectRepository extends ServiceEntityRepository
     public function findNotificationsByNotifierIdWithPost(int $notifier_id, int $entity_type_id)
     {
         $qb = $this->createQueryBuilder('no')
-            ->select('actor.username', 'p.title', 'no.created_at', 'p.id')
+            ->select('actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id')
             ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
             ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p.id = no.entity_id')
             ->innerJoin('no.notificationChange', 'ch')
@@ -78,9 +79,10 @@ class NotificationObjectRepository extends ServiceEntityRepository
         // in the blog post the fields to get are: notificationObjectId, entity_type_id, entity_id, notifier_id
         // need to get the comment, the actor, (the notifier ?)
         $qb = $this->createQueryBuilder('no')
-            ->select('actor.username', 'no.created_at')
+            ->select('actor.username', 'actor.avatar', 'no.created_at', 'no.id as comment_id', 'p.id as post_id')
             ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
             ->innerJoin('App\Entity\Comment', 'c', Join::WITH, 'c.id = no.entity_id')
+            ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p = c.post')
             ->innerJoin('no.notificationChange', 'ch')
             ->innerJoin('ch.actor', 'actor')
             ->andWhere('n.notifier = :user_id')
@@ -91,38 +93,44 @@ class NotificationObjectRepository extends ServiceEntityRepository
             ->setMaxResults(100);
         return $qb
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
 
     /**
      * $notifier_id is the person who will be notified
      * @param int $notifier_id
+     * @param int $entity_type_id
      * @return NotificationObject[] Returns an array of NotificationObject objects
      */
 
-    public function findNotificationsByNotifierIdWithBookmark(int $notifier_id)
+    public function findNotificationsByNotifierIdWithBookmark(int $notifier_id, int $entity_type_id)
     {
         $qb = $this->createQueryBuilder('no')
+            ->select('p.title', 'actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id')
             ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
             ->innerJoin('App\Entity\Bookmark', 'b', Join::WITH, 'b.id = no.entity_id')
+            ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p = b.post')
+            ->innerJoin('no.notificationChange', 'nc')
+            ->innerJoin('nc.actor', 'actor')
             ->andWhere('n.notifier = :user_id')
+            ->andWhere('no.entity_type_id = :entity_type_id')
             ->setParameter('user_id', $notifier_id)
+            ->setParameter('entity_type_id', $entity_type_id)
             ->orderBy('no.created_at', 'DESC')
             ->setMaxResults(100);
         return $qb
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     /**
      * This returns the
      * @param int $user_id
+     * @param int $limit
      * @return mixed
      */
-    public function findNotificationsDetailsByNotifierId(int $user_id)
+    public function findNotificationsDetailsByNotifierId(int $user_id, int $limit = 1000)
     {
         return $this->createQueryBuilder('no')
             ->select('no.entity_type_id')
@@ -131,9 +139,96 @@ class NotificationObjectRepository extends ServiceEntityRepository
             ->setParameter('user_id', $user_id)
 //            ->orderBy('no.created_at', 'DESC')
             ->groupBy('no.entity_type_id')
+            ->setMaxResults($limit)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+    }
+
+    /**
+     * This returns the
+     * @param int $user_id
+     * @param int $limit
+     * @return mixed
+     */
+    public function findNotificationsDetailsByNotifierIdWithoutGroupBy(int $user_id, int $limit = 1000)
+    {
+        return $this->createQueryBuilder('no')
+            ->select('no.entity_type_id', 'no.entity_id')
+            ->innerJoin('App\Entity\Notification', 'n', Join::WITH, 'n.notificationObject = no')
+            ->andWhere('n.notifier = :user_id')
+            ->setParameter('user_id', $user_id)
+            ->orderBy('no.created_at', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+    // TODO: this needs to change i can't keep hitting the db like that
+    // i need something to make a single request to get all the data i need
+    public function findOnePostByNotifierIdAndEntityTypeIdAndEntityId(int $notifier_id, int $entity_type_id = 1, int $entity_id)
+    {
+        try {
+            return $this->createQueryBuilder('no')
+                ->select('actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id')
+                ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
+                ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p.id = no.entity_id')
+                ->innerJoin('no.notificationChange', 'ch')
+                ->innerJoin('ch.actor', 'actor')
+                ->andWhere('n.notifier = :user_id')
+                ->andWhere('no.entity_type_id = :entity_type_id')
+                ->andWhere('no.entity_id = :entity_id')
+                ->setParameter('user_id', $notifier_id)
+                ->setParameter('entity_type_id', $entity_type_id)
+                ->setParameter('entity_id', $entity_id)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
+    }
+
+    public function findOneCommentByNotifierIdAndEntityTypeIdAndEntityId(int $notifier_id, int $entity_id)
+    {
+        try {
+            return $this->createQueryBuilder('no')
+                ->select('actor.username', 'actor.avatar', 'no.created_at', 'c.id as comment_id', 'p.id as post_id')
+                ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
+                ->innerJoin('App\Entity\Comment', 'c', Join::WITH, 'c.id = no.entity_id')
+                ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p = c.post')
+                ->innerJoin('no.notificationChange', 'ch')
+                ->innerJoin('ch.actor', 'actor')
+                ->andWhere('n.notifier = :user_id')
+                ->andWhere('no.entity_type_id = :entity_type_id')
+                ->andWhere('no.entity_id = :entity_id')
+                ->setParameter('entity_type_id', 2)
+                ->setParameter('user_id', $notifier_id)
+                ->setParameter('entity_id', $entity_id)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
+
+    }
+
+    public function findOneBookmarkByNotifierIdAndEntityTypeIdAndEntityId(int $notifier_id, int $entity_id)
+    {
+        try {
+            return $this->createQueryBuilder('no')
+                ->select('p.title', 'actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id')
+                ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
+                ->innerJoin('App\Entity\Bookmark', 'b', Join::WITH, 'b.id = no.entity_id')
+                ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p = b.post')
+                ->innerJoin('no.notificationChange', 'nc')
+                ->innerJoin('nc.actor', 'actor')
+                ->andWhere('n.notifier = :user_id')
+                ->andWhere('no.entity_type_id = :entity_type_id')
+                ->andWhere('no.entity_id = :entity_id')
+                ->setParameter('user_id', $notifier_id)
+                ->setParameter('entity_type_id', 3)
+                ->setParameter('entity_id', $entity_id)
+                ->orderBy('no.created_at', 'DESC')
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+        }
     }
 
 

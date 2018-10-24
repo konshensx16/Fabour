@@ -1,0 +1,37 @@
+
+<div class="dropdown dropdown-b">
+    <a href="" class="header-notification" data-toggle="dropdown">
+        <i class="icon ion-ios-bell-outline"></i>
+        <span class="indicator"></span>
+    </a>
+    <div class="dropdown-menu">
+        <div class="dropdown-menu-header">
+            <h6 class="dropdown-menu-title">Notifications</h6>
+            <div>
+                <a href="">Mark All as Read</a>
+                <a href="">Settings</a>
+            </div>
+        </div><!-- dropdown-menu-header -->
+        <div class="dropdown-list">
+
+            {% if notifications %}
+                {% for notification in notifications %}
+                    <!-- loop starts here -->
+                    <a href="{{ notification.url }}" class="dropdown-link">
+                        <div class="media">
+                            <img src="{{ asset('assets/img/') ~ notification.avatar }}" alt="">
+                            <div class="media-body">
+                                <p><strong>{{ notification.username }}</strong> {{ notification.action }}</p>
+                                <span>{{ notification.date|time_diff }}</span>
+                            </div>
+                        </div><!-- media -->
+                    </a>
+                {% endfor %}
+            {% endif %}
+            <div class="dropdown-list-footer">
+                <a href="{{ path('notifications.all') }}"><i class="fa fa-angle-down"></i> Show All
+                    Notifications</a>
+            </div>
+        </div><!-- dropdown-list -->
+    </div><!-- dropdown-menu-right -->
+</div><!-- dropdown -->

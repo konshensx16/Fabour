@@ -27,13 +27,10 @@ class NotificationController extends AbstractController
         /** @var User $currentUser */
         $currentUser = $this->getUser();
         // this is containing records (NotificationObject) where the current user is the notifier id (array)
-        $notifications = $notificationObjectRepository->findNotificationsByNotifierId($currentUser->getId());
-
         $array = [];
 
 
         // TODO: bake the notifications here ? not sure where else to do it
-
         $result = $notificationObjectRepository->findNotificationsDetailsByNotifierId($currentUser->getId());
         foreach ($result as $item) {
             switch ($item['entity_type_id']) {
@@ -43,11 +40,11 @@ class NotificationController extends AbstractController
                         $this->getEntityTypeId('post')
                     );
                     foreach ($postNotificationObjects as $post) {
-                        dump($post);
                         $array[] = [
-                            'action' => $post['username'] . ' Just published a new post: "'. $post['title'] .'"',
+                            'action' => $post['username'] . ' published a new post: "' . $post['title'] . '"',
                             'date' => $post['created_at'],
-                            'id' => $post['id']
+                            'url' => $this->generateUrl('post.display', ['id' => $post['id']]),
+                            'avatar' => $post['avatar']
                         ];
                     }
                     break;
@@ -61,6 +58,22 @@ class NotificationController extends AbstractController
                         $array[] = [
                             'action' => $comment['username'] . ' commented on your post.',
                             'date' => $comment['created_at'],
+                            'avatar' => $comment['avatar'],
+                            'url' => $this->generateUrl('post.display', ['id' => $comment['post_id']]) . '#' . $comment['comment_id'],
+                        ];
+                    }
+                    break;
+                case 3:
+                    $bookmarkNotificationObjects = $notificationObjectRepository->findNotificationsByNotifierIdWithBookmark(
+                        $currentUser->getId(),
+                        $this->getEntityTypeId('bookmark')
+                    );
+                    foreach ($bookmarkNotificationObjects as $post) {
+                        $array[] = [
+                            'action' => $post['username'] . ' bookmarked your post: "' . $post['title'] . '"',
+                            'date' => $post['created_at'],
+                            'url' => $this->generateUrl('post.display', ['id' => $post['id']]),
+                            'avatar' => $post['avatar']
                         ];
                     }
                     break;
@@ -72,6 +85,82 @@ class NotificationController extends AbstractController
             'controller_name' => 'NotificationController',
             'result' => $array,
 //            'notifications' => $result
+        ]);
+    }
+
+    /**
+     * Renders a small list with the current user notifications
+     * @param NotificationObjectRepository $notificationObjectRepository
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function renderNotifications(NotificationObjectRepository $notificationObjectRepository)
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+
+        $array = [];
+
+
+        // TODO: bake the notifications here ? not sure where else to do it
+        $result = $notificationObjectRepository->findNotificationsDetailsByNotifierIdWithoutGroupBy($currentUser->getId(), 4);
+        foreach ($result as $item) {
+            switch ($item['entity_type_id']) {
+                case 1:
+                    // this needs to get just one notification
+                    // i need to get the actor username, the entity_id whatever it is
+                    // this will be filtered based on the entity_type_id
+                    // i need the date (created_at)
+                    // i need the user (actor) avatar
+
+                    $postNotificationObject = $notificationObjectRepository->findOnePostByNotifierIdAndEntityTypeIdAndEntityId(
+                        $currentUser->getId(),
+                        $this->getEntityTypeId('post'),
+                        $item['entity_id']
+                    );
+
+                    $array[] = [
+                        'username' =>  $postNotificationObject['username'],
+                        'action' => ' published a new post: "' . $postNotificationObject['title'] . '"',
+                        'date' => $postNotificationObject['created_at'],
+                        'url' => $this->generateUrl('post.display', ['id' => $postNotificationObject['id']]),
+                        'avatar' => $postNotificationObject['avatar']
+                    ];
+                    break;
+                case 2:
+                    // JASMINE COMMENTED ON YOUR POST!
+                    $commentNotificationObjects = $notificationObjectRepository->findOneCommentByNotifierIdAndEntityTypeIdAndEntityId(
+                        $currentUser->getId(),
+                        $item['entity_id']
+                    );
+
+                    $array[] = [
+                        'username' => $commentNotificationObjects['username'],
+                        'action' => ' commented on your post.',
+                        'date' => $commentNotificationObjects['created_at'],
+                        'avatar' => $commentNotificationObjects['avatar'],
+                        'url' => $this->generateUrl('post.display', ['id' => $commentNotificationObjects['post_id']]) . '#' . $commentNotificationObjects['comment_id'],
+                    ];
+
+                    break;
+                case 3:
+                    $bookmarkNotificationObjects = $notificationObjectRepository->findOneBookmarkByNotifierIdAndEntityTypeIdAndEntityId(
+                        $currentUser->getId(),
+                        $item['entity_id']
+                    );
+
+                    $array[] = [
+                        'username' => $bookmarkNotificationObjects['username'],
+                        'action' => 'bookmarked your post: "' . $bookmarkNotificationObjects['title'] . '"',
+                        'date' => $bookmarkNotificationObjects['created_at'],
+                        'url' => $this->generateUrl('post.display', ['id' => $bookmarkNotificationObjects['id']]),
+                        'avatar' => $bookmarkNotificationObjects['avatar']
+                    ];
+                    break;
+            }
+        }
+        dump($array);
+        return $this->render('notification/notificationsList.html.twig', [
+            'notifications' => $array
         ]);
     }
 

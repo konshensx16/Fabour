@@ -3,31 +3,21 @@
 {% block title %}Hello {{ controller_name }}!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    <div class="card card-body">
-        <div class="card-title-wrapper">
-            Some notifications
+    <div class="section-wrapper mg-t-20">
+        <div class="section-title">
+            Most recent notifications!
         </div>
-
-        {% for item in result %}
-            {% if 'id' in item|keys %}
-                <a href="{{ path('post.display', {'id': item.id}) }}">
-                    <h1>{{ item.action }}</h1>
-                    <h4>{{ item.date|time_diff }}</h4>
-                </a>
-            {% else %}
-                <h1>{{ item.action }}</h1>
-                <h4>{{ item.date|time_diff }}</h4>
-            {% endif %}
-        {% endfor %}
+        <div class="card card-people-list">
+            {% for item in result %}
+                <div class="media">
+                    <img src="{{ asset('assets/img/') ~ item.avatar }}" alt="">
+                    <div class="media-body">
+                        <a href="{{ item.url }}">{{ item.action }}</a>
+                        <p>{{ item.date|time_diff }}</p>
+                    </div><!-- media-body -->
+                </div><!-- media -->
+            {% endfor %}
+        </div>
     </div>
     {#{{ dump(notifications) }}#}
-</div>
 {% endblock %}

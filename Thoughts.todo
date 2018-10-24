@@ -472,7 +472,7 @@ Friends:
 
 Notifications:
   Probably the only thing that i'm going to struggle with, i need to come up with a good design
-  ☐ Users should be able to get notifications about activity from other friends
+  ✔ Users should be able to get notifications about activity from other friends @done (10/24/2018, 7:19:07 PM)
   ✔ User should get a realtime notification about pending friendship requests @done (10/17/2018, 9:23:36 PM)
     ✔ Create the FriendshipTopic which will broadcast information to all users (friend request, approved requests) @done (10/17/2018, 9:23:34 PM)
       This could be used to increment the notification count in the title : http://roshiro.github.io/TitleNotifier.js/
@@ -512,9 +512,39 @@ Notifications:
         notification -> string
         type -> string (comment, friend_approval, etc...)
         read -> true | false 
-  ☐ Create a function in the repository to get all notification for a user!
-  ☐ Create 5 different functions to get each notication with the required entity, (for Post get the post, for Comment get the comment associated)
-    ☐ Create just 3 for now, friends stuff can wait a lil bit
+  ✔ Create a function in the repository to get all notification for a user! @done (10/24/2018, 7:19:17 PM)
+  ✔ Create 5 different functions to get each notication with the required entity, (for Post get the post, for Comment get the comment associated) @done (10/23/2018, 8:06:48 AM)
+    ✔ Create just 3 for now, friends stuff can wait a lil bit @done (10/23/2018, 8:06:45 AM)
+  ✔ Constructing a notification: @done (10/23/2018, 8:06:44 AM)
+      NOTE: 
+        I just canceled those two down because i the changes i made were not those at all, but it's working
+    ✘ Create a query to select the following fields: actor.username, post.description @cancelled (10/23/2018, 8:05:40 AM)
+        ✘ I can use the notification_change to group notifications together @cancelled (10/23/2018, 8:05:34 AM)
+  ✔ When publishing a new post send a notification to all friends @done (10/24/2018, 5:53:19 AM)
+    ✔ Insert into the tables Object -> Chnages -> Notification @done (10/23/2018, 8:16:37 AM)
+    ✔ Create the logic to display all the notification for the user @done (10/24/2018, 7:23:57 PM)
+        ✔ Display the publications notifications @done (10/24/2018, 6:09:02 AM)
+        ✔ Display the comments notifications @done (10/24/2018, 6:28:52 AM)
+          ✔ get the id of the post on which the comment was published @done (10/24/2018, 6:28:50 AM)
+          ✔ Rerender the comments to include a comment id in the div @done (10/24/2018, 6:28:49 AM)
+          ✔ Display a link that takes to the post and scrolls down to the comment @done (10/24/2018, 6:28:47 AM)
+        ✔ Display the bookmarks notifications @done (10/24/2018, 7:22:53 PM)
+    ✔ Display the last 4 notifications for the user in the main navbar icon @done (10/24/2018, 8:54:05 PM)
+        The desing of this list (slim design) doesn't seem to include scrolling through the notifications in there, so i might need to alter this later 
+        ✔ First i need to create an action inside the NotificationController that renders the icon and fills the list (to separate things) @done (10/24/2018, 8:54:03 PM)
+          ✔ Get the latest four notifications for the user @done (10/24/2018, 8:54:02 PM)
+    ☐ Refactor the websocket notifications to match the database stuff
+        ✔ PostController::create @done (10/24/2018, 8:59:19 PM)
+        ✔ Comment Notification @done (10/24/2018, 8:59:59 PM)
+        ☐ Include the bookmarking to be sent via a notification too!
+    ☐ Add the notification to the list after the user get's it
+        Not sure if want to keep it always four elements and delete the last element in the list (probably what i'll do after i get this to work)
+
+    IDEAS:
+      I might want to make some sort of a infinite scroll view for the entire notifications! (all notifications page wuith limit being just 20 notificaitons or 10 each time)
+
+
+
 
 Bookmarks:
   ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)
@@ -548,3 +578,5 @@ BUGS:
     ✔ In the userProfile the recent posts are in the opposite sense @done (10/21/2018, 2:24:30 AM)
       ✔ Get just 10 posts for te profile @done (10/21/2018, 2:24:29 AM)
     ✔ The posts in the index page are in reverse order (should be DESC) @done (10/21/2018, 3:42:13 PM)
+    ☐ When viewing another user post, in the author profile section display a remove from friend (or just get rid of the button) if he's already in your friends list!
+    ☐ Order of notifications when displaying them all is messed up (shpecially the bokmarks)

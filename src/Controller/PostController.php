@@ -77,7 +77,7 @@ class PostController extends AbstractController
             $notificationObject = new NotificationObject();
             $notificationObject->setEntityId($post->getId());
             $notificationObject->setEntityTypeId(
-                $this->getEntityTypeId('post')
+                $this->getEntityTypeId(Post::POST_TYPE_ID)
             );
             $notificationObject->setStatus(1);
 
@@ -110,6 +110,7 @@ class PostController extends AbstractController
             // send the notification
             try {
                 $this->pusher->push([
+                    'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
                     'type' => 'new_post',
                     'message' => $currentUser->getUsername() . " Just published: " . $post->getTitle(),
                     'friends' => $friendsNames
@@ -249,6 +250,8 @@ class PostController extends AbstractController
      */
     public function bookmark(Request $request, Post $post, BookmarkRepository $bookmarkRepository, EntityManagerInterface $entityManager)
     {
+        $currentUser = $this->getUser();
+
         // TODO: if the user already has then do nothing
         // NOTE: This might throw an error if no results are returned, might want to do heavy tests on this!
         $alreadyExists = $bookmarkRepository->findByUserAndPost(
@@ -259,10 +262,37 @@ class PostController extends AbstractController
 
             $bookmark = new Bookmark();
 
-            $bookmark->setUser($this->getUser());
+            $bookmark->setUser($currentUser);
             $bookmark->setPost($post);
 
             $entityManager->persist($bookmark);
+            $entityManager->flush();
+
+            // TODO: this code will have to move somewhere else
+            $notificationObject = new NotificationObject();
+            $notificationObject->setEntityId($bookmark->getId());
+            $notificationObject->setEntityTypeId(
+                $this->getEntityTypeId(Bookmark::BOOKMARK_TYPE_ID)
+            );
+            $notificationObject->setStatus(1);
+
+            $notificationChange = new NotificationChange();
+            $notificationChange->setNotificationObject($notificationObject);
+            $notificationChange->setActor($currentUser);
+            $notificationChange->setStatus(1);
+
+            $entityManager->persist($notificationObject);
+            $entityManager->persist($notificationChange);
+
+            $notification = new Notification();
+            $notification->setNotificationObject($notificationObject);
+            // this is for every single friend in the list
+            // notifier is the person to notify
+            $notification->setNotifier($post->getUser());
+            $notification->setStatus(1);
+
+            $entityManager->persist($notification);
+
             $entityManager->flush();
 
             $this->addFlash('success', 'Added to your bookmarks');

@@ -36,7 +36,7 @@
                 <ul class="media-list-demo">
                     {% if post.comments.count %}
                         {% for comment in post.comments %}
-                            <li class="media">
+                            <li class="media" id="{{ comment.id }}">
                                 <img class="media-img" src="{{ asset('assets/img/') ~ comment.user.avatar }}" alt="Image">
                                 <div class="media-body">
                                     <h6 class="tx-inverse mg-b-10">
