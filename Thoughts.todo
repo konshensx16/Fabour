@@ -539,6 +539,7 @@ Notifications:
         ☐ Include the bookmarking to be sent via a notification too!
     ☐ Add the notification to the list after the user get's it
         Not sure if want to keep it always four elements and delete the last element in the list (probably what i'll do after i get this to work)
+        ☐ Include the required data to construct a notification for the list
 
     IDEAS:
       I might want to make some sort of a infinite scroll view for the entire notifications! (all notifications page wuith limit being just 20 notificaitons or 10 each time)

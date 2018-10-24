@@ -8,7 +8,6 @@ require("./bundles/goswebsocket/js/gos_web_socket_client.js")
 let webSocket = WS.connect(_WS_URI)
 let $connectedClientsCounter = document.getElementById('connectedClientsCounter')
 
-
 webSocket.on("socket/connect", function (session) {
     let notification = new Notyf({
         delay: 5000
@@ -100,6 +99,7 @@ let serialize = function (form) {
 /**
  * Create the notification div with the given message
  * TODO: refactor this after to a class
+ * TODO: remove this if no longed needed
  * @param time
  * @param message
  */
@@ -138,5 +138,78 @@ function notify(message, time = 5000)
  * @param payload
  */
 function addNotificationToList(payload) {
+    // <a href="{{ notification.url }}" class="dropdown-link">
+    //     <div class="media">
+    //     <img src="{{ asset('assets/img/') ~ notification.avatar }}" alt="">
+    //     <div class="media-body">
+    //     <p><strong>{{ notification.username }}</strong> {{ notification.action }}</p>
+    // <span>{{ notification.date|time_diff }}</span>
+    // </div>
+    // </div><!-- media -->
+    // </a>
 
+    let notificationsList = document.querySelector('#notifications-list')
+
+	// everything is inside the anchor
+	let anchor = createElement('a')
+
+	let anchorClass = document.createAttribute('class')
+	anchorClass.value = 'dropdown-link'
+
+	anchor.setAttributeNode(anchorClass)
+
+	// this holds everything below
+	let mediaDiv = createElement('div')
+	let mediaDivClassAttribute = document.createAttribute('class')
+	mediaDivClassAttribute.value = 'media'
+	mediaDiv.setAttributeNode(mediaDivClassAttribute)
+
+
+	let img = createElement('img')
+	// this contains the p
+	let mediaBody = createElement('div')
+	let mediaBodyClassAttribute = document.createAttribute('class')
+	mediaBodyClassAttribute.value = 'media-body'
+	mediaBody.setAttributeNode(mediaBodyClassAttribute)
+
+	// this contains the strong and span
+	let p = createElement('p')
+	let strong = createElement('strong')
+	let span = createElement('span')
+
+	let textForStrong = document.createTextNode('Testing value')
+	// set the text to the strong
+	strong.appendChild(textForStrong)
+
+	let textForspan	= document.createTextNode('50 mins ago')
+	span.appendChild(textForspan)
+
+	p.appendChild(strong)
+
+	mediaBody.appendChild(p)
+	mediaBody.appendChild(span)
+
+    // set an image to the img
+    let srcAttribute = document.createAttribute('src')
+	srcAttribute.value = '/assets/img/avatar.png'
+
+	img.setAttributeNode(srcAttribute)
+
+    mediaDiv.appendChild(img)
+	mediaDiv.appendChild(mediaBody)
+
+	anchor.appendChild(mediaDiv)
+
+	// append everything to the list (don't delete just yet)
+    notificationsList.insertAdjacentElement('afterbegin', anchor)
+}
+
+
+function log(msg)
+{
+	console.log(msg)
+}
+
+function createElement(name) {
+	return document.createElement(name)
 }
