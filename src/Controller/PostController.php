@@ -19,6 +19,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Asset\PackageInterface;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -160,9 +162,10 @@ class PostController extends AbstractController
      * @param Post $post
      * @param EntityManagerInterface $em
      * @param BookmarkRepository $bookmarkRepository
+     * @param Packages $package
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Request $request, Post $post, EntityManagerInterface $em, BookmarkRepository $bookmarkRepository)
+    public function display(Request $request, Post $post, EntityManagerInterface $em, BookmarkRepository $bookmarkRepository, Packages $package)
     {
         $comment = new Comment();
         // need the comment form
@@ -219,9 +222,15 @@ class PostController extends AbstractController
             // TODO: if the current logged in user in the author, then no need to send a notification!
             if (!($this->getUser() === $post->getUser())) {
                 try {
+                    $currentUser = $this->getUser();
                     $this->pusher->push([
-                        'message' => $this->getUser()->getUsername() . ' just commented on your post: ' . $post->getTitle(),
-                        'author' => $post->getUser()->getUsername()
+                        // this is for the real-time notification, for constructing the notificaion when it arrive
+                        // to the front'end
+                        'username' => $currentUser->getUsername(),
+                        'action' => 'just commented on your post',
+                        'author' => $post->getUser()->getUsername(), // note sure why am i sending this ??
+                        'avatar' => $package->getUrl('assets/img/') . $currentUser->getAvatar(),
+                        'url' => $this->generateUrl('post.display', ['id' => $post->getId()]) . '#' . $comment->getId(),
                     ], 'comment_topic');
                 } catch (\Exception $e) {
                     $e->getTrace();

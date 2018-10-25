@@ -65,6 +65,6 @@ class CommentTopic implements TopicInterface, PushableTopicInterface {
        // get the user using the username
        $user = $this->clientManipulator->findByUsername($topic, $data['author']);
        $theUser = $user['connection']->WAMP->sessionId;
-        $topic->broadcast($data['message'], [], [$theUser]);
+        $topic->broadcast($data, [], [$theUser]);
     }
 }

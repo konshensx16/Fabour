@@ -15,8 +15,8 @@ webSocket.on("socket/connect", function (session) {
 
 	session.subscribe('comment/channel', function (uri, payload) // payload is the message itself
     {
-    	// TODO: Add the notification when recieved
-        notification.confirm(payload)
+		let notificationMessage = `${payload.username} commented on your post`
+        notification.confirm(notificationMessage)
 
         addNotificationToList(payload);
     })
@@ -135,6 +135,7 @@ function notify(message, time = 5000)
 
 /**
  * Adds an item to the notifications list
+ * TODO: add an indicator when a new notification is added to the list
  * @param payload
  */
 function addNotificationToList(payload) {
@@ -153,10 +154,14 @@ function addNotificationToList(payload) {
 	// everything is inside the anchor
 	let anchor = createElement('a')
 
+	let anchorHref = document.createAttribute('href')
+	anchorHref.value = payload.url
+
 	let anchorClass = document.createAttribute('class')
 	anchorClass.value = 'dropdown-link'
 
 	anchor.setAttributeNode(anchorClass)
+	anchor.setAttributeNode(anchorHref)
 
 	// this holds everything below
 	let mediaDiv = createElement('div')
@@ -177,21 +182,23 @@ function addNotificationToList(payload) {
 	let strong = createElement('strong')
 	let span = createElement('span')
 
-	let textForStrong = document.createTextNode('Testing value')
+	let textForStrong = document.createTextNode(payload.username)
+	let textForP = document.createTextNode(` ${payload.action}`)
 	// set the text to the strong
 	strong.appendChild(textForStrong)
 
-	let textForspan	= document.createTextNode('50 mins ago')
+	let textForspan	= document.createTextNode('Just now')
 	span.appendChild(textForspan)
 
 	p.appendChild(strong)
+	p.appendChild(textForP)
 
 	mediaBody.appendChild(p)
 	mediaBody.appendChild(span)
 
     // set an image to the img
     let srcAttribute = document.createAttribute('src')
-	srcAttribute.value = '/assets/img/avatar.png'
+	srcAttribute.value = payload.avatar
 
 	img.setAttributeNode(srcAttribute)
 
@@ -200,10 +207,21 @@ function addNotificationToList(payload) {
 
 	anchor.appendChild(mediaDiv)
 
+	// creating the indicator
+	let indicator = createElement('span')
+	let indicatorClass = document.createAttribute('class')
+	indicatorClass.value = 'indicator'
+
+	indicator.setAttributeNode(indicatorClass)
+
+	// append the indicator to the header
+
+	let notificationIcon = document.querySelector('#notification-icon')
+	notificationIcon.appendChild(indicator)
+
 	// append everything to the list (don't delete just yet)
     notificationsList.insertAdjacentElement('afterbegin', anchor)
 }
-
 
 function log(msg)
 {
