@@ -14,7 +14,7 @@ class AcmeClientEventListener
 	{
 		$connection = $event->getConnection();
 
-		echo $connection->resourceId . " has just connected" . PHP_EOL;
+//		echo $connection->resourceId . " has just connected" . PHP_EOL;
 	}
 
 	// called when client disconnects
@@ -22,7 +22,7 @@ class AcmeClientEventListener
 	{
 		$connection = $event->getConnection();
 
-		echo $connection->resourceId . " has just disconnected" . PHP_EOL;
+//		echo $connection->resourceId . " has just disconnected" . PHP_EOL;
 	}
 
 	// called on a client error
@@ -31,7 +31,7 @@ class AcmeClientEventListener
 		$connection = $event->getConnection();
 		$e = $event->getException();
 
-		echo "connection error occured: " . $e->getMessage() . PHP_EOL;
+//		echo "connection error occured: " . $e->getMessage() . PHP_EOL;
 	}
 
 	// called when client rejected by application
@@ -39,7 +39,7 @@ class AcmeClientEventListener
 	{
 		$origin = $event->getOrigin();
 
-		echo "Connection rejected from " . $origin . PHP_EOL;
+//		echo "Connection rejected from " . $origin . PHP_EOL;
 	}
 
 	// called when server starts

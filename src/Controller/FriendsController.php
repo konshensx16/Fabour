@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -20,18 +21,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class FriendsController extends AbstractController
 {
     /**
-     * @var TopicManager
-     */
-    private $topicManager;
-    /**
      * @var PusherDecorator
      */
     private $pusher;
 
-    public function __construct(TopicManager $topicManager, PusherDecorator $pusher)
+    /**
+     * @var Packages
+     */
+    private $packages;
+
+    public function __construct(TopicManager $topicManager, PusherDecorator $pusher, Packages $packages)
     {
-        $this->topicManager = $topicManager;
         $this->pusher = $pusher;
+        $this->packages = $packages;
     }
 
 
@@ -95,10 +97,14 @@ class FriendsController extends AbstractController
             // TODO: send a real-time notification to the related user ($user)
             try {
                 $this->pusher->push([
-                    'type' => 'sent_request',
-                    'message' => $currentUser->getUsername() . ' wants to add you as a friend',
-                    'send_to_user' => $user->getUsername()
-                ], 'friendship_topic');
+                    // this is for the real-time notification, for constructing the notificaion when it arrive
+                    // to the front'end
+                    'username' => $currentUser->getUsername(),
+                    'action' => 'wants to add you as a friend',
+                    'notifier' => $user->getUsername(),
+                    'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
+                    'url' => $this->generateUrl('friends.pending'),
+                ], 'notification_topic');
             } catch (\Exception $e) {
                 $e->getTrace();
             }
@@ -161,10 +167,14 @@ class FriendsController extends AbstractController
             // TODO: send a real-time notification to the related user ($user)
             try {
                 $this->pusher->push([
-                    'type' => 'approved_request',
-                    'message' => 'You\'re now a friend with ' . $currentUser->getUsername(),
-                    'send_to_user' => $user->getUsername()
-                ], 'friendship_topic');
+                    // this is for the real-time notification, for constructing the notificaion when it arrive
+                    // to the front'end
+                    'username' => $currentUser->getUsername(),
+                    'action' => 'is now your friends list',
+                    'notifier' => $user->getUsername(),
+                    'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
+                    'url' => $this->generateUrl('profile.userProfile', ['username' => $user->getUsername()]),
+                ], 'notification_topic');
             } catch (\Exception $e) {
                 $e->getTrace();
             }

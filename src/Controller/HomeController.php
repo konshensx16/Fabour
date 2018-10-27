@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\UserRelationship;
 use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,6 +23,22 @@ use Symfony\Component\Serializer\Serializer;
 
 class HomeController extends AbstractController
 {
+    /**
+     * @var PusherDecorator
+     */
+    private $pusher;
+
+    /**
+     * @var Packages
+     */
+    private $packages;
+
+    public function __construct(PusherDecorator $pusher, Packages $packages)
+    {
+        $this->pusher = $pusher;
+        $this->packages = $packages;
+    }
+
     /**
      * @Route("/", name="home.index")
      * Probably won't need the request, just throwing it in there
@@ -50,8 +69,7 @@ class HomeController extends AbstractController
                     'class' => 'btn btn-info pull-right'
                 ]
             ])
-            ->getForm()
-        ;
+            ->getForm();
 
 
 //        dump($security->getUser()); this is working fine when in the controller
@@ -70,17 +88,17 @@ class HomeController extends AbstractController
 
 
     /**
-    * @Route("/testType", name="testing_type")
-    */
+     * @Route("/testType", name="testing_type")
+     */
 
     public function testType(Request $request)
     {
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
-         
+
         // trying to deserialize the string above
         $messageObject = new Message();
-        
+
         $encoders = [new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
@@ -88,7 +106,6 @@ class HomeController extends AbstractController
         // don't need to save this in a variable since using the object_to_populate option
         // $serializer->deserialize($decodedData, Message::class, 'json', ['object_to_populate' => $message]);
 
-        
 
         // if ($form->isSubmitted())
         // {
@@ -97,7 +114,7 @@ class HomeController extends AbstractController
 
         return $this->render('home/test.html.twig', [
             'form' => $form->createView()
-        ]); 
+        ]);
     }
 
     public function renderIcons(UserRelationshipRepository $userRelationshipRepository)
@@ -108,21 +125,38 @@ class HomeController extends AbstractController
         $currentUser = $this->getUser();
         $result = $userRelationshipRepository->findUsersWithTypePending($currentUser->getId());
         return $this->render('home/icons.html.twig', [
-           'pending' => (bool)$result
+            'pending' => (bool)$result
         ]);
     }
 
     /**
-     * @Route("/testcascade/{id}", name="testCascade")
-     * @param EntityManagerInterface $entityManager
-     * @param Category $category
+     * @Route("/testcascade", name="testCascade")
+     * @param UserRelationshipRepository $userRelationshipRepository
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function testCascade(EntityManagerInterface $entityManager, Category $category)
+    public function testCascade(UserRelationshipRepository $userRelationshipRepository)
     {
+        $currentUser = $this->getUser();
+        $friends = $userRelationshipRepository->findUserFriendsById($currentUser->getId());
 
-        $entityManager->remove($category);
-        $entityManager->flush();
+        $friendsNames = [];
+        /** @var UserRelationship $friend */
+        foreach ($friends as $friend) {
+            $friendsNames[] = $friend->getRelatedUser()->getUsername();
+        }
+
+        // send the notification
+        try {
+            $this->pusher->push([
+                'username' => $currentUser->getUsername(),
+                'action' => 'just published a new post',
+                'notifiers' => $friendsNames,
+                'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
+                'url' => $this->generateUrl('post.display', ['id' => 5]),
+            ], 'notification_topic');
+        } catch (\Exception $e) {
+            $e->getTrace();
+        }
 
         return $this->json(
             [
@@ -130,6 +164,39 @@ class HomeController extends AbstractController
             ]
         );
     }
+
+    /*
+     * @Route("/testPusher", name="testPusher")
+     */
+    public function testPusher(UserRelationshipRepository $userRelationshipRepository)
+    {
+        $currentUser = $this->getUser();
+        $friends = $userRelationshipRepository->findUserFriendsById($currentUser->getId());
+
+        $friendsNames = [];
+        /** @var UserRelationship $friend */
+        foreach ($friends as $friend) {
+            $friendsNames[] = $friend->getRelatedUser()->getUsername();
+        }
+
+        // send the notification
+        try {
+            $this->pusher->push([
+                'username' => $currentUser->getUsername(),
+                'action' => 'just published a new post',
+                'notifiers' => $friendsNames,
+                'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
+                'url' => $this->generateUrl('post.display', ['id' => 5]),
+            ], 'notification_topic');
+        } catch (\Exception $e) {
+            $e->getTrace();
+        }
+
+        return $this->json([
+            'data' => 'success',
+        ]);
+    }
+
 
     /**
      * Check if the user is logged in, if not will redirect him to the login page

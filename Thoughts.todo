@@ -467,7 +467,7 @@ Friends:
       ✔ Maybe from the user profile? when viewing a friends profile the user should get a remove from friends option! @done (10/16/2018, 9:23:30 PM)
         ✔ Send the information from the controller, maybe a boolean @done (10/16/2018, 9:23:32 PM)
   ✔ Display an indicator when the user have pending requests @done (10/17/2018, 8:05:51 PM)
-      Might need to create an action to handle rendering everything related to the navbar (notifications, pending requests, messages)
+      Might need to create an action to handle rendering everything related to the navbar (:, pending requests, messages)
     
 
 Notifications:
@@ -533,17 +533,27 @@ Notifications:
         The desing of this list (slim design) doesn't seem to include scrolling through the notifications in there, so i might need to alter this later 
         ✔ First i need to create an action inside the NotificationController that renders the icon and fills the list (to separate things) @done (10/24/2018, 8:54:03 PM)
           ✔ Get the latest four notifications for the user @done (10/24/2018, 8:54:02 PM)
-    ☐ Refactor the websocket notifications to match the database stuff
+    ✔ Refactor the websocket notifications to match the database stuff @done (10/27/2018, 6:38:47 PM)
         ✔ PostController::create @done (10/24/2018, 8:59:19 PM)
         ✔ Comment Notification @done (10/24/2018, 8:59:59 PM)
         ☐ Include the bookmarking to be sent via a notification too!
-    ☐ Add the notification to the list after the user get's it
+    ✔ Add the notification to the list after the user get's it @done (10/27/2018, 6:38:44 PM)
         Not sure if want to keep it always four elements and delete the last element in the list (probably what i'll do after i get this to work)
-        ☐ Include the required data to construct a notification for the list
-
+        ✔ Include the required data to construct a notification for the list @done (10/25/2018, 8:25:32 PM)
+          I need the actor.username, action, created_at field (how much time ago), actor.avatar? , url
+          no need to include the date because the notificaion will be sent at the very exact moment (date === now) which means it will always be o seconds ago or just now
+          ✔ change the javascript to take the message instead of the entire payload (because the payload now contains fragments of the message and not just the message) @done (10/25/2018, 8:25:30 PM)
+        ✔ Change the controller and javascript to handle the new post (publications) notification just like before @done (10/27/2018, 6:26:34 PM)
+        ✔ Also for bookmarks @done (10/27/2018, 6:38:41 PM)
+        ✔ Also for friend_request @done (10/27/2018, 6:38:42 PM)
+        ✔ Also for friend_approval @done (10/27/2018, 6:38:42 PM)
+          ✔ Test the things above @done (10/27/2018, 6:38:43 PM)
+    ✔ Create a single Topic to handle all notifications, in this case the notification action and everything will be constructed in the controller @done (10/27/2018, 6:26:39 PM)
+    BUGS:
+      ✔ When the user is not connected the broadcast (obviously) will fail, because the user is not in the session! @done (10/27/2018, 6:26:37 PM)
     IDEAS:
       I might want to make some sort of a infinite scroll view for the entire notifications! (all notifications page wuith limit being just 20 notificaitons or 10 each time)
-
+    
 
 
 
@@ -574,6 +584,7 @@ Bookmarks:
 
 BUGS:
   Profile:
+    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
     ✔ In the post.display, when the logged in user is the publisher of the post don't display a add to friends button @done (10/21/2018, 2:24:32 AM)
     ✔ In the userProfile the recent posts are in the opposite sense @done (10/21/2018, 2:24:30 AM)

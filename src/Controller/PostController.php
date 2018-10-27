@@ -13,17 +13,14 @@ use App\Entity\UserRelationship;
 use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\BookmarkRepository;
-use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Asset\PackageInterface;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/post", name="post.")
@@ -39,10 +36,16 @@ class PostController extends AbstractController
      */
     private $pusher;
 
-    public function __construct(TopicManager $topicManager, PusherDecorator $pusher)
+    /**
+     * @var Packages
+     */
+    private $packages;
+
+    public function __construct(TopicManager $topicManager, PusherDecorator $pusher, Packages $packages)
     {
         $this->topicManager = $topicManager;
         $this->pusher = $pusher;
+        $this->packages = $packages;
     }
 
 
@@ -96,7 +99,7 @@ class PostController extends AbstractController
             $friendsNames = [];
             /** @var UserRelationship $friend */
             foreach ($friends as $friend) {
-                // create a notification for every friend on the list,
+                // create a notification for every friend on the listdi
                 $notification = new Notification();
                 $notification->setNotificationObject($notificationObject);
                 // this is for every single friend in the list
@@ -112,11 +115,12 @@ class PostController extends AbstractController
             // send the notification
             try {
                 $this->pusher->push([
+                    'username' => $currentUser->getUsername(),
+                    'action' => 'just published a new post',
+                    'notifiers' => $friendsNames,
+                    'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
                     'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
-                    'type' => 'new_post',
-                    'message' => $currentUser->getUsername() . " Just published: " . $post->getTitle(),
-                    'friends' => $friendsNames
-                ], 'publications_topic');
+                ], 'notification_topic');
             } catch (\Exception $e) {
                 $e->getTrace();
             }
@@ -162,10 +166,9 @@ class PostController extends AbstractController
      * @param Post $post
      * @param EntityManagerInterface $em
      * @param BookmarkRepository $bookmarkRepository
-     * @param Packages $package
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Request $request, Post $post, EntityManagerInterface $em, BookmarkRepository $bookmarkRepository, Packages $package)
+    public function display(Request $request, Post $post, EntityManagerInterface $em, BookmarkRepository $bookmarkRepository)
     {
         $comment = new Comment();
         // need the comment form
@@ -228,10 +231,10 @@ class PostController extends AbstractController
                         // to the front'end
                         'username' => $currentUser->getUsername(),
                         'action' => 'just commented on your post',
-                        'author' => $post->getUser()->getUsername(), // note sure why am i sending this ??
-                        'avatar' => $package->getUrl('assets/img/') . $currentUser->getAvatar(),
+                        'notifier' => $post->getUser()->getUsername(), // note sure why am i sending this ??
+                        'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
                         'url' => $this->generateUrl('post.display', ['id' => $post->getId()]) . '#' . $comment->getId(),
-                    ], 'comment_topic');
+                    ], 'notification_topic');
                 } catch (\Exception $e) {
                     $e->getTrace();
                 }
@@ -301,8 +304,26 @@ class PostController extends AbstractController
             $notification->setStatus(1);
 
             $entityManager->persist($notification);
-
             $entityManager->flush();
+
+            // TODO: maybe all this code should be inside an event listener (onCommentPosted!)
+            // TODO: if the current logged in user in the author, then no need to send a notification!
+            if (!($this->getUser() === $post->getUser())) {
+                try {
+                    $currentUser = $this->getUser();
+                    $this->pusher->push([
+                        // this is for the real-time notification, for constructing the notificaion when it arrive
+                        // to the front'end
+                        'username' => $currentUser->getUsername(),
+                        'action' => 'just bookmarked your post',
+                        'notifier' => $post->getUser()->getUsername(),
+                        'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
+                        'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
+                    ], 'notification_topic');
+                } catch (\Exception $e) {
+                    $e->getTrace();
+                }
+            }
 
             $this->addFlash('success', 'Added to your bookmarks');
 

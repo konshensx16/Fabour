@@ -47,6 +47,10 @@ services:
             - '@gos_web_socket.wamp.topic_manager'
             - '@gos_web_socket.amqp.pusher'
 
+    App\Controller\HomeController:
+        arguments:
+            - '@gos_web_socket.amqp.pusher'
+
     App\Controller\FriendsController:
         arguments:
             - '@gos_web_socket.wamp.topic_manager'
@@ -62,13 +66,17 @@ services:
         tags:
             - { name: gos_web_socket.topic }
 
-
     App\Topic\FriendshipTopic:
         arguments:
             - '@gos_web_socket.websocket.client_manipulator'
         tags:
             - { name: gos_web_socket.topic }
 
+    App\Topic\NotificationTopic:
+        arguments:
+            - '@gos_web_socket.websocket.client_manipulator'
+        tags:
+            - { name: gos_web_socket.topic }
 
     App\Topic\PublicationsTopic:
         arguments:

@@ -1,3 +1,8 @@
+notification_topic:
+    channel: notification/channel
+    handler:
+        callback: 'notification.topic'
+
 acme_topic:
     channel: 'acme/channel'
     handler:

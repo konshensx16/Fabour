@@ -13,27 +13,23 @@ webSocket.on("socket/connect", function (session) {
         delay: 5000
     })
 
-	session.subscribe('comment/channel', function (uri, payload) // payload is the message itself
+	session.subscribe('notification/channel', function (uri, payload) // payload is the message itself
     {
-		let notificationMessage = `${payload.username} commented on your post`
+    	log(payload)
+		let notificationMessage = `${payload.username} ${payload.action}`
         notification.confirm(notificationMessage)
 
         addNotificationToList(payload);
     })
 
-	session.subscribe('publications/channel', function (uri, payload) // payload is the message itself
-    {
-        // TODO: Add the notification when recieved
-        notification.confirm(payload[0])
-    })
-    session.subscribe('friendship/channel', function (uri, payload) // payload is an object
-    {
-        // TODO: Add the notification when recieved
-		// TODO: display a small notification for the user, maybe make it click-able
-        // client connected
-        // everytime an event is published in this channel the function is executed
-        notification.confirm(payload['0'])
-    })
+    // session.subscribe('friendship/channel', function (uri, payload) // payload is an object
+    // {
+    //     // TODO: Add the notification when recieved
+		// // TODO: display a small notification for the user, maybe make it click-able
+    //     // client connected
+    //     // everytime an event is published in this channel the function is executed
+    //     notification.confirm(payload['0'])
+    // })
 })
 
 webSocket.on("socket/disconnect", function (error) {
