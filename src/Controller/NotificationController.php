@@ -29,6 +29,8 @@ class NotificationController extends AbstractController
         // this is containing records (NotificationObject) where the current user is the notifier id (array)
         $array = [];
 
+        // TODO: rewrite everything below to take in consideration what's wrote in the dropbox paper
+//        $notifications = $notificationObjectRepository->findNotificationsByNotifierId($currentUser->getId());
 
         // TODO: bake the notifications here ? not sure where else to do it
         $result = $notificationObjectRepository->findNotificationsDetailsByNotifierId($currentUser->getId());
@@ -41,6 +43,7 @@ class NotificationController extends AbstractController
                     );
                     foreach ($postNotificationObjects as $post) {
                         $array[] = [
+                            'id' => $post['id'],
                             'action' => $post['username'] . ' published a new post: "' . $post['title'] . '"',
                             'date' => $post['created_at'],
                             'url' => $this->generateUrl('post.display', ['id' => $post['id']]),
@@ -56,6 +59,7 @@ class NotificationController extends AbstractController
                     );
                     foreach ($commentNotificationObjects as $comment) {
                         $array[] = [
+                            'id' => $comment['id'],
                             'action' => $comment['username'] . ' commented on your post.',
                             'date' => $comment['created_at'],
                             'avatar' => $comment['avatar'],
@@ -70,6 +74,7 @@ class NotificationController extends AbstractController
                     );
                     foreach ($bookmarkNotificationObjects as $post) {
                         $array[] = [
+                            'id' => $post['id'],
                             'action' => $post['username'] . ' bookmarked your post: "' . $post['title'] . '"',
                             'date' => $post['created_at'],
                             'url' => $this->generateUrl('post.display', ['id' => $post['id']]),
@@ -80,11 +85,16 @@ class NotificationController extends AbstractController
             }
 
         }
+        dump($array);
+        usort($array, function ($a, $b) {
+            dump($a['id']);
+            dump($b);
+            return $b['id'] <=> $a['id'];
+        });
 
         return $this->render('notification/index.html.twig', [
             'controller_name' => 'NotificationController',
             'result' => $array,
-//            'notifications' => $result
         ]);
     }
 
@@ -119,7 +129,7 @@ class NotificationController extends AbstractController
                     );
 
                     $array[] = [
-                        'username' =>  $postNotificationObject['username'],
+                        'username' => $postNotificationObject['username'],
                         'action' => ' published a new post: "' . $postNotificationObject['title'] . '"',
                         'date' => $postNotificationObject['created_at'],
                         'url' => $this->generateUrl('post.display', ['id' => $postNotificationObject['id']]),

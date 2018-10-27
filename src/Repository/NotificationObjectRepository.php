@@ -24,17 +24,21 @@ class NotificationObjectRepository extends ServiceEntityRepository
     /**
      * $notifier_id is the person who will be notified
      * @param int $notifier_id
+     * @param int $limit
      * @return NotificationObject[] Returns an array of NotificationObject objects
      */
 
-    public function findNotificationsByNotifierId(int $notifier_id)
+    public function findNotificationsByNotifierId(int $notifier_id, int $limit = 20)
     {
+        // grouping by the entity id
         $qb = $this->createQueryBuilder('no')
+            ->select('no.id', 'no.entity_id', 'no.entity_type_id', 'u.id', 'no.created_at')
             ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
+            ->innerJoin('App\Entity\User', 'u', Join::WITH, 'n.notifier = u.id')
             ->andWhere('n.notifier = :user_id')
             ->setParameter('user_id', $notifier_id)
             ->orderBy('no.created_at', 'DESC')
-            ->setMaxResults(100);
+            ->setMaxResults($limit);
         return $qb
             ->getQuery()
             ->getResult();
@@ -50,7 +54,7 @@ class NotificationObjectRepository extends ServiceEntityRepository
     public function findNotificationsByNotifierIdWithPost(int $notifier_id, int $entity_type_id)
     {
         $qb = $this->createQueryBuilder('no')
-            ->select('actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id')
+            ->select('actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id', 'no.id')
             ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
             ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p.id = no.entity_id')
             ->innerJoin('no.notificationChange', 'ch')
@@ -79,7 +83,7 @@ class NotificationObjectRepository extends ServiceEntityRepository
         // in the blog post the fields to get are: notificationObjectId, entity_type_id, entity_id, notifier_id
         // need to get the comment, the actor, (the notifier ?)
         $qb = $this->createQueryBuilder('no')
-            ->select('actor.username', 'actor.avatar', 'no.created_at', 'no.id as comment_id', 'p.id as post_id')
+            ->select('actor.username', 'actor.avatar', 'no.created_at', 'no.id as comment_id', 'p.id as post_id', 'no.id')
             ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
             ->innerJoin('App\Entity\Comment', 'c', Join::WITH, 'c.id = no.entity_id')
             ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p = c.post')
@@ -107,7 +111,7 @@ class NotificationObjectRepository extends ServiceEntityRepository
     public function findNotificationsByNotifierIdWithBookmark(int $notifier_id, int $entity_type_id)
     {
         $qb = $this->createQueryBuilder('no')
-            ->select('p.title', 'actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id')
+            ->select('no.id', 'p.title', 'actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id')
             ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
             ->innerJoin('App\Entity\Bookmark', 'b', Join::WITH, 'b.id = no.entity_id')
             ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p = b.post')
@@ -130,7 +134,7 @@ class NotificationObjectRepository extends ServiceEntityRepository
      * @param int $limit
      * @return mixed
      */
-    public function findNotificationsDetailsByNotifierId(int $user_id, int $limit = 1000)
+    public function findNotificationsDetailsByNotifierId(int $user_id, int $limit = 20)
     {
         return $this->createQueryBuilder('no')
             ->select('no.entity_type_id')
