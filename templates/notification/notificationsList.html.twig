@@ -18,7 +18,7 @@
                     <!-- loop starts here -->
                     <a href="{{ notification.url }}" class="dropdown-link">
                         <div class="media">
-                            <img src="{{ asset('assets/img/') ~ notification.avatar }}" alt="">
+                            <img src="{{ notification.avatar }}" alt="">
                             <div class="media-body">
                                 <p><strong>{{ notification.username }}</strong> {{ notification.action }}</p>
                                 <span>{{ notification.date|time_diff }}</span>

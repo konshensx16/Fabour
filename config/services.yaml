@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    avatars_dir: '%kernel.project_dir%/public/uploads/avatars'
     post_type_id: 1
     comment_type_id: 2
     bookmark_type_id: 3
@@ -53,7 +54,6 @@ services:
 
     App\Controller\FriendsController:
         arguments:
-            - '@gos_web_socket.wamp.topic_manager'
             - '@gos_web_socket.amqp.pusher'
 
 

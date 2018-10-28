@@ -19,6 +19,7 @@ use App\Form\MessageType;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use App\Services\UserManager;
 
 
 class HomeController extends AbstractController
@@ -33,8 +34,11 @@ class HomeController extends AbstractController
      */
     private $packages;
 
-    public function __construct(PusherDecorator $pusher, Packages $packages)
+    private $userManager;
+
+    public function __construct(PusherDecorator $pusher, Packages $packages, UserManager $userManager)
     {
+        $this->userManager = $userManager;
         $this->pusher = $pusher;
         $this->packages = $packages;
     }
@@ -148,11 +152,11 @@ class HomeController extends AbstractController
         // send the notification
         try {
             $this->pusher->push([
+                'action' => 'wants to add you as a friend',
+                'avatar' => $this->userManager->getUserAvatar($currentUser->getAvatar()),
+                'notifier' => 'admin',
+                'url' => $this->generateUrl('friends.pending'),
                 'username' => $currentUser->getUsername(),
-                'action' => 'just published a new post',
-                'notifiers' => $friendsNames,
-                'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
-                'url' => $this->generateUrl('post.display', ['id' => 5]),
             ], 'notification_topic');
         } catch (\Exception $e) {
             $e->getTrace();
@@ -160,7 +164,8 @@ class HomeController extends AbstractController
 
         return $this->json(
             [
-                'type' => 'hahah'
+                'type' => 'success',
+                'avatar' => $this->userManager->getUserAvatar($currentUser->getAvatar())
             ]
         );
     }
@@ -206,6 +211,23 @@ class HomeController extends AbstractController
     {
         if (!$this->getUser() instanceof UserInterface) {
             return $this->redirect($this->generateUrl('login'));
+        }
+    }
+
+    /**
+     * Return the correct full url of the user avatar
+     * @param  string $avatar [description]
+     * @return [type]         [description]
+     */
+    private function getUserAvatar(string $avatar)
+    {
+        if ($avatar === 'avatar.png')
+        {
+            return $this->packages->getUrl('assets/img/') . $avatar;
+        }
+        else
+        {
+            return $this->packages->getUrl('uploads/avatars/') . $avatar;
         }
     }
 }

@@ -10,7 +10,7 @@
         <div class="card card-people-list">
             {% for item in result %}
                 <div class="media">
-                    <img src="{{ asset('assets/img/') ~ item.avatar }}" alt="">
+                    <img src="{{ item.avatar }}" alt="">
                     <div class="media-body">
                         <a href="{{ item.url }}">{{ item.action }}</a>
                         <p>{{ item.date|time_diff }}</p>

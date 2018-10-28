@@ -4,13 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Entity\User;
-use App\Form\UserFormType;
 use App\Form\UserProfileType;
 use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -100,18 +100,43 @@ class ProfileController extends AbstractController
         // the logged in user should be able to change his info
 
         // TODO: implement this action
+        /** @var User $user */
         $user = $this->getUser();
         if (!$user instanceof UserInterface) {
             return false;
         }
-        $form = $this->createForm(UserProfileType::class, $user);
+        $form = $this->createForm(UserProfileType::class, $user, [
+            'action' => $this->generateUrl('profile.edit')
+        ]);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $request->isXmlHttpRequest()) {
+            dump($request->request);
             // TODO: Change this to a transaction maybe? not really sure why would this fail!
+            // get the file
+            /** @var UploadedFile $file */
+            $file = $request->files->get('file');
+
+            // TODO: generate unique name
+            $filename = $this->generateUniqueName() . '.' . $file->guessExtension();
+
+            $file->move(
+                $this->getUploadsDir(),
+                $filename
+            );
+
+            // set the new name to the user
+            $user->setAvatar($filename);
+
+            // upload the profile picture that we got from the request and save the new name to the database
             $manager->persist($user);
-            $manager->flush();
+           $manager->flush();
+
+            return $this->json([
+                'type' => 'success',
+                'message' => 'your profile was updated!'
+            ]);
         }
         return $this->render('profile/edit.html.twig', [
             'form' => $form->createView(),
@@ -137,4 +162,16 @@ class ProfileController extends AbstractController
             'profile' => $user,
         ]);
     }
+
+    public function generateUniqueName()
+    {
+        return md5(uniqid());
+    }
+
+    public function getUploadsDir()
+    {
+        return $this->getParameter('avatars_dir');
+    }
+
+
 }

@@ -4,11 +4,27 @@
     Change your information
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('/build/profile.css') }}">
+{% endblock %}
+
 {% block body %}
     <div class="section-wrapper mg-t-20" style="overflow: hidden;">
         <label class="section-title">Edit Your Profile</label>
 
-        {{ form(form) }}
+        {{ form_start(form, {'attr': {'id': 'profile_form'}}) }}
+            {{ form_row(form.locale) }}
+            {{ form_row(form.avatar) }}
+            <img width="400" src="{{ asset('assets/img/') ~ app.user.avatar}}" alt="" id="avatar">
+            <input type="hidden" id="blob_holder" name="blob_holder">
+            {{ form_row(form.about) }}
+            <button type="submit" class="btn btn-success pull-right">Update</button>
+        {{ form_end(form) }}
+
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('/build/profile.js') }}"></script>
 {% endblock %}
 

@@ -65,11 +65,9 @@ class NotificationTopic implements TopicInterface, PushableTopicInterface
         // create an array containing session ids of people to receive the message
         $eligibleUsers = [];
         if (in_array('notifiers', array_keys($data)) && is_array($data['notifiers'])) {
-            dump('notifiers is an array');
             foreach ($data['notifiers'] as $friend) {
                 // NOTE: this code will go through all your friends 1M friend = 1M iteration!!
                 $user = $this->clientManipulator->findByUsername($topic, $friend);
-                dump($friend);
                 // check if the user exists in the session (just check if not null)
                 if ($user) {
                     $eligibleUsers[] = $user['connection']->WAMP->sessionId;
@@ -81,7 +79,9 @@ class NotificationTopic implements TopicInterface, PushableTopicInterface
             dump('notifier is just a string');
             // just a string
             $user = $this->clientManipulator->findByUsername($topic, $data['notifier']);
-            $eligibleUsers[] = $user['connection']->WAMP->sessionId;
+            if ($user) {
+                $eligibleUsers[] = $user['connection']->WAMP->sessionId;
+            }
         }
 
 

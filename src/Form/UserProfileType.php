@@ -15,14 +15,14 @@ class UserProfileType extends AbstractType
     {
         $builder
             ->add('locale')
-            ->add('avatar')
-            ->add('about')
-            ->add('update', SubmitType::class, [
-                'label' => 'Update',
+            ->add('avatar', FileType::class, [
+                'mapped' => false,
+                'label' => 'Profile picture',
                 'attr' => [
-                    'class' => 'btn btn-success pull-right'
+                    'onchange' => 'previewFile()'
                 ]
             ])
+            ->add('about')
         ;
     }
 

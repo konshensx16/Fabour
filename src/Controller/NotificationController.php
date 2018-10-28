@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\NotificationObjectRepository;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -16,6 +17,19 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class NotificationController extends AbstractController
 {
+
+
+    /**
+     * @var Packages
+     */
+    private $packages;
+
+    public function __construct(Packages $packages)
+    {
+        $this->packages = $packages;
+    }
+
+
     /**
      * @Route("/all", name="all")
      * Not all of them just the last 100 tbh (maybe should just one week or something)
@@ -43,11 +57,11 @@ class NotificationController extends AbstractController
                     );
                     foreach ($postNotificationObjects as $post) {
                         $array[] = [
-                            'id' => $post['id'],
                             'action' => $post['username'] . ' published a new post: "' . $post['title'] . '"',
+                            'avatar' => $this->getUserAvatar($post['avatar']),
                             'date' => $post['created_at'],
+                            'id' => $post['id'],
                             'url' => $this->generateUrl('post.display', ['id' => $post['id']]),
-                            'avatar' => $post['avatar']
                         ];
                     }
                     break;
@@ -59,10 +73,10 @@ class NotificationController extends AbstractController
                     );
                     foreach ($commentNotificationObjects as $comment) {
                         $array[] = [
-                            'id' => $comment['id'],
                             'action' => $comment['username'] . ' commented on your post.',
+                            'avatar' => $this->getUserAvatar($comment['avatar']),
                             'date' => $comment['created_at'],
-                            'avatar' => $comment['avatar'],
+                            'id' => $comment['id'],
                             'url' => $this->generateUrl('post.display', ['id' => $comment['post_id']]) . '#' . $comment['comment_id'],
                         ];
                     }
@@ -74,23 +88,23 @@ class NotificationController extends AbstractController
                     );
                     foreach ($bookmarkNotificationObjects as $post) {
                         $array[] = [
-                            'id' => $post['id'],
                             'action' => $post['username'] . ' bookmarked your post: "' . $post['title'] . '"',
+                            'avatar' => $this->getUserAvatar($post['avatar']),
                             'date' => $post['created_at'],
+                            'id' => $post['id'],
                             'url' => $this->generateUrl('post.display', ['id' => $post['id']]),
-                            'avatar' => $post['avatar']
                         ];
                     }
                     break;
             }
 
         }
-        dump($array);
+        // sorting the array based on the id of the sub_array
         usort($array, function ($a, $b) {
-            dump($a['id']);
-            dump($b);
             return $b['id'] <=> $a['id'];
         });
+
+        dump($array);
 
         return $this->render('notification/index.html.twig', [
             'controller_name' => 'NotificationController',
@@ -129,11 +143,11 @@ class NotificationController extends AbstractController
                     );
 
                     $array[] = [
-                        'username' => $postNotificationObject['username'],
                         'action' => ' published a new post: "' . $postNotificationObject['title'] . '"',
+                        'avatar' => $this->getUserAvatar($postNotificationObject['avatar']),
                         'date' => $postNotificationObject['created_at'],
                         'url' => $this->generateUrl('post.display', ['id' => $postNotificationObject['id']]),
-                        'avatar' => $postNotificationObject['avatar']
+                        'username' => $postNotificationObject['username'],
                     ];
                     break;
                 case 2:
@@ -144,11 +158,11 @@ class NotificationController extends AbstractController
                     );
 
                     $array[] = [
-                        'username' => $commentNotificationObjects['username'],
                         'action' => ' commented on your post.',
+                        'avatar' => $this->getUserAvatar($commentNotificationObjects['avatar']),
                         'date' => $commentNotificationObjects['created_at'],
-                        'avatar' => $commentNotificationObjects['avatar'],
                         'url' => $this->generateUrl('post.display', ['id' => $commentNotificationObjects['post_id']]) . '#' . $commentNotificationObjects['comment_id'],
+                        'username' => $commentNotificationObjects['username'],
                     ];
 
                     break;
@@ -159,16 +173,15 @@ class NotificationController extends AbstractController
                     );
 
                     $array[] = [
-                        'username' => $bookmarkNotificationObjects['username'],
                         'action' => 'bookmarked your post: "' . $bookmarkNotificationObjects['title'] . '"',
+                        'avatar' => $this->getUserAvatar($bookmarkNotificationObjects['avatar']),
                         'date' => $bookmarkNotificationObjects['created_at'],
                         'url' => $this->generateUrl('post.display', ['id' => $bookmarkNotificationObjects['id']]),
-                        'avatar' => $bookmarkNotificationObjects['avatar']
+                        'username' => $bookmarkNotificationObjects['username'],
                     ];
                     break;
             }
         }
-        dump($array);
         return $this->render('notification/notificationsList.html.twig', [
             'notifications' => $array
         ]);
@@ -188,5 +201,19 @@ class NotificationController extends AbstractController
     private function getEntityTypeId(string $name)
     {
         return $this->getParameter($name . '_type_id');
+    }
+
+    /**
+     * Return the correct full url of the user avatar
+     * @param  string $avatar [description]
+     * @return [type]         [description]
+     */
+    private function getUserAvatar(string $avatar)
+    {
+        if ($avatar === 'avatar.png')
+        {
+            return $this->packages->getUrl('assets/img/') . $avatar;
+        }
+        return $this->packages->getUrl('uploads/avatars/') . $avatar;
     }
 }

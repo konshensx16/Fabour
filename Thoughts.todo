@@ -403,14 +403,31 @@ Profile:
         ✔ INC the profile_views cunter ony when other users view profile (owner should't INC the coutner, it's just plain stupid tbh) @done (10/14/2018, 10:45:37 AM)
           This will be done in the display user profile page, whenever this page opens up we increment the value after process the user (if the loggedf in user is just seeing his don't increment)
         ☐ Only increment if the user is not using the same computer (refreshing the page will increase the counter unnecessarily )
-  ☐ Need to create the user edit page (currently doesn't exist)
-    ☐ Create the Type for the user which should contain all the fields that user can change (This will be last, since i haven't decided all the fields that i want to have)
+  ✔ Need to create the user edit page (currently doesn't exist) @done (18-10-28 11:58)
+    ✔ Create the Type for the user which should contain all the fields that user can change (This will be last, since i haven't decided all the fields that i want to have) @done (18-10-28 11:58)
   ✔ When viewing someone else profile, display a button so the user can add him as a friend! @done (10/16/2018, 9:31:08 PM)
   ✔ Need to change the desing of the profile page to the new slim @done (10/13/2018, 11:53:10 PM)
   ☐ Display a card containing recently added friends
     ✔ Infromation should be sent from the controller! (Get just the last five) @done (10/16/2018, 9:56:16 PM)
     ☐ Display a small add to friends symbol if the user is not friends with those guys > might be hevay but might do it since it's just five people
-    
+  ✔ Add support for the cropper so the user can upload ad crop his profile picture @done (18-10-28 10:56)
+    ✔ Add the file input and the img for preview to the page @done (18-10-28 10:56)
+    ✔ Add the cropper plugin js and css files @done (18-10-28 10:56)
+    ☐ Create some listeners to delete the old picture and replace it with a new one if exists
+    ☐ 
+  ✔ Change the views to handle displaying the new user profile on the entire application @done (18-10-28 12:35)
+    ✔ User profile page @done (18-10-28 11:10)
+    ✔ Author small card @done (18-10-28 11:10)
+    ✔ Navbar with the small icon @done (18-10-28 11:11)
+    ✔ Websocket Notifications @done (18-10-28 12:35)
+      ✔ Publications notifications @done (18-10-28 11:31)
+      ✔ New comments notifications @done (18-10-28 12:06)
+      ✔ Friendrequest notification @done (18-10-28 12:35)
+      ✔ FriendApproval notification @done (18-10-28 12:35)
+    ✔ Back-end notification @done (18-10-28 11:46)
+      ✔ Publications notifications @done (18-10-28 11:46)
+      ✔ New comments notifications @done (18-10-28 11:46)
+    ✔ Comment on posts are nt showing proper avatar @done (18-10-28 11:52)
   BUGS:
     When the user doesn't exist, redirect to an error page or display an error page (404)
 
@@ -594,9 +611,7 @@ Bookmarks:
 
   Messaging:
 
-BUGS:
-  Profile:
-    
+BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
     ✔ In the post.display, when the logged in user is the publisher of the post don't display a add to friends button @done (10/21/2018, 2:24:32 AM)
     ✔ In the userProfile the recent posts are in the opposite sense @done (10/21/2018, 2:24:30 AM)
@@ -604,3 +619,5 @@ BUGS:
     ✔ The posts in the index page are in reverse order (should be DESC) @done (10/21/2018, 3:42:13 PM)
     ☐ When viewing another user post, in the author profile section display a remove from friend (or just get rid of the button) if he's already in your friends list!
     ☐ Order of notifications when displaying them all is messed up (shpecially the bokmarks)
+    ☐ In the notifications when a user approve your request, clicking the notifications takes you to your profile instead of the guys who approved your request!
+    ☐ Admin one is friend with jasmine but when viweing her posts it still display "add as friend" button 

@@ -14,7 +14,11 @@
             <div class="card card-profile">
                 <div class="card-body">
                     <div class="media">
-                        <img src="{{ asset('assets/img/') ~ profile.avatar }}" alt="">
+                        {% if not profile.avatar is same as ('avatar.png') %}
+                            <img src="{{ asset('uploads/avatars/') ~ profile.avatar  }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('assets/img/') ~ profile.avatar }}" alt="">
+                        {% endif %}
                         <div class="media-body">
                             <h3 class="card-profile-name">{{ profile.username }}</h3>
                             <p class="card-profile-position">Joined on: {{ profile.createdAt|date('Y-M-d h:m:s') }}</p>

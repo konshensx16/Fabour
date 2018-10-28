@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Services\UserManager;
 
 /**
  * @Route("/friends", name="friends.")
@@ -30,8 +31,14 @@ class FriendsController extends AbstractController
      */
     private $packages;
 
-    public function __construct(TopicManager $topicManager, PusherDecorator $pusher, Packages $packages)
+    /**
+     * @var UserManager
+     */
+    private $userManager;
+
+    public function __construct(PusherDecorator $pusher, Packages $packages, UserManager $userManager)
     {
+        $this->userManager = $userManager;
         $this->pusher = $pusher;
         $this->packages = $packages;
     }
@@ -99,11 +106,11 @@ class FriendsController extends AbstractController
                 $this->pusher->push([
                     // this is for the real-time notification, for constructing the notificaion when it arrive
                     // to the front'end
-                    'username' => $currentUser->getUsername(),
                     'action' => 'wants to add you as a friend',
+                    'avatar' => $this->userManager->getUserAvatar($currentUser->getAvatar()),
                     'notifier' => $user->getUsername(),
-                    'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
                     'url' => $this->generateUrl('friends.pending'),
+                    'username' => $currentUser->getUsername(),
                 ], 'notification_topic');
             } catch (\Exception $e) {
                 $e->getTrace();
@@ -167,13 +174,13 @@ class FriendsController extends AbstractController
             // TODO: send a real-time notification to the related user ($user)
             try {
                 $this->pusher->push([
-                    // this is for the real-time notification, for constructing the notificaion when it arrive
+                    // this is for the real-time notification, for constructing the notification when it arrive
                     // to the front'end
-                    'username' => $currentUser->getUsername(),
-                    'action' => 'is now your friends list',
+                    'action' => 'is now in your friends list',
+                    'avatar' => $this->userManager->getUserAvatar($currentUser->getAvatar()),
                     'notifier' => $user->getUsername(),
-                    'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
-                    'url' => $this->generateUrl('profile.userProfile', ['username' => $user->getUsername()]),
+                    'url' => $this->generateUrl('profile.userProfile', ['username' => $currentUser->getUsername()]),
+                    'username' => $currentUser->getUsername(),
                 ], 'notification_topic');
             } catch (\Exception $e) {
                 $e->getTrace();

@@ -1,6 +1,13 @@
 <div class="card-contact">
     <div class="tx-center">
-        <a href="{{ path('profile.userProfile', {'username': author.username }) }}"><img src="{{ asset('assets/img/') ~ author.avatar }}" class="card-img" alt="{{ author.username }}"></a>
+        <a href="{{ path('profile.userProfile', {'username': author.username }) }}">
+            {% if not author.avatar is same as ('avatar.png') %}
+
+                <img src="{{ asset('uploads/avatars/') ~ author.avatar  }}" class="card-img" alt="{{ author.username }}">
+            {% else %}
+                <img src="{{ asset('assets/img/') ~ author.avatar }}" class="card-img" alt="{{ author.username }}">
+            {% endif %}
+        </a>
         <h5 class="mg-t-10 mg-b-5">
             <a href="{{ path('profile.userProfile', {'username': author.username }) }}" class="contact-name">{{ author.username }}</a>
         </h5>

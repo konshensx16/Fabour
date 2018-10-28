@@ -118,7 +118,7 @@ class PostController extends AbstractController
                     'username' => $currentUser->getUsername(),
                     'action' => 'just published a new post',
                     'notifiers' => $friendsNames,
-                    'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
+                    'avatar' => $this->getUserAvatar($currentUser->getAvatar()),
                     'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
                 ], 'notification_topic');
             } catch (\Exception $e) {
@@ -222,17 +222,17 @@ class PostController extends AbstractController
             $em->flush();
 
             // TODO: maybe all this code should be inside an event listener (onCommentPosted!)
-            // TODO: if the current logged in user in the author, then no need to send a notification!
+            // TODO: if the current logged in user is the author, then no need to send a notification!
             if (!($this->getUser() === $post->getUser())) {
                 try {
                     $currentUser = $this->getUser();
                     $this->pusher->push([
-                        // this is for the real-time notification, for constructing the notificaion when it arrive
+                        // this is for the real-time notification, for constructing the notificaion when it arrives
                         // to the front'end
                         'username' => $currentUser->getUsername(),
                         'action' => 'just commented on your post',
-                        'notifier' => $post->getUser()->getUsername(), // note sure why am i sending this ??
-                        'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
+                        'notifier' => $post->getUser()->getUsername(),
+                        'avatar' => $this->getUserAvatar($currentUser->getAvatar()),
                         'url' => $this->generateUrl('post.display', ['id' => $post->getId()]) . '#' . $comment->getId(),
                     ], 'notification_topic');
                 } catch (\Exception $e) {
@@ -382,5 +382,22 @@ class PostController extends AbstractController
     private function getEntityTypeId(string $name)
     {
         return $this->getParameter($name . '_type_id');
+    }
+
+    /**
+     * Return the correct full url of the user avatar
+     * @param  string $avatar [description]
+     * @return [type]         [description]
+     */
+    private function getUserAvatar(string $avatar)
+    {
+        if ($avatar === 'avatar.png')
+        {
+            return $this->packages->getUrl('assets/img/') . $avatar;
+        }
+        else
+        {
+            return $this->packages->getUrl('uploads/avatars/') . $avatar;
+        }
     }
 }

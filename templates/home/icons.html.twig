@@ -19,7 +19,11 @@
 
 <div class="dropdown dropdown-c">
     <a href="#" class="logged-user" data-toggle="dropdown">
-        <img src="{{ asset('assets/img/') ~ app.user.avatar  }}" alt="">
+        {% if not app.user.avatar is same as ('avatar.png') %}
+            <img src="{{ asset('uploads/avatars/') ~ app.user.avatar  }}" alt="">
+        {% else %}
+            <img src="{{ asset('assets/img/') ~ app.user.avatar  }}" alt="">
+        {% endif %}
         <span>{{ app.user.username }}</span>
         <i class="fa fa-angle-down"></i>
     </a>

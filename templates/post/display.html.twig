@@ -24,7 +24,6 @@
                     </div><!-- media -->
                     {{ post.content|raw }}
                 </div><!-- card-body -->
-
             </div>
             <div class="section-wrapper mg-t-20" style="overflow:hidden">
                 <label class="section-title">Have any thoughts on this?</label>
@@ -37,7 +36,12 @@
                     {% if post.comments.count %}
                         {% for comment in post.comments %}
                             <li class="media" id="{{ comment.id }}">
-                                <img class="media-img" src="{{ asset('assets/img/') ~ comment.user.avatar }}" alt="Image">
+                                {% if not comment.user.avatar is same as ('avatar.png') %}
+                                    <img class="media-img" src="{{ asset('uploads/avatars/') ~ comment.user.avatar  }}" alt="">
+                                {% else %}
+                                    <img class="media-img" src="{{ asset('assets/img/') ~ comment.user.avatar  }}" alt="">
+                                {% endif %}
+
                                 <div class="media-body">
                                     <h6 class="tx-inverse mg-b-10">
                                         <a href="{{ path('profile.userProfile', {'username': comment.user.username}) }}">
