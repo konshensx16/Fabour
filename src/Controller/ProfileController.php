@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Services\FileManager;
 
 /**
  * @Route("/profile", name="profile.")
@@ -22,6 +23,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class ProfileController extends AbstractController
 {
+
+    private $_fileManager;
+
+    public function __construct(FileManager $fileManager)
+    {
+        $this->_fileManager = $fileManager;
+    }
     /**
      * @Route("/profile", name="profile")
      */
@@ -109,10 +117,11 @@ class ProfileController extends AbstractController
             'action' => $this->generateUrl('profile.edit')
         ]);
 
+        $oldFilename = $user->getAvatar();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $request->isXmlHttpRequest()) {
-            dump($request->request);
             // TODO: Change this to a transaction maybe? not really sure why would this fail!
             // get the file
             /** @var UploadedFile $file */
@@ -126,12 +135,16 @@ class ProfileController extends AbstractController
                 $filename
             );
 
+            // TODO: remove the old file if there's any
+            $this->_fileManager->removeFile($oldFilename);
+            
+
             // set the new name to the user
             $user->setAvatar($filename);
 
             // upload the profile picture that we got from the request and save the new name to the database
             $manager->persist($user);
-           $manager->flush();
+            $manager->flush();
 
             return $this->json([
                 'type' => 'success',

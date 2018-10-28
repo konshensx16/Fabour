@@ -414,6 +414,7 @@ Profile:
     ✔ Add the file input and the img for preview to the page @done (18-10-28 10:56)
     ✔ Add the cropper plugin js and css files @done (18-10-28 10:56)
     ☐ Create some listeners to delete the old picture and replace it with a new one if exists
+      ☐ Removing the old profile picture is being done in the controller as of now (will change later, can't now due to the data being sent via ajax and the file is in a seperate array and not on the entity itself)
     ☐ 
   ✔ Change the views to handle displaying the new user profile on the entire application @done (18-10-28 12:35)
     ✔ User profile page @done (18-10-28 11:10)
