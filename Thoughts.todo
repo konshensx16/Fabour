@@ -620,7 +620,9 @@ Bookmarks:
           sender_id: integer (FK)
           reciepent_id: integer (FK)
           created_at: datetime
+    ☐ Create a single page where a conversation between teo users is displayed
     ☐ Not sure if messages between users should be stored in the database or just like an IRC (they will be stored since i have a table now)
+
     ☐ Create the RPC or the topic 
     ☐ Learn more about patterns and take advantage of them in this case
 
@@ -634,3 +636,4 @@ BUGS:
     ☐ Order of notifications when displaying them all is messed up (shpecially the bokmarks)
     ☐ In the notifications when a user approve your request, clicking the notifications takes you to your profile instead of the guys who approved your request!
     ☐ Admin one is friend with jasmine but when viweing her posts it still display "add as friend" button 
+    ☐ When viewing search results, users and friends avatars are messed up because i didn't change them after handling the the user avatars!
