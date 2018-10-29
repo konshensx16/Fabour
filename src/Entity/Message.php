@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ItemRepository")
  */
-class Message 
+class Message
 {
 	/**
      * @ORM\Id()
@@ -19,6 +19,21 @@ class Message
      * @ORM\Column(type="string", length=255)
      */
     private $message;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="sentMessages")
+     */
+    private $sender;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="recievedMessages")
+     */
+    private $reciepent;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
 
 
     public function getId(): ?int
@@ -34,6 +49,42 @@ class Message
     public function setMessage(string $message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getSender(): ?User
+    {
+        return $this->sender;
+    }
+
+    public function setSender(?User $sender): self
+    {
+        $this->sender = $sender;
+
+        return $this;
+    }
+
+    public function getReciepent(): ?User
+    {
+        return $this->reciepent;
+    }
+
+    public function setReciepent(?User $reciepent): self
+    {
+        $this->reciepent = $reciepent;
 
         return $this;
     }

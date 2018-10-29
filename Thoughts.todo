@@ -260,7 +260,7 @@ DESIGN DRIVEN BACK-END:
           ✔ Include this page in the access control so you don't go crazy later on! @done (10/13/2018, 9:01:06 PM)
 
 GLOBAL :
-  ☐ Replace the navbar pages with categories that the user can click on to get to a paeg with posts from the category
+  ✔ Replace the navbar pages with categories that the user can click on to get to a paeg with posts from the category @done (18-10-28 16:00)
     ✔ The names and the icons (Might want to change the icons later on) @done (10/13/2018, 9:01:36 PM)
   ☐ Add an active class to the category that the user is currently browsing: https://stackoverflow.com/questions/5696526/add-active-class-to-link-with-sf2-and-twig
   ☐ Add a pending icon in the navbar to display pending friend requests!
@@ -294,7 +294,7 @@ POSTS:
 
   
 Categories:
-  ☐ Maybe each category should have sub-categories ?? (Just a thought) (Just still from medium)
+  ✔ Maybe each category should have sub-categories ?? (Just a thought) (Just still from medium) @done (18-10-28 15:59)
     Arts & Entertainment
       Art
       BookmarksComics
@@ -414,8 +414,7 @@ Profile:
     ✔ Add the file input and the img for preview to the page @done (18-10-28 10:56)
     ✔ Add the cropper plugin js and css files @done (18-10-28 10:56)
     ☐ Create some listeners to delete the old picture and replace it with a new one if exists
-      ☐ Removing the old profile picture is being done in the controller as of now (will change later, can't now due to the data being sent via ajax and the file is in a seperate array and not on the entity itself)
-    ☐ 
+      ✔ Removing the old profile picture is being done in the controller as of now (will change later, can't now due to the data being sent via ajax and the file is in a seperate array and not on the entity itself) @done (18-10-28 15:36)
   ✔ Change the views to handle displaying the new user profile on the entire application @done (18-10-28 12:35)
     ✔ User profile page @done (18-10-28 11:10)
     ✔ Author small card @done (18-10-28 11:10)
@@ -611,6 +610,19 @@ Bookmarks:
 
 
   Messaging:
+    For now messaging will be between two friends, later on maybe add a way so that logged in (or all, depends) users can talk in categories 
+    NOTE :Meaning each category would have some sort of a room will users can chat and discuss posts, ideas, opinions...
+    LINK: http://www.vertabelo.com/blog/technical-articles/database-model-for-a-messaging-system
+    Database Schema:
+        Will only have one new table so far which is going to be the 'messages', which has the following schema
+          ID: iteger
+          message: nvarchar
+          sender_id: integer (FK)
+          reciepent_id: integer (FK)
+          created_at: datetime
+    ☐ Not sure if messages between users should be stored in the database or just like an IRC (they will be stored since i have a table now)
+    ☐ Create the RPC or the topic 
+    ☐ Learn more about patterns and take advantage of them in this case
 
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
