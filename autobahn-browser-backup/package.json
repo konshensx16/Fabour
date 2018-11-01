@@ -1,0 +1,49 @@
+{
+  "_from": "autobahn-browser@^18.3.2",
+  "_id": "autobahn-browser@18.10.2",
+  "_inBundle": false,
+  "_integrity": "sha512-+NL4YsLFpUw94OW8pAl1Nlqsg6GyOaD6pw2L6cnQO0sE52du91NT7YL6e/uUhZhd9otUG4puaG+h+fXWWb6zXQ==",
+  "_location": "/autobahn-browser",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "autobahn-browser@^18.3.2",
+    "name": "autobahn-browser",
+    "escapedName": "autobahn-browser",
+    "rawSpec": "^18.3.2",
+    "saveSpec": null,
+    "fetchSpec": "^18.3.2"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/autobahn-browser/-/autobahn-browser-18.10.2.tgz",
+  "_shasum": "f627ae4e7caa7d2ecc47930c09197217a05f42f5",
+  "_spec": "autobahn-browser@^18.3.2",
+  "_where": "/home/konshensx/Desktop/personal/vue-wamp",
+  "author": {
+    "name": "Crossbar.io Technologies GmbH"
+  },
+  "bugs": {
+    "url": "https://github.com/crossbario/autobahn-js-browser/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "[BROWSER BUILD] An implementation of The Web Application Messaging Protocol (WAMP).",
+  "homepage": "https://github.com/crossbario/autobahn-js-browser#readme",
+  "keywords": [
+    "WAMP",
+    "WebSocket",
+    "RPC",
+    "PubSub"
+  ],
+  "license": "MIT",
+  "main": "autobahn.min.js",
+  "name": "autobahn-browser",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/crossbario/autobahn-js-browser.git"
+  },
+  "version": "18.10.2"
+}

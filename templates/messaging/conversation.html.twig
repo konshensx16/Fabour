@@ -1,7 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}Messages{% endblock %}
 
 {% block body %}
-	Welcome to the conversation
+    <div class="container-messages" id="messenger">
+
+        <Messenger/>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('build/conversation.js') }}"></script>
 {% endblock %}

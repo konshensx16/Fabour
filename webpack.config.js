@@ -18,6 +18,7 @@ Encore
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('conversation', './assets/js/conversation.js')
     .addEntry('profile', './assets/js/profile.js')
 
     /*
@@ -32,6 +33,8 @@ Encore
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
+
+    .enableVueLoader()
     
 
     // enables Sass/SCSS support

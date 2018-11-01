@@ -28,6 +28,11 @@ publications_topic:
     handler:
         callback: 'publications.topic'
 
+message_topic:
+    channel: message/channel
+    handler:
+        callback: 'message.topic'
+
 # RPC stuff, don't touch this in case of just a topic
 acme_rpc:
   channel: sample/{method}
@@ -43,7 +48,7 @@ messages_manager_rpc:
     callback: 'messages_manager.rpc'
   requirements:
     method:
-      pattern: "[a-z_]+"
+      path: "[a-z_]+"
 
 comment_manager_rpc:
   channel: commentManager/{method}

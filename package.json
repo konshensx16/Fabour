@@ -1,7 +1,7 @@
 {
     "devDependencies": {
         "@symfony/webpack-encore": "^0.19.0",
-        "webpack-notifier": "^1.6.0"
+        "webpack-notifier": "^1.7.0"
     },
     "license": "UNLICENSED",
     "private": true,
@@ -12,8 +12,14 @@
         "build": "encore production"
     },
     "dependencies": {
+        "ajv": "^6.5.4",
+        "autobahn": "^18.10.2",
         "axios": "^0.18.0",
         "cropperjs": "^1.4.3",
-        "notyf": "^2.0.1"
+        "notyf": "^2.0.1",
+        "vue": "^2.5.17",
+        "vue-loader": "^14.2.3",
+        "vue-template-compiler": "^2.5.17",
+        "vue-wamp": "^1.6.1"
     }
 }

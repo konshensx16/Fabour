@@ -24,7 +24,6 @@ class MessagingController extends AbstractController
 
     /**
      * @Route("/{username}", name="conversation")
-     * @return [type] [description]
      */
     public function conversation(User $user, MessageRepository $messageRepository)
     {
@@ -33,6 +32,8 @@ class MessagingController extends AbstractController
     		// TODO: throw an exception or something
     		return false; // temp solution will change later with everything else
     	}
+
+    	
 
     	// $messages = 
     	return $this->render('messaging/conversation.html.twig', [

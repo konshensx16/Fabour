@@ -23,10 +23,13 @@ class MessagesManagerRPC implements RPCInterface
 		$this->objectManager = $objectManager;
 	}
 
-	/**
-	 * This is my custom function that will be called from the client-side
-	 * @return 
-	 */
+    /**
+     * This is my custom function that will be called from the client-side
+     * @param ConnectionInterface $connection
+     * @param WampRequest $request
+     * @param $params
+     * @return Message
+     */
 	public function storeMessage(ConnectionInterface $connection, WampRequest $request, $params)
 	{
 		// get the params
