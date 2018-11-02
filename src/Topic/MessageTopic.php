@@ -27,10 +27,11 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
     {
         // store the newly connected client
         $this->clients->attach($connection);
+        dump('subscribed');
         // send the message to all subscribers of this topic
-        $topic->broadcast([
-            'msg' => 'new client connected',
-        ]);
+        $topic->broadcast(
+            'new client connected'
+        );
     }
 
     // recieve a disconnect
@@ -51,10 +52,8 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
     {
         // TODO: get the message and save it to the db
         // TODO: send the message to the other user
-        dump('OnPublish trigerred');
-        dump($event);
         $topic->broadcast([
-            'msg' => $event,
+            'msg' => $event[0],
         ]);
     }
 

@@ -658,23 +658,3 @@ BUGS:
     ☐ Admin one is friend with jasmine but when viweing her posts it still display "add as friend" button 
     ✔ When viewing search results, users and friends avatars are messed up because i didn't change them after handling the the user avatars! @done (18-10-29 20:17)
     ☐ In the messages page, the footer is not suppossed to be there, for now just hiding it in the layout file, but i need a real solution
-
-REFACTORING:
-  ☐ In the base file i had the autobahn and goswebsocket files along with the _WS_URI, i want to put them in the same app file and not the layout
-    NOTE: the problem is this app.js file needs to run in the entire application, in the conversation i need to run an extra file (conversation.js), whihc will basically hold the same includes and even _WS_URI
-    ☐ Check if having two connections is not a problem before moving forward
-    ☐ The configuration is hardcoded for now, need to make it shared (get the values from the "gos_web_socket.yaml" file)
-    ☐ Getting this error in conversation.js 'f.serializer is underfined'
-      1- Im gessing this has something todo with the fact that i copied just autobahn.js file to the public folder (dependecies problem)
-      2- This could be a problem with vue-wamp, when the route or topic returns null then the function cannot execute on a null?? (Just a guess, which explains the undefined)
-      What i tried so far:
-         ✔ Install the ajv dependency manually ~ didn't work @done (18-10-31 20:21)
-         ☐ Creating a seperate project to see if im going to get the same error
-           NOTE: i will use the same wesocket that i'm using for symfony!
-           RESULT: the same thing (f.serializer), i might need to submit an issue if their examples don't work too with the latest version
-         ☐ Fucking hell the proble was with autobahn-browser, below is what i did for future reference (NOT RECOMMANDED BUT WILL GET IT DONE)
-           1- Downloaded the vue-wamp example and tried running them but that didn't change much because i was not able to run their ws server
-           2- I'm mentioning this because in the examples i noticed that there's was problem with autobah-browser
-           3- So i took the autobahn files from the examples (just copied them) and pasted them in the symfony project in node_modules/autobahn_browser
-           4- There's no f.serializer undefined no more, so i guess i might want to open an issue concerning this 
-           CRITICAL: upload the file before they fuck it up even further and all im gonna left with is my dick in my hands

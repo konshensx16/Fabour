@@ -83,6 +83,12 @@ services:
         tags:
             - { name: gos_web_socket.topic }
 
+    App\Topic\MessageTopic:
+        arguments:
+            - '@gos_web_socket.websocket.client_manipulator'
+        tags:
+            - { name: gos_web_socket.topic }
+
     conversation.topic_service:
         class: App\Topic\ConversationTopic
         arguments:
