@@ -45,8 +45,6 @@ class Comment
      */
     private $created_at;
 
-    // TODO: add when the comment was published and also edited
-
     public function getId(): ?int
     {
         return $this->id;

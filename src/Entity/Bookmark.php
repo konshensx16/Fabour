@@ -39,7 +39,6 @@ class Bookmark
      */
     private $created_at;
 
-
     public function getId(): ?int
     {
         return $this->id;

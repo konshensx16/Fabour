@@ -609,7 +609,7 @@ Bookmarks:
   
 
 
-  Messaging:
+Messaging:
     For now messaging will be between two friends, later on maybe add a way so that logged in (or all, depends) users can talk in categories 
     NOTE :Meaning each category would have some sort of a room will users can chat and discuss posts, ideas, opinions...
     LINK: http://www.vertabelo.com/blog/technical-articles/database-model-for-a-messaging-system
@@ -621,8 +621,9 @@ Bookmarks:
           reciepent_id: integer (FK)
           created_at: datetime
         FRONT-END:
-        ☐ Create a single page where a conversation between teo users is displayed
-          ☐ I think i might use vuejs for this part because it's just too much js and i don't want to waste time doing this
+        ☐ Create a single page where a conversation between two users is displayed
+          ✔ I think i might use vuejs for this part because it's just too much js and i don't want to waste time doing this @done (18-11-03 11:31)
+          NOTE: i ended up waiting more time doing vuejs than regular js :) 
             The components:
              ☐ Left side which will contain the conversations (recent ones)
                ☐ Probably a modal for writing a new message to someone (new conversations, which are not in the left side list)
@@ -630,21 +631,49 @@ Bookmarks:
                ☐ Contains a message component which will represent a user message
                  ☐ When i send a message it's a div with class 'media-body reverse'
                  ☐ When i recieve a message it's a div with 'media-boy' as class
-                 NOTE: when a user sends multiple messages without interruption the messages are all inside a single div called media
-                       This means just one profile picture and the messages beside it.
+                 Scenario:
+                   When i send the message all i need to do is add it to the the list in the right column
+                   When i recieve a message from the other user all i have to do is add the message to the list of messages
+                   NOTE: when a user sends multiple messages without interruption the messages are all inside a single div called media
+                         This means just one profile picture and the messages beside it.
+                 PROBLEM:
+                   I don't know how tell if the message is mine or not when recieving it
+                     1- I can publish the message just to the other user and not me
+                       This means when i publish i will add the mesage knowing it is mine
+                       But means i have to add the message twice (In subscribe and also in publish "Not a big deal i think")
+                     2- I can have a field or something in the back-end that indicates if the message is mine or not
+                     3- In the component check if the name of the send is the same as mine, in that case i am the sender, if it matches the the recipient's name that im talking to then it is not mine it is his.
+
                ☐ Input to send the message (not sure if this needs to be a separate component)
+                 ☐ Focus on the input when the component is mounted
+                 ☐ Both return key and the icon should send the message and also clear the input and focus back on it
                NOTE: using vue-wamp for now since there isn't anything else on the web (didn't look much tbh)
                LINK: https://www.npmjs.com/package/vue-wamp
         BACK-END:
         ✔ Create the entity and relationships @done (18-10-30 17:56)
+        ✔ Create a service which should contain helper function that are related to Messages @done (18-11-02 23:29)
+        ✔ Create a listener which sets the created_at date @done (18-11-02 23:29)
         ☐ Create the MessageTopic 
           ☐ Thinking about each time a user connects i'll send him a list of the latest messages (Instead of creating a seprate end-point)
-          ☐ To send a message i will publish from the front-end  
-
+          ✔ To send a message i will publish from the front-end @done (18-11-02 23:06)  
+          ☐ Inside the topic i need to get several things
+            ✔ The message @done (18-11-02 23:29)
+            ✔ The sender (just the current logeed in user) @done (18-11-02 23:29)
+            ☐ The recipient (not sure how to get this one)
+              1- I can try sending the recipient username when the user sends the message but that's kind of repetitive
+              2- Since im using a path /conversation/{username}, maybe i can get the username and use it to fetch the user entity ?!
+              3- Remove the project and play battlefield
+              NOTE: when the user is in the session i can access the user which is an object of 'App\Entity\User', if not i will get null
+                * This means if the user is connected then it is easy to get the recipient
+                * The problem remains of the user is not online, i need to get the user somehow.
+                  Solution: maybe just search in the list of users using the username 
+                            Creating a function inside the MessageManager which recieves the username and search for the user and inserts it
         ☐ Not sure if messages between users should be stored in the database or just like an IRC (they will be stored since i have a table now)
 
-        ☐ Create the RPC or the topic 
-        ☐ Learn more about patterns and take advantage of them in this case
+        ✔ Create the RPC or the topic (MessageTopic) @done (18-11-02 23:06)
+        ☐ Learn more about patterns (patterns are deprecated and are now called paths) and take advantage of them in this case
+        BUGS:
+          ☐ The relationship is not setup properly and causing some errors (User & Message Entities )
 
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)

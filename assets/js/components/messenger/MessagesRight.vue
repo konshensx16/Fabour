@@ -40,11 +40,14 @@
         <div class="message-footer">
             <div class="row row-sm">
                 <div class="col-9 col-sm-8 col-xl-9">
-                    <input class="form-control" placeholder="Type something here..." type="text" v-model="messageInput" ref="messageBox">
+                    <input class="form-control" placeholder="Type something here..." type="text"
+                           v-model="messageInput"
+                           ref="message"
+                           v-on:keyup.enter="publishMessage">
                 </div><!-- col-8 -->
                 <div class="col-3 col-sm-4 col-xl-3 tx-right">
                     <div class="d-none d-sm-block">
-                        <a href="#" v-on:click="publishMessage"><i class="icon ion-ios-mic-outline"></i></a>
+                        <a href="#" v-on:click="publishMessage"><i class="icon ion-ios-arrow-right"></i></a>
                     </div>
                 </div><!-- col-4 -->
             </div><!-- row -->
@@ -56,8 +59,6 @@
     let webSocket = WS.connect(_WS_URI)
     let session
 
-    console.log(this.session)
-
     export default {
         name: 'messages-right',
         data() {
@@ -65,34 +66,24 @@
                 messageInput: '',
                 name: 'Mohammed baza',
                 lastSeen: '1 min ago',
-                messages: [
-                    {
-                        "_id": "5bd7f5ebd2b3e88fff6e63c9",
-                        "content": "exercitation est proident in deserunt ex est culpa tempor consectetur et",
-                        "mine": false
-                    },
-                    {
-                        "_id": "5bd7f5ebdd955e7d60621b96",
-                        "content": "anim ut sit consequat quis irure consectetur do commodo officia consectetur",
-                        "mine": true
-                    },
-                    {
-                        "_id": "5bd7f5ebefa9121fe6d38929",
-                        "content": "incididunt velit nostrud amet cupidatat mollit dolor pariatur id cupidatat fugiat",
-                        "mine": false
-                    },
-                ]
+                messages: []
             }
         },
         methods: {
-            loadShit () {
-                console.log(this)
+            loadShit() {
+                console.log('Loadshit called')
             },
-            publishMessage () {
-                session.publish('message/channel', [this.messageInput])
+            publishMessage() {
+                session.publish('message/channel', {
+                    'message': this.messageInput,
+                    'recipient': 'admin1' // TODO: this is hardcoded and needs to change!
+                })
+
                 // TODO: after publishing the message add it to the list of messages
                 this.messageInput = ''
-                // this.$refs.messageBox.$el.focus()
+                this.$nextTick(() => {
+                    // console.log(this.$refs.message.$el)
+                })
             }
         },
         mounted() {
@@ -103,7 +94,7 @@
                     // TODO: push the new messages
                     this.messages.push({
                         'id': '28282',
-                        'content': payload.msg, // check the messageTopic where $event[0], that's why im not getting an array in here
+                        'content': payload.msg, // check the messageTopic where $event['message'], that's why im not getting an array in here
                         'mine': true
                     })
                 })

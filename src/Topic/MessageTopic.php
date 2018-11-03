@@ -2,12 +2,15 @@
 
 namespace App\Topic;
 
+use App\Services\MessageManager;
 use Gos\Bundle\WebSocketBundle\Client\ClientManipulator;
 use Gos\Bundle\WebSocketBundle\Topic\PushableTopicInterface;
 use Gos\Bundle\WebSocketBundle\Topic\TopicInterface;
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\Topic;
 use Gos\Bundle\WebSocketBundle\Router\WampRequest;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class MessageTopic implements TopicInterface, PushableTopicInterface
 {
@@ -16,11 +19,21 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
 
     /** @var ClientManipulator $clientManipulator */
     private $clientManipulator;
+    /**
+     * @var Security
+     */
+    private $security;
+    /**
+     * @var MessageManager
+     */
+    private $messageManager;
 
-    public function __construct(ClientManipulator $clientManipulator)
+    public function __construct(ClientManipulator $clientManipulator, Security $security, MessageManager $messageManager)
     {
         $this->clients = new \SplObjectStorage();
         $this->clientManipulator = $clientManipulator;
+        $this->security = $security;
+        $this->messageManager = $messageManager;
     }
 
     public function onSubscribe(ConnectionInterface $connection, Topic $topic, WampRequest $request)
@@ -29,9 +42,10 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
         $this->clients->attach($connection);
         dump('subscribed');
         // send the message to all subscribers of this topic
-        $topic->broadcast(
-            'new client connected'
-        );
+        // TODO: send a signal indicating that the user is online ??
+//        $topic->broadcast(
+//            'new client connected'
+//        );
     }
 
     // recieve a disconnect
@@ -46,14 +60,26 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
         ]);
     }
 
-    // recieve publish request for this topic
+    // receive publish request for this topic
     // this looks like the place where to send to count of connected clients
     public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible)
     {
-        // TODO: get the message and save it to the db
+        $message = $event['message'];
+        // TODO: get the sender (currentUser)
+        $currentUser = $this->security->getToken()->getUser();
+
+        // TODO: check if the currentUser is logged in
+        if (!$currentUser instanceof UserInterface) {
+            dump('not logged in');
+            return false;
+        }
+        // TODO get the recipient
+        $recipient = $event['recipient'];
+        // this could fail if the user is not connected
+        $this->messageManager->saveMessage($message, $currentUser, $recipient);
         // TODO: send the message to the other user
         $topic->broadcast([
-            'msg' => $event[0],
+            'msg' => $message,
         ]);
     }
 

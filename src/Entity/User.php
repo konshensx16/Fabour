@@ -92,10 +92,10 @@ class User implements UserInterface, \Serializable, EquatableInterface
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="sender")
      */
-    private $sendMessages;
+    private $sentMessages;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="reciepent")
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="recipient")
      */
     private $receivedMessages;
 
@@ -108,10 +108,10 @@ class User implements UserInterface, \Serializable, EquatableInterface
         $this->notificationChanges = new ArrayCollection();
         $this->sendMessages = new ArrayCollection();
         $this->receivedMessages = new ArrayCollection();
+        $this->sentMessages = new ArrayCollection();
     }
 
-
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -124,6 +124,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
+
         return $this;
     }
 
@@ -135,6 +136,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
         return $this;
     }
 
@@ -146,6 +148,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -192,9 +195,10 @@ class User implements UserInterface, \Serializable, EquatableInterface
         return $this->locale;
     }
 
-    public function setLocale(string $locale): self
+    public function setLocale(?string $locale): self
     {
         $this->locale = $locale;
+
         return $this;
     }
 
@@ -471,7 +475,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     {
         if (!$this->receivedMessages->contains($receivedMessage)) {
             $this->receivedMessages[] = $receivedMessage;
-            $receivedMessage->setReciepent($this);
+            $receivedMessage->setRecipient($this);
         }
 
         return $this;
@@ -482,8 +486,39 @@ class User implements UserInterface, \Serializable, EquatableInterface
         if ($this->receivedMessages->contains($receivedMessage)) {
             $this->receivedMessages->removeElement($receivedMessage);
             // set the owning side to null (unless already changed)
-            if ($receivedMessage->getReciepent() === $this) {
-                $receivedMessage->setReciepent(null);
+            if ($receivedMessage->getRecipient() === $this) {
+                $receivedMessage->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getSentMessages(): Collection
+    {
+        return $this->sentMessages;
+    }
+
+    public function addSentMessage(Message $sentMessage): self
+    {
+        if (!$this->sentMessages->contains($sentMessage)) {
+            $this->sentMessages[] = $sentMessage;
+            $sentMessage->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSentMessage(Message $sentMessage): self
+    {
+        if ($this->sentMessages->contains($sentMessage)) {
+            $this->sentMessages->removeElement($sentMessage);
+            // set the owning side to null (unless already changed)
+            if ($sentMessage->getSender() === $this) {
+                $sentMessage->setSender(null);
             }
         }
 

@@ -26,15 +26,14 @@ class Message
     private $sender;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="recievedMessages")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="receivedMessages")
      */
-    private $reciepent;
+    private $recipient;
 
     /**
      * @ORM\Column(type="datetime")
      */
     private $created_at;
-
 
     public function getId(): ?int
     {
@@ -85,6 +84,18 @@ class Message
     public function setReciepent(?User $reciepent): self
     {
         $this->reciepent = $reciepent;
+
+        return $this;
+    }
+
+    public function getRecipient(): ?User
+    {
+        return $this->recipient;
+    }
+
+    public function setRecipient(?User $recipient): self
+    {
+        $this->recipient = $recipient;
 
         return $this;
     }
