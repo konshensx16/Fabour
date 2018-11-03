@@ -1,16 +1,4 @@
-Entities:
-    ☐ Post
-        ID, Title, Description, CreatedAt, UpdatedAt
-    ☐ Category:
-        ID, postId, CreatedAt, UpdatedAt
-    ☐ User:
-        ID, username, email, password, CreatedAt, UpdatedAt
-
-
-
-    ☐ Create the ItemsController and add Create, Update, Remove actions
-    
-  A topic is the server side representation of a pubsub channel
+A topic is the server side representation of a pubsub channel
   
   NOTES TO MYSELF:
     trying to get the number of clients connected to the channel
@@ -659,7 +647,7 @@ Messaging:
           ☐ Inside the topic i need to get several things
             ✔ The message @done (18-11-02 23:29)
             ✔ The sender (just the current logeed in user) @done (18-11-02 23:29)
-            ☐ The recipient (not sure how to get this one)
+            ✔ The recipient (not sure how to get this one) (got it from the front-end and "queryied" the DB for the record) @done (18-11-03 19:29)
               1- I can try sending the recipient username when the user sends the message but that's kind of repetitive
               2- Since im using a path /conversation/{username}, maybe i can get the username and use it to fetch the user entity ?!
               3- Remove the project and play battlefield
@@ -668,12 +656,17 @@ Messaging:
                 * The problem remains of the user is not online, i need to get the user somehow.
                   Solution: maybe just search in the list of users using the username 
                             Creating a function inside the MessageManager which recieves the username and search for the user and inserts it
+        ☐ Currently setting the sender inside the MessageListener
+          ☐ @critical getting the current logged in (aka the sender) gives me a User object that is not initialized yet!
+            Solutions :
+              1- I tried to get just the username and then fetch from the databse for the record just like the recipient but this introduced a new problem, the list of records has random order which means i could easily mix the sender and recipient
+              2- for now im just gonna get each record by itslef (two separate queries)
         ☐ Not sure if messages between users should be stored in the database or just like an IRC (they will be stored since i have a table now)
 
         ✔ Create the RPC or the topic (MessageTopic) @done (18-11-02 23:06)
         ☐ Learn more about patterns (patterns are deprecated and are now called paths) and take advantage of them in this case
         BUGS:
-          ☐ The relationship is not setup properly and causing some errors (User & Message Entities )
+          ✔ The relationship is not setup properly and causing some errors (User & Message Entities ) @done (18-11-03 19:32)
 
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)

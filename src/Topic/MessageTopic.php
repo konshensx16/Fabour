@@ -76,7 +76,7 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
         // TODO get the recipient
         $recipient = $event['recipient'];
         // this could fail if the user is not connected
-        $this->messageManager->saveMessage($message, $currentUser, $recipient);
+        $this->messageManager->saveMessage($message, $recipient);
         // TODO: send the message to the other user
         $topic->broadcast([
             'msg' => $message,

@@ -24,6 +24,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $id;
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @var string
      */
     private $username;
     /**
@@ -106,7 +107,6 @@ class User implements UserInterface, \Serializable, EquatableInterface
         $this->bookmarks = new ArrayCollection();
         $this->friends = new ArrayCollection();
         $this->notificationChanges = new ArrayCollection();
-        $this->sendMessages = new ArrayCollection();
         $this->receivedMessages = new ArrayCollection();
         $this->sentMessages = new ArrayCollection();
     }
@@ -225,8 +225,8 @@ class User implements UserInterface, \Serializable, EquatableInterface
         if (!$this->posts->contains($post)) {
             $this->posts[] = $post;
             $post->setUser($this);
-        }
 
+        }
         return $this;
     }
 
@@ -435,37 +435,6 @@ class User implements UserInterface, \Serializable, EquatableInterface
     /**
      * @return Collection|Message[]
      */
-    public function getSendMessages(): Collection
-    {
-        return $this->sendMessages;
-    }
-
-    public function addSendMessage(Message $sendMessage): self
-    {
-        if (!$this->sendMessages->contains($sendMessage)) {
-            $this->sendMessages[] = $sendMessage;
-            $sendMessage->setSender($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSendMessage(Message $sendMessage): self
-    {
-        if ($this->sendMessages->contains($sendMessage)) {
-            $this->sendMessages->removeElement($sendMessage);
-            // set the owning side to null (unless already changed)
-            if ($sendMessage->getSender() === $this) {
-                $sendMessage->setSender(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Message[]
-     */
     public function getReceivedMessages(): Collection
     {
         return $this->receivedMessages;
@@ -504,6 +473,9 @@ class User implements UserInterface, \Serializable, EquatableInterface
 
     public function addSentMessage(Message $sentMessage): self
     {
+        dump($this->username);
+        dump($this->sentMessages);
+
         if (!$this->sentMessages->contains($sentMessage)) {
             $this->sentMessages[] = $sentMessage;
             $sentMessage->setSender($this);

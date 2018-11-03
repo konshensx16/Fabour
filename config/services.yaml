@@ -165,3 +165,10 @@ services:
             - '@translator'
         tags:
             - { name: twig.extension }
+
+
+
+    # listeners
+    App\Listeners\MessageListener:
+        tags:
+            - { name: doctrine.orm.entity_listener }
