@@ -43,7 +43,8 @@
                     <input class="form-control" placeholder="Type something here..." type="text"
                            v-model="messageInput"
                            ref="message"
-                           v-on:keyup.enter="publishMessage">
+                           v-on:keyup.enter="publishMessage"
+                           autofocus>
                 </div><!-- col-8 -->
                 <div class="col-3 col-sm-4 col-xl-3 tx-right">
                     <div class="d-none d-sm-block">

@@ -76,7 +76,7 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
             return false;
         }
         // TODO: save the message message before sending it, if it's not saved then don't even save it
-//        $this->messageManager->saveMessage();
+        $this->messageManager->saveMessage($message, $recipient, $conversation_id);
         // TODO: send the message to just the other user
         $user = $this->clientManipulator->findByUsername($topic, $recipient);
         if ($user) {
