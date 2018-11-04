@@ -39,45 +39,17 @@ class MessagingController extends AbstractController
     }
 
     /**
-     * @Route("/messaging", name="messaging")
-     */
-    public function index()
-    {
-        return $this->render('messaging/index.html.twig', [
-            'controller_name' => 'MessagingController',
-        ]);
-    }
-
-    /**
-     * @Route("/{id?}", name="conversation")
-     * @param Conversation $conversation
+     * @Route("/", name="messaging")
      * @param ConversationRepository $conversationRepository
-     * @return bool|\Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function conversation(Conversation $conversation, ConversationRepository $conversationRepository)
+    public function index(ConversationRepository $conversationRepository)
     {
-        // logged in user
         $currentUser = $this->getUser();
-        // TODO: check if the user is logged in
-        if (!$currentUser instanceof User) {
-            throw new AuthenticationException();
-        }
-        // But doing it this way anyone can access other people conversations just by using their ID
-        // TODO: check if the current user is a participant in the conversation, if not then thrown an erro and
-        // kick him the fuck out of the fucking web app fucking trash ass hacker
-        if (!($conversation->getFirstUser() === $currentUser || $conversation->getSecondUser() === $currentUser)) {
-            throw new \Exception("You're not allowed to see this conversation!");
-        }
-        $user = $this->getOtherUser($conversation, $currentUser);
-        if (!$user) {
-            throw new \Exception('Opps something bad happened!!');
-        }
 
-        // TODO: get the conversations where im either the first user or the second!
+        // this is limited to just 15 if not limit is provided after the user_id
         $conversations = $conversationRepository->findConversationsByUserId($currentUser->getId());
 
-        // TODO: iterate through all the conversations and make an array with the required values
         $finalConversations = [];
         /** @var Conversation $item */
         foreach ($conversations as $item) {
@@ -89,7 +61,58 @@ class MessagingController extends AbstractController
             ];
         }
 
-        dump($finalConversations);
+        return $this->render('messaging/conversation.html.twig', [
+            'conversations' => $finalConversations,
+            'conversation_id' => null, // TODO: change this and the line below to something better
+            'user' => null
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="conversation")
+     * @param $id
+     * @param ConversationRepository $conversationRepository
+     * @return bool|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function conversation($id, ConversationRepository $conversationRepository)
+    {
+        // the logged in user
+        $currentUser = $this->getUser();
+
+        if (!$currentUser instanceof User) {
+            throw new AuthenticationException();
+        }
+        // TODO: can i improve this ??
+        $conversation = null;
+        if (!is_null($id)) {
+            $conversation = $conversationRepository->find($id);
+            if (is_null($conversation)) {
+                throw new \Exception('This conversation does\'t exist, this is some shady shit bruh');
+            }
+        }
+
+        if (!($conversation->getFirstUser() === $currentUser || $conversation->getSecondUser() === $currentUser)) {
+            throw new \Exception("You're not allowed to see this conversation!");
+        }
+        $user = $this->getOtherUser($conversation, $currentUser);
+        if (!$user) {
+            throw new \Exception('Opps something bad happened!!');
+        }
+
+        // this is limited to just 15 if not limit is provided after the user_id
+        $conversations = $conversationRepository->findConversationsByUserId($currentUser->getId());
+
+        $finalConversations = [];
+        /** @var Conversation $item */
+        foreach ($conversations as $item) {
+            $otherUser = $this->getOtherUser($item, $currentUser);
+            $finalConversations[] = [
+                'id' => $item->getId(),
+                'avatar' => $this->userManager->getUserAvatar($otherUser->getAvatar()),
+                'username' => $otherUser->getUsername(),
+            ];
+        }
 
         return $this->render('messaging/conversation.html.twig', [
             'messages' => $conversation->getMessages(),
@@ -106,6 +129,8 @@ class MessagingController extends AbstractController
     }
 
     /**
+     * TODO: remove this after getting everything working
+     *
      * @Route("/tester", name="tester")
      * @param UserRepository $userRepository
      * @param EntityManagerInterface $entityManager

@@ -11,7 +11,22 @@
 
     export default {
         name: "messenger",
-        props: ['user', 'conversations', 'conversation_id'],
+		props: {
+			user: {
+				type: Object,
+                default: () => {
+                    return {}
+                }
+			},
+            conversations: {
+			    required: true,
+                type: [Array]
+			},
+            conversation_id: {
+				type: Number,
+				default: 0
+			}
+		},
         components: {MessagesLeft, MessagesRight},
     }
 </script>

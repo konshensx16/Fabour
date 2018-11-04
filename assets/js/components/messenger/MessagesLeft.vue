@@ -21,23 +21,25 @@
                 </div><!-- media-body -->
             </a><!-- media -->
             <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__scrollbar-y-rail" style="top: 0px; height: 687px; right: 0px;"><div class="ps__scrollbar-y" tabindex="0" style="top: 0px; height: 643px;"></div></div></div><!-- messages-list -->
-        <div class="messages-left-footer">
-            <button class="btn btn-slim btn-uppercase-sm btn-block">Load Older Messages</button>
-        </div><!-- messages-left-footer -->
+        <!--<div class="messages-left-footer">-->
+            <!--<button class="btn btn-slim btn-uppercase-sm btn-block">Load Older Messages</button>-->
+        <!--</div>&lt;!&ndash; messages-left-footer &ndash;&gt;-->
     </div>
 </template>
 
 <script>
     export default {
         name: 'messages-left',
-        props: ['conversations'],
-        data () {
-            return {
-                users: []
+        props: {
+            conversations: {
+                required: true,
+                type: Array
             }
         },
-        created () {
-            console.log(this.conversations)
+        data () {
+            return {
+
+            }
         }
     }
 </script>
