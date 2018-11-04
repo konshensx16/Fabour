@@ -615,6 +615,9 @@ Messaging:
             The components:
              ☐ Left side which will contain the conversations (recent ones)
                ☐ Probably a modal for writing a new message to someone (new conversations, which are not in the left side list)
+               ☐ Display the conversations which were sent from the controller
+                 I need the fields: ID, (will be used to generate the URL), other user avatar (not mine), maybe the last message but this is fine for now.
+                 ✔ The avatar values is not correct in the controller (Maybe something is wrong with the getOtherUser, or GetUserAvatar) @done (18-11-04 18:25)
              ☐ Right side which is the conversation it self (Focusing on this one for now)
                ☐ Contains a message component which will represent a user message
                  ☐ When i send a message it's a div with class 'media-body reverse'
@@ -631,7 +634,8 @@ Messaging:
                        But means i have to add the message twice (In subscribe and also in publish "Not a big deal i think")
                      2- I can have a field or something in the back-end that indicates if the message is mine or not
                      3- In the component check if the name of the send is the same as mine, in that case i am the sender, if it matches the the recipient's name that im talking to then it is not mine it is his.
-
+               ☐ Include the user avatar in the payload with the message
+               ☐ The message is being sent to both users, only send to the other user
                ☐ Input to send the message (not sure if this needs to be a separate component)
                  ☐ Focus on the input when the component is mounted
                  ☐ Both return key and the icon should send the message and also clear the input and focus back on it
@@ -644,7 +648,7 @@ Messaging:
         ☐ Create the MessageTopic 
           ☐ Thinking about each time a user connects i'll send him a list of the latest messages (Instead of creating a seprate end-point)
           ✔ To send a message i will publish from the front-end @done (18-11-02 23:06)  
-          ☐ Inside the topic i need to get several things
+          ✔ Inside the topic i need to get several things @done (18-11-04 10:17)
             ✔ The message @done (18-11-02 23:29)
             ✔ The sender (just the current logeed in user) @done (18-11-02 23:29)
             ✔ The recipient (not sure how to get this one) (got it from the front-end and "queryied" the DB for the record) @done (18-11-03 19:29)
@@ -656,15 +660,57 @@ Messaging:
                 * The problem remains of the user is not online, i need to get the user somehow.
                   Solution: maybe just search in the list of users using the username 
                             Creating a function inside the MessageManager which recieves the username and search for the user and inserts it
-        ☐ Currently setting the sender inside the MessageListener
-          ☐ @critical getting the current logged in (aka the sender) gives me a User object that is not initialized yet!
+        ✘ Currently setting the sender inside the MessageListener @cancelled (18-11-03 21:50)
+          ✔ @critical getting the current logged in (aka the sender) gives me a User object that is not initialized yet! @done (18-11-03 21:46)
             Solutions :
               1- I tried to get just the username and then fetch from the databse for the record just like the recipient but this introduced a new problem, the list of records has random order which means i could easily mix the sender and recipient
               2- for now im just gonna get each record by itslef (two separate queries)
-        ☐ Not sure if messages between users should be stored in the database or just like an IRC (they will be stored since i have a table now)
+        ✔ Not sure if messages between users should be stored in the database or just like an IRC (they will be stored since i have a table now) @done (18-11-03 21:51)
+        ✔ Create the pattern where the channel is going to be like conversation/{username} @done (18-11-04 10:30)
+          NOTE: i had to serialize the object using twig (json_encode() only encodes public properties, so i had to explicitly call the get the values before encoding them, "Check the controller for more")
+          ✔ Pass the user from the php to the component by using props @done (18-11-03 22:13)
+            ☐ Include the user avatar in the object
+        ☐ For each message i need to send along the avatar ? 
+          NOTE: maybe i can just get it once when the conversation is loading and use it then
+          Q: But what about old message ?? 
+          A: Maybe when fetching the messages i can also get the username and the avatar?
 
         ✔ Create the RPC or the topic (MessageTopic) @done (18-11-02 23:06)
-        ☐ Learn more about patterns (patterns are deprecated and are now called paths) and take advantage of them in this case
+        ✔ Learn more about patterns (patterns are deprecated and are now called paths) and take advantage of them in this case @done (18-11-04 10:29)
+        ✔ Remove the recipient from the front-end and get it in the topic (where the recipient is the username in the route) @done (18-11-04 10:33)
+          ✔ Remove from the vuejs part @done (18-11-04 10:33)
+          ✔ Fetch the new value using the username attribute @done (18-11-04 10:33)
+          NOTES on uasge of patterns:
+            The first thing this is the exact syntax for this route to work, (GET RID OF THE __ WHEN COPYING)
+            message_topic: ____
+                channel: message/{username}
+                handler: __
+                    callback: 'message.topic'
+                requirements: __
+                    username: __
+                        pattern: '\w+'
+            TO set up a pattern include the name for part of the route that is going to be dynamic, then use that same value as a key in the requirements and setup a pattern for that, with pattern being any valid regex expression (inside single quotes)!
+         ☐ @critical READ THIS carefully
+           ☐ I only want to publish to the other partner username
+             This means that the user will subscribe to a channel where the route is his username 
+             Any messages that goes throught that channel will be for him
+           ☐ And i only want to subscribe to channels where the username is mine
+             But this also means that if a user somewhere else sends a message
+             Maybe i need to include both the sender name and reciever name
+         NEW APPROACH:
+            ✔ Create a conversation table with the folling schema @done (18-11-04 16:51)
+            ID: integer
+              user_1: FK (who started the conversation)
+              user_2: FK (the other guy, recipient)
+            ✔ Add the FK conversation_id to message @done (18-11-04 16:51)
+            ☐ Create a conversation for testing purposes with admin and ahmed being the participants
+              Admin will be the first_user which means the one who created this conversation
+            ☐ When a new message is persisted i need to include the conversation_id (Will do after i make sure this is working)
+              PROBLEM: I  need to display the other user avatar when displaying the conversations, how do i know if im the first or the second user
+              Solution: maybe i can check if the user is me then ignore if it's the other user then get his avatar
+              NOTE: This is gonna be the slowest thing ever!!
+             
+           ☐ I need a way so both users will be subscribed to the same channel
         BUGS:
           ✔ The relationship is not setup properly and causing some errors (User & Message Entities ) @done (18-11-03 19:32)
 

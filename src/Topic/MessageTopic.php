@@ -40,7 +40,6 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
     {
         // store the newly connected client
         $this->clients->attach($connection);
-        dump('subscribed');
         // send the message to all subscribers of this topic
         // TODO: send a signal indicating that the user is online ??
 //        $topic->broadcast(
@@ -54,33 +53,44 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
         // remove the connection when not subscribed anymore
         // otherwise the counter will always go up
         $this->clients->detach($connection);
-
-        $topic->broadcast([
-            'msg' => 'client disconnected',
-        ]);
+//
+//        $topic->broadcast([
+//            'msg' => 'client disconnected',
+//        ]);
     }
 
     // receive publish request for this topic
     // this looks like the place where to send to count of connected clients
     public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible)
     {
+        $conversation_id = $request->getAttributes()->get('id');
+
         $message = $event['message'];
+        $recipient = $event['recipient'];
+
         // TODO: get the sender (currentUser)
         $currentUser = $this->security->getToken()->getUser();
 
         // TODO: check if the currentUser is logged in
         if (!$currentUser instanceof UserInterface) {
-            dump('not logged in');
             return false;
         }
-        // TODO get the recipient
-        $recipient = $event['recipient'];
-        // this could fail if the user is not connected
-        $this->messageManager->saveMessage($message, $recipient);
-        // TODO: send the message to the other user
-        $topic->broadcast([
-            'msg' => $message,
-        ]);
+        // TODO: save the message message before sending it, if it's not saved then don't even save it
+//        $this->messageManager->saveMessage();
+        // TODO: send the message to just the other user
+        $user = $this->clientManipulator->findByUsername($topic, $recipient);
+        if ($user) {
+            $topic->broadcast([
+                'msg' => $message,
+                'avatar' => $event['avatar']
+            ], [], [$user['connection']->WAMP->sessionId]);
+        } else {
+            $topic->broadcast([
+                'msg' => $message,
+            ]);
+        }
+
+
     }
 
     // like RPC (Remote Procedure Call) will use to prefix the channel

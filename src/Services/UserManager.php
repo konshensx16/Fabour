@@ -19,7 +19,7 @@ class UserManager
     /**
      * Return the correct full url of the user avatar
      * @param  string $avatar [description]
-     * @return [type]         [description]
+     * @return string [type] [description]
      */
     public function getUserAvatar(string $avatar)
     {

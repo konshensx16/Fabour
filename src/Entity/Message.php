@@ -32,6 +32,11 @@ class Message
     private $recipient;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Conversation", inversedBy="messages")
+     */
+    private $conversation;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $created_at;
@@ -97,6 +102,18 @@ class Message
     public function setRecipient(?User $recipient): self
     {
         $this->recipient = $recipient;
+
+        return $this;
+    }
+
+    public function getConversation(): ?Conversation
+    {
+        return $this->conversation;
+    }
+
+    public function setConversation(?Conversation $conversation): self
+    {
+        $this->conversation = $conversation;
 
         return $this;
     }

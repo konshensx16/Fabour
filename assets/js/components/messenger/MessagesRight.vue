@@ -3,10 +3,10 @@
         <div class="message-header">
             <a href="" class="message-back"><i class="fa fa-angle-left"></i></a>
             <div class="media">
-                <img src="http://via.placeholder.com/500x500" alt="">
+                <img :src="user.avatar" alt="">
                 <div class="media-body">
-                    <h6>{{ name }}</h6>
-                    <p>Last seen: {{ lastSeen }}</p>
+                    <h6>{{ user.username }}</h6>
+                    <p>Last seen: {{ user.last_seen }}</p>
                 </div><!-- media-body -->
             </div><!-- media -->
             <div class="message-option">
@@ -21,13 +21,13 @@
         <div class="message-body ps ps--theme_default">
             <div class="media-list">
                 <div class="media" v-for="message in messages">
-                    <img src="http://via.placeholder.com/500x500" :alt="message.id" v-if="!message.mine">
+                    <img :src="message.avatar" :alt="message.id" v-if="!message.mine">
                     <div class="media-body" v-bind:class="{ reverse : message.mine }">
                         <div class="msg">
                             <p>{{ message.content }}</p>
                         </div>
                     </div><!-- media-body -->
-                    <img src="http://via.placeholder.com/500x500" :alt="message.id" v-if="message.mine">
+                    <img :src="user.avatar" :alt="message.id" v-if="message.mine">
                 </div><!-- media -->
             </div><!-- media-list -->
             <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;">
@@ -47,7 +47,7 @@
                 </div><!-- col-8 -->
                 <div class="col-3 col-sm-4 col-xl-3 tx-right">
                     <div class="d-none d-sm-block">
-                        <a href="#" v-on:click="publishMessage"><i class="icon ion-ios-arrow-right"></i></a>
+                        <a v-on:click.prevent="publishMessage"><i class="icon ion-ios-arrow-right"></i></a>
                     </div>
                 </div><!-- col-4 -->
             </div><!-- row -->
@@ -61,22 +61,25 @@
 
     export default {
         name: 'messages-right',
+        props: ['user', 'conversation_id'],
         data() {
             return {
                 messageInput: '',
-                name: 'Mohammed baza',
-                lastSeen: '1 min ago',
                 messages: []
             }
         },
         methods: {
-            loadShit() {
-                console.log('Loadshit called')
-            },
             publishMessage() {
-                session.publish('message/channel', {
+                session.publish(`message/${this.conversation_id}`, {
                     'message': this.messageInput,
-                    'recipient': 'admin1' // TODO: this is hardcoded and needs to change!
+                    'recipient': this.user.username,
+                    'avatar': this.user.avatar
+                })
+                console.log(this.user.avatar)
+                this.messages.push({
+                    'content': this.messageInput, // check the messageTopic where $event['message'], that's why im not getting an array in here
+                    'avatar': this.user.avatar,
+                    'mine': true
                 })
 
                 // TODO: after publishing the message add it to the list of messages
@@ -89,13 +92,12 @@
         mounted() {
             webSocket.on('socket/connect', (new_session) => {
                 session = new_session
-                session.subscribe('message/channel', (uri, payload) => {
-                    console.log(payload)
+                session.subscribe(`message/${this.conversation_id}`, (uri, payload) => {
                     // TODO: push the new messages
                     this.messages.push({
-                        'id': '28282',
                         'content': payload.msg, // check the messageTopic where $event['message'], that's why im not getting an array in here
-                        'mine': true
+                        'avatar': payload.avatar,
+                        'mine': false
                     })
                 })
             })

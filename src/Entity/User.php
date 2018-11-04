@@ -100,6 +100,11 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     private $receivedMessages;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Conversation", mappedBy="first_user")
+     */
+    private $conversations;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -109,6 +114,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
         $this->notificationChanges = new ArrayCollection();
         $this->receivedMessages = new ArrayCollection();
         $this->sentMessages = new ArrayCollection();
+        $this->conversations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -491,6 +497,37 @@ class User implements UserInterface, \Serializable, EquatableInterface
             // set the owning side to null (unless already changed)
             if ($sentMessage->getSender() === $this) {
                 $sentMessage->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conversation[]
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversation $conversation): self
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations[] = $conversation;
+            $conversation->setFirstUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversation $conversation): self
+    {
+        if ($this->conversations->contains($conversation)) {
+            $this->conversations->removeElement($conversation);
+            // set the owning side to null (unless already changed)
+            if ($conversation->getFirstUser() === $this) {
+                $conversation->setFirstUser(null);
             }
         }
 

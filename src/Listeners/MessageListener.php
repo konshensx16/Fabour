@@ -3,7 +3,6 @@ namespace App\Listeners;
 
 use App\Entity\Message;
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Security;
 
@@ -15,10 +14,6 @@ class MessageListener
      * @var Security
      */
     private $security;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
 
     public function __construct(Security $security)
     {

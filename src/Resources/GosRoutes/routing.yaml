@@ -29,9 +29,12 @@ publications_topic:
         callback: 'publications.topic'
 
 message_topic:
-    channel: message/channel
+    channel: message/{id}
     handler:
         callback: 'message.topic'
+    requirements:
+        id:
+            pattern: '\d+'
 
 # RPC stuff, don't touch this in case of just a topic
 acme_rpc:

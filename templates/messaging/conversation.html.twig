@@ -3,9 +3,12 @@
 {% block title %}Messages{% endblock %}
 
 {% block body %}
-    <div class="container-messages" id="messenger">
 
-        <Messenger/>
+    <div class="container-messages" id="messenger">
+        {#{{ dump(user|json_encode) }}#}
+        <Messenger :user='{{ user|json_encode() }}'
+                   :conversations='{{ conversations|json_encode }}'
+                   :conversation_id="{{ conversation_id|json_encode }}"/>
 
     </div>
 {% endblock %}

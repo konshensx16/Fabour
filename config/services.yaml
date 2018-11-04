@@ -48,6 +48,10 @@ services:
             - '@gos_web_socket.wamp.topic_manager'
             - '@gos_web_socket.amqp.pusher'
 
+    App\Controller\MessagingController:
+        arguments:
+            - '@twig.extension.date'
+
     App\Controller\HomeController:
         arguments:
             - '@gos_web_socket.amqp.pusher'
