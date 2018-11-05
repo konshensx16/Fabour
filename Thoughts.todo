@@ -716,6 +716,7 @@ Messaging:
         BUGS:
           ✔ The relationship is not setup properly and causing some errors (User & Message Entities ) @done (18-11-03 19:32)
           ☐ The screen doesn't scroll down with messages
+          ✔ When the other user is not connected i'll be getting the message back, which is bad (don't send to anyone if not online) @done (18-11-05 07:06)
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
     ✔ In the post.display, when the logged in user is the publisher of the post don't display a add to friends button @done (10/21/2018, 2:24:32 AM)

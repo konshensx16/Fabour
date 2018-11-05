@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<MessagesLeft :conversations="conversations"/>
-		<MessagesRight :user="user" :conversation_id="conversation_id"/>
+		<MessagesRight :user="user" :conversation_id="conversation_id" :messages="messages"/>
 	</div>
 </template>	
 
@@ -25,6 +25,10 @@
             conversation_id: {
 				type: Number,
 				default: 0
+			},
+			messages: {
+			    required: false,
+			    type: Array
 			}
 		},
         components: {MessagesLeft, MessagesRight},

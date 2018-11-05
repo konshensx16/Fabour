@@ -84,13 +84,7 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
                 'msg' => $message,
                 'avatar' => $event['avatar']
             ], [], [$user['connection']->WAMP->sessionId]);
-        } else {
-            $topic->broadcast([
-                'msg' => $message,
-            ]);
         }
-
-
     }
 
     // like RPC (Remote Procedure Call) will use to prefix the channel

@@ -66,6 +66,7 @@ class MessagingController extends AbstractController
             ];
         }
 
+
         return $this->render('messaging/conversation.html.twig', [
             'conversations' => $finalConversations,
             'conversation_id' => null, // TODO: change this and the line below to something better
@@ -111,16 +112,20 @@ class MessagingController extends AbstractController
         $finalConversations = [];
         /** @var Conversation $item */
         foreach ($conversations as $item) {
+            /** @var Message $lastMessage */
+            $lastMessage = $item->getMessages()->last();
             $otherUser = $this->getOtherUser($item, $currentUser);
             $finalConversations[] = [
                 'id' => $item->getId(),
                 'avatar' => $this->userManager->getUserAvatar($otherUser->getAvatar()),
                 'username' => $otherUser->getUsername(),
+                'message' => $lastMessage ? $lastMessage->getMessage() : 'No value',
+                'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : 'No value'
             ];
         }
 
         return $this->render('messaging/conversation.html.twig', [
-            'messages' => $conversation->getMessages(),
+            'messages' => $conversation->getMessages()->toArray(),
             'conversations' => $finalConversations,
             'user' => [
                 'username' => $user->getUsername(),

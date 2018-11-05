@@ -479,9 +479,6 @@ class User implements UserInterface, \Serializable, EquatableInterface
 
     public function addSentMessage(Message $sentMessage): self
     {
-        dump($this->username);
-        dump($this->sentMessages);
-
         if (!$this->sentMessages->contains($sentMessage)) {
             $this->sentMessages[] = $sentMessage;
             $sentMessage->setSender($this);

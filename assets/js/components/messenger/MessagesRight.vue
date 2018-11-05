@@ -90,7 +90,7 @@
                     'recipient': this.user.username,
                     'avatar': this.user.avatar
                 })
-                console.log(this.user.avatar)
+
                 this.messages.push({
                     'content': this.messageInput, // check the messageTopic where $event['message'], that's why im not getting an array in here
                     'avatar': this.user.avatar,
@@ -110,7 +110,6 @@
             }
         },
         mounted() {
-            console.log(this.user)
             webSocket.on('socket/connect', (new_session) => {
                 session = new_session
                 session.subscribe(`message/${this.conversation_id}`, (uri, payload) => {

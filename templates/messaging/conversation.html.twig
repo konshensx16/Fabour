@@ -8,7 +8,9 @@
         {% if conversation_id and user %}
             <Messenger :user='{{ user|json_encode() }}'
                        :conversations='{{ conversations|json_encode }}'
-                       :conversation_id="{{ conversation_id|json_encode }}"/>
+                       :conversation_id="{{ conversation_id|json_encode }}"
+                       :messages="{{ messages|json_encode }}"
+            />
         {% else %}
             <Messenger :conversations='{{ conversations|json_encode }}'/>
         {% endif %}
