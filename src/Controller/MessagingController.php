@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Conversation;
+use App\Entity\Message;
 use App\Repository\ConversationRepository;
 use App\Repository\UserRepository;
 use App\Services\UserManager;
@@ -53,11 +54,15 @@ class MessagingController extends AbstractController
         $finalConversations = [];
         /** @var Conversation $item */
         foreach ($conversations as $item) {
+            /** @var Message $lastMessage */
+            $lastMessage = $item->getMessages()->last();
             $otherUser = $this->getOtherUser($item, $currentUser);
             $finalConversations[] = [
                 'id' => $item->getId(),
                 'avatar' => $this->userManager->getUserAvatar($otherUser->getAvatar()),
                 'username' => $otherUser->getUsername(),
+                'message' => $lastMessage ? $lastMessage->getMessage() : 'No value',
+                'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : 'No value'
             ];
         }
 

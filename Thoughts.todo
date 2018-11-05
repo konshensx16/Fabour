@@ -708,9 +708,14 @@ Messaging:
 
            ✔ When the user access the messages page, he should just get a welcome message and need to actually choose a conversation before communicating @done (18-11-04 21:33)
            ☐ Create a modal where the user can create a new conversation
+           ✔ The left side containing the conversations should display the latest message between two users! @done (18-11-05 06:47)
+             Tired to do this in a single query but i couldn't, fo now getting the message in a separate query, maybe later i can join them together into one
+             ✔ Also display how much time has been since the last message @done (18-11-05 06:47)
+           ☐ Load the latest messages for each conversation!
+           
         BUGS:
           ✔ The relationship is not setup properly and causing some errors (User & Message Entities ) @done (18-11-03 19:32)
-
+          ☐ The screen doesn't scroll down with messages
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
     ✔ In the post.display, when the logged in user is the publisher of the post don't display a add to friends button @done (10/21/2018, 2:24:32 AM)
