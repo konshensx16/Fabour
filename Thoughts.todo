@@ -716,6 +716,28 @@ Messaging:
         BUGS:
           ✔ The relationship is not setup properly and causing some errors (User & Message Entities ) @done (18-11-03 19:32)
           ☐ The screen doesn't scroll down with messages
+          ✔ @critical The sender id is always admin in the database, (Check the MessageManager) @done (18-11-06 15:15)
+            ✔ Okay some really fucked up shit just came up, the user is the same same in both sessions @done (18-11-06 15:15)
+            explanation: 
+              If i log in as "admin" in firefox, and log in as "ahmed" in chrome
+              Who ever sends the first message will be the user logged in in the both session (both browsers)
+              Which doesn't make any sense, so im guessing this has something to do with goswebsocket being trash!
+              ✘ Try sending the current user from the pusher and not in the messageManager  @cancelled (18-11-05 19:32)
+                GIVES THE SAME RESULT!
+              ✘ Maybe i should set the user in a private property once he's connected! @cancelled (18-11-06 15:15)
+                GIVES THE SAME RESULT, THIS IS WEIRD AS FUCK!
+              ✔ @bad try send BOTH the sender and recipient in the publish object @done (18-11-06 15:15)
+                ☐ Check if the user is not the same current logged in user
+                @critical NOTE: i assume this will have just the same effect if i try to do anything else based on the current logged in user
+            ✔ The users avatars are messed up and im consfused where to change this @done (18-11-06 15:24)
+               Walkthorugh:
+                 Check if the problem is in the controller
+                 ✔ Dump the messages in the twig file and see if the correct values are there @done (18-11-06 15:20)
+                   This is working fine 
+                 ✔ Check the vue component for errors or mix ups @done (18-11-06 15:24)
+           ☐ Not sure if this is should be called a bug lol, trim the length of the message if it's too long in the leftSide bar
+
+
           ✔ When the other user is not connected i'll be getting the message back, which is bad (don't send to anyone if not online) @done (18-11-05 07:06)
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)

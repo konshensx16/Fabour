@@ -28,8 +28,12 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
      */
     private $messageManager;
 
+    private $hash;
+
     public function __construct(ClientManipulator $clientManipulator, Security $security, MessageManager $messageManager)
     {
+        dump('constructor called');
+        $this->hash = md5(uniqid());
         $this->clients = new \SplObjectStorage();
         $this->clientManipulator = $clientManipulator;
         $this->security = $security;
@@ -40,6 +44,7 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
     {
         // store the newly connected client
         $this->clients->attach($connection);
+        dump($this->hash);
         // send the message to all subscribers of this topic
         // TODO: send a signal indicating that the user is online ??
 //        $topic->broadcast(
@@ -61,22 +66,37 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
 
     // receive publish request for this topic
     // this looks like the place where to send to count of connected clients
+    /**
+     * @param ConnectionInterface $connection
+     * @param Topic $topic
+     * @param WampRequest $request
+     * @param $event
+     * @param array $exclude
+     * @param array $eligible
+     * @return bool
+     * @throws \Exception
+     */
     public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible)
     {
+        $currentUser = $this->security->getUser();
+        // TODO: Check if the user not the same current logged in user
+        // NOTE: im not sure how is thing going to work
+        $recipient = $event['recipient'];
+        $sender= $event['sender'];
+        if ($recipient == $sender) {
+            throw new \Exception("Something bad happened, check the Message Topic ");
+        }
+
         $conversation_id = $request->getAttributes()->get('id');
 
         $message = $event['message'];
-        $recipient = $event['recipient'];
-
-        // TODO: get the sender (currentUser)
-        $currentUser = $this->security->getToken()->getUser();
 
         // TODO: check if the currentUser is logged in
         if (!$currentUser instanceof UserInterface) {
             return false;
         }
         // TODO: save the message message before sending it, if it's not saved then don't even save it
-        $this->messageManager->saveMessage($message, $recipient, $conversation_id);
+        $this->messageManager->saveMessage($message, $recipient, $conversation_id, $sender);
         // TODO: send the message to just the other user
         $user = $this->clientManipulator->findByUsername($topic, $recipient);
         if ($user) {

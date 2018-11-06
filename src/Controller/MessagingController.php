@@ -119,13 +119,27 @@ class MessagingController extends AbstractController
                 'id' => $item->getId(),
                 'avatar' => $this->userManager->getUserAvatar($otherUser->getAvatar()),
                 'username' => $otherUser->getUsername(),
-                'message' => $lastMessage ? $lastMessage->getMessage() : 'No value',
+                'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
                 'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : 'No value'
             ];
         }
 
+        $messages = [];
+        /** @var Message $item */
+        foreach ($conversation->getMessages() as $item) {
+            $messages[] = [
+                'username' => $this->isCurrentUserSender($item) ?
+                        $item->getSender()->getUsername() : $item->getRecipient()->getUsername(),
+                'avatar' => $this->userManager->getUserAvatar($item->getSender()->getAvatar()),
+                'content' => $item->getMessage(),
+                'mine' => $this->isCurrentUserSender($item),
+            ];
+        }
+
+        dump($messages);
+
         return $this->render('messaging/conversation.html.twig', [
-            'messages' => $conversation->getMessages()->toArray(),
+            'messages' => $messages,
             'conversations' => $finalConversations,
             'user' => [
                 'username' => $user->getUsername(),
@@ -134,7 +148,11 @@ class MessagingController extends AbstractController
                 'id' => $user->getId(),
                 'currentUser' => $this->getUser()->getUsername()
             ],
-            'conversation_id' => $conversation->getId()
+            'conversation_id' => $conversation->getId(),
+            'currentUser' => [
+                'username' =>$currentUser->getUsername(),
+                'avatar' => $this->userManager->getUserAvatar($currentUser->getAvatar()),
+            ]
         ]);
     }
 
@@ -183,6 +201,30 @@ class MessagingController extends AbstractController
             return $conversation->getFirstUser();
         }
         return false;
+    }
+
+    /**
+     * Checks if im the owner of the message or not
+     * @param Message $message
+     * @return User|null
+     */
+    private function checkIfCurrentUserIsSenderOrRecipient(Message $message)
+    {
+        $currentUser = $this->getUser();
+        if ($message->getSender() === $currentUser) {
+            return $message->getSender();
+        }
+        return $message->getReciepent();
+    }
+
+    /**
+     * Check whether the current user is the sender of a given message
+     * @param Message $message
+     * @return bool
+     */
+    private function isCurrentUserSender(Message $message)
+    {
+        return $message->getSender() === $this->getUser();
     }
 
 }

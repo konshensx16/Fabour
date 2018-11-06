@@ -8,7 +8,7 @@
             <a class="media" :href="conversation.id"  v-for="conversation in this.conversations" :id="conversation.id" v-bind:class="{unread : conversation.isActive}">
                 <div class="media-left">
                     <img :src="conversation.avatar" alt="">
-                    <span class="square-10 bg-success"></span>
+                    <!--<span class="square-10 bg-success"></span>-->
                 </div><!-- media-left -->
                 <div class="media-body">
                     <div>

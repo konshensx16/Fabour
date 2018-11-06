@@ -22,14 +22,14 @@
             </div><!-- message-header -->
             <div class="message-body ps ps--theme_default">
                 <div class="media-list">
-                    <div class="media" v-for="message in messages">
+                    <div class="media" v-for="message in conversationMessages">
                         <img :src="message.avatar" :alt="message.id" v-if="!message.mine">
                         <div class="media-body" v-bind:class="{ reverse : message.mine }">
                             <div class="msg">
                                 <p>{{ message.content }}</p>
                             </div>
                         </div><!-- media-body -->
-                        <img :src="user.avatar" :alt="message.id" v-if="message.mine">
+                        <img :src="message.avatar" :alt="message.id" v-if="message.mine">
                     </div><!-- media -->
                 </div><!-- media-list -->
                 <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;">
@@ -72,28 +72,37 @@
                     return {}
                 }
             },
+            currentUser: {
+                type: Object
+            },
             conversation_id: {
                 required: false,
                 type: Number
+            },
+            messages: {
+                required: false,
+                type: Array
             }
         },
         data() {
             return {
                 messageInput: '',
-                messages: []
+                conversationMessages: []
             }
         },
         methods: {
             publishMessage() {
+                // TODO: don't allow empty messages
                 session.publish(`message/${this.conversation_id}`, {
                     'message': this.messageInput,
                     'recipient': this.user.username,
-                    'avatar': this.user.avatar
+                    'sender': this.currentUser.username,
+                    'avatar': this.currentUser.avatar, // this is wrong, my avatar should be there and not the recipient
                 })
-
+                // this is mine message, whioch means it should have the currentUser's avatar
                 this.messages.push({
                     'content': this.messageInput, // check the messageTopic where $event['message'], that's why im not getting an array in here
-                    'avatar': this.user.avatar,
+                    'avatar': this.currentUser.avatar,
                     'mine': true
                 })
 
@@ -105,11 +114,16 @@
             }
         },
         computed: {
-            isUserEmpty () {
+            isUserEmpty() {
                 return Object.keys(this.user).length === 0
             }
         },
         mounted() {
+            console.log('User', this.user)
+            console.log('CurrentUser', this.currentUser)
+
+            console.log(this.conversationMessages)
+            this.conversationMessages = this.messages
             webSocket.on('socket/connect', (new_session) => {
                 session = new_session
                 session.subscribe(`message/${this.conversation_id}`, (uri, payload) => {

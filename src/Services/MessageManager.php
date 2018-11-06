@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entity\Message;
+use App\Entity\User;
 use App\Repository\ConversationRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,9 +44,14 @@ class MessageManager
      * @param string $message
      * @param string $recipient
      * @param int $conversation_id
+     * @param User $sender
+     * @throws \Exception
      */
-    public function saveMessage(string $message, string $recipient, int $conversation_id)
+    public function saveMessage(string $message, string $recipient, int $conversation_id, string $sender)
     {
+        if (empty($sender) || empty($recipient)) {
+            throw new \Exception("Both the sender and the recipient are required!");
+        }
         // TODO: use queues in this case
         // NOTE: the sender is being set in the MessageListener
         // TODO get the recipient object
@@ -55,17 +61,16 @@ class MessageManager
         // TODO: get the conversation object
         $conversation = $this->conversationRepository->find($conversation_id);
 
-        // TODO: get the current user
-        $currentUserUsername = $this->security->getUser()->getUsername();
-        $currentUser = $this->userRepository->findOneBy([
-            'username' => $currentUserUsername
+        $senderObject = $this->userRepository->findOneBy([
+            'username' => $sender
         ]);
 
         $messageObject = new Message();
 
         $messageObject->setMessage($message);
         $messageObject->setReciepent($recipientObject);
-        $messageObject->setSender($currentUser);
+        $messageObject->setSender($senderObject);
+
 
         // TODO: set the conversation_id
         $messageObject->setConversation($conversation);
@@ -73,7 +78,7 @@ class MessageManager
         $this->entityManager->persist($messageObject);
 
         $recipientObject->addReceivedMessage($messageObject);
-        $currentUser->addSentMessage($messageObject);
+        $senderObject->addSentMessage($messageObject);
 
         $this->entityManager->flush();
     }
