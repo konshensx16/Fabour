@@ -2,10 +2,11 @@
     <div class="messages-left">
         <div class="slim-pageheader">
             <h6 class="slim-pagetitle">Messages</h6>
-            <a href="" class="messages-compose"><i class="icon ion-compose"></i></a>
+            <a v-on:click.prevent="toggle" class="messages-compose"><i class="icon ion-compose"></i></a>
         </div><!-- slim-pageheader -->
         <div class="messages-list ps ps--theme_default ps--active-y">
-            <a class="media" :href="conversation.id"  v-for="conversation in this.conversations" :id="conversation.id" v-bind:class="{unread : conversation.isActive}">
+            <NewConversation v-if="isOpen"/>
+            <a class="media single" :href="'con/' + conversation.id"  v-for="conversation in this.conversations" :id="conversation.id" v-bind:class="{unread : conversation.isActive}">
                 <div class="media-left">
                     <img :src="conversation.avatar" alt="">
                     <!--<span class="square-10 bg-success"></span>-->
@@ -28,8 +29,11 @@
 </template>
 
 <script>
+    import NewConversation from './NewConversation'
+
     export default {
         name: 'messages-left',
+        components: {NewConversation},
         props: {
             conversations: {
                 required: true,
@@ -38,7 +42,12 @@
         },
         data () {
             return {
-
+                isOpen: !false
+            }
+        },
+        methods: {
+            toggle () {
+                this.isOpen = !this.isOpen
             }
         }
     }

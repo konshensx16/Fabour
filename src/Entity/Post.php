@@ -156,18 +156,6 @@ class Post
         return $this;
     }
 
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
     public function getViewsCounter(): ?int
     {
         return $this->views_counter;

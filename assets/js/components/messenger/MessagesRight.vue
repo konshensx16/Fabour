@@ -119,10 +119,6 @@
             }
         },
         mounted() {
-            console.log('User', this.user)
-            console.log('CurrentUser', this.currentUser)
-
-            console.log(this.conversationMessages)
             this.conversationMessages = this.messages
             webSocket.on('socket/connect', (new_session) => {
                 session = new_session

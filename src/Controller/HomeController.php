@@ -44,7 +44,7 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/", name="home.index")
+     * @Route("/", name="home.index", options={"expose"=true})
      * Probably won't need the request, just throwing it in there
      */
     public function index(Request $request, PostRepository $postRepository)
@@ -217,7 +217,7 @@ class HomeController extends AbstractController
     /**
      * Return the correct full url of the user avatar
      * @param  string $avatar [description]
-     * @return [type]         [description]
+     * @return [type] [description]
      */
     private function getUserAvatar(string $avatar)
     {

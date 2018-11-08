@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import VueWamp from 'vue-wamp'
-import Messenger from './components/Messenger'
-
-console.log(_WS_URI)
+import Messenger from './components/Messenger' 
 
 Vue.use(VueWamp, {
     debug: true,

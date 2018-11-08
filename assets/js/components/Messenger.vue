@@ -40,9 +40,5 @@
             }
         },
         components: {MessagesLeft, MessagesRight},
-        created() {
-            console.log(this.currentUser)
-            console.log(this.user)
-        }
     }
 </script>

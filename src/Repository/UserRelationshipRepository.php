@@ -91,18 +91,45 @@ class UserRelationshipRepository extends ServiceEntityRepository
 
     /**
      * Will get the some friends (limit) of some given user (using id)
-     * If limit is not set it's going to return just 100
+     * If limit is not set it's going to return just 1000
      * Returns UserRelationship[]|null
      * @param int $user_id
      * @param int $limit
      * @return mixed
      */
-    public function findFriendsWithLimitById(int $user_id, int $limit = 100)
+    public function findFriendsWithLimitById(int $user_id, int $limit = 1000)
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.relatingUser = :user_id')
             ->andWhere('u.type = :type')
             ->setParameter('user_id', $user_id)
+            ->setParameter('type', 'friend')
+            ->orderBy('u.updated_at', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    /**
+     * Will get friends (limit) of some given user (using id)
+     * If limit is not set it's going to return just 1000
+     * Returns UserRelationship[]|null
+     * @param int $user_id
+     * @param string $username
+     * @param int $limit
+     * @return mixed
+     */
+    public function findFriendsWithLimitByIdJustRelatedUser(int $user_id, string $username, int $limit = 1000)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('ru.username', 'ru.avatar', 'ru.avatar')
+            ->innerJoin('u.relatedUser', 'ru')
+            ->andWhere('u.relatingUser = :user_id')
+            ->andWhere('ru.username like :username')
+            ->andWhere('u.type = :type')
+            ->setParameter('user_id', $user_id)
+            ->setParameter('username', '%' . $username . '%')
             ->setParameter('type', 'friend')
             ->orderBy('u.updated_at', 'DESC')
             ->setMaxResults($limit)

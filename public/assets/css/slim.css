@@ -13632,6 +13632,23 @@ textarea.parsley-success:focus {
       .media-list-demo .media-body {
         margin-top: 0; } }
 
+.autocomplete__results .autocomplete__results__item {
+  display: block; }
+@media (min-width: 576px) {
+  .autocomplete__results .autocomplete__results__item {
+    display: flex; } } 
+.autocomplete__results .autocomplete__results__item  .media-img {
+  margin-right: 20px;
+  width: 50px;
+  border-radius: 100%; }
+.autocomplete__results .autocomplete__results__item .media-body {
+  align-self: center;
+  margin-top: 20px;
+    float: right;}
+@media (min-width: 576px) {
+  .autocomplete__results .media-body {
+    margin-top: 0; } }
+
 /********** RTL SUPPORT **********/
 /*********************************/
 [dir="rtl"] .media-demo {
@@ -13749,18 +13766,18 @@ textarea.parsley-success:focus {
       position: absolute;
       bottom: 0;
       right: 5px; }
-  .messages-list .media-body {
+  .messages-list .single .media-body {
     margin-left: 15px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between; }
-    .messages-list .media-body > div:last-child {
+    .messages-list .single .media-body > div:last-child {
       min-width: 50px;
       text-align: right;
       display: flex;
       align-items: flex-end;
       flex-direction: column; }
-      .messages-list .media-body > div:last-child span:nth-child(2) {
+      .messages-list .single .media-body > div:last-child span:nth-child(2) {
         background-color: #1b84e7;
         color: #fff;
         border-radius: 100%;
@@ -13771,15 +13788,15 @@ textarea.parsley-success:focus {
         width: 18px;
         height: 18px;
         margin-top: 8px; }
-    .messages-list .media-body h6 {
+    .messages-list .single .media-body h6 {
       font-size: 14px;
       color: #495057;
       margin-bottom: 5px; }
-    .messages-list .media-body p {
+    .messages-list .single .media-body p {
       margin-bottom: 0;
       color: #6c757d;
       font-size: 13px; }
-    .messages-list .media-body span {
+    .messages-list .single .media-body span {
       font-size: 12px;
       color: #adb5bd;
       display: block; }

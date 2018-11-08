@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Conversation;
 use App\Entity\Message;
 use App\Repository\ConversationRepository;
+use App\Repository\UserRelationshipRepository;
 use App\Repository\UserRepository;
 use App\Services\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +13,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route("/messages", name="messages.")
@@ -75,7 +80,7 @@ class MessagingController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="conversation")
+     * @Route("/con/{id}", name="conversation")
      * @param $id
      * @param ConversationRepository $conversationRepository
      * @return bool|\Symfony\Component\HttpFoundation\Response
@@ -226,5 +231,52 @@ class MessagingController extends AbstractController
     {
         return $message->getSender() === $this->getUser();
     }
+
+    /**
+     * @Route("/friendsList/{username?}", name="userFriends", options={"expose"=true})
+     * @param UserRelationshipRepository $userRelationshipRepository
+     * @param $username
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Exception
+     */
+    public function getUserFriends(UserRelationshipRepository $userRelationshipRepository, $username)
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+//
+        if (!$currentUser instanceof UserInterface) {
+            throw new \Exception('You\'re not logged in!');
+        }
+
+        $encoders = [new JsonEncoder()];
+        $normalizers = [
+            (new ObjectNormalizer())
+            ->setCircularReferenceHandler(function ($object) {
+                return $object->getId();
+            })
+            ->setIgnoredAttributes([
+                'posts',
+                'comments',
+                'bookmarks',
+                'notificationChanges',
+                'sentMessages',
+                'receivedMessages',
+                'conversations',
+                'friends'
+            ])
+        ];
+
+        $serializer = new Serializer($normalizers, $encoders);
+
+        $friends = $userRelationshipRepository->findFriendsWithLimitByIdJustRelatedUser($currentUser->getId(), $username);
+        // TODO: fix the avatar of the friends
+//        dump($friends); die;
+        return $this->json([
+            'friends' => $serializer->serialize($friends, 'json')
+//            'friends' => $currentUser->getFriends()->toArray()
+
+        ]);
+    }
+
 
 }

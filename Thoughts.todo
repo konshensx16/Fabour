@@ -736,9 +736,48 @@ Messaging:
                    This is working fine 
                  ✔ Check the vue component for errors or mix ups @done (18-11-06 15:24)
            ☐ Not sure if this is should be called a bug lol, trim the length of the message if it's too long in the leftSide bar
-
-
           ✔ When the other user is not connected i'll be getting the message back, which is bad (don't send to anyone if not online) @done (18-11-05 07:06)
+    Creating new Conversations:
+      1- This will be a modal that will popup and give the user the ability to choose from one of his friends nad the create a conversation between the users
+      2- I Might want to display just an input for the username and whe the user starts searching it will fetch the username for the recipient user, once the user clicks that name a new conversation will be created and the users can start chatting
+      * I am thinking this is the perfect case of using RPC
+      * Also thinking about making the modal a seperate component
+      NOTE: check the admin tempalte if there's any modals already there!
+      Front-end:
+        ✔ Create the component that will be toggled with the compose message @done (18-11-06 16:16)
+        ☐ Maybe i can use typeahead and bloodhount for autocomplete (Since im familiar with those) (Also check for other vue packages)
+          Not sure how this information is going to get through
+          * VIA AJAX -> This one seems better because im gonna save some time and only do this when the user request it.
+          * Or should be sent via php when the page is rendering.
+        ✔ Toggle the input by using the compose button @done (18-11-07 08:49)
+        ✔ Create an event handler for typing @done (18-11-07 09:03)
+        ✔ Install both typeahead and bloodhound @done (18-11-07 09:23)
+        ✔ Initialize Typeahead @done (18-11-07 09:24)
+          NOTE: only initialize this if bloodhoud succeds, if bllodhound fail, then what the hell are we event doing 
+        ✔ Initialize Bloodhound @done (18-11-07 09:29)
+        ✘ Get the values from the controller Via ajax (axios is already installed) @cancelled (18-11-07 23:05)
+           I ended up not needing axios since the remote and prefetch options handle this for me :)
+        ✔ Not sure if i want to use FosRoutingJs to generate URls or just use the data-attributes (html-attrobutes and save some time and bytes) @done (18-11-07 21:26)
+          Using FosRoutingJS just in case i want to turn everything into vuejs and sheeeet
+        NOTE ON BLOODHOUND AND TYPEAHEAD:
+          Bloodhound provides a function called 'search' which searches the array for matching query
+          Typeahead have a function that takes too arguments, 'query' & 'result'
+          What i wanna do is use the typeahead query which basically means the user input and use it in the blooghound search function
+          ✔ Trying the above before moving any further @done (18-11-08 20:31)
+             I don't know what's written above just noting that i didn;t use the promise provided by bloodhound instead using the ttAdapter functin to get an array or someshit, which works
+        ✘ Fix the typeahead styles and everything @cancelled (18-11-08 21:09)
+        ✘ Render a custom template for each suggestion @cancelled (18-11-08 21:09)
+        ☐ Replace Typeahead with vuejs-auto-complete, typeahead is being a bitch without jquery
+          LINK: https://www.npmjs.com/package/vuejs-auto-complete
+
+
+
+      Back-End:
+        NOTE: Check the dropbox file before doing any backend stuff
+        ☐ Create the action that will return the current users friends list!
+        ☐ @critical Fix the avatar that's included in the result sent to the Component
+
+
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
     ✔ In the post.display, when the logged in user is the publisher of the post don't display a add to friends button @done (10/21/2018, 2:24:32 AM)

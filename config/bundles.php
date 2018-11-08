@@ -18,4 +18,5 @@ return [
     Gos\Bundle\WebSocketBundle\GosWebSocketBundle::class => ['all' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
     Snc\RedisBundle\SncRedisBundle::class => ['all' => true],
+    FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
 ];
