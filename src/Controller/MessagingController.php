@@ -162,7 +162,7 @@ class MessagingController extends AbstractController
 
     /**
      * Creates a new conversation
-     * @Route("/newConversation/{username}", name="newConversation")
+     * @Route("/newConversation/{username}", name="newConversation", options={"expose"=true})
      * @param User $user
      * @param ConversationRepository $conversationRepository
      * @param EntityManagerInterface $entityManager
