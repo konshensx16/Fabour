@@ -40,7 +40,7 @@
             },
             formattedDisplay: ({username, avatar}) => {
                 return `
-                        <img class="media-img" src="/uploads/avatars/${avatar}" alt="${username}">
+                        <img class="media-img" src="${avatar}" alt="${username}">
                         <div class="media-body">
                           <h6 class="tx-inverse mg-b-10">${username}</h6>
                         </div>

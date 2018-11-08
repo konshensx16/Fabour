@@ -14,11 +14,7 @@
             <div class="card card-profile">
                 <div class="card-body">
                     <div class="media">
-                        {% if not profile.avatar is same as ('avatar.png') %}
-                            <img src="{{ asset('uploads/avatars/') ~ profile.avatar  }}" alt="">
-                        {% else %}
-                            <img src="{{ asset('assets/img/') ~ profile.avatar }}" alt="">
-                        {% endif %}
+                        <img src="{{ profile.avatar  }}" alt="">
                         <div class="media-body">
                             <h3 class="card-profile-name">{{ profile.username }}</h3>
                             <p class="card-profile-position">Joined on: {{ profile.createdAt|date('Y-M-d h:m:s') }}</p>
@@ -128,11 +124,7 @@
                     {% if recentFriends %}
                         {% for item in recentFriends %}
                             <div class="media">
-                                {% if not item.relatedUser.avatar is same as ('avatar.png') %}
-                                    <img src="{{ asset('uploads/avatars/') ~ item.relatedUser.avatar }}" alt="">
-                                {% else %}
-                                    <img src="{{ asset('assets/img/') ~ item.relatedUser.avatar }}" alt="">
-                                {% endif %}
+                                <img src="{{ item.relatedUser.avatar }}" alt="">
                                 <div class="media-body">
                                     <a href="{{ path('profile.userProfile', {'username': item.relatedUser.username}) }}">{{ item.relatedUser.username }}</a>
                                     <p>{{ item.updatedAt|time_diff }}</p>

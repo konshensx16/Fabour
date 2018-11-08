@@ -43,7 +43,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $avatar = 'avatar.png';
+    private $avatar = '/assets/img/avatar.png';
 
     /**
      * @ORM\Column(type="text")

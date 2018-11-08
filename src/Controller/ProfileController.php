@@ -137,10 +137,9 @@ class ProfileController extends AbstractController
 
             // TODO: remove the old file if there's any
             $this->_fileManager->removeFile($oldFilename);
-            
 
             // set the new name to the user
-            $user->setAvatar($filename);
+            $user->setAvatar($this->getUploadsDir() . '/' . $filename);
 
             // upload the profile picture that we got from the request and save the new name to the database
             $manager->persist($user);

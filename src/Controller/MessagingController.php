@@ -122,7 +122,7 @@ class MessagingController extends AbstractController
             $otherUser = $this->getOtherUser($item, $currentUser);
             $finalConversations[] = [
                 'id' => $item->getId(),
-                'avatar' => $this->userManager->getUserAvatar($otherUser->getAvatar()),
+                'avatar' => $otherUser->getAvatar(),
                 'username' => $otherUser->getUsername(),
                 'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
                 'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : 'No value'
@@ -135,7 +135,7 @@ class MessagingController extends AbstractController
             $messages[] = [
                 'username' => $this->isCurrentUserSender($item) ?
                     $item->getSender()->getUsername() : $item->getRecipient()->getUsername(),
-                'avatar' => $this->userManager->getUserAvatar($item->getSender()->getAvatar()),
+                'avatar' => $item->getSender()->getAvatar(),
                 'content' => $item->getMessage(),
                 'mine' => $this->isCurrentUserSender($item),
             ];
@@ -146,7 +146,7 @@ class MessagingController extends AbstractController
             'conversations' => $finalConversations,
             'user' => [
                 'username' => $user->getUsername(),
-                'avatar' => $this->userManager->getUserAvatar($user->getAvatar()),
+                'avatar' => $user->getAvatar(),
                 'last_seen' => $this->twig_date->diff($this->environment, $user->getLastSeen()),
                 'id' => $user->getId(),
                 'currentUser' => $this->getUser()->getUsername()
@@ -154,7 +154,7 @@ class MessagingController extends AbstractController
             'conversation_id' => $conversation->getId(),
             'currentUser' => [
                 'username' => $currentUser->getUsername(),
-                'avatar' => $this->userManager->getUserAvatar($currentUser->getAvatar()),
+                'avatar' => $currentUser->getAvatar(),
             ]
         ]);
     }

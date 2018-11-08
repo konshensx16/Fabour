@@ -801,4 +801,13 @@ BUGS:
 
 MAJOR CHANGES:
    ☐ Change the user avatar from only storing the name to storing the full path
-      ☐ Change all other page where the avatar was shown to handle the new avatar value
+     ✔ Update the user entity @done (18-11-09 00:09)
+     ✔ Change where the user uploads the image @done (18-11-09 00:09)
+     ☐ Change all other page where the avatar was shown to handle the new avatar value
+     Where to change the directory:
+       ✔ Messages @done (18-11-09 00:19)
+         NOTE:  i think i still need to handle the avatars in the notifications (not even sure if im using any)
+       ☐ Posts
+       ☐ Comments
+       ☐ Profile
+       ☐ Search results (posts, users, friends)
