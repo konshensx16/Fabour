@@ -742,7 +742,7 @@ Messaging:
       2- I Might want to display just an input for the username and whe the user starts searching it will fetch the username for the recipient user, once the user clicks that name a new conversation will be created and the users can start chatting
       * I am thinking this is the perfect case of using RPC
       * Also thinking about making the modal a seperate component
-      NOTE: check the admin tempalte if there's any modals already there!
+      NOTE: check the admin template if there's any modals already there!
       Front-end:
         ✔ Create the component that will be toggled with the compose message @done (18-11-06 16:16)
         ☐ Maybe i can use typeahead and bloodhount for autocomplete (Since im familiar with those) (Also check for other vue packages)
@@ -767,15 +767,20 @@ Messaging:
              I don't know what's written above just noting that i didn;t use the promise provided by bloodhound instead using the ttAdapter functin to get an array or someshit, which works
         ✘ Fix the typeahead styles and everything @cancelled (18-11-08 21:09)
         ✘ Render a custom template for each suggestion @cancelled (18-11-08 21:09)
-        ☐ Replace Typeahead with vuejs-auto-complete, typeahead is being a bitch without jquery
+        ✔ Replace Typeahead with vuejs-auto-complete, typeahead is being a bitch without jquery @done (18-11-08 22:23)
           LINK: https://www.npmjs.com/package/vuejs-auto-complete
+          ☐ Generate the URL to create a new conversation in the item
+        
 
 
 
       Back-End:
         NOTE: Check the dropbox file before doing any backend stuff
-        ☐ Create the action that will return the current users friends list!
+        ✔ Create the action that will return the current users friends list! @done (18-11-08 22:54)
         ☐ @critical Fix the avatar that's included in the result sent to the Component
+        ✔ Create the function in the repository that fetch the conversation based on the two users @done (18-11-08 22:55)
+        ☐ Create the action that creates the conversation if doesn't exist
+
 
 
 BUGS:    
@@ -790,3 +795,7 @@ BUGS:
     ☐ Admin one is friend with jasmine but when viweing her posts it still display "add as friend" button 
     ✔ When viewing search results, users and friends avatars are messed up because i didn't change them after handling the the user avatars! @done (18-10-29 20:17)
     ☐ In the messages page, the footer is not suppossed to be there, for now just hiding it in the layout file, but i need a real solution
+
+MAJOR CHANGES:
+   ☐ Change the user avatar from only storing the name to storing the full path
+      ☐ Change all other page where the avatar was shown to handle the new avatar value

@@ -34,8 +34,53 @@ class ConversationRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->orderBy('c.created_at')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+    }
+
+    /**
+     * NOTE: the conversations should be unique if i handle all the cases
+     * Meaning if the 'admin' is the first_user and 'ahmed' is the second user, there shouldn't be another record where they're swapped, 'ahmed' is the first user and 'admin' is the second, this should be considered a duplicate
+     * Return a conversation where the
+     * SQL: select * from Test where (first_user = 12 and second_user = 9) or (first_user = 9 and second_user = 12);
+     * The above sql is tested and
+     * @param int $first_user_id
+     * @param int $second_user_id
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findConversationByUsers(int $first_user_id, int $second_user_id)
+    {
+        $qb = $this->createQueryBuilder('c');
+        // NOTE: try not to use native sql, a chance to master doctrine queries
+        /*
+         *     [php]
+         *     // (u.type = ?1) AND (u.role = ?2)
+         *     $expr->andX($expr->eq('u.type', ':1'), $expr->eq('u.role', ':2'));
+         *
+         */
+        $qb->where(
+            $qb->expr()->orX(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('c.first_user', ':first_user_id'),
+                    $qb->expr()->eq('c.second_user', ':second_user_id')
+                ),
+                $qb->expr()->andX(
+                    $qb->expr()->eq('c.first_user', ':second_user_id'),
+                    $qb->expr()->eq('c.second_user ', ':first_user_id')
+                )
+            ) // end of andX
+        ) // end of where
+//            ->andWhere('c.first_user = :first_user_id')// This wil be an expression im pretty sure what i did here isn't gonna workm just putting the bricks where they belong
+//            ->andWhere('c.first_user = :second_user_id')
+//            ->orWhere('c.second_user = :first_user_id')
+//            ->andWhere('c.first_user = :second_user_id')
+            ->setParameter('first_user_id', $first_user_id)
+            ->setParameter('second_user_id', $second_user_id);
+
+
+        return $qb
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
 //    /**

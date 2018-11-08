@@ -134,14 +134,12 @@ class MessagingController extends AbstractController
         foreach ($conversation->getMessages() as $item) {
             $messages[] = [
                 'username' => $this->isCurrentUserSender($item) ?
-                        $item->getSender()->getUsername() : $item->getRecipient()->getUsername(),
+                    $item->getSender()->getUsername() : $item->getRecipient()->getUsername(),
                 'avatar' => $this->userManager->getUserAvatar($item->getSender()->getAvatar()),
                 'content' => $item->getMessage(),
                 'mine' => $this->isCurrentUserSender($item),
             ];
         }
-
-        dump($messages);
 
         return $this->render('messaging/conversation.html.twig', [
             'messages' => $messages,
@@ -155,38 +153,42 @@ class MessagingController extends AbstractController
             ],
             'conversation_id' => $conversation->getId(),
             'currentUser' => [
-                'username' =>$currentUser->getUsername(),
+                'username' => $currentUser->getUsername(),
                 'avatar' => $this->userManager->getUserAvatar($currentUser->getAvatar()),
             ]
         ]);
     }
 
+
     /**
-     * TODO: remove this after getting everything working
-     *
-     * @Route("/tester", name="tester")
-     * @param UserRepository $userRepository
+     * Creates a new conversation
+     * @Route("/newConversation/{username}", name="newConversation")
+     * @param User $user
+     * @param ConversationRepository $conversationRepository
      * @param EntityManagerInterface $entityManager
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function conversationTester(UserRepository $userRepository, EntityManagerInterface $entityManager)
+    public function newConversation(User $user, ConversationRepository $conversationRepository, EntityManagerInterface $entityManager)
     {
-        // get ahmed
-        $userAhmed = $userRepository->findOneBy(['username' => 'ahmed',
-        ]);
-        // get admin
-        $userAdmin = $userRepository->findOneBy(['username' => 'admin',
-        ]);
+        // TODO: get the conversation
+        $currentUser = $this->getUser();
+        // NOTE: the current user could be the first_user or the second, same thing goes for the other user, so i need to handle both cases
+        $conversation = $conversationRepository->findConversationByUsers($currentUser->getId(), $user->getId());
 
-        $conversation = new Conversation();
+        // TODO: check if the current user and that friend are already in a conversation
+        // NOTE: there should be either one record or none
+        if (is_null($conversation)) {
+            // TODO: create the new conversation
+            $conversation = new Conversation(); // there's nothing wrong with using the same variable since at this point im sure it will be null
+            $conversation->setFirstUser($currentUser);
+            $conversation->setSecondUser($user);
 
-        $conversation->setFirstUser($userAdmin);
-        $conversation->setSecondUser($userAhmed);
+            $entityManager->persist($conversation);
+            $entityManager->flush();
+        }
 
-        $entityManager->persist($conversation);
-        $entityManager->flush();
-
-        return $this->json(['success' => 'done']);
+        return $this->redirect($this->generateUrl('messages.conversation', ['id' => $conversation->getId()]));
     }
 
     /**
@@ -251,19 +253,19 @@ class MessagingController extends AbstractController
         $encoders = [new JsonEncoder()];
         $normalizers = [
             (new ObjectNormalizer())
-            ->setCircularReferenceHandler(function ($object) {
-                return $object->getId();
-            })
-            ->setIgnoredAttributes([
-                'posts',
-                'comments',
-                'bookmarks',
-                'notificationChanges',
-                'sentMessages',
-                'receivedMessages',
-                'conversations',
-                'friends'
-            ])
+                ->setCircularReferenceHandler(function ($object) {
+                    return $object->getId();
+                })
+                ->setIgnoredAttributes([
+                    'posts',
+                    'comments',
+                    'bookmarks',
+                    'notificationChanges',
+                    'sentMessages',
+                    'receivedMessages',
+                    'conversations',
+                    'friends'
+                ])
         ];
 
         $serializer = new Serializer($normalizers, $encoders);
