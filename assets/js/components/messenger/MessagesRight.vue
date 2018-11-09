@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </div><!-- message-header -->
-            <div class="message-body ps ps--theme_default">
+            <div class="message-body ps ps--theme_default" ref="messagesBox">
                 <div class="media-list">
                     <div class="media" v-for="message in conversationMessages">
                         <img :src="message.avatar" :alt="message.id" v-if="!message.mine">
@@ -90,6 +90,11 @@
                 conversationMessages: []
             }
         },
+        watch: {
+            conversationMessages: (newValue, oldValue) => {
+                // TODO: scroll the view when this changes
+            }
+        },
         methods: {
             publishMessage() {
                 // TODO: don't allow empty messages
@@ -105,6 +110,10 @@
                     'avatar': this.currentUser.avatar,
                     'mine': true
                 })
+
+                // TODO: scroll the last message into view
+                let el = this.$refs.messagesBox
+                el.scrollTop = el.scrollHeight
 
                 // TODO: after publishing the message add it to the list of messages
                 this.messageInput = ''
@@ -129,6 +138,10 @@
                         'avatar': payload.avatar,
                         'mine': false
                     })
+
+                    // TODO: scroll the last message into view
+                    let el = this.$refs.messagesBox
+                    el.scrollTop = el.scrollHeight
                 })
             })
 

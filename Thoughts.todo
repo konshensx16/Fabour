@@ -609,13 +609,13 @@ Messaging:
           reciepent_id: integer (FK)
           created_at: datetime
         FRONT-END:
-        ☐ Create a single page where a conversation between two users is displayed
+        ✔ Create a single page where a conversation between two users is displayed @done (18-11-09 07:11)
           ✔ I think i might use vuejs for this part because it's just too much js and i don't want to waste time doing this @done (18-11-03 11:31)
           NOTE: i ended up waiting more time doing vuejs than regular js :) 
             The components:
-             ☐ Left side which will contain the conversations (recent ones)
-               ☐ Probably a modal for writing a new message to someone (new conversations, which are not in the left side list)
-               ☐ Display the conversations which were sent from the controller
+             ✔ Left side which will contain the conversations (recent ones) @done (18-11-09 07:11)
+               ✘ Probably a modal for writing a new message to someone (new conversations, which are not in the left side list) @cancelled (18-11-09 07:11)
+               ✔ Display the conversations which were sent from the controller @done (18-11-09 07:11)
                  I need the fields: ID, (will be used to generate the URL), other user avatar (not mine), maybe the last message but this is fine for now.
                  ✔ The avatar values is not correct in the controller (Maybe something is wrong with the getOtherUser, or GetUserAvatar) @done (18-11-04 18:25)
              ✔ Right side which is the conversation it self (Focusing on this one for now) @done (18-11-04 19:10)
@@ -645,7 +645,7 @@ Messaging:
         ✔ Create the entity and relationships @done (18-10-30 17:56)
         ✔ Create a service which should contain helper function that are related to Messages @done (18-11-02 23:29)
         ✔ Create a listener which sets the created_at date @done (18-11-02 23:29)
-        ☐ Create the MessageTopic 
+        ✔ Create the MessageTopic @done (18-11-09 07:11)
           ☐ Thinking about each time a user connects i'll send him a list of the latest messages (Instead of creating a seprate end-point)
           ✔ To send a message i will publish from the front-end @done (18-11-02 23:06)  
           ✔ Inside the topic i need to get several things @done (18-11-04 10:17)
@@ -707,15 +707,16 @@ Messaging:
            ✔ The message is not being saved after publishing (just hads to restart the gos server) @done (18-11-04 19:18)
 
            ✔ When the user access the messages page, he should just get a welcome message and need to actually choose a conversation before communicating @done (18-11-04 21:33)
-           ☐ Create a modal where the user can create a new conversation
+           ✔ Create a modal where the user can create a new conversation @done (18-11-09 06:41)
+             This ended up just being an input and not a modal, since modal sounds just a lil bad, Check bottom of Messaging section
            ✔ The left side containing the conversations should display the latest message between two users! @done (18-11-05 06:47)
              Tired to do this in a single query but i couldn't, fo now getting the message in a separate query, maybe later i can join them together into one
              ✔ Also display how much time has been since the last message @done (18-11-05 06:47)
-           ☐ Load the latest messages for each conversation!
+           ✔ Load the latest messages for each conversation! @done (18-11-09 06:41)
            
         BUGS:
           ✔ The relationship is not setup properly and causing some errors (User & Message Entities ) @done (18-11-03 19:32)
-          ☐ The screen doesn't scroll down with messages
+          ✔ The screen doesn't scroll down with messages @done (18-11-09 06:52)
           ✔ @critical The sender id is always admin in the database, (Check the MessageManager) @done (18-11-06 15:15)
             ✔ Okay some really fucked up shit just came up, the user is the same same in both sessions @done (18-11-06 15:15)
             explanation: 
@@ -735,7 +736,7 @@ Messaging:
                  ✔ Dump the messages in the twig file and see if the correct values are there @done (18-11-06 15:20)
                    This is working fine 
                  ✔ Check the vue component for errors or mix ups @done (18-11-06 15:24)
-           ☐ Not sure if this is should be called a bug lol, trim the length of the message if it's too long in the leftSide bar
+           ✔ Not sure if this is should be called a bug lol, trim the length of the message if it's too long in the leftSide bar @done (18-11-09 07:11)
           ✔ When the other user is not connected i'll be getting the message back, which is bad (don't send to anyone if not online) @done (18-11-05 07:06)
     Creating new Conversations:
       1- This will be a modal that will popup and give the user the ability to choose from one of his friends nad the create a conversation between the users
@@ -745,7 +746,7 @@ Messaging:
       NOTE: check the admin template if there's any modals already there!
       Front-end:
         ✔ Create the component that will be toggled with the compose message @done (18-11-06 16:16)
-        ☐ Maybe i can use typeahead and bloodhount for autocomplete (Since im familiar with those) (Also check for other vue packages)
+        ✘ Maybe i can use typeahead and bloodhount for autocomplete (Since im familiar with those) (Also check for other vue packages) @cancelled (18-11-09 06:21)
           Not sure how this information is going to get through
           * VIA AJAX -> This one seems better because im gonna save some time and only do this when the user request it.
           * Or should be sent via php when the page is rendering.
@@ -757,7 +758,7 @@ Messaging:
         ✔ Initialize Bloodhound @done (18-11-07 09:29)
         ✘ Get the values from the controller Via ajax (axios is already installed) @cancelled (18-11-07 23:05)
            I ended up not needing axios since the remote and prefetch options handle this for me :)
-        ✔ Not sure if i want to use FosRoutingJs to generate URls or just use the data-attributes (html-attrobutes and save some time and bytes) @done (18-11-07 21:26)
+        ✔ Not sure if i want to use FosRoutingJs to generate URls or just use the data-attributes (html-attributes and save some time and bytes) @done (18-11-07 21:26)
           Using FosRoutingJS just in case i want to turn everything into vuejs and sheeeet
         NOTE ON BLOODHOUND AND TYPEAHEAD:
           Bloodhound provides a function called 'search' which searches the array for matching query
@@ -767,24 +768,29 @@ Messaging:
              I don't know what's written above just noting that i didn;t use the promise provided by bloodhound instead using the ttAdapter functin to get an array or someshit, which works
         ✘ Fix the typeahead styles and everything @cancelled (18-11-08 21:09)
         ✘ Render a custom template for each suggestion @cancelled (18-11-08 21:09)
+        ✔ When clicking the conversation on the left side it's doesn't redirect to the correct URL @done (18-11-09 07:11)
+          This only happends when im already seeing another conversation, the url becomes, '/con/con/5', it should be just'/con/5'
+          I might Need to generate absolute URLs for this.
+          ✔ Expose the url to js @done (18-11-09 07:11)
+        Vuejs-Autocomplete:
         ✔ Replace Typeahead with vuejs-auto-complete, typeahead is being a bitch without jquery @done (18-11-08 22:23)
           LINK: https://www.npmjs.com/package/vuejs-auto-complete
           ✔ Generate the URL to create a new conversation in the item @done (18-11-08 23:51)
             ✔ PRBLM: the item is clickable but doesn't take to the url, probably defaultBehaviour prevented @done (18-11-08 23:51)
               This is easily fixed by attaching a hanler to the @selected event, and do the redirecting there, this provides an object which contains a display (which is whatever is rendered as the item) and the selectedObject (which contains the properties or whatever you passed to the original item, in my case the username and the avatar)
-        
-
-
-
+        ✔ On the messages page (when greeted with a message, the left side isn't showing any avatars in the left side) @done (18-11-09 06:26)
+      
       Back-End:
         NOTE: Check the dropbox file before doing any backend stuff
         ✔ Create the action that will return the current users friends list! @done (18-11-08 22:54)
-        ☐ @critical Fix the avatar that's included in the result sent to the Component
+        ✔ @critical Fix the avatar that's included in the result sent to the Component @done (18-11-09 06:21)
         ✔ Create the function in the repository that fetch the conversation based on the two users @done (18-11-08 22:55)
         ✔ Create the action that creates the conversation if doesn't exist @done (18-11-08 23:26)
           ✔ Expose this to the js file @done (18-11-08 23:39)
 
-
+    Changes:
+      ☐ Use the ScrollIntoView function to scroll down messages if possible instead of the current solution
+        Which just takes the sceroll scroll height and add it to the scrollTop, works but i think could be better
 
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)

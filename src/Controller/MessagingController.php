@@ -64,10 +64,10 @@ class MessagingController extends AbstractController
             $otherUser = $this->getOtherUser($item, $currentUser);
             $finalConversations[] = [
                 'id' => $item->getId(),
-                'avatar' => $this->userManager->getUserAvatar($otherUser->getAvatar()),
+                'avatar' => $otherUser->getAvatar(),
                 'username' => $otherUser->getUsername(),
-                'message' => $lastMessage ? $lastMessage->getMessage() : 'No value',
-                'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : 'No value'
+                'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
+                'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : ''
             ];
         }
 
@@ -80,7 +80,7 @@ class MessagingController extends AbstractController
     }
 
     /**
-     * @Route("/con/{id}", name="conversation")
+     * @Route("/con/{id}", name="conversation", options={"expose"=true})
      * @param $id
      * @param ConversationRepository $conversationRepository
      * @return bool|\Symfony\Component\HttpFoundation\Response
@@ -125,7 +125,7 @@ class MessagingController extends AbstractController
                 'avatar' => $otherUser->getAvatar(),
                 'username' => $otherUser->getUsername(),
                 'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
-                'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : 'No value'
+                'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : ''
             ];
         }
 
