@@ -58,7 +58,7 @@ class NotificationController extends AbstractController
                     foreach ($postNotificationObjects as $post) {
                         $array[] = [
                             'action' => $post['username'] . ' published a new post: "' . $post['title'] . '"',
-                            'avatar' => $this->getUserAvatar($post['avatar']),
+                            'avatar' => $post['avatar'],
                             'date' => $post['created_at'],
                             'id' => $post['id'],
                             'url' => $this->generateUrl('post.display', ['id' => $post['id']]),
@@ -74,7 +74,7 @@ class NotificationController extends AbstractController
                     foreach ($commentNotificationObjects as $comment) {
                         $array[] = [
                             'action' => $comment['username'] . ' commented on your post.',
-                            'avatar' => $this->getUserAvatar($comment['avatar']),
+                            'avatar' => $comment['avatar'],
                             'date' => $comment['created_at'],
                             'id' => $comment['id'],
                             'url' => $this->generateUrl('post.display', ['id' => $comment['post_id']]) . '#' . $comment['comment_id'],
@@ -89,7 +89,7 @@ class NotificationController extends AbstractController
                     foreach ($bookmarkNotificationObjects as $post) {
                         $array[] = [
                             'action' => $post['username'] . ' bookmarked your post: "' . $post['title'] . '"',
-                            'avatar' => $this->getUserAvatar($post['avatar']),
+                            'avatar' => $post['avatar'],
                             'date' => $post['created_at'],
                             'id' => $post['id'],
                             'url' => $this->generateUrl('post.display', ['id' => $post['id']]),
@@ -144,7 +144,7 @@ class NotificationController extends AbstractController
 
                     $array[] = [
                         'action' => ' published a new post: "' . $postNotificationObject['title'] . '"',
-                        'avatar' => $this->getUserAvatar($postNotificationObject['avatar']),
+                        'avatar' => $postNotificationObject['avatar'],
                         'date' => $postNotificationObject['created_at'],
                         'url' => $this->generateUrl('post.display', ['id' => $postNotificationObject['id']]),
                         'username' => $postNotificationObject['username'],
@@ -159,7 +159,7 @@ class NotificationController extends AbstractController
 
                     $array[] = [
                         'action' => ' commented on your post.',
-                        'avatar' => $this->getUserAvatar($commentNotificationObjects['avatar']),
+                        'avatar' => $commentNotificationObjects['avatar'],
                         'date' => $commentNotificationObjects['created_at'],
                         'url' => $this->generateUrl('post.display', ['id' => $commentNotificationObjects['post_id']]) . '#' . $commentNotificationObjects['comment_id'],
                         'username' => $commentNotificationObjects['username'],
@@ -174,7 +174,7 @@ class NotificationController extends AbstractController
 
                     $array[] = [
                         'action' => 'bookmarked your post: "' . $bookmarkNotificationObjects['title'] . '"',
-                        'avatar' => $this->getUserAvatar($bookmarkNotificationObjects['avatar']),
+                        'avatar' => $bookmarkNotificationObjects['avatar'],
                         'date' => $bookmarkNotificationObjects['created_at'],
                         'url' => $this->generateUrl('post.display', ['id' => $bookmarkNotificationObjects['id']]),
                         'username' => $bookmarkNotificationObjects['username'],
@@ -201,19 +201,5 @@ class NotificationController extends AbstractController
     private function getEntityTypeId(string $name)
     {
         return $this->getParameter($name . '_type_id');
-    }
-
-    /**
-     * Return the correct full url of the user avatar
-     * @param  string $avatar [description]
-     * @return [type]         [description]
-     */
-    private function getUserAvatar(string $avatar)
-    {
-        if ($avatar === 'avatar.png')
-        {
-            return $this->packages->getUrl('assets/img/') . $avatar;
-        }
-        return $this->packages->getUrl('uploads/avatars/') . $avatar;
     }
 }

@@ -14,11 +14,7 @@
                     <div class="list-group list-group-striped list-group-user">
                         {% for item in pending %}
                             <div class="list-group-item">
-                                {% if not item.relatingUser.avatar is same as ('avatar.png') %}
-                                    <img src="{{ asset('uploads/avatars/') ~ item.relatingUser.avatar }}" alt="{{ item.relatingUser }}">
-                                {% else %}
-                                    <img src="{{ asset('assets/img/') ~ item.relatingUser.avatar }}" alt="{{ item.relatingUser }}">
-                                {% endif %}
+                                <img src="{{ item.relatingUser.avatar }}" alt="{{ item.relatingUser }}">
                                 <div class="user-name-address">
                                     <p>{{ item.relatingUser.username }}</p>
                                     <span>Request sent {{ item.updatedAt|time_diff }}</span>

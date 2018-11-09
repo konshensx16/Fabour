@@ -800,14 +800,17 @@ BUGS:
     ☐ In the messages page, the footer is not suppossed to be there, for now just hiding it in the layout file, but i need a real solution
 
 MAJOR CHANGES:
-   ☐ Change the user avatar from only storing the name to storing the full path
+   ✔ Change the user avatar from only storing the name to storing the full path @done (18-11-09 05:50)
      ✔ Update the user entity @done (18-11-09 00:09)
      ✔ Change where the user uploads the image @done (18-11-09 00:09)
-     ☐ Change all other page where the avatar was shown to handle the new avatar value
+     ✔ Change all other page where the avatar was shown to handle the new avatar value @done (18-11-09 05:50)
      Where to change the directory:
        ✔ Messages @done (18-11-09 00:19)
          NOTE:  i think i still need to handle the avatars in the notifications (not even sure if im using any)
-       ☐ Posts
-       ☐ Comments
-       ☐ Profile
-       ☐ Search results (posts, users, friends)
+       ✔ Posts @done (18-11-09 00:23)
+       ✔ Comments @done (18-11-09 00:23)
+       ✔ Profile @done (18-11-09 00:27)
+       ✔ Search results (posts, users, friends) @done (18-11-09 00:25)
+       ✔ Notifications @done (18-11-09 06:18)
+       ✔ pending friends requests @done (18-11-09 06:18)
+       ✔ Profile edit page @done (18-11-09 06:18)

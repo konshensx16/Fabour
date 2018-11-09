@@ -15,7 +15,7 @@
         {{ form_start(form, {'attr': {'id': 'profile_form'}}) }}
             {{ form_row(form.locale) }}
             {{ form_row(form.avatar) }}
-            <img width="400" src="{{ asset('assets/img/') ~ app.user.avatar}}" alt="" id="avatar">
+            <img width="400" src="{{ app.user.avatar}}" alt="" id="avatar">
             <input type="hidden" id="blob_holder" name="blob_holder">
             {{ form_row(form.about) }}
             <button type="submit" class="btn btn-success pull-right">Update</button>
