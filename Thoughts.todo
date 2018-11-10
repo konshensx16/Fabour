@@ -554,6 +554,15 @@ Notifications:
         ✔ Also for friend_approval @done (10/27/2018, 6:38:42 PM)
           ✔ Test the things above @done (10/27/2018, 6:38:43 PM)
     ✔ Create a single Topic to handle all notifications, in this case the notification action and everything will be constructed in the controller @done (10/27/2018, 6:26:39 PM)
+
+    Grouping notifications:
+      Grouping will obviously by entity_type_id which
+      The problem i'm seeing is in grouping by same postm e.g: if three people comment on a specific post the notification should look like '3 people commnted on your post', this means i need to get the comments for the postm group themm and then send the notification? 
+      ✔ Check the blog post for some ideas @done (18-11-11 00:26)
+      PROBLEM: When trying to group comments for a certain post, there's no way to tell which post the comments were published on, because what i have as entity_id in case of comments is just the comment_id
+      SOLUTION: I can access the post via the comment bu first i need to get the comment and then i can access the post_id 
+      Currently i have a simple implentation for couting the amount of comments for each post which i can use to display a single notification instead of multiple (Check the NotificationObjectRepository::findCountCommentsForPost() for futher info).
+
     BUGS:
       ✔ When the user is not connected the broadcast (obviously) will fail, because the user is not in the session! @done (10/27/2018, 6:26:37 PM)
       ✔ The notifications in the (all) page are not being loaded properly ~ currently ordering them in the controller using usort (Mght change if any good alternative is found!) @done (10/27/2018, 11:13:29 PM)
@@ -791,6 +800,7 @@ Messaging:
     Changes:
       ☐ Use the ScrollIntoView function to scroll down messages if possible instead of the current solution
         Which just takes the sceroll scroll height and add it to the scrollTop, works but i think could be better
+      ☐ Maybe i should add a read_at field which indicates if the user read the message or not
 
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
@@ -820,3 +830,9 @@ MAJOR CHANGES:
        ✔ Notifications @done (18-11-09 06:18)
        ✔ pending friends requests @done (18-11-09 06:18)
        ✔ Profile edit page @done (18-11-09 06:18)
+
+SOME ERROS FOR FUTURE CASES:
+  ☐ Mysql wouldn't connect
+    ERROR: ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+    FIX: 
+      Just restart the mysql servie and it should work, well it did work for me!

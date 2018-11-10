@@ -62,7 +62,6 @@
                 this.isOpen = !this.isOpen
             },
             generateUrl(parameter) {
-                console.log(Routing.generate('messages.conversation', {'id': parameter}))
                 return Routing.generate('messages.conversation', {'id': parameter})
             }
         }

@@ -30,7 +30,7 @@
                 {{ form(comment_form) }}
             </div>
             <div class="section-wrapper mg-t-20">
-                <label class="section-title">Comments</label>
+                <label class="section-title">{{ post.comments.count }} Comments</label>
 
                 <ul class="media-list-demo">
                     {% if post.comments.count %}

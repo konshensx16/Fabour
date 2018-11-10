@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @method NotificationObject|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,9 +17,12 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class NotificationObjectRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    private $security;
+
+    public function __construct(RegistryInterface $registry, Security $security)
     {
         parent::__construct($registry, NotificationObject::class);
+        $this->security = $security;
     }
 
     /**
@@ -233,6 +237,29 @@ class NotificationObjectRepository extends ServiceEntityRepository
                 ->getOneOrNullResult();
         } catch (NonUniqueResultException $e) {
         }
+    }
+
+    public function findCountCommentsForPost(int $post_id)
+    {
+        // additional note about the status, as of now i'm just using it to say if the notification was read(1) or not(0)
+        //i should get multiple records 
+        // dump($this->security->getUser()->getId()); 
+        // use the entity_type_id to get just the comments (post_type_id = 1, comment_type_id = 2)
+        $qb = $this->createQueryBuilder('no');
+        return $qb->select($qb->expr()->count('no'))
+                ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')        
+                ->innerJoin('App\Entity\Comment', 'c', Join::WITH, 'no.entity_id = c.id')        
+                ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'c.post = p.id')        
+                ->andWhere('n.notifier = :user_id')
+                ->andWhere('no.entity_type_id = :entity_type_id')
+                ->andWhere('p.id = :entity_id')
+                ->andWhere('no.status = 1')
+                ->setParameter('user_id', $this->security->getUser()->getId())
+                ->setParameter('entity_type_id', 2)
+                ->setParameter('entity_id', $post_id)
+                ->getQuery()
+                ->getSingleScalarResult()
+        ;      
     }
 
 

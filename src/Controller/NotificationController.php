@@ -202,4 +202,15 @@ class NotificationController extends AbstractController
     {
         return $this->getParameter($name . '_type_id');
     }
+
+    /**
+     * @Route("/grouping")
+     * @return [type] [description]
+     */
+    public function grouping(NotificationObjectRepository $notificationObjectRepository)
+    {
+        $result = $notificationObjectRepository->findCountCommentsForPost(13); // 13 => Something is happening!
+
+        dump($result); die;
+    }
 }
