@@ -563,6 +563,44 @@ Notifications:
       SOLUTION: I can access the post via the comment bu first i need to get the comment and then i can access the post_id 
       Currently i have a simple implentation for couting the amount of comments for each post which i can use to display a single notification instead of multiple (Check the NotificationObjectRepository::findCountCommentsForPost() for futher info).
 
+      ☐ How to use inside the foreach loop (When fetching all different )? 
+        So when accessing comments maybe i can use that one instead of fetting the comment by itself, POST_ID IS REQUIRED IN THIS CASE
+        ☐ Getting comments for each post
+          ☐ The result is being repeated three times due to the parent foreach loop which will cause the repeating.
+          ☐ When trying to get the notifications.entity_type_id (grouped) i no longer have access to entity_id which is used in the 'post' notifications
+            NOTE: in this case im accessing each post by itself (multiple database hits)
+          POSTS:
+            A new apporoach for posts would be getting the entity_type_id and if there's a post_entity_type (1), then i can run a query to get the latest notifications 
+            ✘ Create the query to get the latest notification (just 4) while grouping by the entity_id @cancelled (18-11-11 20:24)
+              NOTE: it was already there that's why this is canceled
+            ☐ Create the function to get the latest posts notifications
+            ☐ Include the notification id in all notifications to use to re order the list after manipulating it.
+            ✔ When displaying grouoed notifications there's no need for a username @done (18-11-11 20:49)
+              Change the template to render the username only if given
+            Fetchign the results for the notifications:
+               ☐ using a native sql since doctrine cannot use sub-queries in the form clause
+                 Native sql looks something like: 
+                   'SELECT COUNT(n0_.entity_type_id)
+                    AS sclr_0, n0_.entity_type_id AS entity_type_id_1 
+                    FROM (SELECT * FROM notification_object LIMIT 4) n0_ 
+                    INNER JOIN notification n1_ 
+                    ON (n1_.notification_object_id = n0_.id) 
+                    WHERE n1_.notifier_id = ? 
+                    GROUP BY n0_.entity_type_id'
+                    ☐ The order in the sub-query should be DESC 
+
+          BOOKMARKS:
+            ☐ Chnage the bookmarks function to the same behavior as posts
+
+          BUGS:
+            ☐ Whatever case is first entered that's what will fill the enitre notifications.
+
+
+
+
+    READ & UNREAD STATUS:
+      ☐ When the user checks a notification it should be marked as read (status = 1)
+
     BUGS:
       ✔ When the user is not connected the broadcast (obviously) will fail, because the user is not in the session! @done (10/27/2018, 6:26:37 PM)
       ✔ The notifications in the (all) page are not being loaded properly ~ currently ordering them in the controller using usort (Mght change if any good alternative is found!) @done (10/27/2018, 11:13:29 PM)
@@ -814,6 +852,7 @@ BUGS:
     ☐ Admin one is friend with jasmine but when viweing her posts it still display "add as friend" button 
     ✔ When viewing search results, users and friends avatars are messed up because i didn't change them after handling the the user avatars! @done (18-10-29 20:17)
     ☐ In the messages page, the footer is not suppossed to be there, for now just hiding it in the layout file, but i need a real solution
+    ☐ @critical The user avatar in the realtime notifications are not working properly
 
 MAJOR CHANGES:
    ✔ Change the user avatar from only storing the name to storing the full path @done (18-11-09 05:50)

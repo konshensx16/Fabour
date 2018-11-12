@@ -32,7 +32,6 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
 
     public function __construct(ClientManipulator $clientManipulator, Security $security, MessageManager $messageManager)
     {
-        dump('constructor called');
         $this->hash = md5(uniqid());
         $this->clients = new \SplObjectStorage();
         $this->clientManipulator = $clientManipulator;
@@ -44,7 +43,6 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
     {
         // store the newly connected client
         $this->clients->attach($connection);
-        dump($this->hash);
         // send the message to all subscribers of this topic
         // TODO: send a signal indicating that the user is online ??
 //        $topic->broadcast(
