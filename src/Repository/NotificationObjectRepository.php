@@ -272,25 +272,68 @@
 
         /**
          * TODO: this is just for testing, improve or recreate later
+         * @param int $limit
          * @return mixed
+         * @throws \Doctrine\DBAL\DBALException
          */
         public function groupCommentsByPosts(int $limit)
         {
-            // NOTE: maybe i can include the avatar of the latest person to comment on the post?
-            $qb = $this->createQueryBuilder('no');
-            return $qb->select($qb->expr()->count('no') . 'AS count', 'p.id', 'p.title')
-                ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
-                ->innerJoin('App\Entity\Comment', 'c', Join::WITH, 'no.entity_id = c.id')
-                ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'c.post = p.id')
-                ->andWhere('n.notifier = :user_id')
-                ->andWhere('no.entity_type_id = :entity_type_id')
-                ->andWhere('no.status = 1')// read notifications
-                ->setParameter('user_id', $this->getCurrentUserId())
-//            ->setParameter('user_id', 11)
-                ->setParameter('entity_type_id', 2)
-                ->groupBy('c.post')
-                ->getQuery()
-                ->getResult();
+            // TODO : Create a native sql first
+            $connection = $this->getEntityManager()->getConnection();
+            // NOTE: i need to make a sub queries that will get me the queries ?
+            //      and then work on the result of that query (trying to make this work then improve it)
+            // I have th elatest date now,
+            // I need to get the latest user avatar
+            $sql = '
+                SELECT _no.*
+                FROM (
+                    SELECT MAX(no.created_at) AS latestDate, COUNT(c.post_id) AS count,
+                            no.id, c.post_id, nc.actor_id, p.title, actor.avatar
+                    FROM notification_object no
+                    INNER JOIN notification n
+                    ON n.notification_object_id = no.id
+                    INNER JOIN notification_change nc
+                    ON nc.notification_object_id = no.id 
+                    INNER JOIN comment c
+                    ON c.id = no.entity_id
+                    INNER JOIN post p
+                    ON p.id = c.post_id
+                    INNER JOIN user u
+                    ON n.notifier_id = u.id
+                    INNER JOIN user actor
+                    ON actor.id = nc.actor_id
+                    WHERE n.notifier_id = :user_id
+                    GROUP BY c.post_id
+                    ORDER BY latestDate DESC 
+                    LIMIT 3
+                ) AS _no
+                
+            ';
+            $statement = $connection->prepare($sql);
+            $statement->execute([
+                'user_id' => $this->getCurrentUserId(),
+//                '_limit' => $limit
+                ]);
+
+            return $statement->fetchAll();
+
+            // TODO: i need to include the avatar of the latest person to comment
+            // TODO: also include the time of the latest notification
+//            $qb = $this->createQueryBuilder('no');
+//            return $qb->select($qb->expr()->count('no') . 'AS count', 'p.id', 'p.title')
+//                ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
+//                ->innerJoin('no.notificationChange', 'nc', Join::WITH, 'no = nc.notificationObject')
+//                ->innerJoin('App\Entity\Comment', 'c', Join::WITH, 'no.entity_id = c.id')
+//                ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'c.post = p.id')
+//                ->andWhere('n.notifier = :user_id')
+//                ->andWhere('no.entity_type_id = :entity_type_id')
+//                ->andWhere('no.status = 1') // read notifications
+//                ->setParameter('user_id', $this->getCurrentUserId())
+//                ->setParameter('entity_type_id', 2)
+//                ->groupBy('c.post')
+//                ->setMaxResults($limit)
+//                ->getQuery()
+//                ->getResult();
         }
 
 

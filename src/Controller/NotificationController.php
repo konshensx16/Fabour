@@ -127,12 +127,10 @@
             // TODO: bake the notifications here ? not sure where else to do it
             // TODO: change this to include the count of notifications
             $result = $notificationObjectRepository->findNotificationsDetailsByNotifierIdGroupByEntityId(4);
-            dump($result);
             foreach ($result as $item) {
                 switch ($item['entity_type_id']) {
                     case 1:
                         $postNotificationObjects = $notificationObjectRepository->findLatestPostNotifications($item['theCount']);
-                        dump($postNotificationObjects);
                         foreach ($postNotificationObjects as $notification) {
                             $array[] = [
                                 'action' => ' published a new post: "' . $notification['title'] . '"',
@@ -146,15 +144,15 @@
                         break;
                     case 2:
                         $notif = $notificationObjectRepository->groupCommentsByPosts($item['theCount']);
+                        dump($notif);
                         // i need to get the avatar of latest person to post a comment!
                         foreach ($notif as $notification) {
+                            dump($notification);
 //                            dump($notification);
                             $array[] = [
                                 'action' => ' new comments on: ' . $notification['title'],
-//                            'avatar' => $notification['avatar'],
-                                'avatar' => 'random value',
-//                            'date' => $notification['created_at'],
-                                'date' => new \DateTime(),
+                                'avatar' => $notification['avatar'],
+                                'date' => new \DateTime($notification['latestDate']),
                                 'url' => $this->generateUrl('post.display', ['id' => $notification['id']]),
                                 'username' => $notification['count'],
                             ];
@@ -177,7 +175,6 @@
 //                        break;
                 }
             }
-            dump($array);
             return $this->render('notification/notificationsList.html.twig', [
                 'notifications' => $array
             ]);

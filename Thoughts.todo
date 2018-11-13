@@ -565,20 +565,20 @@ Notifications:
 
       ☐ How to use inside the foreach loop (When fetching all different )? 
         So when accessing comments maybe i can use that one instead of fetting the comment by itself, POST_ID IS REQUIRED IN THIS CASE
-        ☐ Getting comments for each post
-          ☐ The result is being repeated three times due to the parent foreach loop which will cause the repeating.
-          ☐ When trying to get the notifications.entity_type_id (grouped) i no longer have access to entity_id which is used in the 'post' notifications
+        ✔ Getting comments for each post @done (18-11-13 07:26)
+          ✔ The result is being repeated three times due to the parent foreach loop which will cause the repeating. @done (18-11-13 07:26)
+          ✔ When trying to get the notifications.entity_type_id (grouped) i no longer have access to entity_id which is used in the 'post' notifications @done (18-11-13 07:26)
             NOTE: in this case im accessing each post by itself (multiple database hits)
           POSTS:
             A new apporoach for posts would be getting the entity_type_id and if there's a post_entity_type (1), then i can run a query to get the latest notifications 
             ✘ Create the query to get the latest notification (just 4) while grouping by the entity_id @cancelled (18-11-11 20:24)
               NOTE: it was already there that's why this is canceled
-            ☐ Create the function to get the latest posts notifications
-            ☐ Include the notification id in all notifications to use to re order the list after manipulating it.
+            ✔ Create the function to get the latest posts notifications @done (18-11-12 20:22)
+            ✔ Include the notification id in all notifications to use to re order the list after manipulating it. @done (18-11-12 20:22)
             ✔ When displaying grouoed notifications there's no need for a username @done (18-11-11 20:49)
               Change the template to render the username only if given
             Fetchign the results for the notifications:
-               ☐ using a native sql since doctrine cannot use sub-queries in the form clause
+               ✔ using a native sql since doctrine cannot use sub-queries in the form clause @done (18-11-12 20:22)
                  Native sql looks something like: 
                    'SELECT COUNT(n0_.entity_type_id)
                     AS sclr_0, n0_.entity_type_id AS entity_type_id_1 
@@ -587,7 +587,10 @@ Notifications:
                     ON (n1_.notification_object_id = n0_.id) 
                     WHERE n1_.notifier_id = ? 
                     GROUP BY n0_.entity_type_id'
-                    ☐ The order in the sub-query should be DESC 
+                    ✔ The order in the sub-query should be DESC @done (18-11-12 20:22)
+              ✔ Disable sql_mode=only_full_group_by and remember that if you deploy this you have to re-disable it again otherwise you'll be ripping your hair off not knowing what the fuck is going on. @done (18-11-13 07:26)
+                Command (IN CONSOLE): SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
 
           BOOKMARKS:
             ☐ Chnage the bookmarks function to the same behavior as posts
