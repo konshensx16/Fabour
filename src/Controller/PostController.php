@@ -118,7 +118,7 @@ class PostController extends AbstractController
                     'username' => $currentUser->getUsername(),
                     'action' => 'just published a new post',
                     'notifiers' => $friendsNames,
-                    'avatar' => $this->getUserAvatar($currentUser->getAvatar()),
+                    'avatar' => $currentUser->getAvatar(),
                     'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
                 ], 'notification_topic');
             } catch (\Exception $e) {
@@ -232,7 +232,7 @@ class PostController extends AbstractController
                         'username' => $currentUser->getUsername(),
                         'action' => 'just commented on your post',
                         'notifier' => $post->getUser()->getUsername(),
-                        'avatar' => $this->getUserAvatar($currentUser->getAvatar()),
+                        'avatar' => $currentUser->getAvatar(),
                         'url' => $this->generateUrl('post.display', ['id' => $post->getId()]) . '#' . $comment->getId(),
                     ], 'notification_topic');
                 } catch (\Exception $e) {
@@ -382,22 +382,5 @@ class PostController extends AbstractController
     private function getEntityTypeId(string $name)
     {
         return $this->getParameter($name . '_type_id');
-    }
-
-    /**
-     * Return the correct full url of the user avatar
-     * @param  string $avatar [description]
-     * @return [type]         [description]
-     */
-    private function getUserAvatar(string $avatar)
-    {
-        if ($avatar === 'avatar.png')
-        {
-            return $this->packages->getUrl('assets/img/') . $avatar;
-        }
-        else
-        {
-            return $this->packages->getUrl('uploads/avatars/') . $avatar;
-        }
     }
 }

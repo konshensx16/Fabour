@@ -107,7 +107,7 @@ class FriendsController extends AbstractController
                     // this is for the real-time notification, for constructing the notificaion when it arrive
                     // to the front'end
                     'action' => 'wants to add you as a friend',
-                    'avatar' => $this->userManager->getUserAvatar($currentUser->getAvatar()),
+                    'avatar' => $currentUser->getAvatar(),
                     'notifier' => $user->getUsername(),
                     'url' => $this->generateUrl('friends.pending'),
                     'username' => $currentUser->getUsername(),
@@ -177,7 +177,7 @@ class FriendsController extends AbstractController
                     // this is for the real-time notification, for constructing the notification when it arrive
                     // to the front'end
                     'action' => 'is now in your friends list',
-                    'avatar' => $this->userManager->getUserAvatar($currentUser->getAvatar()),
+                    'avatar' => $currentUser->getAvatar(),
                     'notifier' => $user->getUsername(),
                     'url' => $this->generateUrl('profile.userProfile', ['username' => $currentUser->getUsername()]),
                     'username' => $currentUser->getUsername(),

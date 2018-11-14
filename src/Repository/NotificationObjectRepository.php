@@ -278,20 +278,23 @@
          */
         public function groupCommentsByPosts(int $limit)
         {
-            // TODO : Create a native sql first
+            // TODO: fix the concatenation of the limit, i should bind the parameter no matter what.
             $connection = $this->getEntityManager()->getConnection();
             // NOTE: i need to make a sub queries that will get me the queries ?
             //      and then work on the result of that query (trying to make this work then improve it)
             // I have th elatest date now,
             // I need to get the latest user avatar
+            // TODO: the avatar im getting is not the correct one, @critical fix requried
+            // NOTE: i removed the actor fetching from the subquery and gonna move it to the main query
+            // I think im just gona do a union and be done with this bullshit, fuck it it's just couple of records each time
             $sql = '
-                SELECT _no.*
+                SELECT _no.*, COUNT(_no.post_id) AS count, actor.username, actor.avatar
                 FROM (
-                    SELECT MAX(no.created_at) AS latestDate, COUNT(c.post_id) AS count,
-                            no.id, c.post_id, nc.actor_id, p.title, actor.avatar
+                    SELECT no.created_at, 
+                            no.id, c.post_id, p.title, n.id as n_id, nc.id as nc_id
                     FROM notification_object no
                     INNER JOIN notification n
-                    ON n.notification_object_id = no.id
+                    ON n.notification_object_id = no.id 
                     INNER JOIN notification_change nc
                     ON nc.notification_object_id = no.id 
                     INNER JOIN comment c
@@ -300,20 +303,21 @@
                     ON p.id = c.post_id
                     INNER JOIN user u
                     ON n.notifier_id = u.id
-                    INNER JOIN user actor
-                    ON actor.id = nc.actor_id
                     WHERE n.notifier_id = :user_id
-                    GROUP BY c.post_id
-                    ORDER BY latestDate DESC 
-                    LIMIT 3
+                    LIMIT '. $limit .'
                 ) AS _no
-                
+                INNER JOIN notification_change _nc
+                ON _nc.notification_object_id = _no.id
+                INNER JOIN user actor
+                ON actor.id = _nc.actor_id
+                GROUP BY _no.post_id
+                ORDER BY _no.created_at DESC
             ';
             $statement = $connection->prepare($sql);
             $statement->execute([
                 'user_id' => $this->getCurrentUserId(),
-//                '_limit' => $limit
-                ]);
+//                'limit_' => $limit
+            ]);
 
             return $statement->fetchAll();
 
@@ -372,7 +376,7 @@
         {
             // this needs to get the limit from notifications and not from the posts
             $qb = $this->createQueryBuilder('no')
-                ->select('actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id', 'no.id')
+                ->select('actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id as post_id', 'no.id')
                 ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
                 ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p.id = no.entity_id')
                 ->innerJoin('no.notificationChange', 'ch')
@@ -380,7 +384,7 @@
                 ->andWhere('n.notifier = :user_id')
                 ->andWhere('no.entity_type_id = :entity_type_id')
                 ->setParameter('user_id', $this->getCurrentUserId())
-                ->setParameter('entity_type_id', 1) // i need to change this to get the value from the services file
+                ->setParameter('entity_type_id', 1)// i need to change this to get the value from the services file
                 ->orderBy('no.created_at', 'DESC')
                 ->setMaxResults($limit);
             return $qb
@@ -390,10 +394,10 @@
 
 
         // TODO: change the entity_type_id to be fetched from the services file
-        public function findLatestBookmarkNotifications()
+        public function findLatestBookmarkNotifications(int $limit)
         {
             return $this->createQueryBuilder('no')
-                ->select('p.title', 'actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id post_id', 'no.id as no_id')
+                ->select('p.title', 'actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id post_id', 'no.id')
                 ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
                 ->innerJoin('App\Entity\Bookmark', 'b', Join::WITH, 'b.id = no.entity_id')
                 ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p = b.post')
@@ -404,6 +408,7 @@
                 ->setParameter('user_id', $this->getCurrentUserId())
                 ->setParameter('entity_type_id', 3)
                 ->orderBy('no.created_at', 'DESC')
+                ->setMaxResults($limit)
                 ->getQuery()
                 ->getResult();
         }

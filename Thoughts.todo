@@ -577,7 +577,7 @@ Notifications:
             ✔ Include the notification id in all notifications to use to re order the list after manipulating it. @done (18-11-12 20:22)
             ✔ When displaying grouoed notifications there's no need for a username @done (18-11-11 20:49)
               Change the template to render the username only if given
-            Fetchign the results for the notifications:
+            Fetching the results for the notifications:
                ✔ using a native sql since doctrine cannot use sub-queries in the form clause @done (18-11-12 20:22)
                  Native sql looks something like: 
                    'SELECT COUNT(n0_.entity_type_id)
@@ -593,12 +593,16 @@ Notifications:
 
 
           BOOKMARKS:
-            ☐ Chnage the bookmarks function to the same behavior as posts
+            ☐ Change the bookmarks function to the same behavior as posts
 
           BUGS:
-            ☐ Whatever case is first entered that's what will fill the enitre notifications.
-
-
+            ✔ Whatever case is first entered that's what will fill the enitre notifications. @done (18-11-13 18:19)
+            ✔ The notifications are still not in order, everything is messy (in term of dates and order) @done (18-11-13 19:07)
+            ✔ @critical make the limit dynamic when fetching posts, otherwise im gonna have a problem fo always fetchign a post even if there isn't any. @done (18-11-13 18:36)
+              NOTE: what i did is very bad and just a temp solution, check the note above the function for info
+            ☐ When grouping comments, the avatar shown is there is still incorrect, 
+              e.g: ahmed posted a comment on admin's post, the avatar was admin's post
+            ✔ The post url is messed up in the notification dropdown(of grouped comments) @done (18-11-13 19:11)
 
 
     READ & UNREAD STATUS:
@@ -855,7 +859,8 @@ BUGS:
     ☐ Admin one is friend with jasmine but when viweing her posts it still display "add as friend" button 
     ✔ When viewing search results, users and friends avatars are messed up because i didn't change them after handling the the user avatars! @done (18-10-29 20:17)
     ☐ In the messages page, the footer is not suppossed to be there, for now just hiding it in the layout file, but i need a real solution
-    ☐ @critical The user avatar in the realtime notifications are not working properly
+    ✔ @critical The user avatar in the realtime notifications are not working properly @done (18-11-13 18:23)
+    ✔ @critical when vieweing a post the avatar of the author is not showing @done (18-11-13 18:14)
 
 MAJOR CHANGES:
    ✔ Change the user avatar from only storing the name to storing the full path @done (18-11-09 05:50)
