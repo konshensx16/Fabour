@@ -20,7 +20,7 @@
                     </div>
                     <div>
                         <span>{{ conversation.date }}</span>
-                        <span v-if="conversation.count > 0">{{ conversation.count }}</span>
+                        <span v-if="conversation.count > 0">{{ unreadMessagesCounter(conversation) }}</span>
                     </div>
                 </div><!-- media-body -->
             </a><!-- media -->
@@ -58,7 +58,14 @@
                 isOpen: !true
             }
         },
+        computed: {
+
+        },
         methods: {
+            unreadMessagesCounter: function (conversation) {
+                console.log(conversation.count >= 10 ? '10+' : conversation.count)
+                return conversation.count > 10 ? '10+' : conversation.count
+            },
             toggle() {
                 this.isOpen = !this.isOpen
             },

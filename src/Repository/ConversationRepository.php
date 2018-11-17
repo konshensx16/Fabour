@@ -87,6 +87,8 @@ class ConversationRepository extends ServiceEntityRepository
 
     /**
      *
+     * @param int $conversation_id
+     * @return array
      * @throws \Doctrine\DBAL\DBALException
      */
     public function findUnreadMessagesCount(int $conversation_id)
@@ -94,21 +96,21 @@ class ConversationRepository extends ServiceEntityRepository
         $connection = $this->getEntityManager()->getConnection();
 
         $sql = '
-            SELECT _res.*
+            SELECT COUNT(_res.id) AS unread
             FROM (
               SELECT m.id
               FROM message m
-              INNER JOIN conversation c
-              ON c.id = m.conversation_id
-              WHERE m.conversation_id = 1
+              WHERE m.conversation_id = :conversation_id
+              AND m.read_at IS NULL
               ORDER BY m.id DESC
+              LIMIT 10
             ) AS _res
         ';
 
         $statement = $connection->prepare($sql);
         $statement->execute([':conversation_id' => $conversation_id]);
 
-        return $statement->fetchAll();
+        return $statement->fetchColumn(0);
     }
 
 //    /**
