@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Conversation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -81,6 +83,32 @@ class ConversationRepository extends ServiceEntityRepository
         return $qb
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function findUnreadMessagesCount(int $conversation_id)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT _res.*
+            FROM (
+              SELECT m.id
+              FROM message m
+              INNER JOIN conversation c
+              ON c.id = m.conversation_id
+              WHERE m.conversation_id = 1
+              ORDER BY m.id DESC
+            ) AS _res
+        ';
+
+        $statement = $connection->prepare($sql);
+        $statement->execute([':conversation_id' => $conversation_id]);
+
+        return $statement->fetchAll();
     }
 
 //    /**

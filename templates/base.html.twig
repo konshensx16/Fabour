@@ -8,6 +8,7 @@
     <link href="{{ asset('assets/lib/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/lib/Ionicons/css/ionicons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/lib/notyf/notyf.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/lib/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet">
     {#<link href="{{ asset('build/app.css') }}" rel="stylesheet">#}
 
     <!-- Slim CSS -->
@@ -55,7 +56,6 @@
                     <i class="icon ion-ios-settings"></i>
                     <span>Industry</span>
                 </a>
-
             </li>
             <li class="nav-item {{ app.request.get('_route') == '_list' ? 'active' }}">
                 <a class="nav-link" href="{{ path('category.category', {'slug': 'innovation-and-tech'}) }}">

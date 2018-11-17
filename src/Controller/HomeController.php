@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\UserRelationship;
 use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,11 +47,15 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home.index", options={"expose"=true})
      * Probably won't need the request, just throwing it in there
+     * @param Request $request
+     * @param PostRepository $postRepository
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Request $request, PostRepository $postRepository)
     {
+        dump($postRepository->findPostsWithCategory());
         return $this->render('home/index.html.twig', [
-            'posts' => $postRepository->findLatestPosts()
+            'posts' => $postRepository->findPostsWithCategory()
         ]);
     }
 
@@ -199,6 +204,44 @@ class HomeController extends AbstractController
 
         return $this->json([
             'data' => 'success',
+        ]);
+    }
+
+    /**
+     * @Route("/pusher")
+     * @param UserRepository $userRepository
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function pusherTester(UserRepository $userRepository)
+    {
+        $currentUser = $this->getUser();
+
+        $users = $userRepository->findAll();
+
+        $friendsNames = [];
+
+        foreach ($users as $user)
+        {
+            $friendsNames[] = $user->getUsername();
+        }
+        try {
+            // DO this a 100 times and see what's the result
+            // increase the value to 1,000, then 100,000, then a 1,000,000 if possible.
+            // NOTE: basically nothing happened at 100, message rate peeked at 20s and that's it
+            for ($i = 0; $i < 10000; $i++) {
+                $this->pusher->push([
+                    'username' => $currentUser->getUsername(),
+                    'action' => 'just published a new post',
+                    'notifiers' => $currentUser->getUsername(),
+                    'avatar' => $currentUser->getAvatar(),
+                    'url' => $this->generateUrl('post.display', ['id' => 5]),
+                ], 'notification_topic');
+            }
+        } catch (\Exception $e) {
+            $e->getTrace();
+        }
+
+        return $this->json(['data' => 'success?',
         ]);
     }
 

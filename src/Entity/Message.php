@@ -41,6 +41,11 @@ class Message
      */
     private $created_at;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $read_at;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -114,6 +119,18 @@ class Message
     public function setConversation(?Conversation $conversation): self
     {
         $this->conversation = $conversation;
+
+        return $this;
+    }
+
+    public function getReadAt(): ?\DateTimeInterface
+    {
+        return $this->read_at;
+    }
+
+    public function setReadAt(?\DateTimeInterface $read_at): self
+    {
+        $this->read_at = $read_at;
 
         return $this;
     }

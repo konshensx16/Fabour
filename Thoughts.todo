@@ -279,6 +279,9 @@ POSTS:
   ✔ Update all the views to render the sub_category instead of the category @done (10/20/2018, 1:48:21 AM)
   ✔ Update the query to be based on the sub_category since the category was removed and you can only access it via the category itself @done (10/20/2018, 1:48:23 AM)
     ✔ Learn about inner joins lol @done (10/20/2018, 1:48:24 AM)
+  IMPORVING:
+    ☐ It takes 24 queries when loading the index page 
+      NOTE: most of the queries are for categories so i should start there.
 
   
 Categories:
@@ -373,6 +376,13 @@ Categories:
   ✔ Create a separate page where the user can see all the categories and even sub-categories in case of adding them. @done (10/20/2018, 1:48:41 AM)
     ✔ Makes links to the category and a page where the user can see all categories @done (10/20/2018, 1:48:37 AM)
   ☐ Maybe let the user see each category by itself e.g: if the user clicks art he should only see art, currently im showing the parent category 
+  IMPOROVMENTS:
+    ☐ Fix the count of the queries being made to the DB
+      NOTE: the category on the top are hardcoded the other categories are probably the ones of the posts
+      ☐ Create a custom query to get the posts
+        NOTE: currently it takes 8 - 12 msec for this to complete (without any changes)
+      ☐ @critical do more research about few complicated queries vs multiple simple queries, 
+        NOTES ABOUT THIS: in case of multple queries you take advatage of cashing which means the next time you require something it will provided from teh cache in matter of ms 
 
 Users:
   ✔ Each user should had a created at date. @done (10/13/2018, 9:30:30 PM)
@@ -604,14 +614,16 @@ Notifications:
               e.g: ahmed posted a comment on admin's post, the avatar was admin's post
             ✔ The post url is messed up in the notification dropdown(of grouped comments) @done (18-11-13 19:11)
 
-
     READ & UNREAD STATUS:
       ☐ When the user checks a notification it should be marked as read (status = 1)
+      ☐ I need a way to mark the status as read when the user clicks on it
+        In both the dropdown and the full list
+      ☐ I need to handle the click of 'Mark all as read'
 
     BUGS:
       ✔ When the user is not connected the broadcast (obviously) will fail, because the user is not in the session! @done (10/27/2018, 6:26:37 PM)
       ✔ The notifications in the (all) page are not being loaded properly ~ currently ordering them in the controller using usort (Mght change if any good alternative is found!) @done (10/27/2018, 11:13:29 PM)
-          Steps to getting a list if all notifications (fron my github paper: Grouping notifications):
+          Steps to getting a list if all notifications (from my dropbox paper: Grouping notifications):
             ``` SQL
                 SELECT n_o.id, n_o.entity_id, n_o.entity_type_id, n.notifier_id
                 FROM notification_object no
@@ -627,6 +639,17 @@ Notifications:
             4 - Re-order the list by using the notification_object_id 
     IDEAS:
       I might want to make some sort of a infinite scroll view for the entire notifications! (all notifications page wuith limit being just 20 notificaitons or 10 each time)
+      ☐ change websocket to pattern of current logged in user
+    TESTING QUEUES AND PERFOREMANCE:
+      NOTE: this test will be done in the js file
+      ✔ Instead of testing the pusher i should test persistance of the data @done (18-11-17 16:44)
+        ✔ Testing messages first @done (18-11-17 16:44)
+          Values will be as follow (messages)
+            100: This took nothing an was so fast
+            500: INGORED
+            1,000: It was also fats like 3 seconds or something 
+            10,000: 
+        ✘ Okay so here's the mistake i was making, using the publish inside a loop will be limited in someway because the of the javascript, what i need some way to have like multiple computers do the same thing @cancelled (18-11-17 16:46)
 
 Bookmarks:
   ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)
@@ -691,7 +714,7 @@ Messaging:
                ✔ Include the user avatar in the payload with the message @done (18-11-04 19:10)
                ✔ The message is being sent to both users, only send to the other user @done (18-11-04 19:10)
                ✘ Input to send the message (not sure if this needs to be a separate component) @cancelled (18-11-04 19:10)
-                 ☐ Focus on the input when the component is mounted
+                 ✔ Focus on the input when the component is mounted @done (18-11-15 17:53)
                  ✔ Both return key and the icon should send the message and also clear the input and focus back on it @done (18-11-04 19:10)
                NOTE: using vue-wamp for now since there isn't anything else on the web (didn't look much tbh)
                LINK: https://www.npmjs.com/package/vue-wamp
@@ -723,12 +746,11 @@ Messaging:
         ✔ Create the pattern where the channel is going to be like conversation/{username} @done (18-11-04 10:30)
           NOTE: i had to serialize the object using twig (json_encode() only encodes public properties, so i had to explicitly call the get the values before encoding them, "Check the controller for more")
           ✔ Pass the user from the php to the component by using props @done (18-11-03 22:13)
-            ☐ Include the user avatar in the object
+            ✔ Include the user avatar in the object @done (18-11-15 18:13)
         ✔ For each message i need to send along the avatar ? @done (18-11-04 19:18)
           NOTE: maybe i can just get it once when the conversation is loading and use it then
           Q: But what about old message ?? 
           A: Maybe when fetching the messages i can also get the username and the avatar?
-
         ✔ Create the RPC or the topic (MessageTopic) @done (18-11-02 23:06)
         ✔ Learn more about patterns (patterns are deprecated and are now called paths) and take advantage of them in this case @done (18-11-04 10:29)
         ✔ Remove the recipient from the front-end and get it in the topic (where the recipient is the username in the route) @done (18-11-04 10:33)
@@ -847,6 +869,13 @@ Messaging:
         Which just takes the sceroll scroll height and add it to the scrollTop, works but i think could be better
       ☐ Maybe i should add a read_at field which indicates if the user read the message or not
 
+    Mark messages as read & get the unread messages for conversations:
+      Database changes:
+        ✔ Add the read_at key which will have to value, either null || DateTime() @done (18-11-17 22:05)
+      ✔ Create a function in the repository for a given conversation_id get the count of unread messages @done (18-11-17 23:01)
+        ☐ This query is fast (about 7,3k messages in 0.01 sec) but i can make faster by doing the following
+          When querying for the unread messages i can check just the latest 20 messages and if there are more than 20 just display a 20+ icon :)) 
+
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
     ✔ In the post.display, when the logged in user is the publisher of the post don't display a add to friends button @done (10/21/2018, 2:24:32 AM)
@@ -879,7 +908,7 @@ MAJOR CHANGES:
        ✔ Profile edit page @done (18-11-09 06:18)
 
 SOME ERROS FOR FUTURE CASES:
-  ☐ Mysql wouldn't connect
+  ✔ Mysql wouldn't connect @done (18-11-14 18:30)
     ERROR: ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
     FIX: 
       Just restart the mysql servie and it should work, well it did work for me!

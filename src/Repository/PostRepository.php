@@ -98,32 +98,16 @@ class PostRepository extends ServiceEntityRepository
         ;
     }
 
-//    /**
-//     * @return Post[] Returns an array of Post objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Get the posts with categories and author
+     */
+    public function findPostsWithCategory()
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        // REQUIRED FIELDS: id, title, content, author (user), created_at, sub_category
+        $qb = $this->createQueryBuilder('p');
+        $qb->innerJoin('p.subCategory', 'sc', Join::WITH, 'p.subCategory = sc')
+            ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u');
 
-    /*
-    public function findOneBySomeField($value): ?Post
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $qb->getQuery()->getResult();
     }
-    */
 }

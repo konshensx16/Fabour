@@ -119,13 +119,16 @@ class MessagingController extends AbstractController
         foreach ($conversations as $item) {
             /** @var Message $lastMessage */
             $lastMessage = $item->getMessages()->last();
+            $count = $conversationRepository->findUnreadMessagesCount($item->getId());
+            dump($count);
             $otherUser = $this->getOtherUser($item, $currentUser);
             $finalConversations[] = [
                 'id' => $item->getId(),
                 'avatar' => $otherUser->getAvatar(),
                 'username' => $otherUser->getUsername(),
                 'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
-                'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : ''
+                'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : '',
+                'count' => $count,
             ];
         }
 

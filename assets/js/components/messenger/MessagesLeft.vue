@@ -7,7 +7,7 @@
         <div class="messages-list ps ps--theme_default ps--active-y">
             <NewConversation v-if="isOpen"/>
             <a class="media single" :href="generateUrl(conversation.id)" v-for="conversation in this.conversations"
-               :id="conversation.id" v-bind:class="{unread : conversation.isActive}">
+               :id="conversation.id" v-bind:class="{unread : conversation.count > 0}">
                 <div class="media-left">
                     <img :src="conversation.avatar" alt="">
                     <span class="square-10 bg-success"></span>
@@ -20,9 +20,10 @@
                     </div>
                     <div>
                         <span>{{ conversation.date }}</span>
+                        <span v-if="conversation.count > 0">{{ conversation.count }}</span>
                     </div>
                 </div><!-- media-body -->
-            </a><!-- media -->h[p
+            </a><!-- media -->
             <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;">
                 <div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
             </div>
