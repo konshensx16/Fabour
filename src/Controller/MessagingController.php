@@ -88,26 +88,8 @@ class MessagingController extends AbstractController
         if (!$user) {
             throw new \Exception('Opps something bad happened!!');
         }
-        // TODO: mark the messages as read before sending them to the user
-        $result = $conversationRepository->updateMessagesReadAt($conversation->getId(), $currentUser->getId());
-//        dump($result);
-
-        // TODO: get just the latest 20 messages from the conversation
-        $latestMessages = $conversationRepository->findLatestMessagesByConversationIdWithLimit($conversation->getId());
-//        dump($latestMessages);
-        $messages = [];
-        foreach ($latestMessages  as $item) {
-            dump($item['created_at'] . $item['message']);
-            $messages[] = [
-                'username' => $item['senderUsername'],
-                'avatar' => $item['senderAvatar'],
-                'content' => $item['message'],
-                'mine' => $this->isCurrentUserSender($item),
-            ];
-        }
 
         return $this->render('messaging/conversation.html.twig', [
-            'messages' => array_reverse($messages),
             'user' => [
                 'username' => $user->getUsername(),
                 'avatar' => $user->getAvatar(),
@@ -196,6 +178,58 @@ class MessagingController extends AbstractController
         }
 
         return $this->redirect($this->generateUrl('messages.conversation', ['id' => $conversation->getId()]));
+    }
+
+    /**
+     * @Route("/messages/{conversation_id}")
+     * @param $conversation_id
+     * @param Request $request
+     * @param ConversationRepository $conversationRepository
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Exception
+     */
+    public function getConversationMessages($conversation_id, Request $request, ConversationRepository $conversationRepository)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            $currentUser = $this->getUser();
+
+            // TODO: can i improve this ??
+            $conversation = null;
+            if (!is_null($conversation_id)) {
+                $conversation = $conversationRepository->find($conversation_id);
+                if (is_null($conversation)) {
+                    throw new \Exception('This conversation does\'t exist, this is some shady shit bruh');
+                }
+            }
+
+            if (!($conversation->getFirstUser() === $currentUser || $conversation->getSecondUser() === $currentUser)) {
+                throw new \Exception("You're not allowed to see this conversation!");
+            }
+            $user = $this->getOtherUser($conversation, $currentUser);
+            if (!$user) {
+                throw new \Exception('Opps something bad happened!!');
+            }
+
+            // TODO: mark the messages as read before sending them to the user
+            $conversationRepository->updateMessagesReadAt($conversation->getId(), $currentUser->getId());
+
+            $latestMessages = $conversationRepository->findLatestMessagesByConversationIdWithLimit($conversation->getId());
+            $messages = [];
+            foreach ($latestMessages  as $item) {
+                dump($item['created_at'] . $item['message']);
+                $messages[] = [
+                    'username' => $item['senderUsername'],
+                    'avatar' => $item['senderAvatar'],
+                    'content' => $item['message'],
+                    'mine' => $this->isCurrentUserSender($item),
+                ];
+            }
+            return $this->json([
+                array_reverse($messages)
+            ]);
+        }
+        throw new \Exception('Something bad happened!');
     }
 
     /**

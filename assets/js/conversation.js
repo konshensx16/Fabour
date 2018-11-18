@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueWamp from 'vue-wamp'
-import Messenger from './components/Messenger' 
+import Messenger from './components/Messenger'
+import {store} from './store/store'
+
 
 Vue.use(VueWamp, {
     debug: true,
@@ -16,5 +18,6 @@ Vue.use(VueWamp, {
 
 new Vue({
     el: '#messenger',
-    components: {Messenger}
+    components: {Messenger},
+    store
 })

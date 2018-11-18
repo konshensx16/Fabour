@@ -19,7 +19,8 @@
                     <div class="sk-cube sk-cube9"></div>
                 </div>
             </div>
-            <a class="media single" :href="generateUrl(conversation.id)" v-for="(conversation, key, index) in conversations"
+            <a class="media single" :href="generateUrl(conversation.id)"
+               v-for="(conversation, key, index) in CONVERSATIONS"
                :id="conversation.id" v-bind:class="{unread : conversation.count > 0}">
                 <div class="media-left">
                     <img :src="conversation.avatar" alt="">
@@ -52,7 +53,7 @@
 
 <script>
     import NewConversation from './NewConversation'
-    import axios from 'axios'
+    import {mapGetters} from 'vuex'
     import Routing from '../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
     const routes = require('../../routes.json');
 
@@ -68,6 +69,12 @@
                 loading: true
             }
         },
+        computed: {
+            // mix the getters into computed with object spread operator
+            ...mapGetters([
+                'CONVERSATIONS'
+            ])
+        },
         methods: {
             unreadMessagesCounter: function (conversation) {
                 console.log(conversation.count >= 10 ? '10+' : conversation.count)
@@ -80,16 +87,8 @@
                 return Routing.generate('messages.conversation', {'id': parameter})
             }
         },
-        mounted () {
-            let url = Routing.generate('messages.conversations');
-            const axiosInstance = axios.create({
-                headers: {'X-Requested-With': 'XMLHttpRequest'}
-            })
-            axiosInstance.get(url)
-                .then((response) => {
-                    this.conversations = response.data[0]
-                    this.loading = false
-                })
+        mounted() {
+            this.$store.dispatch('GET_CONVERSATIONS')
         }
     }
 </script>

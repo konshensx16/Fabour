@@ -889,7 +889,10 @@ Messaging:
     CHNAGES FOR THE MESSING SYSTEM:
       The conversation should be loaded via an ajax request, because loading it each time is painful and slow
       ☐ Include Vuex to save the state of conversations in a store
-      ☐ Right now just making the request when the Left component loads
+      ✔ Right now just making the request when the Left component loads @done (18-11-18 14:27)
+
+      ☐ Load the right side messages using the same as before, axio
+      ☐ @critical the mark as read is taking a lot of time to execute
 
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
@@ -927,3 +930,11 @@ SOME ERROS FOR FUTURE CASES:
     ERROR: ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
     FIX: 
       Just restart the mysql servie and it should work, well it did work for me!
+
+
+
+VUE & VUEX NOTES:
+  LINK: https://medium.com/dailyjs/mastering-vuex-zero-to-hero-e0ca1f421d45
+  THIS IS REQUIRED FOR SPOREAD OPERATOR USAGE: npm install --save-dev babel-plugin-transform-object-rest-spread
+  ✔ Creating a store @done (18-11-18 15:53)
+  ☐ I have to inlcude the vue-router too
