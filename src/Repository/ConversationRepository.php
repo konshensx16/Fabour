@@ -141,7 +141,36 @@ class ConversationRepository extends ServiceEntityRepository
             ->setParameter('date', (new \DateTime())->format('Y-m-d H:m:s'))
             ->setParameter('user_id', $user_id)
         ;
-        dump($qb->getQuery()->getSQL());
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Returns a list containing the latest 20|limit messages for a given conversation
+     * @param int $conversation_id
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function findLatestMessagesByConversationIdWithLimit(int $conversation_id)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        $sqlQuery = '
+            SELECT m.*, sender.username as senderUsername, sender.avatar as senderAvatar, recipient.username as recipientUsername, recipient.avatar as recipientAvatar
+            FROM message m
+            INNER JOIN user sender
+            ON sender.id = m.sender_id
+            INNER JOIN user recipient
+            ON recipient.id = m.recipient_id
+            WHERE m.conversation_id = :conversation_id
+            ORDER BY id DESC
+            LIMIT 20
+        ';
+
+        $statement = $connection->prepare($sqlQuery);
+        $statement->execute([
+            ':conversation_id' => $conversation_id
+        ]);
+
+        return $statement->fetchAll();
     }
 }

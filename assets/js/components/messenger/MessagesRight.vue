@@ -128,7 +128,6 @@
             }
         },
         mounted() {
-
             this.conversationMessages = this.messages
             webSocket.on('socket/connect', (new_session) => {
                 session = new_session
@@ -153,8 +152,15 @@
                 console.log(error.reason + ' ' + error.code)
                 notification.alert(error.reason + ' ' + error.code)
             })
-
-
+        },
+        updated : function () {
+            this.$nextTick(() =>
+            {
+                // TODO: scroll the last message into view
+                let el = this.$refs.messagesBox
+                el.scrollTop = el.scrollHeight
+            })
         }
+
     }
 </script>

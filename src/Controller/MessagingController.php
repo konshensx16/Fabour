@@ -116,16 +116,18 @@ class MessagingController extends AbstractController
 
         // TODO: mark the messages as read before sending them to the user
         $result = $conversationRepository->updateMessagesReadAt($conversation->getId(), $currentUser->getId());
-        dump($result);
+//        dump($result);
 
+        // TODO: get just the latest 20 messages from the conversation
+        $latestMessages = $conversationRepository->findLatestMessagesByConversationIdWithLimit($conversation->getId());
+//        dump($latestMessages);
         $messages = [];
-        /** @var Message $item */
-        foreach ($conversation->getMessages() as $item) {
+        foreach ($latestMessages  as $item) {
+            dump($item['created_at'] . $item['message']);
             $messages[] = [
-                'username' => $this->isCurrentUserSender($item) ?
-                    $item->getSender()->getUsername() : $item->getRecipient()->getUsername(),
-                'avatar' => $item->getSender()->getAvatar(),
-                'content' => $item->getMessage(),
+                'username' => $item['senderUsername'],
+                'avatar' => $item['senderAvatar'],
+                'content' => $item['message'],
                 'mine' => $this->isCurrentUserSender($item),
             ];
         }
@@ -148,7 +150,7 @@ class MessagingController extends AbstractController
         }
 
         return $this->render('messaging/conversation.html.twig', [
-            'messages' => $messages,
+            'messages' => array_reverse($messages),
             'conversations' => $finalConversations,
             'user' => [
                 'username' => $user->getUsername(),
@@ -232,12 +234,16 @@ class MessagingController extends AbstractController
 
     /**
      * Check whether the current user is the sender of a given message
-     * @param Message $message
+     * @param array $message
      * @return bool
      */
-    private function isCurrentUserSender(Message $message)
+    private function isCurrentUserSender(array $message)
     {
-        return $message->getSender() === $this->getUser();
+//        dump($this->getUser()->getId());
+//        dump($message['sender_id']);
+//        dump((int)$message['sender_id'] === $this->getUser()->getId()); die;
+
+        return (int)$message['sender_id'] === $this->getUser()->getId();
     }
 
     /**

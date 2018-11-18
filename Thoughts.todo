@@ -867,7 +867,10 @@ Messaging:
     Changes:
       ☐ Use the ScrollIntoView function to scroll down messages if possible instead of the current solution
         Which just takes the sceroll scroll height and add it to the scrollTop, works but i think could be better
-      ☐ Maybe i should add a read_at field which indicates if the user read the message or not
+      ✔ Maybe i should add a read_at field which indicates if the user read the message or not @done (18-11-18 13:26)
+      ✔ Load just the latest 20 message for a conversation @done (18-11-18 13:26)
+        ✔ Change the function from raking taking a collection to taking an array @done (18-11-18 13:26)
+        ✔ Need to inner join the user so i can access the username and avatar when constructing the messages array @done (18-11-18 13:26)
 
     Mark messages as read & get the unread messages for conversations:
       Database changes:

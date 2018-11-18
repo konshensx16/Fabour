@@ -13876,7 +13876,7 @@ textarea.parsley-success:focus {
   bottom: 65px;
   left: 0;
   width: 100%;
-  overflow-y: auto;
+  overflow-y: auto!important;
   background-color: #f8f9fa; }
   .message-body .media-list .media {
     padding: 15px; }
