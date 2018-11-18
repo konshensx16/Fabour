@@ -8,11 +8,10 @@
             <Messenger
                     :current-user='{{ currentUser|json_encode }}'
                     :user='{{ user|json_encode }}'
-                    :conversations='{{ conversations|json_encode }}'
                     :conversation_id='{{ conversation_id|json_encode }}'
                     :messages='{{ messages|json_encode }}'/>
         {% else %}
-            <Messenger :conversations='{{ conversations|json_encode }}'/>
+            <Messenger/>
         {% endif %}
     </div>
 {% endblock %}

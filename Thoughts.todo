@@ -886,6 +886,11 @@ Messaging:
         ✔ @low When couting the unread messages it better to only count the ones the other user sent and not include mine, other wise im gonna get the same value as him even though im the one who sent those messages @done (18-11-18 12:34)
       ✔ Remove all the messages that has an ID > 100 to make the work faster @done (18-11-17 23:42)
 
+    CHNAGES FOR THE MESSING SYSTEM:
+      The conversation should be loaded via an ajax request, because loading it each time is painful and slow
+      ☐ Include Vuex to save the state of conversations in a store
+      ☐ Right now just making the request when the Left component loads
+
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
     ✔ In the post.display, when the logged in user is the publisher of the post don't display a add to friends button @done (10/21/2018, 2:24:32 AM)

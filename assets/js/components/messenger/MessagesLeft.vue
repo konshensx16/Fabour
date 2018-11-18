@@ -6,7 +6,20 @@
         </div><!-- slim-pageheader -->
         <div class="messages-list ps ps--theme_default ps--active-y">
             <NewConversation v-if="isOpen"/>
-            <a class="media single" :href="generateUrl(conversation.id)" v-for="conversation in this.conversations"
+            <div class="d-flex ht-300 pos-relative align-items-center" v-if="loading">
+                <div class="sk-cube-grid">
+                    <div class="sk-cube sk-cube1"></div>
+                    <div class="sk-cube sk-cube2"></div>
+                    <div class="sk-cube sk-cube3"></div>
+                    <div class="sk-cube sk-cube4"></div>
+                    <div class="sk-cube sk-cube5"></div>
+                    <div class="sk-cube sk-cube6"></div>
+                    <div class="sk-cube sk-cube7"></div>
+                    <div class="sk-cube sk-cube8"></div>
+                    <div class="sk-cube sk-cube9"></div>
+                </div>
+            </div>
+            <a class="media single" :href="generateUrl(conversation.id)" v-for="(conversation, key, index) in conversations"
                :id="conversation.id" v-bind:class="{unread : conversation.count > 0}">
                 <div class="media-left">
                     <img :src="conversation.avatar" alt="">
@@ -39,6 +52,7 @@
 
 <script>
     import NewConversation from './NewConversation'
+    import axios from 'axios'
     import Routing from '../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
     const routes = require('../../routes.json');
 
@@ -47,19 +61,12 @@
     export default {
         name: 'messages-left',
         components: {NewConversation},
-        props: {
-            conversations: {
-                required: true,
-                type: Array
-            }
-        },
         data() {
             return {
-                isOpen: !true
+                isOpen: !true,
+                conversations: [],
+                loading: true
             }
-        },
-        computed: {
-
         },
         methods: {
             unreadMessagesCounter: function (conversation) {
@@ -72,6 +79,17 @@
             generateUrl(parameter) {
                 return Routing.generate('messages.conversation', {'id': parameter})
             }
+        },
+        mounted () {
+            let url = Routing.generate('messages.conversations');
+            const axiosInstance = axios.create({
+                headers: {'X-Requested-With': 'XMLHttpRequest'}
+            })
+            axiosInstance.get(url)
+                .then((response) => {
+                    this.conversations = response.data[0]
+                    this.loading = false
+                })
         }
     }
 </script>

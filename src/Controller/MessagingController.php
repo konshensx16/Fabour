@@ -10,6 +10,7 @@ use App\Repository\UserRepository;
 use App\Services\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -46,34 +47,11 @@ class MessagingController extends AbstractController
 
     /**
      * @Route("/", name="messaging")
-     * @param ConversationRepository $conversationRepository
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(ConversationRepository $conversationRepository)
+    public function index()
     {
-        $currentUser = $this->getUser();
-
-        // this is limited to just 15 if not limit is provided after the user_id
-        $conversations = $conversationRepository->findConversationsByUserId($currentUser->getId());
-
-        $finalConversations = [];
-        /** @var Conversation $item */
-        foreach ($conversations as $item) {
-            /** @var Message $lastMessage */
-            $lastMessage = $item->getMessages()->last();
-            $otherUser = $this->getOtherUser($item, $currentUser);
-            $finalConversations[] = [
-                'id' => $item->getId(),
-                'avatar' => $otherUser->getAvatar(),
-                'username' => $otherUser->getUsername(),
-                'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
-                'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : ''
-            ];
-        }
-
-
         return $this->render('messaging/conversation.html.twig', [
-            'conversations' => $finalConversations,
             'conversation_id' => null, // TODO: change this and the line below to something better
             'user' => null
         ]);
@@ -110,10 +88,6 @@ class MessagingController extends AbstractController
         if (!$user) {
             throw new \Exception('Opps something bad happened!!');
         }
-
-        // this is limited to just 15 if not limit is provided after the user_id
-        $conversations = $conversationRepository->findConversationsByUserId($currentUser->getId());
-
         // TODO: mark the messages as read before sending them to the user
         $result = $conversationRepository->updateMessagesReadAt($conversation->getId(), $currentUser->getId());
 //        dump($result);
@@ -132,26 +106,8 @@ class MessagingController extends AbstractController
             ];
         }
 
-        $finalConversations = [];
-        /** @var Conversation $item */
-        foreach ($conversations as $item) {
-            /** @var Message $lastMessage */
-            $lastMessage = $item->getMessages()->last();
-            $count = $conversationRepository->findUnreadMessagesCount($item->getId(), $currentUser->getId());
-            $otherUser = $this->getOtherUser($item, $currentUser);
-            $finalConversations[] = [
-                'id' => $item->getId(),
-                'avatar' => $otherUser->getAvatar(),
-                'username' => $otherUser->getUsername(),
-                'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
-                'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : '',
-                'count' => $count,
-            ];
-        }
-
         return $this->render('messaging/conversation.html.twig', [
             'messages' => array_reverse($messages),
-            'conversations' => $finalConversations,
             'user' => [
                 'username' => $user->getUsername(),
                 'avatar' => $user->getAvatar(),
@@ -164,6 +120,49 @@ class MessagingController extends AbstractController
                 'username' => $currentUser->getUsername(),
                 'avatar' => $currentUser->getAvatar(),
             ]
+        ]);
+    }
+
+    /**
+     * @Route("/conversations", name="conversations", options={"expose"=true})
+     * @param Request $request
+     * @param ConversationRepository $conversationRepository
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getConversations(Request $request, ConversationRepository $conversationRepository)
+    {
+        // TODO: this should be limited to only  or 20 at a time
+        if ($request->isXmlHttpRequest()) {
+            $currentUser = $this->getUser();
+            // this is limited to just 15 if not limit is provided after the user_id
+            $conversations = $conversationRepository->findConversationsByUserId($currentUser->getId());
+
+
+            $finalConversations = [];
+            /** @var Conversation $item */
+            foreach ($conversations as $item) {
+                /** @var Message $lastMessage */
+                $lastMessage = $item->getMessages()->last();
+                $count = $conversationRepository->findUnreadMessagesCount($item->getId(), $currentUser->getId());
+                $otherUser = $this->getOtherUser($item, $currentUser);
+                $finalConversations[] = [
+                    'id' => $item->getId(),
+                    'avatar' => $otherUser->getAvatar(),
+                    'username' => $otherUser->getUsername(),
+                    'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
+                    'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : '',
+                    'count' => $count,
+                ];
+            }
+
+            return $this->json([
+                $finalConversations,
+            ]);
+        }
+
+        return $this->json([
+            'message' => 'Something bad happened',
         ]);
     }
 

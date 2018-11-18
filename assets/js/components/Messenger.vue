@@ -1,6 +1,6 @@
 <template>
     <div>
-        <MessagesLeft :conversations="conversations"/>
+        <MessagesLeft/>
         <MessagesRight
                 :current-user="currentUser"
                 :user="user"
@@ -25,10 +25,6 @@
             },
             currentUser: {
                 type: Object,
-            },
-            conversations: {
-                required: true,
-                type: [Array]
             },
             conversation_id: {
                 type: Number,
