@@ -873,8 +873,15 @@ Messaging:
       Database changes:
         ✔ Add the read_at key which will have to value, either null || DateTime() @done (18-11-17 22:05)
       ✔ Create a function in the repository for a given conversation_id get the count of unread messages @done (18-11-17 23:01)
-        ☐ This query is fast (about 7,3k messages in 0.01 sec) but i can make faster by doing the following
+        ✔ This query is fast (about 7,3k messages in 0.01 sec) but i can make faster by doing the following @done (18-11-17 23:35)
           When querying for the unread messages i can check just the latest 20 messages and if there are more than 20 just display a 20+ icon :)) 
+      ✔ Mark the conversation messages as read when viweing a conversation @done (18-11-18 12:34)
+        NOTE: this should be done when the conversation is loading
+        ✔ Theres a problem with this, the count will be displayed even though, they're marked as read, because the count is set before the read_at is set @done (18-11-17 23:48)
+        ✔ @critical I need to change instead of updating using the message ID i need to use the conversation ID, because the queries being sent to the databse is incredibily high @done (18-11-18 12:34)
+        ✔ @critical The approach im following is wrong, because when the messages are unread and i log in they gonna be marked as read, but when i sent them to someone else and i reopen the conversation, they will also be marked as read, and that's not how it's supposed to work, i need to only update mine. @done (18-11-18 12:34)
+        ✔ @low When couting the unread messages it better to only count the ones the other user sent and not include mine, other wise im gonna get the same value as him even though im the one who sent those messages @done (18-11-18 12:34)
+      ✔ Remove all the messages that has an ID > 100 to make the work faster @done (18-11-17 23:42)
 
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)

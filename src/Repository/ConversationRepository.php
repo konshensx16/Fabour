@@ -71,12 +71,12 @@ class ConversationRepository extends ServiceEntityRepository
                     $qb->expr()->eq('c.second_user ', ':first_user_id')
                 )
             ) // end of andX
-        ) // end of where
+        )// end of where
 //            ->andWhere('c.first_user = :first_user_id')// This wil be an expression im pretty sure what i did here isn't gonna workm just putting the bricks where they belong
 //            ->andWhere('c.first_user = :second_user_id')
 //            ->orWhere('c.second_user = :first_user_id')
 //            ->andWhere('c.first_user = :second_user_id')
-            ->setParameter('first_user_id', $first_user_id)
+        ->setParameter('first_user_id', $first_user_id)
             ->setParameter('second_user_id', $second_user_id);
 
 
@@ -88,10 +88,11 @@ class ConversationRepository extends ServiceEntityRepository
     /**
      *
      * @param int $conversation_id
-     * @return array
+     * @param int $user_id
+     * @return bool|string
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function findUnreadMessagesCount(int $conversation_id)
+    public function findUnreadMessagesCount(int $conversation_id, int $user_id)
     {
         $connection = $this->getEntityManager()->getConnection();
 
@@ -101,6 +102,7 @@ class ConversationRepository extends ServiceEntityRepository
               SELECT m.id
               FROM message m
               WHERE m.conversation_id = :conversation_id
+              AND m.recipient_id = :user_id
               AND m.read_at IS NULL
               ORDER BY m.id DESC
               LIMIT 10
@@ -108,37 +110,38 @@ class ConversationRepository extends ServiceEntityRepository
         ';
 
         $statement = $connection->prepare($sql);
-        $statement->execute([':conversation_id' => $conversation_id]);
+        $statement->execute([
+            ':conversation_id' => $conversation_id,
+            ':user_id' => $user_id
+        ]);
 
         return $statement->fetchColumn(0);
     }
 
-//    /**
-//     * @return Conversation[] Returns an array of Conversation objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * Updates the messages read_at using the conversation_id
+     * @param int $conversation_id
+     * @param int $user_id
+     * @return mixed
+     */
+    public function updateMessagesReadAt(int $conversation_id, int $user_id)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        // NOTE: i need to only update the other messages and not mine
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $qb->update('App\Entity\Message', 'm')
+            ->set('m.read_at', ':date')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('m.conversation', ':conversation_id'),
+                    $qb->expr()->eq('m.recipient', ':user_id')
+                )
+            )
+            ->setParameter('conversation_id', $conversation_id)
+            ->setParameter('date', (new \DateTime())->format('Y-m-d H:m:s'))
+            ->setParameter('user_id', $user_id)
         ;
+        dump($qb->getQuery()->getSQL());
+        return $qb->getQuery()->execute();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Conversation
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

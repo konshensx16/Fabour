@@ -146,7 +146,7 @@
                         break;
                     case 2:
                         $notif = $notificationObjectRepository->groupCommentsByPosts($item['theCount']);
-                        dump($notif);
+//                        dump($notif);
                         // i need to get the avatar of latest person to post a comment!
                         foreach ($notif as $notification) {
 //                            dump($notification);
@@ -163,7 +163,7 @@
                         break;
                     case 3:
                         $bookmarkNotificationObjects = $notificationObjectRepository->findLatestBookmarkNotifications($item['theCount']);
-                        dump($bookmarkNotificationObjects);
+//                        dump($bookmarkNotificationObjects);
                         foreach ($bookmarkNotificationObjects as $notification) {
                             $array[] = [
                                 'id' => $notification['id'],
@@ -217,7 +217,7 @@
 
             $result = $notificationObjectRepository->findCountCommentsForPost(13); // 13 => Something is happening!
 
-            dump($anotherResult);
+//            dump($anotherResult);
             die;
         }
     }

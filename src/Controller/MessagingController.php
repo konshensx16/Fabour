@@ -114,23 +114,9 @@ class MessagingController extends AbstractController
         // this is limited to just 15 if not limit is provided after the user_id
         $conversations = $conversationRepository->findConversationsByUserId($currentUser->getId());
 
-        $finalConversations = [];
-        /** @var Conversation $item */
-        foreach ($conversations as $item) {
-            /** @var Message $lastMessage */
-            $lastMessage = $item->getMessages()->last();
-            $count = $conversationRepository->findUnreadMessagesCount($item->getId());
-            dump($count);
-            $otherUser = $this->getOtherUser($item, $currentUser);
-            $finalConversations[] = [
-                'id' => $item->getId(),
-                'avatar' => $otherUser->getAvatar(),
-                'username' => $otherUser->getUsername(),
-                'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
-                'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : '',
-                'count' => $count,
-            ];
-        }
+        // TODO: mark the messages as read before sending them to the user
+        $result = $conversationRepository->updateMessagesReadAt($conversation->getId(), $currentUser->getId());
+        dump($result);
 
         $messages = [];
         /** @var Message $item */
@@ -141,6 +127,23 @@ class MessagingController extends AbstractController
                 'avatar' => $item->getSender()->getAvatar(),
                 'content' => $item->getMessage(),
                 'mine' => $this->isCurrentUserSender($item),
+            ];
+        }
+
+        $finalConversations = [];
+        /** @var Conversation $item */
+        foreach ($conversations as $item) {
+            /** @var Message $lastMessage */
+            $lastMessage = $item->getMessages()->last();
+            $count = $conversationRepository->findUnreadMessagesCount($item->getId(), $currentUser->getId());
+            $otherUser = $this->getOtherUser($item, $currentUser);
+            $finalConversations[] = [
+                'id' => $item->getId(),
+                'avatar' => $otherUser->getAvatar(),
+                'username' => $otherUser->getUsername(),
+                'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
+                'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : '',
+                'count' => $count,
             ];
         }
 

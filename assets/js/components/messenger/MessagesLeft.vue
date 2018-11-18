@@ -64,7 +64,7 @@
         methods: {
             unreadMessagesCounter: function (conversation) {
                 console.log(conversation.count >= 10 ? '10+' : conversation.count)
-                return conversation.count > 10 ? '10+' : conversation.count
+                return conversation.count >= 10 ? '10+' : conversation.count
             },
             toggle() {
                 this.isOpen = !this.isOpen
