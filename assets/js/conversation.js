@@ -9,7 +9,7 @@ Vue.use(VueRouter)
 let $messenger = document.querySelector('#messenger')
 
 const routes = [
-    { path: '/con/:id', component: MessagesRight, name: 'conversation'}
+    { path: '/con/:id/:userId', component: MessagesRight, name: 'conversation'}
 ]
 
 const router = new VueRouter({

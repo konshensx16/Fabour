@@ -41,11 +41,13 @@ class UserController extends AbstractController
      */
     public function user($id, UserRepository $userRepository)
     {
+        $before = microtime(true);
         $currentUser = $this->getUser();
 
         if (!($currentUser instanceof UserInterface)) {
             throw new AuthenticationException();
         }
+        // TODO: maybe check if the user are friends before letting the user accessing the last seen field
 
         $user = $userRepository->find($id);
 
@@ -62,9 +64,12 @@ class UserController extends AbstractController
                 'last_seen' => $this->dateManager->timeAgo($user->getLastSeen())
             ];
 
+            $after = microtime(true);
+
             // TODO: Set the last seen
             return $this->json([
-                'user' => $array
+                'user' => $array,
+                'took' => ($after - $before)
             ]);
         }
     }

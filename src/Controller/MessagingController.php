@@ -58,7 +58,7 @@ class MessagingController extends AbstractController
     }
 
     /**
-     * @Route("/con/{id}", name="conversation", options={"expose"=true})
+     * @Route("/con/{id}/{userId}", name="conversation", options={"expose"=true})
      * @param $id
      * @param ConversationRepository $conversationRepository
      * @return bool|\Symfony\Component\HttpFoundation\Response
@@ -66,6 +66,8 @@ class MessagingController extends AbstractController
      */
     public function conversation($id, ConversationRepository $conversationRepository)
     {
+        // TODO: this might need to change to something better, haven't decided yet!
+        return $this->redirect($this->generateUrl('messages.messaging'));
         // the logged in user
         $currentUser = $this->getUser();
 
@@ -132,6 +134,7 @@ class MessagingController extends AbstractController
                     'id' => $item->getId(),
                     'avatar' => $otherUser->getAvatar(),
                     'username' => $otherUser->getUsername(),
+                    'user_id' => $otherUser->getId(),
                     'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
                     'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : '',
                     'count' => $count,

@@ -19,9 +19,10 @@
                     <div class="sk-cube sk-cube9"></div>
                 </div>
             </div>
-            <router-link class="media single" :to="{name: 'conversation', params: {id: conversation.id}}"
-               v-for="(conversation, key, index) in CONVERSATIONS" :key="key"
-               :id="conversation.id" v-bind:class="{unread : conversation.count > 0}">
+            <router-link class="media single"
+                         :to="{name: 'conversation', params: {id: conversation.id, userId: conversation.user_id}}"
+                         v-for="(conversation, key, index) in CONVERSATIONS" :key="key"
+                         :id="conversation.id" v-bind:class="{unread : conversation.count > 0}">
                 <div class="media-left">
                     <img :src="conversation.avatar" alt="">
                     <span class="square-10 bg-success"></span>
@@ -55,6 +56,7 @@
     import NewConversation from './NewConversation'
     import {mapGetters} from 'vuex'
     import Routing from '../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
+
     const routes = require('../../routes.json');
 
     Routing.setRoutingData(routes)

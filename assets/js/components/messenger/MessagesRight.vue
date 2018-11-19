@@ -87,29 +87,9 @@
 
     export default {
         name: 'messages-right',
-        props: {
-            user: {
-                type: Object,
-                default: () => {
-                    return {}
-                }
-            },
-            currentUser: {
-                type: Object
-            },
-            conversation_id: {
-                required: false,
-                type: Number
-            }
-        },
         data() {
             return {
                 messageInput: '',
-            }
-        },
-        watch: {
-            conversationMessages: (newValue, oldValue) => {
-                // TODO: scroll the view when this changes
             }
         },
         methods: {
@@ -152,7 +132,7 @@
         },
         mounted() {
             this.$store.dispatch('GET_LATEST_MESSAGES', this.$route.params.id)
-            this.$store.dispatch('GET_USER', this.$route.params.id)
+            this.$store.dispatch('GET_USER', this.$route.params.userId)
             this.conversationMessages = this.messages
             webSocket.on('socket/connect', (new_session) => {
                 session = new_session

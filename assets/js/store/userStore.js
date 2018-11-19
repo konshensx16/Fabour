@@ -23,7 +23,7 @@ export default {
     },
     actions: {
         GET_USER: async (context, payload) => {
-            let url = Routing.generate('api.user.getUser', {id: 9}) // will get admin always, must change
+            let url = Routing.generate('api.user.getUser', {id: payload}) // will get admin always, must change
             let { data } = await axiosInstance.get(url)
             context.commit('SET_USER', data)
             context.commit('SET_LOADING_USER', false)
