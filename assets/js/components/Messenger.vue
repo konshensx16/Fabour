@@ -1,12 +1,7 @@
 <template>
     <div>
         <MessagesLeft/>
-        <MessagesRight
-                :current-user="currentUser"
-                :user="user"
-                :conversation_id="conversation_id"
-                :messages="messages"
-                />
+        <router-view :key="$route.fullPath"></router-view>
     </div>
 </template>
 
@@ -22,17 +17,6 @@
                 default: () => {
                     return {}
                 }
-            },
-            currentUser: {
-                type: Object,
-            },
-            conversation_id: {
-                type: Number,
-                default: 0
-            },
-            messages: {
-                required: false,
-                type: Array
             }
         },
         components: {MessagesLeft, MessagesRight},

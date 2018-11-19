@@ -1,23 +1,26 @@
 import Vue from 'vue'
-import VueWamp from 'vue-wamp'
+import VueRouter from 'vue-router'
 import Messenger from './components/Messenger'
+import MessagesRight from './components/messenger/MessagesRight'
 import {store} from './store/store'
 
+Vue.use(VueRouter)
 
-Vue.use(VueWamp, {
-    debug: true,
-    url: _WS_URI, // TODO: get the url just like before
-    realm: 'realm1',
-    onopen: (session, details) => {
-        console.log('WAMP connected', session, details)
-    },
-    onclose: (session, details) => {
-        console.log('WAMP closed', session, details)
-    }
+let $messenger = document.querySelector('#messenger')
+
+const routes = [
+    { path: '/con/:id', component: MessagesRight, name: 'conversation'}
+]
+
+const router = new VueRouter({
+    mode: 'history',
+    routes,
+    base: $messenger.getAttribute('data-base')
 })
 
 new Vue({
     el: '#messenger',
     components: {Messenger},
-    store
+    store,
+    router
 })

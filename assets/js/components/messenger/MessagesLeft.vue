@@ -6,7 +6,7 @@
         </div><!-- slim-pageheader -->
         <div class="messages-list ps ps--theme_default ps--active-y">
             <NewConversation v-if="isOpen"/>
-            <div class="d-flex ht-300 pos-relative align-items-center" v-if="loading">
+            <div class="d-flex ht-300 pos-relative align-items-center" v-if="LOADING_CONVERSATIONS">
                 <div class="sk-cube-grid">
                     <div class="sk-cube sk-cube1"></div>
                     <div class="sk-cube sk-cube2"></div>
@@ -19,8 +19,8 @@
                     <div class="sk-cube sk-cube9"></div>
                 </div>
             </div>
-            <a class="media single" :href="generateUrl(conversation.id)"
-               v-for="(conversation, key, index) in CONVERSATIONS"
+            <router-link class="media single" :to="{name: 'conversation', params: {id: conversation.id}}"
+               v-for="(conversation, key, index) in CONVERSATIONS" :key="key"
                :id="conversation.id" v-bind:class="{unread : conversation.count > 0}">
                 <div class="media-left">
                     <img :src="conversation.avatar" alt="">
@@ -37,7 +37,7 @@
                         <span v-if="conversation.count > 0">{{ unreadMessagesCounter(conversation) }}</span>
                     </div>
                 </div><!-- media-body -->
-            </a><!-- media -->
+            </router-link><!-- media -->
             <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;">
                 <div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
             </div>
@@ -72,7 +72,8 @@
         computed: {
             // mix the getters into computed with object spread operator
             ...mapGetters([
-                'CONVERSATIONS'
+                'CONVERSATIONS',
+                'LOADING_CONVERSATIONS'
             ])
         },
         methods: {

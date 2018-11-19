@@ -126,12 +126,12 @@
             // TODO: bake the notifications here ? not sure where else to do it
             // TODO: change this to include the count of notifications
             $result = $notificationObjectRepository->findNotificationsDetailsByNotifierIdGroupByEntityId(4);
-            dump($result);
+//            dump($result);
             foreach ($result as $item) {
                 switch ($item['entity_type_id']) {
                     case 1:
                         $postNotificationObjects = $notificationObjectRepository->findLatestPostNotifications($item['theCount']);
-                        dump($postNotificationObjects);
+//                        dump($postNotificationObjects);
                         foreach ($postNotificationObjects as $notification) {
                             $array[] = [
                                 'id' => $notification['id'],

@@ -51,6 +51,9 @@ services:
     App\Controller\MessagingController:
         arguments:
             - '@twig.extension.date'
+    App\Services\DateManager:
+        arguments:
+            - '@twig.extension.date'
 
     App\Controller\HomeController:
         arguments:

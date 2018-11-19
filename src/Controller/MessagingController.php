@@ -181,7 +181,7 @@ class MessagingController extends AbstractController
     }
 
     /**
-     * @Route("/messages/{conversation_id}")
+     * @Route("/messages/{conversation_id}", name="latestMessages", options={"expose"=true})
      * @param $conversation_id
      * @param Request $request
      * @param ConversationRepository $conversationRepository
@@ -191,7 +191,7 @@ class MessagingController extends AbstractController
      */
     public function getConversationMessages($conversation_id, Request $request, ConversationRepository $conversationRepository)
     {
-        if (!$request->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             $currentUser = $this->getUser();
 
             // TODO: can i improve this ??

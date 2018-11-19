@@ -937,4 +937,17 @@ VUE & VUEX NOTES:
   LINK: https://medium.com/dailyjs/mastering-vuex-zero-to-hero-e0ca1f421d45
   THIS IS REQUIRED FOR SPOREAD OPERATOR USAGE: npm install --save-dev babel-plugin-transform-object-rest-spread
   ✔ Creating a store @done (18-11-18 15:53)
-  ☐ I have to inlcude the vue-router too
+  ✔ I have to inlcude the vue-router too @done (18-11-18 20:40)
+    ✔ Make sure to include the router on the Vue instance @done (18-11-18 20:40)
+  ✔ Render the conversations links using router-link @done (18-11-18 21:19)
+
+  ✘ I might need to re-structure the components because as of now clicking the links doesn't give the required behaviour @cancelled (18-11-19 19:59)
+    ✔ Didn't re-structure anything, just forced the component to re-create each time, to do that i need to add a key to the route-view like this: "router-view :key="$route.fullPath"" @done (18-11-19 20:01)
+  ☐ Not sure about this, but i might want to store any fetched data inside the conversation array for future use so the user doens't make requests each time he changes the conversations
+    At least for the user information, might consider adding the messages later too
+  ✔ Load the rest of the data with an AJAX request @done (18-11-19 21:51)
+    ✔ Load the user information @done (18-11-19 21:51)
+
+
+COMMAND GENERATE ROUTES.JSON: 
+  bin/console fos:js-routing:dump --format=json --target=assets/js/routes.json

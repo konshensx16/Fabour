@@ -3,7 +3,7 @@
 {% block title %}Messages{% endblock %}
 
 {% block body %}
-    <div class="container-messages" id="messenger">
+    <div class="container-messages" id="messenger" data-base="{{ path('messages.messaging') }}">
         {% if conversation_id and user %}
             <Messenger
                     :current-user='{{ currentUser|json_encode }}'

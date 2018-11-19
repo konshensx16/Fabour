@@ -1,14 +1,20 @@
 <template>
     <div>
         <div class="messages-right d-none d-lg-block">
-            <h2 class="text-center mg-t-20" v-if="isUserEmpty">Welcome to the Messages area :)</h2>
+            <!--<h2 class="text-center mg-t-20" v-if="isUserEmpty">Welcome to the Messages area :)</h2>-->
             <div class="message-header" v-if="!isUserEmpty">
-                <a href="" class="message-back"><i class="fa fa-angle-left"></i></a>
-                <div class="media">
-                    <img :src="user.avatar" alt="">
+                <!--<div class="d-flex ht-300 pos-relative align-items-center" v-if="LOADING_USER">-->
+                    <!--<div class="sk-three-bounce">-->
+                        <!--<div class="sk-child sk-bounce1 bg-gray-800"></div>-->
+                        <!--<div class="sk-child sk-bounce2 bg-gray-800"></div>-->
+                        <!--<div class="sk-child sk-bounce3 bg-gray-800"></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="media" v-if="!LOADING_USER">
+                    <img :src="USER.avatar" alt="">
                     <div class="media-body">
-                        <h6>{{ user.username }}</h6>
-                        <p>Last seen: {{ user.last_seen }}</p>
+                        <h6>{{ USER.username }}</h6>
+                        <p>Last seen: {{ USER.last_seen }}</p>
                     </div><!-- media-body -->
                 </div><!-- media -->
                 <div class="message-option">
@@ -21,8 +27,21 @@
                 </div>
             </div><!-- message-header -->
             <div class="message-body ps ps--theme_default" ref="messagesBox">
+                <div class="d-flex ht-300 pos-relative align-items-center" v-if="LOADING_MESSAGES">
+                    <div class="sk-cube-grid">
+                        <div class="sk-cube sk-cube1"></div>
+                        <div class="sk-cube sk-cube2"></div>
+                        <div class="sk-cube sk-cube3"></div>
+                        <div class="sk-cube sk-cube4"></div>
+                        <div class="sk-cube sk-cube5"></div>
+                        <div class="sk-cube sk-cube6"></div>
+                        <div class="sk-cube sk-cube7"></div>
+                        <div class="sk-cube sk-cube8"></div>
+                        <div class="sk-cube sk-cube9"></div>
+                    </div>
+                </div>
                 <div class="media-list">
-                    <div class="media" v-for="message in conversationMessages">
+                    <div class="media" v-for="message in MESSAGES">
                         <img :src="message.avatar" :alt="message.id" v-if="!message.mine">
                         <div class="media-body" v-bind:class="{ reverse : message.mine }">
                             <div class="msg">
@@ -60,6 +79,9 @@
 </template>
 
 <script>
+    import {mapGetters} from 'vuex'
+    import _ from 'lodash'
+
     let webSocket = WS.connect(_WS_URI)
     let session
 
@@ -78,16 +100,11 @@
             conversation_id: {
                 required: false,
                 type: Number
-            },
-            messages: {
-                required: false,
-                type: Array
             }
         },
         data() {
             return {
                 messageInput: '',
-                conversationMessages: []
             }
         },
         watch: {
@@ -123,11 +140,19 @@
             }
         },
         computed: {
+            ...mapGetters([
+                'MESSAGES',
+                'LOADING_MESSAGES',
+                'USER',
+                'LOADING_USER'
+            ]),
             isUserEmpty() {
-                return Object.keys(this.user).length === 0
+                return _.isEmpty(this.USER)
             }
         },
         mounted() {
+            this.$store.dispatch('GET_LATEST_MESSAGES', this.$route.params.id)
+            this.$store.dispatch('GET_USER', this.$route.params.id)
             this.conversationMessages = this.messages
             webSocket.on('socket/connect', (new_session) => {
                 session = new_session
@@ -153,14 +178,12 @@
                 notification.alert(error.reason + ' ' + error.code)
             })
         },
-        updated : function () {
-            this.$nextTick(() =>
-            {
+        updated: function () {
+            this.$nextTick(() => {
                 // TODO: scroll the last message into view
                 let el = this.$refs.messagesBox
                 el.scrollTop = el.scrollHeight
             })
         }
-
     }
 </script>
