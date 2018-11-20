@@ -155,6 +155,7 @@
             }
         },
         mounted() {
+            this.$store.dispatch('MARK_AS_READ', this.$route.params.id)
             this.$store.dispatch('GET_LATEST_MESSAGES', this.$route.params.id)
             this.$store.dispatch('GET_USER', this.$route.params.userId)
             this.$store.dispatch('GET_CURRENT_USER')

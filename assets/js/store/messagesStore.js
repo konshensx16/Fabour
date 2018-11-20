@@ -1,4 +1,5 @@
 import axios from 'axios'
+import _ from 'lodash'
 import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
 
 const routes = require('../routes.json');
@@ -45,6 +46,14 @@ export default  {
         },
         NEW_MESSAGE: (state, payload) => {
             state.messages.push(payload)
+        },
+        SET_CONVERSATION_TO_READ: (state, payload) => {
+            // NOTE: unread is the 'count'
+            // NOTE: payload will be the conv_id
+            let indexOf = _.findIndex(state.conversations, (o) => {
+                return o.id == payload
+            })
+            state.conversations[indexOf].count = 0
         }
     },
     actions: {
@@ -65,6 +74,9 @@ export default  {
         },
         ADD_MESSAGE: (context, payload) => {
             context.commit('NEW_MESSAGE', payload)
+        },
+        MARK_AS_READ: (context, payload) => {
+            context.commit('SET_CONVERSATION_TO_READ', payload)
         }
     }
 }

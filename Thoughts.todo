@@ -953,6 +953,7 @@ VUE & VUEX NOTES:
   ✔ The websocket isn't connecting on the MessagesRight.vue @done (18-11-20 00:32)
   ✔ I need access to the current logged in user inside the right component @done (18-11-20 01:08)
     ✔ Create an end-point to fetch the current logged in user! @done (18-11-20 01:08)
+  ☐ When clicking a conversation that has unread messages, remove the unread counter after entering the conversation
 
 
 COMMAND GENERATE ROUTES.JSON: 
