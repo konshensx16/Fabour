@@ -15,7 +15,8 @@ export default  {
         conversations: [],
         messages: [],
         loadingConversations: true,
-        loadingMessages: true
+        loadingMessages: true,
+        offset: 0
     },
     getters: {
         CONVERSATIONS: state => {
@@ -67,8 +68,21 @@ export default  {
             if (conversation.count >= 0 && conversation.count < 10 && payload.inc) {
                 conversation.count++
             }
+        },
+        PREPEND_MESSAGES: (state, payload) => {
+            state.messages = [...payload, ...state.messages]
+        },
+        INC_CONVERSATION_OFFSET: (state, payload) => {
+            // TODO: get the conversation index
+            let indexOf = _.findIndex(state.conversations, (o) => {
+                return o.id === payload.id
+            })
+            // TODO: increment the offset for that conversation by 20
+            state.conversations[indexOf].offset += 20
+            console.log(state.conversations[indexOf].offset)
         }
-    },
+    }
+    ,
     actions: {
         GET_CONVERSATIONS: async (context, payload) => {
 
@@ -93,6 +107,18 @@ export default  {
         },
         UPDATE_CONVERSATION_LATEST_MESSAGE: (context, payload) => {
             context.commit('SET_MESSAGE_AS_LAST', payload)
+        },
+        GET_PREVIOUS_MESSAGES: async (context, payload) => {
+            // TODO: get the index of the conversation
+            let indexOf = _.findIndex(context.state.conversations, (o) => {
+                return o.id === payload.id
+            })
+            // TODO: make an APi call to get the previous messages
+            let url = Routing.generate('api.messages.previous', {id: payload.id, offset: context.state.conversations[indexOf].offset})
+
+            let {data} = await axiosInstance.get(url)
+            context.commit('PREPEND_MESSAGES', data[0])
+            context.commit('INC_CONVERSATION_OFFSET', {id: payload.id})
         }
     }
 }

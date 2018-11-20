@@ -173,4 +173,36 @@ class ConversationRepository extends ServiceEntityRepository
 
         return $statement->fetchAll();
     }
+
+    /**
+     * Returns a list of 20 messages for a given conversation using an offset
+     * @param int $conversation_id
+     * @param int $offset
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function findPreviousMessageByConversationIdWithOffset(int $conversation_id, int $offset)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        $sqlQuery = '
+            SELECT m.*, sender.username as senderUsername, sender.avatar as senderAvatar, recipient.username as recipientUsername, recipient.avatar as recipientAvatar
+            FROM message m
+            INNER JOIN user sender
+            ON sender.id = m.sender_id
+            INNER JOIN user recipient
+            ON recipient.id = m.recipient_id
+            WHERE m.conversation_id = :conversation_id
+            ORDER BY id DESC
+            LIMIT 20
+            OFFSET '.$offset.'
+        ';
+
+        $statement = $connection->prepare($sqlQuery);
+        $statement->execute([
+            ':conversation_id'  => $conversation_id,
+        ]);
+
+        return $statement->fetchAll();
+    }
 }

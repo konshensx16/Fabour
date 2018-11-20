@@ -19,14 +19,14 @@
                 </div><!-- media -->
                 <div class="message-option">
                     <div class="d-none d-sm-flex">
-                        <a href=""><i class="icon ion-ios-gear-outline"></i></a>
+                        <a href=""><i v-on:click="scrollDown" class="icon ion-ios-gear-outline"></i></a>
                     </div>
                     <div class="d-sm-none">
                         <a href=""><i class="icon ion-more"></i></a>
                     </div>
                 </div>
             </div><!-- message-header -->
-            <div class="message-body ps ps--theme_default" ref="messagesBox">
+            <div class="message-body ps ps--theme_default" ref="messagesBox" v-on:scroll="onScroll">
                 <div class="d-flex ht-300 pos-relative align-items-center" v-if="LOADING_MESSAGES">
                     <div class="sk-cube-grid">
                         <div class="sk-cube sk-cube1"></div>
@@ -106,6 +106,24 @@
             }
         },
         methods: {
+            async loadMessages() {
+                let response = await this.$store.dispatch('GET_LATEST_MESSAGES', this.$route.params.id)
+                this.scrollDown()
+            },
+            async onScroll(e) {
+                if (e.target.scrollTop === 0) {
+                    let initialHeight = e.target.scrollHeight
+                    await this.$store.dispatch('GET_PREVIOUS_MESSAGES', {id: this.$route.params.id})
+                    this.$nextTick(() => {
+                        this.$refs.messagesBox.scrollTop = e.target.scrollHeight - initialHeight
+                    })
+                }
+            },
+            scrollDown() {
+                this.$nextTick(() => {
+                    this.$refs.messagesBox.scrollTop = this.$refs.messagesBox.scrollHeight
+                })
+            },
             publishMessage() {
                 // TODO: don't allow empty messages
                 session.publish(`message/${this.$route.params.id}`, {
@@ -120,7 +138,6 @@
                     message: this.messageInput,
                     // the inc is by default true in the server side
                 })
-                debugger
                 let messageObj = {
                     'content': this.messageInput, // check the messageTopic where $event['message'], that's why im not getting an array in here
                     'avatar': this.CURRENT_USER.avatar,
@@ -130,12 +147,9 @@
                 this.$store.dispatch('UPDATE_CONVERSATION_LATEST_MESSAGE', {
                     message: this.messageInput,
                     id: this.$route.params.id,
-                    inc : false
+                    inc: false
                 })
-
-                // TODO: scroll the last message into view
-                let el = this.$refs.messagesBox
-                el.scrollTop = el.scrollHeight
+                this.scrollDown()
                 // clear the input
                 this.messageInput = ''
             }
@@ -156,8 +170,8 @@
             }
         },
         mounted() {
+            this.loadMessages()
             this.$store.dispatch('MARK_AS_READ', this.$route.params.id)
-            this.$store.dispatch('GET_LATEST_MESSAGES', this.$route.params.id)
             this.$store.dispatch('GET_USER', this.$route.params.userId)
             this.$store.dispatch('GET_CURRENT_USER')
             if (session) {
@@ -167,20 +181,10 @@
                         'avatar': payload.avatar,
                         'mine': false
                     }
-                    // debugger
                     this.$store.dispatch('ADD_MESSAGE', messageObj)
-                    // TODO: scroll the last message into view
-                    let el = this.$refs.messagesBox
-                    el.scrollTop = el.scrollHeight
+                    // scroll the message to the view
                 })
             }
-        },
-        updated: function () {
-            this.$nextTick(() => {
-                // scroll the last message into view
-                let el = this.$refs.messagesBox
-                el.scrollTop = el.scrollHeight
-            })
         }
     }
 </script>

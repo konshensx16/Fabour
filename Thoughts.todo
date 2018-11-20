@@ -886,14 +886,34 @@ Messaging:
         ✔ @low When couting the unread messages it better to only count the ones the other user sent and not include mine, other wise im gonna get the same value as him even though im the one who sent those messages @done (18-11-18 12:34)
       ✔ Remove all the messages that has an ID > 100 to make the work faster @done (18-11-17 23:42)
 
-    CHNAGES FOR THE MESSING SYSTEM:
+    CHANGES FOR THE MESSING SYSTEM:
       The conversation should be loaded via an ajax request, because loading it each time is painful and slow
-      ☐ Include Vuex to save the state of conversations in a store
+      ✔ Include Vuex to save the state of conversations in a store @done (18-11-20 19:53)
       ✔ Right now just making the request when the Left component loads @done (18-11-18 14:27)
-
-      ☐ Load the right side messages using the same as before, axio
-      ☐ @critical the mark as read is taking a lot of time to execute
-
+      ✔ Load the right side messages using the same as before, axio @done (18-11-20 19:53)
+      ✔ @critical the mark as read is taking a lot of time to execute @done (18-11-20 19:53)
+      MORE TODOS AT THE BOTTON OF THE FILE
+    LOADING PREVIOUS CONVERSATIONS WHEN SCROLLING UP:
+      FRONT-END:
+        ✔ Add a scroll event to the window @done (18-11-20 21:57)
+          when scrolling to the top, dispatch the action and get some old messages
+        ✔ The window shouldn't scroll and should stay in the same spot @done (18-11-21 00:31)
+          The problem is whenever the messages list updates, the window has to scroll down, i need to change this
+          This a fucking pain in the ass because vue is behaving strangely and the computer too
+          ✘ What in gods name is this shit, sometimes it works and sometimes it doesn't, try refreshing to see this behaviour @cancelled (18-11-21 00:16)
+          The window isn't scrolling anymore thanks to some math i stole from sombody
+        ✔ Display a loading indicator @done (18-11-21 00:57)
+        ✔ Make the offset dynamic somehow, and send it in the Url when making api call @done (18-11-21 00:57)
+          Each conversation should have an offset, the offset will only be incremented when we ask for previous messages
+          The offset by default will fetched from the server along with other conversations and will default to 20
+        ✔ Make the conversation_id dynamic @done (18-11-21 00:57)
+        ☐ When switching between conversations the offset will still be set to whatever previous value there was, what i need to do is instead of getting the conversations each time, just get them once
+          Another solution would be instead of using an offset, i can just send the id of the first message to the list and use that id to get the messages prior to that one
+      BACK-END:
+        ✔ Load the previous messages of the conversation (create messaging api) @done (18-11-20 20:16)
+          As of now the function should return the previous 20 messages, but i need to send some sort of parameter to get me the result each time
+          ✘ Change the existing function to take an offset so i can re-use the same function and not create a new one @cancelled (18-11-20 20:01)
+          ✔ Actually i should create a new function because the current functions name is quite specific to the use-case, and wouldn't matches the new functionality @done (18-11-20 20:16)
 BUGS:    
     ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
     ✔ In the post.display, when the logged in user is the publisher of the post don't display a add to friends button @done (10/21/2018, 2:24:32 AM)
@@ -980,6 +1000,7 @@ VUE & VUEX NOTES:
           ✔ Remove all debugging code or replace it with console log it's annoying as fuck @done (18-11-20 14:13)
           ☐ When viewing the conversation there's no need to inc the value, by edfault the user is looking at so it's not a "new" message
           ☐ Might want to play a sound for new messages 
+          ☐ Create a nice hello message when no conversation is selected, similar to whatsapp
 
 
 COMMAND GENERATE ROUTES.JSON: 

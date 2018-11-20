@@ -135,6 +135,7 @@ class MessagingController extends AbstractController
                     'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
                     'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : '',
                     'count' => $count,
+                    'offset' => 20
                 ];
             }
 
