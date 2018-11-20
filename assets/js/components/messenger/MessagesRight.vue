@@ -65,7 +65,8 @@
                                v-model="messageInput"
                                ref="message"
                                v-on:keyup.enter="publishMessage"
-                               autofocus>
+                               autofocus
+                               v-bind:disabled="isConnected">
                     </div><!-- col-8 -->
                     <div class="col-3 col-sm-4 col-xl-3 tx-right">
                         <div class="d-none d-sm-block">
@@ -85,6 +86,20 @@
     let webSocket = WS.connect(_WS_URI)
     let session
 
+    // NOTE: this was in mounted but ti didn't worked after adding the router and everything, so it's here now
+    webSocket.on('socket/connect', (new_session) => {
+        console.log('session connected')
+        session = new_session
+    })
+
+    webSocket.on('socket/disconnect', (error) => {
+        let notification = new Notyf({
+            delay: 5000
+        })
+        console.log(error.reason + ' ' + error.code)
+        notification.alert(error.reason + ' ' + error.code)
+    })
+
     export default {
         name: 'messages-right',
         data() {
@@ -95,18 +110,23 @@
         methods: {
             publishMessage() {
                 // TODO: don't allow empty messages
-                session.publish(`message/${this.conversation_id}`, {
+                session.publish(`message/${this.$route.params.id}`, {
                     'message': this.messageInput,
-                    'recipient': this.user.username,
-                    'sender': this.currentUser.username,
-                    'avatar': this.currentUser.avatar, // this is wrong, my avatar should be there and not the recipient
+                    'recipient': this.USER.username,
+                    'sender': this.CURRENT_USER.username,
+                    'avatar': this.CURRENT_USER.avatar, // this is wrong, my avatar should be there and not the recipient
                 })
-                // this is mine message, whioch means it should have the currentUser's avatar
-                this.messages.push({
+                this.$store.dispatch('ADD_MESSAGE', {
                     'content': this.messageInput, // check the messageTopic where $event['message'], that's why im not getting an array in here
-                    'avatar': this.currentUser.avatar,
+                    'avatar': this.CURRENT_USER.avatar,
                     'mine': true
                 })
+                // this is mine message, which means it should have the currentUser's avatar
+                // this.messages.push({
+                //     'content': this.messageInput, // check the messageTopic where $event['message'], that's why im not getting an array in here
+                //     'avatar': this.CURRENT_USER.avatar,
+                //     'mine': true
+                // })
 
                 // TODO: scroll the last message into view
                 let el = this.$refs.messagesBox
@@ -124,39 +144,32 @@
                 'MESSAGES',
                 'LOADING_MESSAGES',
                 'USER',
-                'LOADING_USER'
+                'LOADING_USER',
+                'CURRENT_USER'
             ]),
             isUserEmpty() {
                 return _.isEmpty(this.USER)
+            },
+            isConnected() {
+                return this.session
             }
         },
         mounted() {
             this.$store.dispatch('GET_LATEST_MESSAGES', this.$route.params.id)
             this.$store.dispatch('GET_USER', this.$route.params.userId)
-            this.conversationMessages = this.messages
-            webSocket.on('socket/connect', (new_session) => {
-                session = new_session
-                session.subscribe(`message/${this.conversation_id}`, (uri, payload) => {
-                    // TODO: push the new messages
-                    this.messages.push({
+            this.$store.dispatch('GET_CURRENT_USER')
+            if (session) {
+                session.subscribe(`message/${this.$route.params.id}`, (uri, payload) => {
+                    this.$store.dispatch('ADD_MESSAGE', {
                         'content': payload.msg, // check the messageTopic where $event['message'], that's why im not getting an array in here
                         'avatar': payload.avatar,
                         'mine': false
                     })
-
                     // TODO: scroll the last message into view
                     let el = this.$refs.messagesBox
                     el.scrollTop = el.scrollHeight
                 })
-            })
-
-            webSocket.on('socket/disconnect', (error) => {
-                let notification = new Notyf({
-                    delay: 5000
-                })
-                console.log(error.reason + ' ' + error.code)
-                notification.alert(error.reason + ' ' + error.code)
-            })
+            }
         },
         updated: function () {
             this.$nextTick(() => {

@@ -42,6 +42,9 @@ export default  {
         },
         SET_LOADING_MESSAGES: (state, payload) => {
             state.loadingMessages = payload
+        },
+        NEW_MESSAGE: (state, payload) => {
+            state.messages.push(payload)
         }
     },
     actions: {
@@ -59,6 +62,9 @@ export default  {
             let { data } = await axiosInstance.get(url)
             context.commit('SET_MESSAGES', data[0])
             context.commit('SET_LOADING_MESSAGES', false)
+        },
+        ADD_MESSAGE: (context, payload) => {
+            context.commit('NEW_MESSAGE', payload)
         }
     }
 }

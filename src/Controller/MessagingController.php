@@ -51,10 +51,7 @@ class MessagingController extends AbstractController
      */
     public function index()
     {
-        return $this->render('messaging/conversation.html.twig', [
-            'conversation_id' => null, // TODO: change this and the line below to something better
-            'user' => null
-        ]);
+        return $this->render('messaging/conversation.html.twig');
     }
 
     /**

@@ -949,7 +949,10 @@ VUE & VUEX NOTES:
     ✔ Load the user information @done (18-11-19 21:51)
     ✔ I need a way to access the other user id from the conversation @done (18-11-19 22:33)
       Change the url from "/con/conv_id" to "/con/:conv_id/:userId" which allows me to get the other guy's id to fetch the required info 
-  ☐ When accessing the url "/con/id/id" i should just redirect to the messages index, other wise if the users refreshes the page it will just break with a 404
+  ✔ When accessing the url "/con/id/id" i should just redirect to the messages index, other wise if the users refreshes the page it will just break with a 404 @done (18-11-20 00:32)
+  ✔ The websocket isn't connecting on the MessagesRight.vue @done (18-11-20 00:32)
+  ✔ I need access to the current logged in user inside the right component @done (18-11-20 01:08)
+    ✔ Create an end-point to fetch the current logged in user! @done (18-11-20 01:08)
 
 
 COMMAND GENERATE ROUTES.JSON: 

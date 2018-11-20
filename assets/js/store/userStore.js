@@ -1,6 +1,8 @@
 import Routing from "../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min";
-import axios from "axios/index";
-const routes = require('../routes.json');
+import axios from "axios/index"
+import _ from 'lodash'
+const routes = require('../routes.json')
+
 
 Routing.setRoutingData(routes)
 
@@ -11,7 +13,8 @@ const axiosInstance = axios.create({
 export default {
     state: {
         user: {},
-        loadingUser: true
+        loadingUser: true,
+        currentUser: {}
     },
     getters: {
         USER: state => {
@@ -19,6 +22,9 @@ export default {
         },
         LOADING_USER: state => {
             return state.loadingUser
+        },
+        CURRENT_USER: state => {
+            return state.currentUser
         }
     },
     actions: {
@@ -27,6 +33,14 @@ export default {
             let { data } = await axiosInstance.get(url)
             context.commit('SET_USER', data)
             context.commit('SET_LOADING_USER', false)
+        },
+        GET_CURRENT_USER: async (context, payload) => {
+            if (_.isEmpty(context.state.currentUser))
+            {
+                let url = Routing.generate('api.user.currentUser') // will get admin always, must change
+                let { data } = await axiosInstance.get(url)
+                context.commit('SET_CURRENT_USER', data)
+            }
         }
     },
     mutations: {
@@ -35,6 +49,9 @@ export default {
         },
         SET_LOADING_USER: (state, payload) => {
             state.loadingUser = payload
+        },
+        SET_CURRENT_USER: (state, payload) => {
+            state.currentUser = payload.user
         }
     }
 }

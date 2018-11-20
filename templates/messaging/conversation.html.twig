@@ -4,14 +4,7 @@
 
 {% block body %}
     <div class="container-messages" id="messenger" data-base="{{ path('messages.messaging') }}">
-        {% if conversation_id and user %}
-            <Messenger
-                    :current-user='{{ currentUser|json_encode }}'
-                    :user='{{ user|json_encode }}'
-                    :conversation_id='{{ conversation_id|json_encode }}'/>
-        {% else %}
-            <Messenger/>
-        {% endif %}
+        <Messenger/>
     </div>
 {% endblock %}
 
