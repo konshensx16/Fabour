@@ -58,6 +58,22 @@
     import Routing from '../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
 
     const routes = require('../../routes.json');
+    let webSocket = WS.connect(_WS_URI)
+    let session
+
+    // NOTE: this was in mounted but ti didn't worked after adding the router and everything, so it's here now
+    webSocket.on('socket/connect', (new_session) => {
+        session = new_session
+    })
+
+
+    webSocket.on('socket/disconnect', (error) => {
+        let notification = new Notyf({
+            delay: 5000
+        })
+        notification.alert(error.reason + ' ' + error.code)
+    })
+
 
     Routing.setRoutingData(routes)
 
@@ -75,7 +91,8 @@
             // mix the getters into computed with object spread operator
             ...mapGetters([
                 'CONVERSATIONS',
-                'LOADING_CONVERSATIONS'
+                'LOADING_CONVERSATIONS',
+                'CURRENT_USER'
             ])
         },
         methods: {
@@ -84,13 +101,18 @@
             },
             toggle() {
                 this.isOpen = !this.isOpen
-            },
-            generateUrl(parameter) {
-                return Routing.generate('messages.conversation', {'id': parameter})
             }
         },
         mounted() {
             this.$store.dispatch('GET_CONVERSATIONS')
+            let promise = this.$store.dispatch('GET_CURRENT_USER')
+            promise.then(() => {
+                session.subscribe(`conversation/${this.CURRENT_USER.username}`, (uri, payload) => {
+                    this.$store.dispatch('UPDATE_CONVERSATION_LATEST_MESSAGE', payload)
+                })
+            })
+        },
+        created() {
         }
     }
 </script>

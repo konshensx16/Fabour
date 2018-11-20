@@ -30,15 +30,15 @@ class ConversationTopic implements TopicInterface {
     {
         // store the newly connected client
         $this->clients->attach($connection);
-        $currentUser = $this->clientManipulator->getClient($connection);
+//        $currentUser = $this->clientManipulator->getClient($connection);
         // send the message to all subscribers of this topic
-        $topic->broadcast([
-            'type' => 'user_joined',
-            // TODO: include the username
-            'username' => $currentUser->getUsername(), // this will failed when using localhost instead of 127.0.0.1
-            'msg' => $connection->resourceId . " has joined " . $topic->getId(),
-            'connectedClients' => $topic->count()
-        ]);
+//        $topic->broadcast([
+//            'type' => 'user_joined',
+//            // TODO: include the username
+//            'username' => $currentUser->getUsername(), // this will failed when using localhost instead of 127.0.0.1
+//            'msg' => $connection->resourceId . " has joined " . $topic->getId(),
+//            'connectedClients' => $topic->count()
+//        ]);
     }
 
     // recieve a disconnect
@@ -47,31 +47,22 @@ class ConversationTopic implements TopicInterface {
         // remove the connection when not subscribed anymore
         // otherwise the counter will always go up
         $this->clients->detach($connection);
-        $topic->broadcast([
-            'msg' => $connection->resourceId . " has left " . $topic->getId(),
-            'connectedClients' => $topic->count()
-        ]);
+//        $topic->broadcast([
+//            'msg' => $connection->resourceId . " has left " . $topic->getId(),
+//            'connectedClients' => $topic->count()
+//        ]);
     }
 
     // receive publish request for this topic
     // this looks like the place where to send to count of connected clients
     public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible)
     {
-        $currentUser = $this->clientManipulator->getClient($connection);
-
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
-
-        $serializer = new Serializer($normalizers, $encoders);
-
-        $serializedData = $serializer->serialize($request, 'json');
-
-        $topic->broadcast([
-            'type' => 'message', // this could be user_joined or just a message
-            'msg' => $event,
-            'username' => $currentUser->getUsername(),
-            'connectedClients' => $topic->count()
-        ]);
+        // TODO: need to check if the user connected before moving further
+        $username = $request->getAttributes()->get('username');
+        $user = $this->clientManipulator->findByUsername($topic, $username);
+        if ($user) {
+            $topic->broadcast(array_merge($event, ['inc' => true]), [], [$user['connection']->WAMP->sessionId]);
+        }
     }
 
     // like RPC (Remote Procedure Call) will use to prefix the channel

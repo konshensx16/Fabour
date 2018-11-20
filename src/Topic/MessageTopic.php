@@ -50,7 +50,7 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
 //        );
     }
 
-    // recieve a disconnect
+    // receive a disconnect
     public function onUnsubscribe(ConnectionInterface $connection, Topic $topic, WampRequest $request)
     {
         // remove the connection when not subscribed anymore

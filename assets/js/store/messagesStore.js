@@ -51,9 +51,22 @@ export default  {
             // NOTE: unread is the 'count'
             // NOTE: payload will be the conv_id
             let indexOf = _.findIndex(state.conversations, (o) => {
-                return o.id == payload
+                return o.id === payload
             })
             state.conversations[indexOf].count = 0
+        },
+        SET_MESSAGE_AS_LAST: (state, payload) => {
+            // NOTE: conversation.message IS THE latestMessage in the list, which i should replace
+            let indexOf = _.findIndex(state.conversations, (o) => {
+                return o.id === payload.id
+            })
+            let conversation = state.conversations[indexOf]
+            conversation.message = payload.message
+            conversation.date = 'Just now'
+            // TODO: inc the count of messages
+            if (conversation.count >= 0 && conversation.count < 10 && payload.inc) {
+                conversation.count++
+            }
         }
     },
     actions: {
@@ -77,6 +90,9 @@ export default  {
         },
         MARK_AS_READ: (context, payload) => {
             context.commit('SET_CONVERSATION_TO_READ', payload)
+        },
+        UPDATE_CONVERSATION_LATEST_MESSAGE: (context, payload) => {
+            context.commit('SET_MESSAGE_AS_LAST', payload)
         }
     }
 }

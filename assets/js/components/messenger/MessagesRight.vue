@@ -4,11 +4,11 @@
             <!--<h2 class="text-center mg-t-20" v-if="isUserEmpty">Welcome to the Messages area :)</h2>-->
             <div class="message-header" v-if="!isUserEmpty">
                 <!--<div class="d-flex ht-300 pos-relative align-items-center" v-if="LOADING_USER">-->
-                    <!--<div class="sk-three-bounce">-->
-                        <!--<div class="sk-child sk-bounce1 bg-gray-800"></div>-->
-                        <!--<div class="sk-child sk-bounce2 bg-gray-800"></div>-->
-                        <!--<div class="sk-child sk-bounce3 bg-gray-800"></div>-->
-                    <!--</div>-->
+                <!--<div class="sk-three-bounce">-->
+                <!--<div class="sk-child sk-bounce1 bg-gray-800"></div>-->
+                <!--<div class="sk-child sk-bounce2 bg-gray-800"></div>-->
+                <!--<div class="sk-child sk-bounce3 bg-gray-800"></div>-->
+                <!--</div>-->
                 <!--</div>-->
                 <div class="media" v-if="!LOADING_USER">
                     <img :src="USER.avatar" alt="">
@@ -88,7 +88,6 @@
 
     // NOTE: this was in mounted but ti didn't worked after adding the router and everything, so it's here now
     webSocket.on('socket/connect', (new_session) => {
-        console.log('session connected')
         session = new_session
     })
 
@@ -96,7 +95,6 @@
         let notification = new Notyf({
             delay: 5000
         })
-        console.log(error.reason + ' ' + error.code)
         notification.alert(error.reason + ' ' + error.code)
     })
 
@@ -115,28 +113,31 @@
                     'recipient': this.USER.username,
                     'sender': this.CURRENT_USER.username,
                     'avatar': this.CURRENT_USER.avatar, // this is wrong, my avatar should be there and not the recipient
+                    'conversation_id': this.$route.params.id
                 })
-                this.$store.dispatch('ADD_MESSAGE', {
+                session.publish(`conversation/${this.USER.username}`, {
+                    id: this.$route.params.id,
+                    message: this.messageInput,
+                    // the inc is by default true in the server side
+                })
+                debugger
+                let messageObj = {
                     'content': this.messageInput, // check the messageTopic where $event['message'], that's why im not getting an array in here
                     'avatar': this.CURRENT_USER.avatar,
                     'mine': true
+                }
+                this.$store.dispatch('ADD_MESSAGE', messageObj)
+                this.$store.dispatch('UPDATE_CONVERSATION_LATEST_MESSAGE', {
+                    message: this.messageInput,
+                    id: this.$route.params.id,
+                    inc : false
                 })
-                // this is mine message, which means it should have the currentUser's avatar
-                // this.messages.push({
-                //     'content': this.messageInput, // check the messageTopic where $event['message'], that's why im not getting an array in here
-                //     'avatar': this.CURRENT_USER.avatar,
-                //     'mine': true
-                // })
 
                 // TODO: scroll the last message into view
                 let el = this.$refs.messagesBox
                 el.scrollTop = el.scrollHeight
-
-                // TODO: after publishing the message add it to the list of messages
+                // clear the input
                 this.messageInput = ''
-                this.$nextTick(() => {
-                    // console.log(this.$refs.message.$el)
-                })
             }
         },
         computed: {
@@ -161,11 +162,13 @@
             this.$store.dispatch('GET_CURRENT_USER')
             if (session) {
                 session.subscribe(`message/${this.$route.params.id}`, (uri, payload) => {
-                    this.$store.dispatch('ADD_MESSAGE', {
+                    let messageObj = {
                         'content': payload.msg, // check the messageTopic where $event['message'], that's why im not getting an array in here
                         'avatar': payload.avatar,
                         'mine': false
-                    })
+                    }
+                    // debugger
+                    this.$store.dispatch('ADD_MESSAGE', messageObj)
                     // TODO: scroll the last message into view
                     let el = this.$refs.messagesBox
                     el.scrollTop = el.scrollHeight
@@ -174,7 +177,7 @@
         },
         updated: function () {
             this.$nextTick(() => {
-                // TODO: scroll the last message into view
+                // scroll the last message into view
                 let el = this.$refs.messagesBox
                 el.scrollTop = el.scrollHeight
             })

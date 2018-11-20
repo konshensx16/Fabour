@@ -953,7 +953,33 @@ VUE & VUEX NOTES:
   ✔ The websocket isn't connecting on the MessagesRight.vue @done (18-11-20 00:32)
   ✔ I need access to the current logged in user inside the right component @done (18-11-20 01:08)
     ✔ Create an end-point to fetch the current logged in user! @done (18-11-20 01:08)
-  ☐ When clicking a conversation that has unread messages, remove the unread counter after entering the conversation
+  ✔ When clicking a conversation that has unread messages, remove the unread counter after entering the conversation @done (18-11-20 01:21)
+  ✔ Check how many requests are beign made each time the user changes the conversation! @done (18-11-20 12:01)
+    ✔ NOTES: @done (18-11-20 12:01)
+      ✔ The current user is only loaded once, which is what i want @done (18-11-20 11:59)
+      ✔ The conversations is reloaded everytime, i guess this is how it's supposed to work in order to get the new messages @done (18-11-20 12:00)
+      ✔ The user information is being reloaded too, this is fine as of now because the last_seen will be updated each time which is the correct behavior @done (18-11-20 12:00)
+  ✔ Add whatever new message to the end of the conversation (replace the last message) @done (18-11-20 12:25)
+    NOTE: right now the message is only being added when viewing the conversation
+    I need to have some sort of a mechanism that allows me to add message and update counter, even when the conversation is not open
+    ✔ This is tested and working under the above conditions, you must have the conversation that is going to recive the message open, otherwise it's not gonna do anything @done (18-11-20 12:27)
+    ☐ I need to change this to whatever conversation is there to add the message to the list of the conversations.
+      Q: i need the conversation_id
+      A: maybe i can sent it in the payload and not get it from the route? 
+      NOOOO this is not going to work the message will never arrive because the're two different channels the users are in
+      ✔ I need to create a seperate channel for the conversations and all that, in which new messages will be added the counter will be updated along with the time, and also add any new conversations created by other users. @done (18-11-20 13:50)
+        ✔ Already have a conversationTopic and im not even sure what id does at the moment, im gonna remove it and see what happens @done (18-11-20 12:51)
+          Last time it was changed was 2 months ago, i guess was ony used as a test
+        ✔ Each conversation channel will belong to a user ? @done (18-11-20 13:50)
+          This means when another user publishes a message it should publish a message to this channel
+          Meaning each user wil subscribe to his own conversations channel and other users will publish to that users channel 
+          ✔ The code to this should be in the messagesLeft.vue component @done (18-11-20 13:50)
+            NOTE: the payload shound contain the conversation_id and the message
+          ✔ Increarse the counter of the channel for each new message @done (18-11-20 14:01)
+          ✔ The counter is being incremented for me too, it should only increment for the recipient @done (18-11-20 14:13)
+          ✔ Remove all debugging code or replace it with console log it's annoying as fuck @done (18-11-20 14:13)
+          ☐ When viewing the conversation there's no need to inc the value, by edfault the user is looking at so it's not a "new" message
+          ☐ Might want to play a sound for new messages 
 
 
 COMMAND GENERATE ROUTES.JSON: 

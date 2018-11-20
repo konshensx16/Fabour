@@ -19,9 +19,12 @@ friendship_topic:
         callback: 'friendship.topic' #related to the getName of the topic
 
 conversation_topic:
-    channel: conversation/channel
+    channel: conversation/{username}
     handler:
         callback: 'conversation.topic'
+    requirements:
+        username:
+            pattern: '\w+'
 
 publications_topic:
     channel: publications/channel
