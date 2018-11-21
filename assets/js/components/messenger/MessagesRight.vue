@@ -100,12 +100,15 @@
         methods: {
             async onScroll(e) {
                 if (e.target.scrollTop === 0) {
-                    // TODO: this needs to stop somewhere
-                    let initialHeight = e.target.scrollHeight
-                    await this.$store.dispatch('GET_PREVIOUS_MESSAGES', {id: this.$route.params.id})
-                    this.$nextTick(() => {
-                        this.$el.querySelector('.message-body').scrollTop = e.target.scrollHeight - initialHeight
-                    })
+                    if (this.currentMessagesCount < this.totalMessages) {
+                        let initialHeight = e.target.scrollHeight
+                        await this.$store.dispatch('GET_PREVIOUS_MESSAGES', {id: this.$route.params.id})
+                        this.$nextTick(() => {
+                            this.$el.querySelector('.message-body').scrollTop = e.target.scrollHeight - initialHeight
+                        })
+                    } else {
+                        // TODO: remove the scrolling listener other wise it's gonna keep executing some random code
+                    }
                 }
             },
             scrollDown() {
@@ -165,6 +168,12 @@
             },
             isConnected() {
                 return this.session
+            },
+            totalMessages() {
+                return this.$store.getters.CONVERSATION(this.$route.params.id).total
+            },
+            currentMessagesCount() {
+                return this.$store.getters.MESSAGES(this.$route.params.id).length
             }
         },
         mounted() {
@@ -177,7 +186,8 @@
                     let messageObj = {
                         'content': payload.msg, // check the messageTopic where $event['message'], that's why im not getting an array in here
                         'avatar': payload.avatar,
-                        'mine': false
+                        'mine': false,
+                        'id' : this.$route.params.id
                     }
                     this.$store.dispatch('ADD_MESSAGE', messageObj)
                     // scroll the message to the view

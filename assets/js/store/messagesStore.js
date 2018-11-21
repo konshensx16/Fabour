@@ -43,6 +43,9 @@ export default {
         NEW_MESSAGE: (state, payload) => {
             state.conversations[payload.id].messages.push(payload)
         },
+        INC_TOTAL_MESSAGES_COUNT: (state, payload) => {
+            state.conversations[payload].total++
+        },
         SET_CONVERSATION_TO_READ: (state, payload) => {
             // NOTE: unread is the 'count'
             // NOTE: payload will be the conv_id
@@ -72,14 +75,19 @@ export default {
             context.commit('SET_CONVERSATIONS', data[0])
         },
         GET_MESSAGES: async (context, payload) => {
-            let url = Routing.generate('messages.latestMessages', {'conversation_id': payload})
-            let {data} = await axiosInstance.get(url)
-            //TODO: set the messages to the conversation and not the messages id
-            context.commit('SET_MESSAGES', {data: data[0], id: payload})
-            context.commit('SET_LOADING_MESSAGES', false)
+            // TODO: check if we already have messages then there's no need to make requests
+            if (!context.state.conversations[payload].messages.length) {
+                let url = Routing.generate('messages.latestMessages', {'conversation_id': payload})
+                let {data} = await axiosInstance.get(url)
+                //TODO: set the messages to the conversation and not the messages id
+                context.commit('SET_MESSAGES', {data: data[0], id: payload})
+                context.commit('SET_LOADING_MESSAGES', false)
+            }
         },
         ADD_MESSAGE: (context, payload) => {
+            debugger
             context.commit('NEW_MESSAGE', payload)
+            context.commit('INC_TOTAL_MESSAGES_COUNT', payload.id)
         },
         MARK_AS_READ: (context, payload) => {
             context.commit('SET_CONVERSATION_TO_READ', payload)
@@ -98,4 +106,4 @@ export default {
             context.commit('INC_CONVERSATION_OFFSET', {id: payload.id})
         }
     }
-}
+};

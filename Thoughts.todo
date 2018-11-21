@@ -913,9 +913,14 @@ Messaging:
             NOTE, maybe i should create a getter to get the enitre 'single' conversation
             i think it's working bu the order of operations is messed up that's why i dont see the result 
             ✔ One thing i can do to optimise this a little bit is to use the conversation id as the key for the array which means i can access the conversation by it's id which is fast: O(1) @done (18-11-21 14:36)
-        ☐ When loading the conversation messages don't allow extra requests because they're useless at this point
+        ✔ When loading the conversation messages don't allow extra requests because they're useless at this point @done (18-11-21 20:11)
           NOTE: i mean when switching conversations dont relolad them for nothing
-        ☐ When scrolling up i need a way to stop other wise the user will just continue to go up and break the system with an offset that doesn't exist
+        ✔ When scrolling up i need a way to stop other wise the user will just continue to go up and break the system with an offset that doesn't exist @done (18-11-21 20:27)
+          NOTE: i can use the total messages in a conversation and check if the current count is less than total count, if true then that means i can still get more messages, if not them that means i reached the end
+          ✔ Currently getting the count by just using the count() function, assuming this makes an extra query to the DB for each conversation, i have to change this @done (18-11-21 19:51)
+          ✔ When scrolling check if the count of current messages matches the total that i got @done (18-11-21 20:03)
+          ✔ When sending a new message increase the total on the conversation @done (18-11-21 20:27)
+            NOTE: i think this should be done in the ADD_MESSAEG in the store
         ✔ BUG: the conversation isn't scrolled down when opened @done (18-11-21 19:38)
       BACK-END:
         ✔ Load the previous messages of the conversation (create messaging api) @done (18-11-20 20:16)

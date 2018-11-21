@@ -119,7 +119,6 @@ class MessagingController extends AbstractController
             // this is limited to just 15 if not limit is provided after the user_id
             $conversations = $conversationRepository->findConversationsByUserId($currentUser->getId());
 
-
             $finalConversations = [];
             /** @var Conversation $item */
             foreach ($conversations as $item) {
@@ -135,6 +134,7 @@ class MessagingController extends AbstractController
                     'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
                     'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : '',
                     'count' => $count,
+                    'total' => $item->getMessages()->count(),// TODO: get the total of all messages
                     'offset' => 20,
                     'messages' => []
                 ];
