@@ -388,10 +388,13 @@ Users:
   ✔ Each user should had a created at date. @done (10/13/2018, 9:30:30 PM)
   ✔ Migrate fo the databse before creating the last_seen field @done (10/13/2018, 11:48:21 PM)
   ✔ Each user should have a last seen field @done (10/13/2018, 11:48:23 PM)
-    ☐ As of now i think this should be done after the user login directly (Might need to change later if effects performance of SECURITY)
+    ✔ As of now i think this should be done after the user login directly (Might need to change later if effects performance of SECURITY) @done (18-11-21 21:31)
       This will run only after the user logs in, what if the user has been using the app for 12 hours? last_seen will be 12 hours in this even thought he's still using it
       Using an authenticationSuccessHandler:
         https://stackoverflow.com/questions/15908856/do-something-just-after-symfony2-login-success-and-before-redirect/15910602
+      ✔ Create an event listener for that will listen for user activity and update the last_seen value @done (18-11-21 22:09)
+        ✔ Create the listener @done (18-11-21 22:09)
+        ✔ Set the current user last seen to the current time @done (18-11-21 22:09)
 
 Profile:
   ✔ Need to add profile views counter (how many peple viwed your profile) @done (10/14/2018, 10:45:34 AM)
