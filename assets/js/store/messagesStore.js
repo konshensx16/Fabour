@@ -10,11 +10,9 @@ const axiosInstance = axios.create({
     headers: {'X-Requested-With': 'XMLHttpRequest'}
 })
 
-export default  {
+export default {
     state: {
         conversations: [],
-        messages: [],
-        loadingConversations: true,
         loadingMessages: true,
         offset: 0
     },
@@ -22,46 +20,36 @@ export default  {
         CONVERSATIONS: state => {
             return state.conversations
         },
-        LOADING_CONVERSATIONS: state => {
-            return state.loadingConversations
-        },
-        MESSAGES: state => {
-            return state.messages
+        CONVERSATION: state => id => {
+            return state.conversations[id]
         },
         LOADING_MESSAGES: state => {
             return state.loadingMessages
+        },
+        MESSAGES: state => id => {
+            return state.conversations[id].messages || {}
         }
     },
     mutations: {
         SET_CONVERSATIONS: (state, payload) => {
             state.conversations = payload
         },
-        SET_LOADING_CONVERSATIONS: (state, payload) => {
-            state.loadingConversations = payload
-        },
         SET_MESSAGES: (state, payload) => {
-            state.messages = payload
+            state.conversations[payload.id].messages = payload.data
         },
         SET_LOADING_MESSAGES: (state, payload) => {
             state.loadingMessages = payload
         },
         NEW_MESSAGE: (state, payload) => {
-            state.messages.push(payload)
+            state.conversations[payload.id].messages.push(payload)
         },
         SET_CONVERSATION_TO_READ: (state, payload) => {
             // NOTE: unread is the 'count'
             // NOTE: payload will be the conv_id
-            let indexOf = _.findIndex(state.conversations, (o) => {
-                return o.id === payload
-            })
-            state.conversations[indexOf].count = 0
+            state.conversations[payload].count = 0
         },
         SET_MESSAGE_AS_LAST: (state, payload) => {
-            // NOTE: conversation.message IS THE latestMessage in the list, which i should replace
-            let indexOf = _.findIndex(state.conversations, (o) => {
-                return o.id === payload.id
-            })
-            let conversation = state.conversations[indexOf]
+            let conversation = state.conversations[payload.id]
             conversation.message = payload.message
             conversation.date = 'Just now'
             // TODO: inc the count of messages
@@ -70,33 +58,24 @@ export default  {
             }
         },
         PREPEND_MESSAGES: (state, payload) => {
-            state.messages = [...payload, ...state.messages]
+            state.conversations[payload.id].messages = [...payload.messages, ...state.conversations[payload.id].messages]
         },
         INC_CONVERSATION_OFFSET: (state, payload) => {
-            // TODO: get the conversation index
-            let indexOf = _.findIndex(state.conversations, (o) => {
-                return o.id === payload.id
-            })
-            // TODO: increment the offset for that conversation by 20
-            state.conversations[indexOf].offset += 20
-            console.log(state.conversations[indexOf].offset)
+            state.conversations[payload.id].offset += 20
         }
-    }
-    ,
+    },
     actions: {
         GET_CONVERSATIONS: async (context, payload) => {
-
             let url = Routing.generate('messages.conversations')
 
-            let { data } = await axiosInstance.get(url)
+            let {data} = await axiosInstance.get(url)
             context.commit('SET_CONVERSATIONS', data[0])
-            context.commit('SET_LOADING_CONVERSATIONS', false)
         },
-        GET_LATEST_MESSAGES: async (context, payload) => {
-            // TODO: generate the correct url (expose in the controller)
-            let url = Routing.generate('messages.latestMessages', {'conversation_id' : payload})
-            let { data } = await axiosInstance.get(url)
-            context.commit('SET_MESSAGES', data[0])
+        GET_MESSAGES: async (context, payload) => {
+            let url = Routing.generate('messages.latestMessages', {'conversation_id': payload})
+            let {data} = await axiosInstance.get(url)
+            //TODO: set the messages to the conversation and not the messages id
+            context.commit('SET_MESSAGES', {data: data[0], id: payload})
             context.commit('SET_LOADING_MESSAGES', false)
         },
         ADD_MESSAGE: (context, payload) => {
@@ -109,15 +88,13 @@ export default  {
             context.commit('SET_MESSAGE_AS_LAST', payload)
         },
         GET_PREVIOUS_MESSAGES: async (context, payload) => {
-            // TODO: get the index of the conversation
-            let indexOf = _.findIndex(context.state.conversations, (o) => {
-                return o.id === payload.id
+            let url = Routing.generate('api.messages.previous', {
+                id: payload.id,
+                offset: context.state.conversations[payload.id].offset
             })
-            // TODO: make an APi call to get the previous messages
-            let url = Routing.generate('api.messages.previous', {id: payload.id, offset: context.state.conversations[indexOf].offset})
 
             let {data} = await axiosInstance.get(url)
-            context.commit('PREPEND_MESSAGES', data[0])
+            context.commit('PREPEND_MESSAGES', {messages: data[0], id: payload.id})
             context.commit('INC_CONVERSATION_OFFSET', {id: payload.id})
         }
     }

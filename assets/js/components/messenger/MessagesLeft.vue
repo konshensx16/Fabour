@@ -6,7 +6,7 @@
         </div><!-- slim-pageheader -->
         <div class="messages-list ps ps--theme_default ps--active-y">
             <NewConversation v-if="isOpen"/>
-            <div class="d-flex ht-300 pos-relative align-items-center" v-if="LOADING_CONVERSATIONS">
+            <div class="d-flex ht-300 pos-relative align-items-center" v-if="loading">
                 <div class="sk-cube-grid">
                     <div class="sk-cube sk-cube1"></div>
                     <div class="sk-cube sk-cube2"></div>
@@ -91,7 +91,6 @@
             // mix the getters into computed with object spread operator
             ...mapGetters([
                 'CONVERSATIONS',
-                'LOADING_CONVERSATIONS',
                 'CURRENT_USER'
             ])
         },
@@ -104,7 +103,9 @@
             }
         },
         mounted() {
+            this.loading = true
             this.$store.dispatch('GET_CONVERSATIONS')
+            this.loading = false
             let promise = this.$store.dispatch('GET_CURRENT_USER')
             promise.then(() => {
                 session.subscribe(`conversation/${this.CURRENT_USER.username}`, (uri, payload) => {

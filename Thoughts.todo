@@ -907,8 +907,16 @@ Messaging:
           Each conversation should have an offset, the offset will only be incremented when we ask for previous messages
           The offset by default will fetched from the server along with other conversations and will default to 20
         ✔ Make the conversation_id dynamic @done (18-11-21 00:57)
-        ☐ When switching between conversations the offset will still be set to whatever previous value there was, what i need to do is instead of getting the conversations each time, just get them once
+        ✔ When switching between conversations the offset will still be set to whatever previous value there was, what i need to do is instead of getting the conversations each time, just get them once, and each conversation should store the messages i got @done (18-11-21 14:36)
           Another solution would be instead of using an offset, i can just send the id of the first message to the list and use that id to get the messages prior to that one
+          ✔ When fetching the messages instead of saving them to the messages array, store them in the conversation object @done (18-11-21 14:21)
+            NOTE, maybe i should create a getter to get the enitre 'single' conversation
+            i think it's working bu the order of operations is messed up that's why i dont see the result 
+            ✔ One thing i can do to optimise this a little bit is to use the conversation id as the key for the array which means i can access the conversation by it's id which is fast: O(1) @done (18-11-21 14:36)
+        ☐ When loading the conversation messages don't allow extra requests because they're useless at this point
+          NOTE: i mean when switching conversations dont relolad them for nothing
+        ☐ When scrolling up i need a way to stop other wise the user will just continue to go up and break the system with an offset that doesn't exist
+        ✔ BUG: the conversation isn't scrolled down when opened @done (18-11-21 19:38)
       BACK-END:
         ✔ Load the previous messages of the conversation (create messaging api) @done (18-11-20 20:16)
           As of now the function should return the previous 20 messages, but i need to send some sort of parameter to get me the result each time

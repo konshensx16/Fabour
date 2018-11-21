@@ -127,7 +127,7 @@ class MessagingController extends AbstractController
                 $lastMessage = $item->getMessages()->last();
                 $count = $conversationRepository->findUnreadMessagesCount($item->getId(), $currentUser->getId());
                 $otherUser = $this->getOtherUser($item, $currentUser);
-                $finalConversations[] = [
+                $finalConversations[$item->getId()] = [
                     'id' => $item->getId(),
                     'avatar' => $otherUser->getAvatar(),
                     'username' => $otherUser->getUsername(),
@@ -135,7 +135,8 @@ class MessagingController extends AbstractController
                     'message' => $lastMessage ? $lastMessage->getMessage() : 'Conversation is empty',
                     'date' => $lastMessage ? $this->twig_date->diff($this->environment, $lastMessage->getCreatedAt()) : '',
                     'count' => $count,
-                    'offset' => 20
+                    'offset' => 20,
+                    'messages' => []
                 ];
             }
 

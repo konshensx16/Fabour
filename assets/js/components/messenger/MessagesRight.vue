@@ -1,15 +1,7 @@
 <template>
     <div>
         <div class="messages-right d-none d-lg-block">
-            <!--<h2 class="text-center mg-t-20" v-if="isUserEmpty">Welcome to the Messages area :)</h2>-->
             <div class="message-header" v-if="!isUserEmpty">
-                <!--<div class="d-flex ht-300 pos-relative align-items-center" v-if="LOADING_USER">-->
-                <!--<div class="sk-three-bounce">-->
-                <!--<div class="sk-child sk-bounce1 bg-gray-800"></div>-->
-                <!--<div class="sk-child sk-bounce2 bg-gray-800"></div>-->
-                <!--<div class="sk-child sk-bounce3 bg-gray-800"></div>-->
-                <!--</div>-->
-                <!--</div>-->
                 <div class="media" v-if="!LOADING_USER">
                     <img :src="USER.avatar" alt="">
                     <div class="media-body">
@@ -19,7 +11,7 @@
                 </div><!-- media -->
                 <div class="message-option">
                     <div class="d-none d-sm-flex">
-                        <a href=""><i v-on:click="scrollDown" class="icon ion-ios-gear-outline"></i></a>
+                        <a href=""><i class="icon ion-ios-gear-outline"></i></a>
                     </div>
                     <div class="d-sm-none">
                         <a href=""><i class="icon ion-more"></i></a>
@@ -106,22 +98,19 @@
             }
         },
         methods: {
-            async loadMessages() {
-                let response = await this.$store.dispatch('GET_LATEST_MESSAGES', this.$route.params.id)
-                this.scrollDown()
-            },
             async onScroll(e) {
                 if (e.target.scrollTop === 0) {
+                    // TODO: this needs to stop somewhere
                     let initialHeight = e.target.scrollHeight
                     await this.$store.dispatch('GET_PREVIOUS_MESSAGES', {id: this.$route.params.id})
                     this.$nextTick(() => {
-                        this.$refs.messagesBox.scrollTop = e.target.scrollHeight - initialHeight
+                        this.$el.querySelector('.message-body').scrollTop = e.target.scrollHeight - initialHeight
                     })
                 }
             },
             scrollDown() {
                 this.$nextTick(() => {
-                    this.$refs.messagesBox.scrollTop = this.$refs.messagesBox.scrollHeight
+                    this.$el.querySelector('.message-body').scrollTop = this.$el.querySelector('.message-body').scrollHeight
                 })
             },
             publishMessage() {
@@ -141,7 +130,8 @@
                 let messageObj = {
                     'content': this.messageInput, // check the messageTopic where $event['message'], that's why im not getting an array in here
                     'avatar': this.CURRENT_USER.avatar,
-                    'mine': true
+                    'mine': true,
+                    'id': this.$route.params.id
                 }
                 this.$store.dispatch('ADD_MESSAGE', messageObj)
                 this.$store.dispatch('UPDATE_CONVERSATION_LATEST_MESSAGE', {
@@ -152,16 +142,24 @@
                 this.scrollDown()
                 // clear the input
                 this.messageInput = ''
+            },
+            async getMessages() {
+                await this.$store.dispatch('GET_MESSAGES', this.$route.params.id)
+                if (this.MESSAGES) {
+                    this.scrollDown()
+                }
             }
         },
         computed: {
             ...mapGetters([
-                'MESSAGES',
                 'LOADING_MESSAGES',
                 'USER',
                 'LOADING_USER',
-                'CURRENT_USER'
+                'CURRENT_USER',
             ]),
+            MESSAGES() {
+                return this.$store.getters.MESSAGES(this.$route.params.id)
+            },
             isUserEmpty() {
                 return _.isEmpty(this.USER)
             },
@@ -170,7 +168,7 @@
             }
         },
         mounted() {
-            this.loadMessages()
+            this.getMessages()
             this.$store.dispatch('MARK_AS_READ', this.$route.params.id)
             this.$store.dispatch('GET_USER', this.$route.params.userId)
             this.$store.dispatch('GET_CURRENT_USER')
@@ -183,8 +181,12 @@
                     }
                     this.$store.dispatch('ADD_MESSAGE', messageObj)
                     // scroll the message to the view
+                    this.scrollDown()
                 })
             }
+        },
+        updated (){
+            this.scrollDown()
         }
     }
 </script>
