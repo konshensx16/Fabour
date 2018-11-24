@@ -21,13 +21,13 @@
                         </p>
                         <p>
                             <strong>
-                                <a href="{{ path('profile.userProfile', {'username': post.user.username }) }}">{{ post.user.username }}</a>
+                                <a href="{{ path('profile.userProfile', {'username': post.username }) }}">{{ post.username }}</a>
                                 in
-                                <a href="{{ path('category.category', {'slug': post.subCategory.category.slug }) }}">{{ post.subCategory }}</a>
+                                <a href="{{ path('category.category', {'slug': post.slug }) }}">{{ post.name }}</a>
                             </strong>
                             <br>
                             <em>
-                                {{ post.createdAt|date('Y M d') }} .
+                                {{ post.created_at|date('Y M d') }} .
                             </em>
                         </p>
 

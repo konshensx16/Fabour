@@ -105,7 +105,9 @@ class PostRepository extends ServiceEntityRepository
     {
         // REQUIRED FIELDS: id, title, content, author (user), created_at, sub_category
         $qb = $this->createQueryBuilder('p');
-        $qb->innerJoin('p.subCategory', 'sc', Join::WITH, 'p.subCategory = sc')
+        $qb
+            ->select('p.id', 'p.title', 'p.content', 'p.created_at', 'u.username', 'sc.name', 'sc.slug')
+            ->innerJoin('p.subCategory', 'sc', Join::WITH, 'p.subCategory = sc')
             ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u');
 
         return $qb->getQuery()->getResult();

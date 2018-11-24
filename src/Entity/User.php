@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\EntityListeners({"App\Listeners\UserListener"})
+ * @ORM\Table(name="user", indexes={@ORM\Index(name="user_index", columns={"id", "username", "email"})})
  */
 class User implements UserInterface, \Serializable, EquatableInterface
 {
