@@ -408,7 +408,7 @@ Profile:
     ✔ Create the Type for the user which should contain all the fields that user can change (This will be last, since i haven't decided all the fields that i want to have) @done (18-10-28 11:58)
   ✔ When viewing someone else profile, display a button so the user can add him as a friend! @done (10/16/2018, 9:31:08 PM)
   ✔ Need to change the desing of the profile page to the new slim @done (10/13/2018, 11:53:10 PM)
-  ☐ Display a card containing recently added friends
+  ✔ Display a card containing recently added friends @done (18-11-21 22:30)
     ✔ Infromation should be sent from the controller! (Get just the last five) @done (10/16/2018, 9:56:16 PM)
     ☐ Display a small add to friends symbol if the user is not friends with those guys > might be hevay but might do it since it's just five people
   ✔ Add support for the cropper so the user can upload ad crop his profile picture @done (18-10-28 10:56)
@@ -429,6 +429,13 @@ Profile:
       ✔ Publications notifications @done (18-10-28 11:46)
       ✔ New comments notifications @done (18-10-28 11:46)
     ✔ Comment on posts are nt showing proper avatar @done (18-10-28 11:52)
+    ✔ Add more fields to the editing page @done (18-11-24 19:36)
+      ✔ Website @done (18-11-24 19:36)
+      ✔ Phone number @done (18-11-24 19:36)
+      ✔ twitter @done (18-11-24 19:36)
+
+    ☐ @critical when updating the information, the avatar each time requires to change, i only need to update the avatar if i have some new value to replace the old, otherwise, just update the other stuff
+    ☐ Remove the edit profile and profile settings from other persons profiles 
   BUGS:
     When the user doesn't exist, redirect to an error page or display an error page (404)
 

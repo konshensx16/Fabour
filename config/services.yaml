@@ -6,6 +6,7 @@
 parameters:
     locale: 'en'
     avatars_dir: '%kernel.project_dir%/public/uploads/avatars'
+    avatars_dir_no_root: '/uploads/avatars'
     post_type_id: 1
     comment_type_id: 2
     bookmark_type_id: 3

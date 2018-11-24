@@ -15,9 +15,12 @@
         {{ form_start(form, {'attr': {'id': 'profile_form'}}) }}
             {{ form_row(form.locale) }}
             {{ form_row(form.avatar) }}
-            <img width="400" src="{{ app.user.avatar}}" alt="" id="avatar">
+            <img class="img-responsive" src="{{ app.user.avatar}}" alt="" id="avatar">
             <input type="hidden" id="blob_holder" name="blob_holder">
             {{ form_row(form.about) }}
+            {{ form_row(form.website) }}
+            {{ form_row(form.phone) }}
+            {{ form_row(form.twitter) }}
             <button type="submit" class="btn btn-success pull-right">Update</button>
         {{ form_end(form) }}
 

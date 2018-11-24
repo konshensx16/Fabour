@@ -85,7 +85,6 @@ export default {
             }
         },
         ADD_MESSAGE: (context, payload) => {
-            debugger
             context.commit('NEW_MESSAGE', payload)
             context.commit('INC_TOTAL_MESSAGES_COUNT', payload.id)
         },

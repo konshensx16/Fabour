@@ -51,6 +51,21 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $about;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $website;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $twitter;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $created_at;
@@ -527,6 +542,42 @@ class User implements UserInterface, \Serializable, EquatableInterface
                 $conversation->setFirstUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(string $website): self
+    {
+        $this->website = $website;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getTwitter(): ?string
+    {
+        return $this->twitter;
+    }
+
+    public function setTwitter(string $twitter): self
+    {
+        $this->twitter = $twitter;
 
         return $this;
     }

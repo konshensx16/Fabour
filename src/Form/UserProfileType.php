@@ -17,11 +17,15 @@ class UserProfileType extends AbstractType
             ->add('locale')
             ->add('avatar', FileType::class, [
                 'mapped' => false,
+                'required' => false,
                 'label' => 'Profile picture',
                 'attr' => [
                     'onchange' => 'previewFile()'
                 ]
             ])
+            ->add('website')
+            ->add('phone')
+            ->add('twitter')
             ->add('about')
         ;
     }

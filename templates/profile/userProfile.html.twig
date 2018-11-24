@@ -27,7 +27,7 @@
                     </div><!-- media -->
                 </div><!-- card-body -->
                 <div class="card-footer">
-                    <a href="" class="card-profile-direct">http://thmpxls.me/profile?id=katherine</a>
+                    <a href="" class="card-profile-direct">{{ profileLink }}</a>
                     <div>
                         <a href="{{ path('profile.edit') }}">Edit Profile</a>
                         <a href="">Profile Settings</a>
@@ -118,6 +118,42 @@
                 </div><!-- row -->
             </div><!-- card -->
 
+
+            <div class="card pd-25 mg-t-20">
+                <div class="slim-card-title">Contact &amp; Personal Info</div>
+
+                <div class="media-list mg-t-25">
+                    <div class="media">
+                        <div><i class="icon ion-link tx-24 lh-0"></i></div>
+                        <div class="media-body mg-l-15 mg-t-4">
+                            <h6 class="tx-14 tx-gray-700">Website</h6>
+                            <a href="{{ profile.website ?? '#' }}" class="d-block">{{ profile.website ?? 'Empty' }}</a>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                    <div class="media mg-t-25">
+                        <div><i class="icon ion-ios-telephone-outline tx-24 lh-0"></i></div>
+                        <div class="media-body mg-l-15 mg-t-4">
+                            <h6 class="tx-14 tx-gray-700">Phone Number</h6>
+                            <span class="d-block">{{ profile.phone ?? 'Empty' }}</span>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                    <div class="media mg-t-25">
+                        <div><i class="icon ion-ios-email-outline tx-24 lh-0"></i></div>
+                        <div class="media-body mg-l-15 mg-t-4">
+                            <h6 class="tx-14 tx-gray-700">Email Address</h6>
+                            <span class="d-block">{{ profile.email ?? 'Empty' }}</span>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                    <div class="media mg-t-25">
+                        <div><i class="icon ion-social-twitter tx-18 lh-0"></i></div>
+                        <div class="media-body mg-l-15 mg-t-2">
+                            <h6 class="tx-14 tx-gray-700">Twitter</h6>
+                            <a href="#" class="d-block">{{ profile.twitter ?? 'Empty' }}</a>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                </div><!-- media-list -->
+            </div><!-- card -->
+
             <div class="card card-people-list mg-t-20">
                 <div class="slim-card-title">Recently became friends with</div>
                 <div class="media-list">
@@ -183,41 +219,7 @@
                 {#</div><!-- media-list -->#}
             {#</div><!-- card -->#}
 
-            <div class="card pd-25 mg-t-20">
-                <div class="slim-card-title">Contact &amp; Personal Info</div>
 
-                <div class="media-list mg-t-25">
-                    <div class="media">
-                        <div><i class="icon ion-link tx-24 lh-0"></i></div>
-                        <div class="media-body mg-l-15 mg-t-4">
-                            <h6 class="tx-14 tx-gray-700">Websites</h6>
-                            <a href="" class="d-block">http://themepixels.me</a>
-                            <a href="" class="d-block">http://themeforest.net</a>
-                        </div><!-- media-body -->
-                    </div><!-- media -->
-                    <div class="media mg-t-25">
-                        <div><i class="icon ion-ios-telephone-outline tx-24 lh-0"></i></div>
-                        <div class="media-body mg-l-15 mg-t-4">
-                            <h6 class="tx-14 tx-gray-700">Phone Number</h6>
-                            <span class="d-block">+1 234 5678 910</span>
-                        </div><!-- media-body -->
-                    </div><!-- media -->
-                    <div class="media mg-t-25">
-                        <div><i class="icon ion-ios-email-outline tx-24 lh-0"></i></div>
-                        <div class="media-body mg-l-15 mg-t-4">
-                            <h6 class="tx-14 tx-gray-700">Email Address</h6>
-                            <span class="d-block">yourname@sample.com</span>
-                        </div><!-- media-body -->
-                    </div><!-- media -->
-                    <div class="media mg-t-25">
-                        <div><i class="icon ion-social-twitter tx-18 lh-0"></i></div>
-                        <div class="media-body mg-l-15 mg-t-2">
-                            <h6 class="tx-14 tx-gray-700">Twitter</h6>
-                            <a href="#" class="d-block">@themepixels</a>
-                        </div><!-- media-body -->
-                    </div><!-- media -->
-                </div><!-- media-list -->
-            </div><!-- card -->
         </div><!-- col-4 -->
     </div>
 {% endblock %}
