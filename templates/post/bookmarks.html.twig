@@ -15,18 +15,18 @@
                 {% for bookmark in bookmarks %}
                     <div class="row no-gutters mg-b-20">
                         <div class="col-md-4">
-                            <a href="{{ path('post.display', {'id': bookmark.post.id}) }}"><img
+                            <a href="{{ path('post.display', {'id': bookmark.id}) }}"><img
                                         src="{{ asset('assets/img/img0.jpg') }}" class="img-fit-cover"
                                         alt=""></a>
                         </div><!-- col-4 -->
                         <div class="col-md-8">
                             <div class="post-wrapper">
-                                <a href="{{ path('post.display', {'id': bookmark.post.id}) }}"
-                                   class="activity-title">{{ bookmark.post.title }}</a>
+                                <a href="{{ path('post.display', {'id': bookmark.id}) }}"
+                                   class="activity-title">{{ bookmark.title }}</a>
                                 <p class="mg-b-0">
-                                    <a href="" class="d-block">{{ bookmark.post.user.username }}
-                                        in {{ bookmark.post.subCategory }}</a>
-                                    <span>Bookmarked: {{ bookmark.createdAt|time_diff }} .</span>
+                                    <span href="" class="d-block">{{ bookmark.username }}
+                                        in {{ bookmark.subCategory }}</span>
+                                    <span>Bookmarked: {{ bookmark.created_at|time_diff }} .</span>
                                 </p>
                             </div><!-- post-wrapper -->
                         </div><!-- col-8 -->

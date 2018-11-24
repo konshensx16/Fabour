@@ -24,6 +24,7 @@ class BookmarkController extends AbstractController
     {
         $currentUser = $this->getUser();
         $bookmarks = $bookmarkRepository->findBookmarksByUserId($currentUser->getId());
+        dump($bookmarks);
         return $this->render('post/bookmarks.html.twig', [
             'bookmarks' => $bookmarks
         ]);

@@ -6,6 +6,7 @@ use App\Entity\Bookmark;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -47,6 +48,10 @@ class BookmarkRepository extends ServiceEntityRepository
     public function findBookmarksByUserId(int $user_id)
     {
         return $this->createQueryBuilder('b')
+            ->select('p.id', 'p.title', 'sc.name AS subCategory', 'u.username', 'b.created_at')
+            ->innerJoin('b.post', 'p', Join::WITH, 'b.post = p.id')
+            ->innerJoin('p.subCategory', 'sc', Join::WITH, 'p.subCategory = sc.id')
+            ->innerJoin('b.user', 'u', Join::WITH, 'b.user = u.id')
             ->andWhere('b.user = :user_id')
             ->setParameter('user_id', $user_id)
             ->orderBy('b.created_at', 'DESC')
