@@ -6,5 +6,33 @@
 
 
 {% block body %}
-    {{ dump(posts) }}
+    {% if posts %}
+        {% for post in posts %}
+            <div class="media media-demo mg-t-20">
+                <div class="media-body mg-sm-t-0">
+                    <h5 class="tx-inverse mg-b-20">
+                        <a href="{{ path('post.display', {'id': post.id}) }}">{{ post.title }}</a>
+                    </h5>
+                    <p>
+                        {{ post.content|length > 300 ? post.content|slice(0, 300) ~ '...' : post.content}}
+                    </p>
+                    <p>
+                        <strong>
+                            <a href="{{ path('profile.userProfile', {'username': post.user.username }) }}">{{ post.user.username }}</a>
+                            in
+                            <a href="{{ path('category.category', {'slug': post.subCategory.slug }) }}">{{ post.subCategory.name }}</a>
+                        </strong>
+                        <br>
+                        <em>
+                            {{ post.createdAt|date('Y M d') }} .
+                        </em>
+                    </p>
+
+                </div><!-- media-body -->
+                <img src="{{ asset('assets/img/img0.jpg') }}" class="media-img-demo align-self-center" alt="Image">
+            </div><!-- media -->
+        {% endfor %}
+    {% else %}
+        <h3 class="text-center">Welp! there are no posts at the moment, check back later...</h3>
+    {% endif %}
 {% endblock %}

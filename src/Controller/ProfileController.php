@@ -120,11 +120,7 @@
                 'action' => $this->generateUrl('profile.edit')
             ]);
 
-            dump($this->getUploadsDir());
-
             $oldFilename = $user->getAvatar();
-
-            dump($oldFilename);
 
             $form->handleRequest($request);
 
