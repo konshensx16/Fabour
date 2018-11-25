@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends AbstractController
 {
     /**
-     * @Route("/single/{slug}", name="category")
+     * @Route("/single/{slug}", name="category", options={"expose"=true})
      * @param Category $category
      * @param PostRepository $postRepository
      * @return \Symfony\Component\HttpFoundation\Response
@@ -27,7 +27,6 @@ class CategoryController extends AbstractController
         $popularPosts = $postRepository->findPopularPostsByCategoryWithLimit($category->getId(), 5);
         // TODO: get recently published posts in this category
         $recentPosts = $postRepository->findRecentPostsWithCategory($category->getId());
-
 
         return $this->render('category/index.html.twig', [
             'controller_name' => 'CategoryController',

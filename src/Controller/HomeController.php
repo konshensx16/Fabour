@@ -55,7 +55,7 @@ class HomeController extends AbstractController
     {
         dump($postRepository->findPostsWithCategory());
         return $this->render('home/index.html.twig', [
-            'posts' => $postRepository->findPostsWithCategory()
+            'post' => $postRepository->findPostsWithCategory()
         ]);
     }
 

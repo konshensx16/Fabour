@@ -280,8 +280,26 @@ POSTS:
   ✔ Update the query to be based on the sub_category since the category was removed and you can only access it via the category itself @done (10/20/2018, 1:48:23 AM)
     ✔ Learn about inner joins lol @done (10/20/2018, 1:48:24 AM)
   IMPORVING:
-    ☐ It takes 24 queries when loading the index page 
-      NOTE: most of the queries are for categories so i should start there.
+    ✔ It takes 24 queries when loading the index page @done (18-11-24 20:59)
+      NOTE: most of the queries are for categories so i should start there. 
+    ☐ Make an infinite scrolling system for the index posts and also the bookmarks, and the user posts 
+      ☐ Create the component and the vue stuff and add the script to the bottom of the index and all required pages
+        ☐ add script Index page 
+        ☐ and the user posts page
+      ✔ Create the API that will fetch the posts @done (18-11-24 21:36)
+        NOTE: the posts should be based on some value, in the index i don't need any parameter since all i want will be based on the current logged in user
+        ✔ In the user posts i need the username which will be used as a parameter to fetch the correct posts @done (18-11-24 21:36)
+        ✔ Make the parameter optional, if set then set to the parameter value, if not then set the value to the current logged in user @done (18-11-24 21:36)
+      ✔ I will not be adding the posts to the store as of now because the pages will be refreshed either way which means the state will not be persisted @done (18-11-24 21:37)
+      ✔ The design is a mess needs some fixing, (Check if the inline style causing the problem) @done (18-11-24 22:54)
+      ✔ The created_at needs to be a string and should be set before sending the results @done (18-11-24 22:46)
+        NOTE: right now i have two solutions, one is pretty basic and might be fast
+          Solution1: When fetching the array in the controller::action, before sending the results i can loop throught the items and format the date there
+          Solution2: i can use this custom class to add a new expression to the doctrine DQL, whihc will allow me to get rid of the loop in the controller::action, Link to the "module" and the article: https://medium.com/@narven/add-mysql-function-date-format-to-symfony-doctrine-dql-288ac51941c2
+      ✔ handle the scroll event for the compoenent, to load more posts @done (18-11-25 16:40)
+      ✔ Create the end point to get more posts @done (18-11-25 17:33)
+        Note: i might have a rpoblem at this point, because when in the index page i don't need to pass anything but the offset, when viweing another user posts i need to pass the user's username, otherwise it's going to behave like the index.
+      ✔ If we dont have anymore posts then just get rid of the event listener on the window@done (18-11-25 17:54)
 
   
 Categories:
@@ -434,8 +452,8 @@ Profile:
       ✔ Phone number @done (18-11-24 19:36)
       ✔ twitter @done (18-11-24 19:36)
 
-    ☐ @critical when updating the information, the avatar each time requires to change, i only need to update the avatar if i have some new value to replace the old, otherwise, just update the other stuff
-    ☐ Remove the edit profile and profile settings from other persons profiles 
+    ✔ @critical when updating the information, the avatar each time requires to change, i only need to update the avatar if i have some new value to replace the old, otherwise, just update the other stuff @done (18-11-24 20:46)
+    ✔ Remove the edit profile and profile settings from other persons profiles @done (18-11-24 20:59)
   BUGS:
     When the user doesn't exist, redirect to an error page or display an error page (404)
 

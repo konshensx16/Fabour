@@ -22,7 +22,7 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns Post[]|null of the most popular posts in a given category
+     * Returns Post[]|null of the most popular post in a given category
      * based on post views
      * @param int $category_id
      * @param int $limit
@@ -42,7 +42,7 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
-     * Gets the latest published posts in a category
+     * Gets the latest published post in a category
      * @param int $category_id
      * @return mixed
      */
@@ -67,6 +67,30 @@ class PostRepository extends ServiceEntityRepository
             ->andWhere('p.user = :user_id')
             ->setParameter('user_id', $user_id)
             ->setMaxResults($limit)
+            ->orderBy('p.created_at', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * I might need to change this to support offset and use it for pagination later
+     * @param string $username
+     * @param int $limit
+     * @param int $offset
+     * @return mixed
+     */
+    public function findRecentlyPublishedPostsByUsernameWithLimit(string $username, int $limit = 10, int $offset = 0)
+    {
+        // p.id, p.title, p.content, u.username, subcategory.name
+        return $this->createQueryBuilder('p')
+            ->select('p.id', 'p.title', 'p.content', 'u.username', 'sc.name', 'sc.slug', 'p.created_at')
+            ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u')
+            ->innerJoin('p.subCategory', 'sc', Join::WITH, 'p.subCategory = sc')
+            ->andWhere('u.username = :username')
+            ->setParameter('username', $username)
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
             ->orderBy('p.created_at', 'DESC')
             ->getQuery()
             ->getResult()
@@ -99,7 +123,7 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get the posts with categories and author
+     * Get the post with categories and author
      */
     public function findPostsWithCategory()
     {
@@ -111,5 +135,53 @@ class PostRepository extends ServiceEntityRepository
             ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u');
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findRecentlyPublishedPostsByWithLimit(string $username, int $limit = 10, int $offset = 0)
+    {
+        // p.id, p.title, p.content, u.username, subcategory.name
+        return $this->createQueryBuilder('p')
+            ->select('p.id', 'p.title', 'p.content', 'u.username', 'sc.name', 'sc.slug', 'p.created_at')
+            ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u')
+            ->innerJoin('p.subCategory', 'sc', Join::WITH, 'p.subCategory = sc')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->orderBy('p.created_at', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Returns the total posts count
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getTotalPosts()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select($qb->expr()->count('p.id'));
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * Returns the total posts count for a given user
+     * @param string $username
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getTotalPostsByUsername(string $username)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->select($qb->expr()->count('p.id'))
+            ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u')
+            ->where('u.username = :username')
+            ->setParameter('username', $username)
+        ;
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }

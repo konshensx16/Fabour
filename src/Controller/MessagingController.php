@@ -304,7 +304,7 @@ class MessagingController extends AbstractController
                     return $object->getId();
                 })
                 ->setIgnoredAttributes([
-                    'posts',
+                    'post',
                     'comments',
                     'bookmarks',
                     'notificationChanges',

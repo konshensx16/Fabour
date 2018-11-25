@@ -19,6 +19,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('conversation', './assets/js/conversation.js')
+    .addEntry('posts', './assets/js/posts.js')
     .addEntry('profile', './assets/js/profile.js')
 
     /*

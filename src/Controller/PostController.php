@@ -161,7 +161,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="display")
+     * @Route("/{id}", name="display", options={"expose"=true})
      * @param Request $request
      * @param Post $post
      * @param EntityManagerInterface $em
@@ -364,7 +364,7 @@ class PostController extends AbstractController
     public function userPosts(User $user)
     {
         return $this->render('post/userPosts.html.twig', [
-            'posts' => $user->getPosts(),
+            'post' => $user->getPosts(),
         ]);
     }
 

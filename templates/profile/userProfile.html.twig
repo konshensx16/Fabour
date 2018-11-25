@@ -27,11 +27,13 @@
                     </div><!-- media -->
                 </div><!-- card-body -->
                 <div class="card-footer">
-                    <a href="" class="card-profile-direct">{{ profileLink }}</a>
-                    <div>
-                        <a href="{{ path('profile.edit') }}">Edit Profile</a>
-                        <a href="">Profile Settings</a>
-                    </div>
+                    <a href="{{ profileLink }}" class="card-profile-direct">{{ profileLink }}</a>
+                    {% if app.user.username == profile.username %}
+                        <div>
+                            <a href="{{ path('profile.edit') }}">Edit Profile</a>
+                            <a href="">Profile Settings</a>
+                        </div>
+                    {% endif %}
                 </div><!-- card-footer -->
             </div><!-- card -->
 

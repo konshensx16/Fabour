@@ -75,21 +75,21 @@ class SearchController extends AbstractController
 
         if ($filter) {
             switch ($filter) {
-                case 'posts':
-                    // get posts
+                case 'post':
+                    // get post
                     // users and friends just counts
                     $users = count($users);
                     $friends = count($friends);
                     break;
                 case 'users':
                     // get the users
-                    // friends and posts just counts
+                    // friends and post just counts
                     $posts = count($posts);
                     $friends = count($friends);
                     break;
                 case 'friends':
                     // get friends
-                    // posts and users just counts
+                    // post and users just counts
                     $posts = count($posts);
                     $users = count($users);
                     break;
@@ -106,9 +106,9 @@ class SearchController extends AbstractController
 
 //        if ()
         return $this->render('search/results.html.twig', [
-            'filter' => $filter ? $filter : 'posts',
+            'filter' => $filter ? $filter : 'post',
             'query' => $query,
-            'posts' => $posts,
+            'post' => $posts,
             'users' => $users,
             'friends' => $friends
         ]);

@@ -43,7 +43,7 @@
         }
 
         /**
-         * @Route("/{username?}", name="userProfile")
+         * @Route("/{username?}", name="userProfile", options={"expose"=true})
          * @param $username
          * @param UserRepository $userRepository
          * @param UserRelationshipRepository $userRelationshipRepository
@@ -96,7 +96,6 @@
                 'recentFriends' => $recentlyAddedFriends,
                 'recentPosts' => $postRepository->findRecentlyPublishedPostsWithUserIdWithLimit($user->getId(), 10),
                 'profileLink' => $this->generateUrl('profile.userProfile', ['username' => $user->getUsername()], UrlGeneratorInterface::ABSOLUTE_URL),
-
             ]);
         }
 
