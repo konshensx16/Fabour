@@ -39,6 +39,12 @@
 
     export default {
         name: 'posts',
+        props: {
+            username: {
+                type: String,
+                required: false
+            },
+        },
         data() {
             return {
                 posts: [],
@@ -54,7 +60,15 @@
             }
         },
         async mounted() {
-            let url = Routing.generate('api.posts.getPosts')
+            let url;
+            let secondUrl;
+            if (this.username) {
+                url = Routing.generate('api.posts.getPosts', {username: this.username})
+                secondUrl = Routing.generate('api.posts.getMorePosts', {offset: this.offset, username: this.username})
+            } else {
+                url = Routing.generate('api.posts.getPosts')
+                secondUrl = Routing.generate('api.posts.getMorePosts', {offset: this.offset})
+            }
             // let secondUrl = Routing.generate('api.posts.getPosts')
             let {data} = await axiosInstance.get(url)
 
@@ -62,8 +76,6 @@
             this.total = data.total
             this.loading = false
 
-
-            let secondUrl = Routing.generate('api.posts.getMorePosts', {offset: this.offset})
             window.addEventListener('scroll', async (e) => {
                 if (((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) && this.offset < this.total) {
                     this.loading = true
@@ -76,6 +88,7 @@
                     this.loading = false
                 }
             })
-        }
+        },
+
     }
 </script>
