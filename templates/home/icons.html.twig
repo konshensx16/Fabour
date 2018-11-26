@@ -1,17 +1,15 @@
-
-
 <div class="dropdown dropdown-b">
     <a href="{{ path('messages.messaging') }}" class="header-notification">
-        <i class="icon ion-ios-chatboxes"></i>
-        {#{% if pending %}#}
-            {#<span class="indicator"></span>#}
-        {#{% endif %}#}
+        <i class="icon ion-ios-chatboxes-outline"></i>
+        {% if messages %}
+            <span class="indicator"></span>
+        {% endif %}
     </a>
 </div>
 
 <div class="dropdown dropdown-b">
     <a href="{{ path('friends.pending') }}" class="header-notification">
-        <i class="icon ion-ios-personadd"></i>
+        <i class="icon ion-ios-personadd-outline"></i>
         {% if pending %}
             <span class="indicator"></span>
         {% endif %}

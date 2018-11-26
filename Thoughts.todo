@@ -299,7 +299,7 @@ POSTS:
       ✔ handle the scroll event for the compoenent, to load more posts @done (18-11-25 16:40)
       ✔ Create the end point to get more posts @done (18-11-25 17:33)
         Note: i might have a rpoblem at this point, because when in the index page i don't need to pass anything but the offset, when viweing another user posts i need to pass the user's username, otherwise it's going to behave like the index.
-      ✔ If we dont have anymore posts then just get rid of the event listener on the window@done (18-11-25 17:54)
+      ☐ If we dont have anymore posts then just get rid of the event listener on the window@done
 
   
 Categories:
@@ -751,7 +751,7 @@ Messaging:
         ✔ Create a service which should contain helper function that are related to Messages @done (18-11-02 23:29)
         ✔ Create a listener which sets the created_at date @done (18-11-02 23:29)
         ✔ Create the MessageTopic @done (18-11-09 07:11)
-          ☐ Thinking about each time a user connects i'll send him a list of the latest messages (Instead of creating a seprate end-point)
+          ✔ Thinking about each time a user connects i'll send him a list of the latest messages (Instead of creating a seprate end-point) @done (18-11-26 21:38)
           ✔ To send a message i will publish from the front-end @done (18-11-02 23:06)  
           ✔ Inside the topic i need to get several things @done (18-11-04 10:17)
             ✔ The message @done (18-11-02 23:29)
@@ -893,12 +893,13 @@ Messaging:
           ✔ Expose this to the js file @done (18-11-08 23:39)
 
     Changes:
-      ☐ Use the ScrollIntoView function to scroll down messages if possible instead of the current solution
+      ✘ Use the ScrollIntoView function to scroll down messages if possible instead of the current solution @cancelled (18-11-26 21:38)
         Which just takes the sceroll scroll height and add it to the scrollTop, works but i think could be better
       ✔ Maybe i should add a read_at field which indicates if the user read the message or not @done (18-11-18 13:26)
       ✔ Load just the latest 20 message for a conversation @done (18-11-18 13:26)
         ✔ Change the function from raking taking a collection to taking an array @done (18-11-18 13:26)
         ✔ Need to inner join the user so i can access the username and avatar when constructing the messages array @done (18-11-18 13:26)
+      ☐ Add an indicator in case of unread messages when the user logs in
 
     Mark messages as read & get the unread messages for conversations:
       Database changes:

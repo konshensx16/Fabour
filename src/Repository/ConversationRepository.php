@@ -205,4 +205,31 @@ class ConversationRepository extends ServiceEntityRepository
 
         return $statement->fetchAll();
     }
+
+    /**
+     * Return the count of unread messages
+     * @param int $user_id (this is recipient which means the current logged in user)
+     * @return mixed
+     * @throws NonUniqueResultException
+     */
+    public function getUnreadMessagesCount(int $user_id)
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb
+            ->select($qb->expr()->count('c.id'))
+            ->innerJoin('c.messages', 'm', Join::WITH, 'c.id = m.conversation')
+//            ->innerJoin('m.recipient', 'u', Join::WITH, 'm.recipient = u')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('m.recipient', ':user_id'),
+                    $qb->expr()->isNull('m.read_at')
+                )
+            )
+            ->setParameter('user_id', $user_id)
+        ;
+
+        return $qb->getQuery()->getSingleScalarResult();
+
+    }
 }

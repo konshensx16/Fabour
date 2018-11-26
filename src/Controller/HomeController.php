@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\UserRelationship;
+use App\Repository\ConversationRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
 use App\Repository\UserRepository;
@@ -126,15 +127,24 @@ class HomeController extends AbstractController
         ]);
     }
 
-    public function renderIcons(UserRelationshipRepository $userRelationshipRepository)
+    /**
+     * @param UserRelationshipRepository $userRelationshipRepository
+     * @param ConversationRepository $conversationRepository
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function renderIcons(UserRelationshipRepository $userRelationshipRepository, ConversationRepository $conversationRepository)
     {
         $this->checkIfUserLoggedIn();
         // check if the user logged in
         /** @var User $currentUser */
         $currentUser = $this->getUser();
         $result = $userRelationshipRepository->findUsersWithTypePending($currentUser->getId());
+        $messagesCount = $conversationRepository->getUnreadMessagesCount($currentUser->getId());
+        dump($messagesCount);
         return $this->render('home/icons.html.twig', [
-            'pending' => (bool)$result
+            'pending' => (bool)$result,
+            'messages' => (bool)$messagesCount
         ]);
     }
 
