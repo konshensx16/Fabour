@@ -282,10 +282,10 @@ POSTS:
   IMPORVING:
     ✔ It takes 24 queries when loading the index page @done (18-11-24 20:59)
       NOTE: most of the queries are for categories so i should start there. 
-    ☐ Make an infinite scrolling system for the index posts and also the bookmarks, and the user posts 
-      ☐ Create the component and the vue stuff and add the script to the bottom of the index and all required pages
-        ☐ add script Index page 
-        ☐ and the user posts page
+    ✔ Make an infinite scrolling system for the index posts and also the bookmarks, and the user posts @done (18-11-27 19:43)
+      ✔ Create the component and the vue stuff and add the script to the bottom of the index and all required pages @done (18-11-27 19:43)
+        ✔ add script Index page @done (18-11-27 19:43)
+        ✔ and the user posts page @done (18-11-27 19:43)
       ✔ Create the API that will fetch the posts @done (18-11-24 21:36)
         NOTE: the posts should be based on some value, in the index i don't need any parameter since all i want will be based on the current logged in user
         ✔ In the user posts i need the username which will be used as a parameter to fetch the correct posts @done (18-11-24 21:36)
@@ -299,7 +299,29 @@ POSTS:
       ✔ handle the scroll event for the compoenent, to load more posts @done (18-11-25 16:40)
       ✔ Create the end point to get more posts @done (18-11-25 17:33)
         Note: i might have a rpoblem at this point, because when in the index page i don't need to pass anything but the offset, when viweing another user posts i need to pass the user's username, otherwise it's going to behave like the index.
-      ☐ If we dont have anymore posts then just get rid of the event listener on the window@done
+  ☐ If we dont have anymore posts then just get rid of the event listener on the window@done
+    I will postpone this till i do further research about this topic, and scrolling event in general since the console displays some warnings and points to some articles on the MDN 
+  ✔ Change the editor to something that allows uploading images, @done (18-11-27 19:43)
+    NOTE: try publishing on the medium platform for inspiration
+    The medium editor: The first uploaded image is taking as a cover (thumbnail)  for the story, which the user can adjust however he likes, but it's a two step operation, first you publish the content, then another page asks you for the customization of the thumbnail.
+
+  ✘ I might end up using the ORY EDITOR which as the docs says is on steroid but it looks cool, (It's only for react) @cancelled (18-11-27 19:43)
+    @critical NOTE: there an extension for the medium editor that is not jquery dependent which i can use (branch: 3.0), will test and see if there's any problems with this
+    ✔ Test the the extension above before moving on @done (18-11-27 19:43)
+  ☐ Change the medium editor WITH TinyMCE
+  ☐ Create a separate file for posts stuff 
+    ☐ @low this is just a work around, im gonna copy the files from node_modules to the assets folder, need to find a better solution
+    skins
+    themes
+    plugins
+  ☐ Change the desing of the post.create page to something similar to medium (minimal)
+     IDEAS: 
+       maybe get rid of the borders around the inputs
+       Make the body area much bigger (maybe the whole screen or something like that)
+       Pull the category and sub category up next to the title (maybe both cat and sub cat on the same row, above the title )
+       Move the publish button to the top of the list 
+       Make the container fluid to use more space on the sides
+
 
   
 Categories:
@@ -899,7 +921,7 @@ Messaging:
       ✔ Load just the latest 20 message for a conversation @done (18-11-18 13:26)
         ✔ Change the function from raking taking a collection to taking an array @done (18-11-18 13:26)
         ✔ Need to inner join the user so i can access the username and avatar when constructing the messages array @done (18-11-18 13:26)
-      ☐ Add an indicator in case of unread messages when the user logs in
+      ✔ Add an indicator in case of unread messages when the user logs in @done (18-11-26 22:20)
 
     Mark messages as read & get the unread messages for conversations:
       Database changes:

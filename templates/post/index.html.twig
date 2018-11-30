@@ -3,11 +3,13 @@
 
 {% block stylesheets %}
     <link href="{{ asset('assets/lib/medium-editor/css/medium-editor.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/lib/medium-insert/medium-insert.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/build/.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
 
-    <div class="section-wrapper mg-t-20">
+    <div class="section-wrapper mg-t-20 medium">
         {{ form_start(form) }}
             {{ form_errors(form) }}
             {{ form_widget(form) }}
@@ -22,23 +24,22 @@
 
 
 {% block javascripts %}
-    <script src="{{ asset('assets/lib/medium-editor/js/medium-editor.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script src="{{ asset('build/post.js') }}"></script>
     <script>
+
         $(function(){
             'use strict';
             // Inline editor
-            var editor = new MediumEditor('.editable');
 
             // TODO: change all the code below to non jquery code
-            var $post_category = $("#post_category")
-            var $token = $("#post_token")
+            let $post_category = $("#post_category")
+            let $token = $("#post_token")
 
             $post_category.change(function ()
             {
-                var $form = $(this).closest('form')
+                let $form = $(this).closest('form')
 
-                var data = {}
+                let data = {}
 
                 data[$token.attr('name')] = $token.val()
                 data[$post_category.attr('name')] = $post_category.val()

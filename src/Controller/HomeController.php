@@ -61,6 +61,7 @@ class HomeController extends AbstractController
     }
 
     /**
+     * TODO: i think this is disposable
      * @Route("/conversation/{id?}", name="conversation")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -141,7 +142,6 @@ class HomeController extends AbstractController
         $currentUser = $this->getUser();
         $result = $userRelationshipRepository->findUsersWithTypePending($currentUser->getId());
         $messagesCount = $conversationRepository->getUnreadMessagesCount($currentUser->getId());
-        dump($messagesCount);
         return $this->render('home/icons.html.twig', [
             'pending' => (bool)$result,
             'messages' => (bool)$messagesCount
