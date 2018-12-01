@@ -308,12 +308,21 @@ POSTS:
   ✘ I might end up using the ORY EDITOR which as the docs says is on steroid but it looks cool, (It's only for react) @cancelled (18-11-27 19:43)
     @critical NOTE: there an extension for the medium editor that is not jquery dependent which i can use (branch: 3.0), will test and see if there's any problems with this
     ✔ Test the the extension above before moving on @done (18-11-27 19:43)
-  ☐ Change the medium editor WITH TinyMCE
-  ☐ Create a separate file for posts stuff 
-    ☐ @low this is just a work around, im gonna copy the files from node_modules to the assets folder, need to find a better solution
-    skins
-    themes
-    plugins
+  ✔ Change the medium editor WITH TinyMCE @done (18-12-01 21:15)
+  ✔ Create a separate file for posts stuff @done (18-12-01 00:20)
+    ✔ @low this is just a work around, im gonna copy the files from node_modules to the assets folder, need to find a better solution @done (18-12-01 00:20)
+      skins
+      themes
+      plugins
+    ✔ @critical the plugins and themes for tinymce needs to rebuilt every time otherwise the hardcopy will not allow the watcher to rebuild the files @done (18-12-01 21:15)
+      NOTES: 
+        As of now the plugins are being required one by one in the post.js file, as for the css (skins), they're being built in the webpack.config.js file of symfony Encore
+        I might want to change this stuff later to something better like dynamic imports of webpack, or do more research about require.context which allows copying directories, FOR NOW JUST USING THE SAME NAIVE APPROACH SO I CAN ADVANCE IN THIS AREA 
+  ☐ Allow the user to upload images, either by dragging them or by browsing them
+    For this im gonna need to add couple of options to the tinyMCE editor, and also need to handle automatic_uploads which will hopefully allow me to upload the image as soon as the user selects the image.
+    ☐ I need to handle the case where the user decides to remove that image 
+    ☐ Also the case where the user remove the entire post
+    FILE PICKER DOC: https://www.tiny.cloud/docs/demo/file-picker/
   ☐ Change the desing of the post.create page to something similar to medium (minimal)
      IDEAS: 
        maybe get rid of the borders around the inputs

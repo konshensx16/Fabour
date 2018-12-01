@@ -17,6 +17,9 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
+    // TODO: these need a better approach of requiering
+    .addStyleEntry('skins/lightgray/skin.min', './node_modules/tinymce/skins/lightgray/skin.min.css')
+    .addStyleEntry('skins/lightgray/content.min', './node_modules/tinymce/skins/lightgray/content.min.css')
     .addEntry('app', './assets/js/app.js')
     // .addStyleEntry('app', './assets/css/app.css')
     .addEntry('conversation', './assets/js/conversation.js')
