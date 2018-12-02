@@ -1088,6 +1088,9 @@ VUE & VUEX NOTES:
         ✔  Get rid of the code from the profilecontroller and replace it with the AvatarManager @done (18-12-02 14:44)  
           ✔ problem:cannot create directory "" @done (18-12-02 14:44)
 
-      ☐ Like the avatarManager cretae the AttachmentManager
+      ✔ Like the avatarManager cretae the AttachmentManager @done (18-12-02 14:58)
+      ☐ Need to persist the attachment information to the databse
+        Might need to include the post_id 
+      ☐ When removing the image i should remove it from the attachments folder too
 COMMAND GENERATE ROUTES.JSON: 
   bin/console fos:js-routing:dump --format=json --target=assets/js/routes.json

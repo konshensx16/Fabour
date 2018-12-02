@@ -5,7 +5,9 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    attachments_dir: '%kernel.project_dir%/public/uploads/attachments'
     avatars_dir: '%kernel.project_dir%/public/uploads/avatars'
+    attachments_dir_no_root: '/uploads/attachments'
     avatars_dir_no_root: '/uploads/avatars'
     post_type_id: 1
     comment_type_id: 2
