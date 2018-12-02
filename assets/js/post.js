@@ -26,43 +26,57 @@ import 'tinymce/plugins/paste'
 import 'tinymce/plugins/help'
 import 'tinymce/plugins/wordcount'
 
+import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
+
+const routes = require('./routes.json');
+
+Routing.setRoutingData(routes)
+
+let postAttachmentsUrl = Routing.generate('api.attachment.postimage')
+
 
 tinymce.init({
     selector: '.editable',
-    height: 500,
-    width: '100%',
-    automatic_uploads:true,
+    plugins: 'image code',
+    toolbar: 'undo redo | link image | code',
+    // enable title field in the Image dialog
+    image_title: true,
+    // enable automatic uploads of images represented by blob or data URIs
+    automatic_uploads: true,
+    images_upload_url: postAttachmentsUrl,
     file_picker_types: 'image',
-    file_picker_callbacks: function (cb, value, meta) {
-        let input = document.createElement('input')
-        input.setAttribute('type', 'file')
-        input.setAttribute('accept', 'image/*')
-        let reader = new FileReader()
+    // and here's our custom image picker
+    file_picker_callback: function(cb, value, meta) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
 
-        input.onchange = function () {
-            let file = this.files[0]
+        // Note: In modern browsers input[type="file"] is functional without
+        // even adding it to the DOM, but that might not be the case in some older
+        // or quirky browsers like IE, so you might want to add it to the DOM
+        // just in case, and visually hide it. And do not forget do remove it
+        // once you do not need it anymore.
 
+        input.onchange = function() {
+            var file = this.files[0];
+
+            var reader = new FileReader();
             reader.onload = function () {
-                let id = 'blobid' + (new Date()).getTime()
-                let blobCache = tinyMCE.activeEditor.editorUpload.blobCache
-                let base64 = reader.result.split(',')[1]
-                let blobInfo = blobCache.create(id, file, base64)
-                blobCache.add(blobInfo)
+                // Note: Now we need to register the blob in TinyMCEs image blob
+                // registry. In the next release this part hopefully won't be
+                // necessary, as we are looking to handle it internally.
+                var id = 'blobid' + (new Date()).getTime();
+                var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                var base64 = reader.result.split(',')[1];
+                var blobInfo = blobCache.create(id, file, base64);
+                blobCache.add(blobInfo);
 
-                // call the cb
-                cb(blobInfo.blobUri(), {title: file.name})
-            }
-            reader.readAsDataURL(file)
-        }
-    },
-    menubar: false,
-    plugins: [
-        'advlist autolink lists link image charmap print preview anchor textcolor',
-        'searchreplace visualblocks code fullscreen',
-        'insertdatetime media table contextmenu paste code help wordcount'
-    ],
-    toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-    content_css: [
-        '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-        '//www.tinymce.com/css/codepen.min.css']
-})
+                // call the callback and populate the Title field with the file name
+                cb(blobInfo.blobUri(), { title: file.name });
+            };
+            reader.readAsDataURL(file);
+        };
+
+        input.click();
+    }
+});

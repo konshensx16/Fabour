@@ -324,6 +324,13 @@ POSTS:
     ☐ Also the case where the user remove the entire post
     FILE PICKER DOC: https://www.tiny.cloud/docs/demo/file-picker/
   ☐ Change the desing of the post.create page to something similar to medium (minimal)
+  ☐ Create the database for attachments
+    Schema: ID, filename, path (filename + path), created_at, title (caption)??, post_id, 
+  ☐ Create the end point to handle the images upload. this should return the full path to the image as a response
+    NOTE: i will need to post id so i can persist to the Database
+    Handler Example:  https://www.tiny.cloud/docs/advanced/php-upload-handler/
+      The location key what specifies the location to the file
+    For now jus upload, handle the removale later
      IDEAS: 
        maybe get rid of the borders around the inputs
        Make the body area much bigger (maybe the whole screen or something like that)
@@ -1075,6 +1082,12 @@ VUE & VUEX NOTES:
           ☐ Might want to play a sound for new messages 
           ☐ Create a nice hello message when no conversation is selected, similar to whatsapp
 
+   Refactoring the file system:
+      ✔ Make the file manager as decoupled as possible @done (18-12-02 14:44)
+        Meaning : the current filemanager is spicific to the avatar directory, i need to make a general file manager which means i will be passing the uploading directory to the file in e.g: AvatarManager or AttachmentManager
+        ✔  Get rid of the code from the profilecontroller and replace it with the AvatarManager @done (18-12-02 14:44)  
+          ✔ problem:cannot create directory "" @done (18-12-02 14:44)
 
+      ☐ Like the avatarManager cretae the AttachmentManager
 COMMAND GENERATE ROUTES.JSON: 
   bin/console fos:js-routing:dump --format=json --target=assets/js/routes.json

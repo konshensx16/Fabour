@@ -12,11 +12,40 @@ class FileManager
      */
     private $_container;
 
+    /**
+     * @var String
+     */
+    private $uploadsDirectory;
+
+    /**
+     * FileManager constructor.
+     * @param ContainerInterface $container
+     * @param string $uploadsDirectory
+     * @throws \Exception
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->_container = $container;
     }
 
+    /**
+     * MUST BE CALLED BEFORE ANYTHING ELSE
+     * @param string $uploadsDirectory
+     * @throws \Exception
+     */
+    public function setUploadsDirectory(string $uploadsDirectory)
+    {
+        if (is_null($uploadsDirectory) || $uploadsDirectory === '') {
+            throw new \Exception("The uploads directory cannot be null or empty");
+        }
+        $this->uploadsDirectory = $uploadsDirectory;
+    }
+
+    /**
+     * Return the filename of the uploaded file with the extension
+     * @param UploadedFile $uploadedFile
+     * @return string
+     */
     public function uploadFile(UploadedFile $uploadedFile)
     {
         // check if the file is legit
@@ -25,7 +54,7 @@ class FileManager
             // upload the file
             $filename = $this->generateUniqueName() . '.' . $uploadedFile->guessExtension();
             $uploadedFile->move(
-                $this->getTargetDirectory(),
+                $this->uploadsDirectory,
                 $filename
             );
             return $filename;
@@ -38,15 +67,10 @@ class FileManager
         {
             $filesystem = new Filesystem();
             $filesystem->remove(
-                $this->getTargetDirectory() . '/' . $filename
+                $this->uploadsDirectory . '/' . $filename
             );
         }
 
-    }
-
-    public function getTargetDirectory()
-    {
-        return $this->_container->getParameter('avatars_dir');
     }
 
     /**

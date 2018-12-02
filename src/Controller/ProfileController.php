@@ -8,6 +8,7 @@
     use App\Repository\PostRepository;
     use App\Repository\UserRelationshipRepository;
     use App\Repository\UserRepository;
+    use App\Services\AvatarManager;
     use Doctrine\ORM\EntityManagerInterface;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -24,22 +25,12 @@
      */
     class ProfileController extends AbstractController
     {
+        /** @var AvatarManager $_avatarManager */
+        private $_avatarManager;
 
-        private $_fileManager;
-
-        public function __construct(FileManager $fileManager)
+        public function __construct(AvatarManager $avatarManager)
         {
-            $this->_fileManager = $fileManager;
-        }
-
-        /**
-         * @Route("/profile", name="profile")
-         */
-        public function index()
-        {
-            return $this->render('profile/index.html.twig', [
-                'controller_name' => 'ProfileController',
-            ]);
+            $this->_avatarManager = $avatarManager;
         }
 
         /**
@@ -104,6 +95,9 @@
          * @param Request $request
          * @param EntityManagerInterface $manager
          * @return \Symfony\Component\HttpFoundation\Response
+         * @throws \Exception
+         * @throws \Psr\Container\ContainerExceptionInterface
+         * @throws \Psr\Container\NotFoundExceptionInterface
          */
         public function edit(Request $request, EntityManagerInterface $manager)
         {
@@ -129,23 +123,13 @@
                 /** @var UploadedFile $file */
                 $file = $request->files->get('file');
 
-                // TODO : check if i have a file if i dont then just ignore this section for the avatar
+                // check if i have a file if "don't" then just ignore this section for the avatar
                 if ($file) {
-                    // TODO: generate unique name
-                    $filename = $this->generateUniqueName() . '.' . $file->guessExtension();
 
-                    $file->move(
-                        $this->getUploadsDir(),
-                        $filename
-                    );
-
-                    // TODO: remove the old file if there's any
-                    $this->_fileManager->removeFile($oldFilename);
-
-                    dump($this->getUploadsDir());
-
+                    // upload the file and return the filename
+                    $filenameWithUploadPath = $this->_avatarManager->uploadAvatar($file, $oldFilename);
                     // set the new name to the user
-                    $user->setAvatar($this->getUploadsDirWithoutRoot() . '/' . $filename);
+                    $user->setAvatar($filenameWithUploadPath);
                 }
 
 
