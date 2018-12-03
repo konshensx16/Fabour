@@ -207,4 +207,26 @@ class PostRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+
+    public function findDraftsForUser(int $user_id, int $limit = 10)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->select('p.id', 'p.title', 'p.content', 'u.username', 'sc.name', 'sc.slug', 'p.created_at')
+            ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u')
+            ->innerJoin('p.subCategory', 'sc', Join::WITH, 'p.subCategory = sc')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('u.id', ':user_id'),
+                    $qb->expr()->isNull('p.published_at')
+                )
+            )
+            ->setParameter('user_id', $user_id)
+            ->setMaxResults($limit)
+            ->orderBy('p.created_at', 'DESC')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }

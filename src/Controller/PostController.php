@@ -13,6 +13,7 @@ use App\Entity\UserRelationship;
 use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\BookmarkRepository;
+use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
@@ -182,7 +183,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="display", options={"expose"=true})
+     * @Route("/{id}", name="display", options={"expose"=true}, requirements={"page"="\d+"})
      * @param Request $request
      * @param Post $post
      * @param EntityManagerInterface $em
@@ -270,6 +271,24 @@ class PostController extends AbstractController
                 $this->getUser()->getId(),
                 $post->getId()
             ),
+        ]);
+    }
+
+    /**
+     * @Route("/posts/drafts", name="drafts")
+     * @param PostRepository $postRepository
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function drafts(PostRepository $postRepository)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $currentUser = $this->getUser();
+
+        $posts = $postRepository->findDraftsForUser($currentUser->getId());
+
+        return $this->render('post/drafts.html.twig', [
+            'posts' => $posts
         ]);
     }
 

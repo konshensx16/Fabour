@@ -351,9 +351,9 @@ POSTS:
       ✔ Change the database schema to handle the state where the post is draft or a publication @done (18-12-03 19:58)
         This is defined by the published_at field
       ✔ Only show actual posts for other users (published ones) @done (18-12-03 19:57)
-      ☐ For logged in user neeed to allow him to see his drafts in a separate page (maybe with entire posts doesn't really matter)
+      ✔ For logged in user neeed to allow him to see his drafts in a separate page (maybe with entire posts doesn't really matter) @done (18-12-03 20:18)
       ☐ Add an auto-save functionality that saves the user changes every 30 secs or something similar
-      ☐ Need better error reposting for post publishing
+      ☐ Need better error reposting for post publishing  
         For now just add a "Save draft" button to this, later add the aut-save stuff when everything is working.
       Database Schema:
          Post TABLE :
