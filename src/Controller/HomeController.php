@@ -54,9 +54,9 @@ class HomeController extends AbstractController
      */
     public function index(Request $request, PostRepository $postRepository)
     {
-        dump($postRepository->findPostsWithCategory());
+//        dump($postRepository->findPostsWithCategory());
         return $this->render('home/index.html.twig', [
-            'post' => $postRepository->findPostsWithCategory()
+//            'post' => $postRepository->findPostsWithCategory()
         ]);
     }
 

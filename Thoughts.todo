@@ -348,8 +348,9 @@ POSTS:
 
    DRAFT SYSTEM:
       Creating a draft system so i can avoid some issue with post creation and whatsoever, this will help me with the attachments issue not the mention that people love having these drafts for future use, maybe a work in progress or something like medium and other dropbox paper
-      ☐ Change the database schema to handle the state where the post is draft or a publication
-      ☐ Only show actual posts for other users
+      ✔ Change the database schema to handle the state where the post is draft or a publication @done (18-12-03 19:58)
+        This is defined by the published_at field
+      ✔ Only show actual posts for other users (published ones) @done (18-12-03 19:57)
       ☐ For logged in user neeed to allow him to see his drafts in a separate page (maybe with entire posts doesn't really matter)
       ☐ Add an auto-save functionality that saves the user changes every 30 secs or something similar
       ☐ Need better error reposting for post publishing

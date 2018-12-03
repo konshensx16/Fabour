@@ -2,7 +2,11 @@
  {% block title %}Editing {{ post.title }}{% endblock %}
 
 {% block body %}
-
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success mg-t-20">
+            {{ message }}
+        </div>
+    {% endfor %}
     <div class="section-wrapper mg-t-20">
         {{ form_start(form) }}
             {{ form_errors(form) }}

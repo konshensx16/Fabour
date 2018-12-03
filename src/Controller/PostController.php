@@ -70,7 +70,7 @@ class PostController extends AbstractController
         $em->persist($post);
         $em->flush();
 
-//        return $this->redirect($this->generateUrl('post.edit', ['id' => $post->getId()]));
+        return $this->redirect($this->generateUrl('post.edit', ['id' => $post->getId()]));
 
         $form->handleRequest($request);
         /** @var User $currentUser */
@@ -162,6 +162,13 @@ class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+
+            // set the publish_at date if the publish button was clicked
+            if ($form->get('publish')->isClicked()) {
+                $post->setPublishedAt(new \DateTime());
+                // TODO: add a success message
+                $this->addFlash('success', 'Congratz, your post was successfully published :)');
+            }
             // handle the request and shit
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);

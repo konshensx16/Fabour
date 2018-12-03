@@ -82,12 +82,18 @@ class PostRepository extends ServiceEntityRepository
      */
     public function findRecentlyPublishedPostsByUsernameWithLimit(string $username, int $limit = 10, int $offset = 0)
     {
+        $qb = $this->createQueryBuilder('p');
         // p.id, p.title, p.content, u.username, subcategory.name
-        return $this->createQueryBuilder('p')
+        return $qb
             ->select('p.id', 'p.title', 'p.content', 'u.username', 'sc.name', 'sc.slug', 'p.created_at')
             ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u')
             ->innerJoin('p.subCategory', 'sc', Join::WITH, 'p.subCategory = sc')
-            ->andWhere('u.username = :username')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('u.username', ':username'),
+                    $qb->expr()->isNotNull('p.published_at')
+                )
+            )
             ->setParameter('username', $username)
             ->setMaxResults($limit)
             ->setFirstResult($offset)
@@ -132,18 +138,30 @@ class PostRepository extends ServiceEntityRepository
         $qb
             ->select('p.id', 'p.title', 'p.content', 'p.created_at', 'u.username', 'sc.name', 'sc.slug')
             ->innerJoin('p.subCategory', 'sc', Join::WITH, 'p.subCategory = sc')
-            ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u');
+            ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u')
+            ->where(
+                $qb->expr()->isNotNull('p.published_at')
+            )
+        ;
+
+        dump($qb->getQuery()->getSQL());
 
         return $qb->getQuery()->getResult();
     }
 
     public function findRecentlyPublishedPostsByWithLimit(string $username, int $limit = 10, int $offset = 0)
     {
+        $qb = $this->createQueryBuilder('p');
         // p.id, p.title, p.content, u.username, subcategory.name
-        return $this->createQueryBuilder('p')
+        return $qb
             ->select('p.id', 'p.title', 'p.content', 'u.username', 'sc.name', 'sc.slug', 'p.created_at')
             ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u')
             ->innerJoin('p.subCategory', 'sc', Join::WITH, 'p.subCategory = sc')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->isNotNull('p.published_at')
+                )
+            )
             ->setMaxResults($limit)
             ->setFirstResult($offset)
             ->orderBy('p.created_at', 'DESC')
@@ -178,7 +196,12 @@ class PostRepository extends ServiceEntityRepository
         $qb
             ->select($qb->expr()->count('p.id'))
             ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u')
-            ->where('u.username = :username')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('u.username', ':username'),
+                    $qb->expr()->isNotNull('p.published_at')
+                )
+            )
             ->setParameter('username', $username)
         ;
 
