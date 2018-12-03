@@ -8,14 +8,20 @@
 {% endblock %}
 
 {% block body %}
-
+    {% if errors %}
+        {% for message in errors %}
+            <div class="alert alert-success mg-t-20">
+                {{ dump(message) }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="section-wrapper mg-t-20 medium">
         {{ form_start(form) }}
             {{ form_errors(form) }}
             {{ form_widget(form) }}
 
-            <button type="submit" class="btn btn-primary btn-block btn-signin">Publish</button>
-
+        {{ form_row(form.save) }}
+        {{ form_row(form.publish) }}
         {{ form_end(form) }}
     </div><!-- section-wrapper -->
 

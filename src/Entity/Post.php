@@ -60,6 +60,11 @@ class Post
     private $created_at;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $published_at;
+
+    /**
      * @ORM\Column(type="integer", options={"default": 0})
      */
     private $views_counter = 0;
@@ -214,5 +219,17 @@ class Post
     public function __tostring()
     {
         return $this->title . ' by: ' . $this->user . PHP_EOL;
+    }
+
+    public function getPublishedAt(): ?\DateTimeInterface
+    {
+        return $this->published_at;
+    }
+
+    public function setPublishedAt(?\DateTimeInterface $published_at): self
+    {
+        $this->published_at = $published_at;
+
+        return $this;
     }
 }

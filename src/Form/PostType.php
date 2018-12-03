@@ -85,6 +85,19 @@ class PostType extends AbstractType
                 }
             }
         );
+
+        $builder
+            ->add('save', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-warning btn-block pull-right'
+                ]
+            ])
+            ->add('publish', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-primary btn-block'
+                ]
+            ])
+        ;
     }
 
     private function addSubCategoryField(FormInterface $form, $options = [])

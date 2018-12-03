@@ -331,12 +331,32 @@ POSTS:
     Handler Example:  https://www.tiny.cloud/docs/advanced/php-upload-handler/
       The location key what specifies the location to the file
     For now jus upload, handle the removale later
+
+   ☐ @critical When uploading images for a new psot, the post is not created yet which means the image will not have a post_id for the attachment table
+     What i can is when the user creates a new post (while writing the post), i can send a long a post_id which i can use as an html attribute, when the user publishes then it's fine, but when the user doesn;t refresh i should remove the post and not leave it there.
+     ☐ WHY USING AN ATTACHMENT TABLE AT ALL.
+       NOTE: since the attachment url is saved in the post content itself there's "no" need to save it in the attachments table 
+       WHY? : having an attachments table allows me to remove the attachments quickly and efficiently from the server (uploads/attachments) because each post will have a post_id that it belongs to, 
+   ☐ For removal my previous approach was incorrect, i only need to remove the attachments when the user removes the entire post, or when he updates and saves the the changes, then i just need to get rid of the removed photos,
+
      IDEAS: 
        maybe get rid of the borders around the inputs
        Make the body area much bigger (maybe the whole screen or something like that)
        Pull the category and sub category up next to the title (maybe both cat and sub cat on the same row, above the title )
        Move the publish button to the top of the list 
        Make the container fluid to use more space on the sides
+
+   DRAFT SYSTEM:
+      Creating a draft system so i can avoid some issue with post creation and whatsoever, this will help me with the attachments issue not the mention that people love having these drafts for future use, maybe a work in progress or something like medium and other dropbox paper
+      ☐ Change the database schema to handle the state where the post is draft or a publication
+      ☐ Only show actual posts for other users
+      ☐ For logged in user neeed to allow him to see his drafts in a separate page (maybe with entire posts doesn't really matter)
+      ☐ Add an auto-save functionality that saves the user changes every 30 secs or something similar
+      ☐ Need better error reposting for post publishing
+        For now just add a "Save draft" button to this, later add the aut-save stuff when everything is working.
+      Database Schema:
+         Post TABLE :
+           Add another fields called published_at, if this value is set to a date then it means the post is a publication and the other users should be able to see it, if NULL then this is a draft and other users should not be able to see this.
 
 
   
@@ -1090,7 +1110,7 @@ VUE & VUEX NOTES:
 
       ✔ Like the avatarManager cretae the AttachmentManager @done (18-12-02 14:58)
       ☐ Need to persist the attachment information to the databse
-        Might need to include the post_id 
+        Might need to include the 
       ☐ When removing the image i should remove it from the attachments folder too
 COMMAND GENERATE ROUTES.JSON: 
   bin/console fos:js-routing:dump --format=json --target=assets/js/routes.json

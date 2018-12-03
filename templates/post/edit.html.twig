@@ -5,30 +5,27 @@
 
     <div class="section-wrapper mg-t-20">
         {{ form_start(form) }}
+            {{ form_errors(form) }}
             {{ form(form) }}
-            <button type="submit" class="btn btn-primary btn-block btn-signin">Save changes</button>
-
         {{ form_end(form) }}
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('assets/lib/medium-editor/js/medium-editor.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script src="{{ asset('build/post.js') }}"></script>
     <script>
-        $(function(){
+        $(function() {
             'use strict';
             // Inline editor
-            var editor = new MediumEditor('.editable');
-            // TODO: change all the code below to non jquery code
 
-            var $post_category = $("#post_category")
-            var $token = $("#post_token")
+            // TODO: change all the code below to non jquery code
+            let $post_category = $("#post_category")
+            let $token = $("#post_token")
 
             $post_category.change(function ()
             {
-                var $form = $(this).closest('form')
+                let $form = $(this).closest('form')
 
-                var data = {}
+                let data = {}
 
                 data[$token.attr('name')] = $token.val()
                 data[$post_category.attr('name')] = $post_category.val()

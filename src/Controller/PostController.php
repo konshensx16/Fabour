@@ -59,18 +59,31 @@ class PostController extends AbstractController
     {
         // i need the form
         $post = new Post();
-
+        $post->setTitle('This is just a draft...');
+        $post->setContent('Remove this and start writing here...');
         $form = $this->createForm(PostType::class, $post, [
             'action' => $this->generateUrl('post.create')
         ]);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($post);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('post.edit', ['id' => $post->getId()]));
 
         $form->handleRequest($request);
         /** @var User $currentUser */
         $currentUser = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // TODO: set the publish_at date if the publish button was clicked
+            if ($form->get('publish')->isClicked()) {
+                $post->setPublishedAt(new \DateTime());
+            }
+
             // handle the request and shit
-            $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
 
@@ -131,7 +144,8 @@ class PostController extends AbstractController
             return $this->redirect($this->generateUrl('post.display', ['id' => $post->getId()]));
         }
         return $this->render('post/index.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'errors' => $form->getErrors(),
         ]);
     }
 
@@ -146,6 +160,8 @@ class PostController extends AbstractController
         $form = $this->createForm(PostType::class, $post);
 
         $form->handleRequest($request);
+
+        dump($post);
 
         if ($form->isSubmitted()) {
             // handle the request and shit
