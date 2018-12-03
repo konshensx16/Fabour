@@ -70,7 +70,7 @@ class PostController extends AbstractController
         $em->persist($post);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('post.edit', ['id' => $post->getId()]));
+//        return $this->redirect($this->generateUrl('post.edit', ['id' => $post->getId()]));
 
         $form->handleRequest($request);
         /** @var User $currentUser */
@@ -160,8 +160,6 @@ class PostController extends AbstractController
         $form = $this->createForm(PostType::class, $post);
 
         $form->handleRequest($request);
-
-        dump($post);
 
         if ($form->isSubmitted()) {
             // handle the request and shit
