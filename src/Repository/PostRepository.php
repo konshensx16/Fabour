@@ -97,7 +97,7 @@ class PostRepository extends ServiceEntityRepository
             ->setParameter('username', $username)
             ->setMaxResults($limit)
             ->setFirstResult($offset)
-            ->orderBy('p.created_at', 'DESC')
+            ->orderBy('p.published_at', 'DESC')
             ->getQuery()
             ->getResult()
         ;
@@ -154,7 +154,7 @@ class PostRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('p');
         // p.id, p.title, p.content, u.username, subcategory.name
         return $qb
-            ->select('p.id', 'p.title', 'p.content', 'u.username', 'sc.name', 'sc.slug', 'p.created_at')
+            ->select('p.id', 'p.title', 'p.content', 'u.username', 'sc.name', 'sc.slug', 'p.published_at AS created_at')
             ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u')
             ->innerJoin('p.subCategory', 'sc', Join::WITH, 'p.subCategory = sc')
             ->where(
@@ -164,7 +164,7 @@ class PostRepository extends ServiceEntityRepository
             )
             ->setMaxResults($limit)
             ->setFirstResult($offset)
-            ->orderBy('p.created_at', 'DESC')
+            ->orderBy('p.published_at', 'DESC')
             ->getQuery()
             ->getResult()
         ;
@@ -172,13 +172,19 @@ class PostRepository extends ServiceEntityRepository
 
     /**
      * Returns the total posts count
+     * NOTE: this only needs to return the count of the post that are published and not include drafts
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getTotalPosts()
     {
         $qb = $this->createQueryBuilder('p');
 
-        $qb->select($qb->expr()->count('p.id'));
+        $qb
+            ->select($qb->expr()->count('p.id'))
+            ->where(
+                $qb->expr()->isNotNull('p.published_at')
+            )
+        ;
 
         return $qb->getQuery()->getSingleScalarResult();
     }
