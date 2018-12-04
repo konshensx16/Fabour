@@ -52,19 +52,14 @@ class PostController extends AbstractController
 
     /**
      * @Route("/create", name="create")
-     * @param Request $request
-     * @param UserRelationshipRepository $userRelationshipRepository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function create(Request $request, UserRelationshipRepository $userRelationshipRepository)
+    public function create()
     {
         // i need the form
         $post = new Post();
         $post->setTitle('This is just a draft...');
         $post->setContent('Remove this and start writing here...');
-        $form = $this->createForm(PostType::class, $post, [
-            'action' => $this->generateUrl('post.create')
-        ]);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -72,107 +67,87 @@ class PostController extends AbstractController
         $em->flush();
 
         return $this->redirect($this->generateUrl('post.edit', ['id' => $post->getId()]));
-
-        $form->handleRequest($request);
-        /** @var User $currentUser */
-        $currentUser = $this->getUser();
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // TODO: set the publish_at date if the publish button was clicked
-            if ($form->get('publish')->isClicked()) {
-                $post->setPublishedAt(new \DateTime());
-            }
-
-            // handle the request and shit
-            $em->persist($post);
-            $em->flush();
-
-            // TODO: send a notification to all friends of the publisher
-            // get all friends of the user
-            $friends = $userRelationshipRepository->findUserFriendsById($currentUser->getId());
-
-            // TODO: this code will have to move somewhere else
-            $notificationObject = new NotificationObject();
-            $notificationObject->setEntityId($post->getId());
-            $notificationObject->setEntityTypeId(
-                $this->getEntityTypeId(Post::POST_TYPE_ID)
-            );
-            $notificationObject->setStatus(1);
-
-            $notificationChange = new NotificationChange();
-            $notificationChange->setNotificationObject($notificationObject);
-            $notificationChange->setActor($currentUser);
-            $notificationChange->setStatus(1);
-
-            $em->persist($notificationObject);
-            $em->persist($notificationChange);
-
-            // i only want the related user (just the username)
-            // create an array with tht related users usernames
-            $friendsNames = [];
-            /** @var UserRelationship $friend */
-            foreach ($friends as $friend) {
-                // create a notification for every friend on the listdi
-                $notification = new Notification();
-                $notification->setNotificationObject($notificationObject);
-                // this is for every single friend in the list
-                $notification->setNotifier($friend->getRelatedUser());
-                $notification->setStatus(1);
-
-                $em->persist($notification);
-
-                $friendsNames[] = $friend->getRelatedUser()->getUsername();
-            }
-
-            $em->flush();
-            // send the notification
-            try {
-                $this->pusher->push([
-                    'username' => $currentUser->getUsername(),
-                    'action' => 'just published a new post',
-                    'notifiers' => $friendsNames,
-                    'avatar' => $currentUser->getAvatar(),
-                    'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
-                ], 'notification_topic');
-            } catch (\Exception $e) {
-                $e->getTrace();
-            }
-
-
-            $this->addFlash('success', 'Post published successfully!');
-
-            return $this->redirect($this->generateUrl('post.display', ['id' => $post->getId()]));
-        }
-        return $this->render('post/index.html.twig', [
-            'form' => $form->createView(),
-            'errors' => $form->getErrors(),
-        ]);
     }
 
     /**
      * @Route("/{id}/edit", name="edit")
      * @param Request $request
      * @param Post $post
+     * @param UserRelationshipRepository $userRelationshipRepository
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request, Post $post)
+    public function edit(Request $request, Post $post, UserRelationshipRepository $userRelationshipRepository)
     {
         $form = $this->createForm(PostType::class, $post);
 
         $form->handleRequest($request);
 
+        $currentUser = $this->getUser();
+
         if ($form->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
+            // post is being persisted here and inside the if statement
+            $em->persist($post);
+
 
             // set the publish_at date if the publish button was clicked
             if ($form->get('publish')->isClicked()) {
                 $post->setPublishedAt(new \DateTime());
+                $em->persist($post);
+
+                // TODO: send a notification to all friends of the publisher
+                // get all friends of the user
+                $friends = $userRelationshipRepository->findUserFriendsById($currentUser->getId());
+
+                // TODO: this code will have to move somewhere else
+                $notificationObject = new NotificationObject();
+                $notificationObject->setEntityId($post->getId());
+                $notificationObject->setEntityTypeId(
+                    $this->getEntityTypeId(Post::POST_TYPE_ID)
+                );
+                $notificationObject->setStatus(1);
+
+                $notificationChange = new NotificationChange();
+                $notificationChange->setNotificationObject($notificationObject);
+                $notificationChange->setActor($currentUser);
+                $notificationChange->setStatus(1);
+
+                $em->persist($notificationObject);
+                $em->persist($notificationChange);
+
+                // i only want the related user (just the username)
+                // create an array with the related users username
+                $friendsNames = [];
+                /** @var UserRelationship $friend */
+                foreach ($friends as $friend) {
+                    // create a notification for every friend on the list
+                    $notification = new Notification();
+                    $notification->setNotificationObject($notificationObject);
+                    // this is for every single friend in the list
+                    $notification->setNotifier($friend->getRelatedUser());
+                    $notification->setStatus(1);
+
+                    $em->persist($notification);
+
+                    $friendsNames[] = $friend->getRelatedUser()->getUsername();
+                }
+
+                // send the notification
+                try {
+                    $this->pusher->push([
+                        'username' => $currentUser->getUsername(),
+                        'action' => 'just published a new post',
+                        'notifiers' => $friendsNames,
+                        'avatar' => $currentUser->getAvatar(),
+                        'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
+                    ], 'notification_topic');
+                } catch (\Exception $e) {
+                    $e->getTrace();
+                }
                 // TODO: add a success message
-                $this->addFlash('success', 'Congratz, your post was successfully published :)');
+                $this->addFlash('success', 'Congratulations, your post was successfully published :)');
             }
             // handle the request and shit
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($post);
             $em->flush();
 
         }
