@@ -15,6 +15,7 @@ use App\Form\PostType;
 use App\Repository\BookmarkRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
+use App\Services\NotificationManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
@@ -41,12 +42,17 @@ class PostController extends AbstractController
      * @var Packages
      */
     private $packages;
+    /**
+     * @var NotificationManager
+     */
+    private $notificationManager;
 
-    public function __construct(TopicManager $topicManager, PusherDecorator $pusher, Packages $packages)
+    public function __construct(TopicManager $topicManager, PusherDecorator $pusher, Packages $packages, NotificationManager $notificationManager)
     {
         $this->topicManager = $topicManager;
         $this->pusher = $pusher;
         $this->packages = $packages;
+        $this->notificationManager = $notificationManager;
     }
 
 
@@ -191,51 +197,11 @@ class PostController extends AbstractController
             $em->persist($comment);
             $em->flush();
 
+            // NOTE: CODE WAS MOVED TO ThE NOTIFICATION MANAGER SERVICE
+            $this->notificationManager->persistCommentNotification($post, $comment, $this->getUser());
+            // NOTE: CODE WAS MOVED TO THE FUNCTION
+            $this->notificationManager->sendNotificationComment($post, $comment);
 
-            // TODO: put this code in an event or a service and trigger the event
-            // NOTE: make sure to not make a typo as this wold ruin everything from this point on
-            $entity_type_id = $this->getEntityTypeId(Comment::COMMENT_TYPE_ID);
-            $notificationObject = new NotificationObject();
-
-            $notificationObject->setEntityTypeId($entity_type_id);
-            $notificationObject->setEntityId($comment->getId());
-            $notificationObject->setStatus(1); // not sure what this field is for
-
-            $notificationChange = new NotificationChange();
-            $notificationChange->setActor($this->getUser());
-            $notificationChange->setNotificationObject($notificationObject);
-            $notificationChange->setStatus(1);
-
-            $notification = new Notification();
-            $notification->setNotificationObject($notificationObject);
-            // this is the person who should get the notification, in this case all the friends ?
-            $notification->setNotifier($post->getUser());
-            $notification->setStatus(1);
-
-            $em->persist($notificationObject);
-            $em->persist($notificationChange);
-            $em->persist($notification);
-
-            $em->flush();
-
-            // TODO: maybe all this code should be inside an event listener (onCommentPosted!)
-            // TODO: if the current logged in user is the author, then no need to send a notification!
-            if (!($this->getUser() === $post->getUser())) {
-                try {
-                    $currentUser = $this->getUser();
-                    $this->pusher->push([
-                        // this is for the real-time notification, for constructing the notificaion when it arrives
-                        // to the front'end
-                        'username' => $currentUser->getUsername(),
-                        'action' => 'just commented on your post',
-                        'notifier' => $post->getUser()->getUsername(),
-                        'avatar' => $currentUser->getAvatar(),
-                        'url' => $this->generateUrl('post.display', ['id' => $post->getId()]) . '#' . $comment->getId(),
-                    ], 'notification_topic');
-                } catch (\Exception $e) {
-                    $e->getTrace();
-                }
-            }
             // don't really need to catch anything! i was just testing if it throws any exceptions
             $this->addFlash('success', 'Your comment was posted!');
         }

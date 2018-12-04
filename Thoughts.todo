@@ -357,6 +357,13 @@ POSTS:
       ☐ Move the logic of publishing a post (The notification stuff) from the create (since it's not doing anything at the moment but create the post and redirect), to the update action (when the user presses publish then notify the users of the new post)
         ✔ First just move the code and make sure it still works! @done (18-12-04 18:36)
         ☐ Refactor the notification code into a separate service. to clear the controller!
+          THOUGHTS AND NOTES:
+            Maybe i can create a service for creating the notification, this means create the notification object and Change 
+              Create different function for Post notifications, Comment and also bookmark ? and just call them where needed 
+            Put the function that returns the array of friends names in the UserManager service ? 
+            Sending the notifcation can definitely be put somewhere else, in a service that does that
+            ✔ Start by refactoring the comment code (EASY) @done (18-12-04 19:22)
+            
       ☐ Add an auto-save functionality that saves the user changes every 30 secs or something similar
       ☐ Need better error reposting for post publishing  
         For now just add a "Save draft" button to this, later add the aut-save stuff when everything is working.
