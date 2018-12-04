@@ -352,6 +352,8 @@ POSTS:
         This is defined by the published_at field
       ✔ Only show actual posts for other users (published ones) @done (18-12-03 19:57)
       ✔ For logged in user neeed to allow him to see his drafts in a separate page (maybe with entire posts doesn't really matter) @done (18-12-03 20:18)
+      ✔ When editing an article or a draft if its a oublication just display an update button or save changes button, because it's already published, this code will be in the form event @done (18-12-04 18:13)
+        I need to add a remove buttom somewhere in the same page, in case the user wants to get rid of the post!
       ☐ Add an auto-save functionality that saves the user changes every 30 secs or something similar
       ☐ Need better error reposting for post publishing  
         For now just add a "Save draft" button to this, later add the aut-save stuff when everything is working.

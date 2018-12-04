@@ -11868,6 +11868,7 @@ textarea.parsley-success:focus {
   letter-spacing: 1px; }
 
 .section-wrapper {
+  overflow: hidden;
   border: 1px solid #ced4da;
   background-color: #fff;
   padding: 20px; }

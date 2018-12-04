@@ -56,6 +56,7 @@ class PostType extends AbstractType
             function (FormEvent $event)
             {
                 $form = $event->getForm(); // entire form
+                /** @var Post $data */
                 $data = $event->getData(); // form data
 
                 /** @var SubCategory $subCategory */
@@ -83,21 +84,25 @@ class PostType extends AbstractType
                         'choices' => []
                     ]);
                 }
+
+                // TODO: display buttons according to the published_at entity
+                $form->add('save', SubmitType::class, [
+                    'attr' => [
+                        'class' => 'btn btn-warning btn-block pull-right'
+                    ]
+                ]);
+
+                if (!$data->getPublishedAt()) {
+                    $form
+                        ->add('publish', SubmitType::class, [
+                            'attr' => [
+                                'class' => 'btn btn-primary btn-block'
+                            ]
+                        ])
+                    ;
+                }
             }
         );
-
-        $builder
-            ->add('save', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-warning btn-block pull-right'
-                ]
-            ])
-            ->add('publish', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary btn-block'
-                ]
-            ])
-        ;
     }
 
     private function addSubCategoryField(FormInterface $form, $options = [])
