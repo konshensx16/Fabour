@@ -9,9 +9,11 @@ use App\Entity\NotificationObject;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserRelationship;
+use App\Repository\UserRelationshipRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -35,15 +37,20 @@ class NotificationManager
      */
     private $pusher;
     /**
-     * @var Router
+     * @var RouterInterface
      */
     private $router;
+    /**
+     * @var UserRelationshipRepository
+     */
+    private $userRelationshipRepository;
 
     public function __construct(PusherDecorator $pusher,
                                 ContainerInterface $container,
                                 EntityManagerInterface $entityManager,
                                 Security $security,
-                                RouterInterface $router
+                                RouterInterface $router,
+                                UserRelationshipRepository $userRelationshipRepository
     )
     {
 
@@ -52,27 +59,47 @@ class NotificationManager
         $this->security = $security;
         $this->pusher = $pusher;
         $this->router = $router;
+        $this->userRelationshipRepository = $userRelationshipRepository;
     }
 
-    public function persistPostNotification()
+    public function persistPostNotification(int $user_id, int $entity_id, int $entity_type_id, User $actor)
     {
+        // send a notification to all friends of the publisher
+        // get all friends of the user
+        $friends = $this->userRelationshipRepository->findUserFriendsById($user_id);
 
-    }
+        // TODO: this code will have to move somewhere else
+        $notificationObject = new NotificationObject();
+        $notificationObject->setEntityId($entity_id);
+        $notificationObject->setEntityTypeId($entity_type_id);
+        $notificationObject->setStatus(1);
 
-    /**
-     * Gets the entity_type_id from the service container based the given $name
-     * Available entity types are
-     * Post
-     * Comment
-     * Bookmark
-     * FriendRequest
-     * FriendApproval
-     * @param string $name
-     * @return mixed
-     */
-    private function getEntityTypeId(string $name)
-    {
-        return $this->container->getParameter($name . '_type_id');
+        $notificationChange = new NotificationChange();
+        $notificationChange->setNotificationObject($notificationObject);
+        $notificationChange->setActor($actor); // current user
+        $notificationChange->setStatus(1);
+
+        $this->entityManager->persist($notificationObject);
+        $this->entityManager->persist($notificationChange);
+
+        // i only want the related user (just the username)
+        // create an array with the related users username
+        $friendsNames = [];
+        /** @var UserRelationship $friend */
+        foreach ($friends as $friend) {
+            // create a notification for every friend on the list
+            $notification = new Notification();
+            $notification->setNotificationObject($notificationObject);
+            // this is for every single friend in the list
+            $notification->setNotifier($friend->getRelatedUser());
+            $notification->setStatus(1);
+
+            $this->entityManager->persist($notification);
+
+            $friendsNames[] = $friend->getRelatedUser()->getUsername();
+        }
+
+        return $friendsNames;
     }
 
     /**
@@ -154,6 +181,16 @@ class NotificationManager
             }
         }
     }
+
+    public function sendNotificationToMultipleUsers(array $data)
+    {
+        try {
+            $this->pusher->push($data, 'notification_topic');
+        } catch (\Exception $e) {
+            $e->getTrace();
+        }
+    }
+
 
     public function persistFriendshipNotification(User $relatingUser, User $relatedUser, string $type)
     {

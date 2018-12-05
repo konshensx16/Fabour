@@ -101,56 +101,25 @@ class PostController extends AbstractController
                 $post->setPublishedAt(new \DateTime());
                 $em->persist($post);
 
-                // TODO: send a notification to all friends of the publisher
-                // get all friends of the user
-                $friends = $userRelationshipRepository->findUserFriendsById($currentUser->getId());
-
-                // TODO: this code will have to move somewhere else
-                $notificationObject = new NotificationObject();
-                $notificationObject->setEntityId($post->getId());
-                $notificationObject->setEntityTypeId(
-                    $this->getEntityTypeId(Post::POST_TYPE_ID)
+                // CODE HERE WAS MOVED TO THE FUNCTION
+                $friendsNames = $this->notificationManager->persistPostNotification(
+                    $currentUser->getId(),
+                    $post->getId(),
+                    $this->getEntityTypeId(Post::POST_TYPE_ID),
+                    $currentUser
                 );
-                $notificationObject->setStatus(1);
-
-                $notificationChange = new NotificationChange();
-                $notificationChange->setNotificationObject($notificationObject);
-                $notificationChange->setActor($currentUser);
-                $notificationChange->setStatus(1);
-
-                $em->persist($notificationObject);
-                $em->persist($notificationChange);
-
-                // i only want the related user (just the username)
-                // create an array with the related users username
-                $friendsNames = [];
-                /** @var UserRelationship $friend */
-                foreach ($friends as $friend) {
-                    // create a notification for every friend on the list
-                    $notification = new Notification();
-                    $notification->setNotificationObject($notificationObject);
-                    // this is for every single friend in the list
-                    $notification->setNotifier($friend->getRelatedUser());
-                    $notification->setStatus(1);
-
-                    $em->persist($notification);
-
-                    $friendsNames[] = $friend->getRelatedUser()->getUsername();
-                }
 
                 // send the notification
-                try {
-                    $this->pusher->push([
-                        'username' => $currentUser->getUsername(),
-                        'action' => 'just published a new post',
-                        'notifiers' => $friendsNames,
-                        'avatar' => $currentUser->getAvatar(),
-                        'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
-                    ], 'notification_topic');
-                } catch (\Exception $e) {
-                    $e->getTrace();
-                }
-                // TODO: add a success message
+                $notification = [
+                    'username' => $currentUser->getUsername(),
+                    'action' => 'just published a new post',
+                    'notifiers' => $friendsNames,
+                    'avatar' => $currentUser->getAvatar(),
+                    'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
+                ];
+
+                $this->notificationManager->sendNotificationToMultipleUsers($notification);
+
                 $this->addFlash('success', 'Congratulations, your post was successfully published :)');
             }
             // handle the request and shit

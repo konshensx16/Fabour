@@ -354,9 +354,9 @@ POSTS:
       ✔ For logged in user neeed to allow him to see his drafts in a separate page (maybe with entire posts doesn't really matter) @done (18-12-03 20:18)
       ✔ When editing an article or a draft if its a oublication just display an update button or save changes button, because it's already published, this code will be in the form event @done (18-12-04 18:13)
         I need to add a remove buttom somewhere in the same page, in case the user wants to get rid of the post!
-      ☐ Move the logic of publishing a post (The notification stuff) from the create (since it's not doing anything at the moment but create the post and redirect), to the update action (when the user presses publish then notify the users of the new post)
+      ✔ Move the logic of publishing a post (The notification stuff) from the create (since it's not doing anything at the moment but create the post and redirect), to the update action (when the user presses publish then notify the users of the new post) @done (18-12-05 20:29)
         ✔ First just move the code and make sure it still works! @done (18-12-04 18:36)
-        ☐ Refactor the notification code into a separate service. to clear the controller!
+        ✔ Refactor the notification code into a separate service. to clear the controller! @done (18-12-05 20:12)
           THOUGHTS AND NOTES:
             Maybe i can create a service for creating the notification, this means create the notification object and Change 
               Create different function for Post notifications, Comment and also bookmark ? and just call them where needed 
@@ -365,6 +365,7 @@ POSTS:
             ✔ Start by refactoring the comment code (EASY) @done (18-12-04 19:22)
             ✔ Refactor the bookmark code @done (18-12-05 19:42)
             ✔ Refactor the friendship code into the notificationManager @done (18-12-05 20:10)
+        ✔ Refactor the post publishing code into a the notificationManager if possible @done (18-12-05 20:29)
             
 
       ☐ Add an auto-save functionality that saves the user changes every 30 secs or something similar
