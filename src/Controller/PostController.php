@@ -198,6 +198,8 @@ class PostController extends AbstractController
             $em->flush();
 
             // NOTE: CODE WAS MOVED TO ThE NOTIFICATION MANAGER SERVICE
+            //      i feel like this code should return some number or a bool, that i can use to decide
+            //      either the send the notification or not (in case of failure)
             $this->notificationManager->persistCommentNotification($post, $comment, $this->getUser());
             // NOTE: CODE WAS MOVED TO THE FUNCTION
             $this->notificationManager->sendNotificationComment($post, $comment);

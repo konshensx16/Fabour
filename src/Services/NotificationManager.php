@@ -109,6 +109,41 @@ class NotificationManager
         $this->entityManager->flush();
     }
 
+    /**
+     * This will persist the notification to the database, does not work for post currently,
+     * to persist a post notification use the dedicated function for that persistPostNotification
+     * @param int $entity_id
+     * @param int $entity_type_id
+     * @param User $notifier
+     */
+    public function persistNotification(int $entity_id, int $entity_type_id, User $notifier)
+    {
+        $notificationObject = new NotificationObject();
+        $notificationObject->setEntityId($entity_id);
+        $notificationObject->setEntityTypeId(
+            $this->getEntityTypeId($entity_type_id)
+        );
+        $notificationObject->setStatus(1);
+
+        $notificationChange = new NotificationChange();
+        $notificationChange->setNotificationObject($notificationObject);
+        $notificationChange->setActor($this->security->getUser());
+        $notificationChange->setStatus(1);
+
+        $this->entityManager->persist($notificationObject);
+        $this->entityManager->persist($notificationChange);
+
+        $notification = new Notification();
+        $notification->setNotificationObject($notificationObject);
+        // this is for every single friend in the list
+        // notifier is the person to notify
+        $notification->setNotifier($notifier);
+        $notification->setStatus(1);
+
+        $this->entityManager->persist($notification);
+        $this->entityManager->flush();
+    }
+
     public function sendNotificationComment(Post $post, Comment $comment)
     {
         // TODO: maybe all this code should be inside an event listener (onCommentPosted!)

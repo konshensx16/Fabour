@@ -63,8 +63,14 @@ class PostRepository extends ServiceEntityRepository
 
     public function findRecentlyPublishedPostsWithUserIdWithLimit(int $user_id, int $limit)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.user = :user_id')
+        $qb = $this->createQueryBuilder('p');
+        return $qb
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('p.user', ':user_id'),
+                    $qb->expr()->isNotNull('p.published_at')
+                )
+            )
             ->setParameter('user_id', $user_id)
             ->setMaxResults($limit)
             ->orderBy('p.created_at', 'DESC')
