@@ -8,6 +8,7 @@ use App\Entity\NotificationChange;
 use App\Entity\NotificationObject;
 use App\Entity\Post;
 use App\Entity\User;
+use App\Entity\UserRelationship;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Psr\Container\ContainerInterface;
@@ -152,6 +153,17 @@ class NotificationManager
                 $e->getTrace();
             }
         }
+    }
+
+    public function persistFriendshipNotification(User $relatingUser, User $relatedUser, string $type)
+    {
+        $friendship = new UserRelationship();
+        $friendship->setRelatingUser($relatingUser);
+        $friendship->setRelatedUser($relatedUser);
+        $friendship->setType($type);
+
+        $this->entityManager->persist($friendship);
+        $this->entityManager->flush();
     }
 
 

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\UserRelationship;
 use App\Repository\UserRelationshipRepository;
+use App\Services\NotificationManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
@@ -35,12 +36,17 @@ class FriendsController extends AbstractController
      * @var UserManager
      */
     private $userManager;
+    /**
+     * @var NotificationManager
+     */
+    private $notificationManager;
 
-    public function __construct(PusherDecorator $pusher, Packages $packages, UserManager $userManager)
+    public function __construct(PusherDecorator $pusher, Packages $packages, UserManager $userManager, NotificationManager $notificationManager)
     {
         $this->userManager = $userManager;
         $this->pusher = $pusher;
         $this->packages = $packages;
+        $this->notificationManager = $notificationManager;
     }
 
 
@@ -60,6 +66,7 @@ class FriendsController extends AbstractController
      * @Route("/{id}/add", name="addAsFriend")
      * @param User $user
      * @param UserRelationshipRepository $userRelationshipRepository
+     * @param EntityManagerInterface $entityManager
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -87,34 +94,18 @@ class FriendsController extends AbstractController
         );
 
         if (!$relationship) {
-            // i need to two records in the db
-            // if nothing in the db then add the record
-            $friendship = new UserRelationship();
-            $friendship->setRelatingUser($currentUser);
-            $friendship->setRelatedUser($user);
-            // using some constants from the userRelationship class just in case i wanted to change them later
-            //  also to take advantage of phpstorm autocomplete
-            $friendship->setType(UserRelationship::PENDING);
+            // CODE HERE WAS MOVED TO THE FUNCTION
 
-            // using some constants from the userRelationship class just in case i wanted to change them later
-            //  also to take advantage of phpstorm autocomplete
-            $entityManager->persist($friendship);
-            $entityManager->flush();
+            $this->notificationManager->persistFriendshipNotification($currentUser, $user, UserRelationship::PENDING);
 
-            // TODO: send a real-time notification to the related user ($user)
-            try {
-                $this->pusher->push([
-                    // this is for the real-time notification, for constructing the notificaion when it arrive
-                    // to the front'end
-                    'action' => 'wants to add you as a friend',
-                    'avatar' => $currentUser->getAvatar(),
-                    'notifier' => $user->getUsername(),
-                    'url' => $this->generateUrl('friends.pending'),
-                    'username' => $currentUser->getUsername(),
-                ], 'notification_topic');
-            } catch (\Exception $e) {
-                $e->getTrace();
-            }
+            $notification = [
+                'action' => 'wants to add you as a friend',
+                'avatar' => $currentUser->getAvatar(),
+                'notifier' => $user->getUsername(),
+                'url' => $this->generateUrl('friends.pending'),
+                'username' => $currentUser->getUsername(),
+            ];
+            $this->notificationManager->sendNotification($user, $notification);
         }
 
         return $this->redirect($this->generateUrl('profile.userProfile', ['username' => $user->getUsername()]));
@@ -159,32 +150,23 @@ class FriendsController extends AbstractController
         );
         // check if the record exists
         if ($relationship) {
-            // TODO: update the record type to friend
             $relationship->setType(UserRelationship::FRIEND);
 
-            // TODO: add another record for bi-directional relation
-            $newRelationship = new UserRelationship();
-            $newRelationship->setRelatingUser($currentUser);
-            $newRelationship->setRelatedUser($user);
-            $newRelationship->setType(UserRelationship::FRIEND);
+            $this->notificationManager->persistFriendshipNotification($currentUser, $user, UserRelationship::FRIEND);
 
             $entityManager->persist($relationship);
-            $entityManager->persist($newRelationship);
 
-            // TODO: send a real-time notification to the related user ($user)
-            try {
-                $this->pusher->push([
-                    // this is for the real-time notification, for constructing the notification when it arrive
-                    // to the front'end
-                    'action' => 'is now in your friends list',
-                    'avatar' => $currentUser->getAvatar(),
-                    'notifier' => $user->getUsername(),
-                    'url' => $this->generateUrl('profile.userProfile', ['username' => $currentUser->getUsername()]),
-                    'username' => $currentUser->getUsername(),
-                ], 'notification_topic');
-            } catch (\Exception $e) {
-                $e->getTrace();
-            }
+            $notification = [
+                // this is for the real-time notification, for constructing the notification when it arrive
+                // to the front'end
+                'action' => 'is now in your friends list',
+                'avatar' => $currentUser->getAvatar(),
+                'notifier' => $user->getUsername(),
+                'url' => $this->generateUrl('profile.userProfile', ['username' => $currentUser->getUsername()]),
+                'username' => $currentUser->getUsername(),
+            ];
+
+            $this->notificationManager->sendNotification($user, $notification);
 
             $entityManager->flush();
 
