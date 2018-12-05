@@ -28,6 +28,5 @@ class CommentListener
             // this should be enough for now
             $comment->setUser($currentUser);
         }
-        dump($this);
     }
 }

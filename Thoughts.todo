@@ -332,7 +332,7 @@ POSTS:
       The location key what specifies the location to the file
     For now jus upload, handle the removale later
 
-   ☐ @critical When uploading images for a new psot, the post is not created yet which means the image will not have a post_id for the attachment table
+   ☐ @critical When uploading images for a new post, the post is not created yet which means the image will not have a post_id for the attachment table
      What i can is when the user creates a new post (while writing the post), i can send a long a post_id which i can use as an html attribute, when the user publishes then it's fine, but when the user doesn;t refresh i should remove the post and not leave it there.
      ☐ WHY USING AN ATTACHMENT TABLE AT ALL.
        NOTE: since the attachment url is saved in the post content itself there's "no" need to save it in the attachments table 
@@ -363,7 +363,9 @@ POSTS:
             Put the function that returns the array of friends names in the UserManager service ? 
             Sending the notifcation can definitely be put somewhere else, in a service that does that
             ✔ Start by refactoring the comment code (EASY) @done (18-12-04 19:22)
-            ☐ Refactor the bookmark code
+            ✔ Refactor the bookmark code @done (18-12-05 19:42)
+              The bookmark and comment has a similar notification creation process i might be able to put that in a single function for reusability.
+            
 
       ☐ Add an auto-save functionality that saves the user changes every 30 secs or something similar
       ☐ Need better error reposting for post publishing  

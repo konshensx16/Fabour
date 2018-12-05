@@ -188,6 +188,8 @@ class PostController extends AbstractController
         $commentForm->handleRequest($request);
 
         if ($commentForm->isSubmitted()) {
+
+            $currentUser = $this->getUser();
             // handle the comment and shit
             // TODO: find another (better) way to set the comment to the post!
             //      maybe i need a to set cascade to persist and remove (both Post and Comment for now)
@@ -200,9 +202,21 @@ class PostController extends AbstractController
             // NOTE: CODE WAS MOVED TO ThE NOTIFICATION MANAGER SERVICE
             //      i feel like this code should return some number or a bool, that i can use to decide
             //      either the send the notification or not (in case of failure)
-            $this->notificationManager->persistCommentNotification($post, $comment, $this->getUser());
+            $this->notificationManager->persistCommentNotification(
+                $comment->getId(),
+                $this->getEntityTypeId(Comment::COMMENT_TYPE_ID),
+                $comment->getUser(),
+                $this->getUser()
+            );
             // NOTE: CODE WAS MOVED TO THE FUNCTION
-            $this->notificationManager->sendNotificationComment($post, $comment);
+            $notification = [
+                'username' => $currentUser->getUsername(),
+                'action' => 'just commented on your post',
+                'notifier' => $post->getUser()->getUsername(),
+                'avatar' => $currentUser->getAvatar(),
+                'url' => $this->generateUrl('post.display', ['id' => $post->getId()]) . '#' . $comment->getId(),
+            ];
+            $this->notificationManager->sendNotification($post->getUser(), $notification);
 
             // don't really need to catch anything! i was just testing if it throws any exceptions
             $this->addFlash('success', 'Your comment was posted!');
@@ -237,13 +251,12 @@ class PostController extends AbstractController
 
     /**
      * @Route("/{id}/bookmark", name="bookmark")
-     * @param Request $request
      * @param Post $post
      * @param BookmarkRepository $bookmarkRepository
      * @param EntityManagerInterface $entityManager
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function bookmark(Request $request, Post $post, BookmarkRepository $bookmarkRepository, EntityManagerInterface $entityManager)
+    public function bookmark(Post $post, BookmarkRepository $bookmarkRepository, EntityManagerInterface $entityManager)
     {
         $currentUser = $this->getUser();
 
@@ -263,50 +276,23 @@ class PostController extends AbstractController
             $entityManager->persist($bookmark);
             $entityManager->flush();
 
-            // TODO: this code will have to move somewhere else
-            $notificationObject = new NotificationObject();
-            $notificationObject->setEntityId($bookmark->getId());
-            $notificationObject->setEntityTypeId(
-                $this->getEntityTypeId(Bookmark::BOOKMARK_TYPE_ID)
+            // CODE HERE WAS MOVED TO THE FUNCTION
+            $this->notificationManager->persistBookmarkNotification(
+                $bookmark->getId(),
+                $this->getEntityTypeId(Bookmark::BOOKMARK_TYPE_ID),
+                $post->getUser(),
+                $currentUser
             );
-            $notificationObject->setStatus(1);
-
-            $notificationChange = new NotificationChange();
-            $notificationChange->setNotificationObject($notificationObject);
-            $notificationChange->setActor($currentUser);
-            $notificationChange->setStatus(1);
-
-            $entityManager->persist($notificationObject);
-            $entityManager->persist($notificationChange);
-
-            $notification = new Notification();
-            $notification->setNotificationObject($notificationObject);
-            // this is for every single friend in the list
-            // notifier is the person to notify
-            $notification->setNotifier($post->getUser());
-            $notification->setStatus(1);
-
-            $entityManager->persist($notification);
-            $entityManager->flush();
-
-            // TODO: maybe all this code should be inside an event listener (onCommentPosted!)
-            // TODO: if the current logged in user in the author, then no need to send a notification!
-            if (!($this->getUser() === $post->getUser())) {
-                try {
-                    $currentUser = $this->getUser();
-                    $this->pusher->push([
-                        // this is for the real-time notification, for constructing the notificaion when it arrive
-                        // to the front'end
-                        'username' => $currentUser->getUsername(),
-                        'action' => 'just bookmarked your post',
-                        'notifier' => $post->getUser()->getUsername(),
-                        'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
-                        'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
-                    ], 'notification_topic');
-                } catch (\Exception $e) {
-                    $e->getTrace();
-                }
-            }
+            $notification = [
+                // this is for the real-time notification, for constructing the notificaion when it arrive
+                // to the front'end
+                'username' => $currentUser->getUsername(),
+                'action' => 'just bookmarked your post',
+                'notifier' => $post->getUser()->getUsername(),
+                'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
+                'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
+            ];
+            $this->notificationManager->sendNotification($post->getUser(), $notification);
 
             $this->addFlash('success', 'Added to your bookmarks');
 

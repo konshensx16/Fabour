@@ -75,21 +75,21 @@ class NotificationManager
     }
 
     /**
-     * @param Post $post
-     * @param Comment $comment
+     * @param int $entity_id
+     * @param int $entity_type_id
+     * @param User $notifier
      * @param User $actor => who is responsible for the notification
      */
-    public function persistCommentNotification(Post $post, Comment $comment, User $actor)
+    public function persistCommentNotification(int $entity_id, int $entity_type_id, User $notifier, User $actor)
     {
 
         // TODO: put this code in an event or a service and trigger the event
         // NOTE: make sure to not make a typo as this would ruin everything from this point on
-        $entity_type_id = $this->getEntityTypeId(Comment::COMMENT_TYPE_ID);
         $notificationObject = new NotificationObject();
 
         $notificationObject->setEntityTypeId($entity_type_id);
-        $notificationObject->setEntityId($comment->getId());
-        $notificationObject->setStatus(1); // not sure what this field is for
+        $notificationObject->setEntityId($entity_id);
+        $notificationObject->setStatus(1);
 
         $notificationChange = new NotificationChange();
         $notificationChange->setActor($actor);
@@ -99,7 +99,7 @@ class NotificationManager
         $notification = new Notification();
         $notification->setNotificationObject($notificationObject);
         // this is the person who should get the notification, in this case all the friends ?
-        $notification->setNotifier($post->getUser());
+        $notification->setNotifier($notifier);
         $notification->setStatus(1);
 
         $this->entityManager->persist($notificationObject);
@@ -115,19 +115,18 @@ class NotificationManager
      * @param int $entity_id
      * @param int $entity_type_id
      * @param User $notifier
+     * @param User $actor
      */
-    public function persistNotification(int $entity_id, int $entity_type_id, User $notifier)
+    public function persistBookmarkNotification(int $entity_id, int $entity_type_id, User $notifier, User $actor)
     {
         $notificationObject = new NotificationObject();
         $notificationObject->setEntityId($entity_id);
-        $notificationObject->setEntityTypeId(
-            $this->getEntityTypeId($entity_type_id)
-        );
+        $notificationObject->setEntityTypeId($entity_type_id);
         $notificationObject->setStatus(1);
 
         $notificationChange = new NotificationChange();
         $notificationChange->setNotificationObject($notificationObject);
-        $notificationChange->setActor($this->security->getUser());
+        $notificationChange->setActor($actor);
         $notificationChange->setStatus(1);
 
         $this->entityManager->persist($notificationObject);
@@ -144,23 +143,11 @@ class NotificationManager
         $this->entityManager->flush();
     }
 
-    public function sendNotificationComment(Post $post, Comment $comment)
+    public function sendNotification(User $owner, array $data)
     {
-        // TODO: maybe all this code should be inside an event listener (onCommentPosted!)
-        // TODO: if the current logged in user is the author, then no need to send a notification!
-        if (!($this->security->getUser() === $post->getUser())) {
+        if (!($this->security->getUser() === $owner)) {
             try {
-                /** @var User $currentUser */
-                $currentUser = $this->security->getUser();
-                $this->pusher->push([
-                    // this is for the real-time notification, for constructing the notification when it arrives
-                    // to the front'end
-                    'username' => $currentUser->getUsername(),
-                    'action' => 'just commented on your post',
-                    'notifier' => $post->getUser()->getUsername(),
-                    'avatar' => $currentUser->getAvatar(),
-                    'url' => $this->router->generate('post.display', ['id' => $post->getId()]) . '#' . $comment->getId(),
-                ], 'notification_topic');
+                $this->pusher->push($data, 'notification_topic');
             } catch (\Exception $e) {
                 $e->getTrace();
             }
@@ -168,9 +155,5 @@ class NotificationManager
     }
 
 
-    public function persistBookmarkNotification()
-    {
-
-    }
 
 }
