@@ -8,7 +8,7 @@
         </div>
     {% endfor %}
     <div class="section-wrapper mg-t-20">
-        {{ form_start(form) }}
+        {{ form_start(form, {'attr': {'data-post-id': post.id, 'id': 'edit_form'}}) }}
             {{ form_errors(form) }}
             {{ form(form) }}
         {{ form_end(form) }}

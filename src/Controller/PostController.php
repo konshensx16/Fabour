@@ -97,7 +97,8 @@ class PostController extends AbstractController
 
 
             // set the publish_at date if the publish button was clicked
-            if ($form->get('publish')->isClicked()) {
+
+            if ($form->has('publish') && $form->get('publish')->isClicked()) {
                 $post->setPublishedAt(new \DateTime());
                 $em->persist($post);
 

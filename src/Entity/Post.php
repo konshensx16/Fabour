@@ -44,6 +44,11 @@ class Post
     private $comments;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Attachment", mappedBy="post", cascade={"persist", "remove"})
+     */
+    private $attachments;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\SubCategory", inversedBy="posts", cascade={"persist", "remove"})
      * @Assert\NotBlank()
      */
@@ -75,6 +80,7 @@ class Post
     {
         $this->comments = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
+        $this->attachments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -229,6 +235,37 @@ class Post
     public function setPublishedAt(?\DateTimeInterface $published_at): self
     {
         $this->published_at = $published_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Attachment[]
+     */
+    public function getAttachments(): Collection
+    {
+        return $this->attachments;
+    }
+
+    public function addAttachment(Attachment $attachment): self
+    {
+        if (!$this->attachments->contains($attachment)) {
+            $this->attachments[] = $attachment;
+            $attachment->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttachment(Attachment $attachment): self
+    {
+        if ($this->attachments->contains($attachment)) {
+            $this->attachments->removeElement($attachment);
+            // set the owning side to null (unless already changed)
+            if ($attachment->getPost() === $this) {
+                $attachment->setPost(null);
+            }
+        }
 
         return $this;
     }

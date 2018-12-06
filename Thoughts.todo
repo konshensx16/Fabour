@@ -318,21 +318,25 @@ POSTS:
       NOTES: 
         As of now the plugins are being required one by one in the post.js file, as for the css (skins), they're being built in the webpack.config.js file of symfony Encore
         I might want to change this stuff later to something better like dynamic imports of webpack, or do more research about require.context which allows copying directories, FOR NOW JUST USING THE SAME NAIVE APPROACH SO I CAN ADVANCE IN THIS AREA 
-  ☐ Allow the user to upload images, either by dragging them or by browsing them
+  ✔ Allow the user to upload images, either by dragging them or by browsing them @done (18-12-06 19:58)
     For this im gonna need to add couple of options to the tinyMCE editor, and also need to handle automatic_uploads which will hopefully allow me to upload the image as soon as the user selects the image.
-    ☐ I need to handle the case where the user decides to remove that image 
+    ✘ I need to handle the case where the user decides to remove that image @cancelled (18-12-06 19:00)
+      This will be handled when decides to save the changes
     ☐ Also the case where the user remove the entire post
     FILE PICKER DOC: https://www.tiny.cloud/docs/demo/file-picker/
-  ☐ Change the desing of the post.create page to something similar to medium (minimal)
-  ☐ Create the database for attachments
+  ✘ Change the desing of the post.create page to something similar to medium (minimal) @cancelled (18-12-06 19:58)
+  ✔ Create the database for attachments @done (18-12-06 19:58)
     Schema: ID, filename, path (filename + path), created_at, title (caption)??, post_id, 
-  ☐ Create the end point to handle the images upload. this should return the full path to the image as a response
+  ✔ Create the end point to handle the images upload. this should return the full path to the image as a response @done (18-12-06 19:58)
     NOTE: i will need to post id so i can persist to the Database
     Handler Example:  https://www.tiny.cloud/docs/advanced/php-upload-handler/
       The location key what specifies the location to the file
     For now jus upload, handle the removale later
 
-   ☐ @critical When uploading images for a new post, the post is not created yet which means the image will not have a post_id for the attachment table
+  ✔ Include a post data-attr in the html to retrieve the post id @done (18-12-06 19:58)
+
+   ✘ @critical When uploading images for a new post, the post is not created yet which means the image will not have a post_id for the attachment table @cancelled (18-12-06 18:59)
+     NOTE: at this point the post is alwasy created so i can continue working with the post id!
      What i can is when the user creates a new post (while writing the post), i can send a long a post_id which i can use as an html attribute, when the user publishes then it's fine, but when the user doesn;t refresh i should remove the post and not leave it there.
      ☐ WHY USING AN ATTACHMENT TABLE AT ALL.
        NOTE: since the attachment url is saved in the post content itself there's "no" need to save it in the attachments table 
@@ -366,8 +370,6 @@ POSTS:
             ✔ Refactor the bookmark code @done (18-12-05 19:42)
             ✔ Refactor the friendship code into the notificationManager @done (18-12-05 20:10)
         ✔ Refactor the post publishing code into a the notificationManager if possible @done (18-12-05 20:29)
-            
-
       ☐ Add an auto-save functionality that saves the user changes every 30 secs or something similar
       ☐ Need better error reposting for post publishing  
         For now just add a "Save draft" button to this, later add the aut-save stuff when everything is working.

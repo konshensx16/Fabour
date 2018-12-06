@@ -36,7 +36,7 @@
         /**
          * return the full path for the attachment after uploading
          * @param UploadedFile $file
-         * @return string
+         * @return array
          * @throws \Exception
          */
         public function uploadAttachment(UploadedFile $file)
@@ -44,7 +44,10 @@
             $this->setUploadDirectory();
             $filename = $this->fileManager->uploadFile($file);
 
-            return $this->getUploadsDirectoryWithoutRoot() . '/' . $filename;
+            return [
+                'path' => $this->getUploadsDirectoryWithoutRoot() . '/' . $filename,
+                'filename' => $filename
+            ];
         }
 
         /**
