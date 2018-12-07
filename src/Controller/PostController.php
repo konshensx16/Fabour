@@ -15,6 +15,7 @@ use App\Form\PostType;
 use App\Repository\BookmarkRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
+use App\Services\AttachmentManager;
 use App\Services\NotificationManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
@@ -47,13 +48,23 @@ class PostController extends AbstractController
      * @var NotificationManager
      */
     private $notificationManager;
+    /**
+     * @var AttachmentManager
+     */
+    private $attachmentManager;
 
-    public function __construct(TopicManager $topicManager, PusherDecorator $pusher, Packages $packages, NotificationManager $notificationManager)
+    public function __construct(TopicManager $topicManager,
+                                PusherDecorator $pusher,
+                                Packages $packages,
+                                NotificationManager $notificationManager,
+                                AttachmentManager $attachmentManager
+    )
     {
         $this->topicManager = $topicManager;
         $this->pusher = $pusher;
         $this->packages = $packages;
         $this->notificationManager = $notificationManager;
+        $this->attachmentManager = $attachmentManager;
     }
 
 
@@ -206,6 +217,7 @@ class PostController extends AbstractController
      * @Route("/delete/{id}", name="delete")
      * @param Post $post
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \Exception
      */
     public function deletePost (Post $post)
     {
@@ -214,9 +226,11 @@ class PostController extends AbstractController
         // note: grant if the user is the publisher
         if ($post->getUser() === $this->getUser())  {
             $em = $this->getDoctrine()->getManager();
-
-            $em->remove($post);
             // TODO: remove all the attachments
+            foreach ($post->getAttachments() as $attachment) {
+                $this->attachmentManager->removeAttachment($attachment->getFilename());
+            }
+            $em->remove($post);
             $em->flush();
             return $this->redirect($this->generateUrl('home.index'));
         }

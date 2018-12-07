@@ -342,11 +342,11 @@ POSTS:
        WHY? : having an attachments table allows me to remove the attachments quickly and efficiently from the server (uploads/attachments) because each post will have a post_id that it belongs to, 
    ☐ For removal my previous approach was incorrect, i only need to remove the attachments when the user removes the entire post, or when he updates and saves the the changes, then i just need to get rid of the removed photos.
 
-   ☐ Handle removing the attachments when the user removes a post.
+   ✔ Handle removing the attachments when the user removes a post. @done (18-12-07 18:58)
 
-   ☐ Allow the user to remove a post.
-     ☐ Create the action
-     ☐ Include the button somewhere in the fron-end
+   ✔ Allow the user to remove a post. @done (18-12-07 18:58)
+     ✔ Create the action @done (18-12-07 18:58)
+     ✔ Include the button somewhere in the fron-end @done (18-12-07 18:58)
 
      IDEAS: 
        maybe get rid of the borders around the inputs
