@@ -23,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Flex\Response;
 
 /**
  * @Route("/post", name="post.")
@@ -199,6 +200,28 @@ class PostController extends AbstractController
                 $post->getId()
             ),
         ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete")
+     * @param Post $post
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function deletePost (Post $post)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // note: grant if the user is the publisher
+        if ($post->getUser() === $this->getUser())  {
+            $em = $this->getDoctrine()->getManager();
+
+            $em->remove($post);
+            // TODO: remove all the attachments
+            $em->flush();
+            return $this->redirect($this->generateUrl('home.index'));
+        }
+
+        return new Response('You\'re not allowed to perform this action!');
     }
 
     /**

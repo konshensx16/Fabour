@@ -34,7 +34,7 @@ class Post
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
      */
     private $user;
 
@@ -49,13 +49,13 @@ class Post
     private $attachments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SubCategory", inversedBy="posts", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\SubCategory", inversedBy="posts")
      * @Assert\NotBlank()
      */
     private $subCategory;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="post")
+     * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="post", cascade={"persist", "remove"})
      */
     private $bookmarks;
 

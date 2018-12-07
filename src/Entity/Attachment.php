@@ -37,7 +37,7 @@ class Attachment
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="attachments", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="attachments")
      */
     private $post;
 

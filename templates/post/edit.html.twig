@@ -12,6 +12,9 @@
             {{ form_errors(form) }}
             {{ form(form) }}
         {{ form_end(form) }}
+        {% if post.user is same as(app.user) %}
+            <a class="btn btn-danger" href="{{ path('post.delete', {'id': post.id}) }}">REMOVE THE POST</a>
+        {% endif %}
     </div>
 {% endblock %}
 {% block javascripts %}

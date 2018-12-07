@@ -82,7 +82,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $views_counter = 0;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user", cascade={"persist", "remove"})
      */
     private $posts;
 
@@ -92,7 +92,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Bookmark", mappedBy="user", cascade={"persist", "remove"})
      */
     private $bookmarks;
 

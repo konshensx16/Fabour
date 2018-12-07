@@ -322,7 +322,6 @@ POSTS:
     For this im gonna need to add couple of options to the tinyMCE editor, and also need to handle automatic_uploads which will hopefully allow me to upload the image as soon as the user selects the image.
     ✘ I need to handle the case where the user decides to remove that image @cancelled (18-12-06 19:00)
       This will be handled when decides to save the changes
-    ☐ Also the case where the user remove the entire post
     FILE PICKER DOC: https://www.tiny.cloud/docs/demo/file-picker/
   ✘ Change the desing of the post.create page to something similar to medium (minimal) @cancelled (18-12-06 19:58)
   ✔ Create the database for attachments @done (18-12-06 19:58)
@@ -341,7 +340,13 @@ POSTS:
      ☐ WHY USING AN ATTACHMENT TABLE AT ALL.
        NOTE: since the attachment url is saved in the post content itself there's "no" need to save it in the attachments table 
        WHY? : having an attachments table allows me to remove the attachments quickly and efficiently from the server (uploads/attachments) because each post will have a post_id that it belongs to, 
-   ☐ For removal my previous approach was incorrect, i only need to remove the attachments when the user removes the entire post, or when he updates and saves the the changes, then i just need to get rid of the removed photos,
+   ☐ For removal my previous approach was incorrect, i only need to remove the attachments when the user removes the entire post, or when he updates and saves the the changes, then i just need to get rid of the removed photos.
+
+   ☐ Handle removing the attachments when the user removes a post.
+
+   ☐ Allow the user to remove a post.
+     ☐ Create the action
+     ☐ Include the button somewhere in the fron-end
 
      IDEAS: 
        maybe get rid of the borders around the inputs

@@ -13,9 +13,21 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class PostType extends AbstractType
 {
+
+    /**
+     * @var Security
+     */
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -85,7 +97,7 @@ class PostType extends AbstractType
                     ]);
                 }
 
-                // TODO: display buttons according to the published_at entity
+                // display buttons according to the published_at entity
                 $form->add('save', SubmitType::class, [
                     'attr' => [
                         'class' => 'btn btn-warning btn-block pull-right'

@@ -31,12 +31,12 @@ class Comment
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="comments", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="comments")
      */
     private $post;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
      */
     private $user;
 

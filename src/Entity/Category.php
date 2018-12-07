@@ -29,7 +29,7 @@ class Category
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SubCategory", mappedBy="category", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\SubCategory", mappedBy="category")
      */
     private $subcategories;
 
