@@ -330,7 +330,7 @@ POSTS:
     NOTE: i will need to post id so i can persist to the Database
     Handler Example:  https://www.tiny.cloud/docs/advanced/php-upload-handler/
       The location key what specifies the location to the file
-    For now jus upload, handle the removale later
+    For now just upload, handle the removale later
 
   ✔ Include a post data-attr in the html to retrieve the post id @done (18-12-06 19:58)
 
@@ -340,7 +340,10 @@ POSTS:
      ☐ WHY USING AN ATTACHMENT TABLE AT ALL.
        NOTE: since the attachment url is saved in the post content itself there's "no" need to save it in the attachments table 
        WHY? : having an attachments table allows me to remove the attachments quickly and efficiently from the server (uploads/attachments) because each post will have a post_id that it belongs to, 
-   ☐ For removal my previous approach was incorrect, i only need to remove the attachments when the user removes the entire post, or when he updates and saves the the changes, then i just need to get rid of the removed photos.
+   ✔ For removal my previous approach was incorrect, i only need to remove the attachments when the user removes the entire post, or when he updates and saves the the changes, then i just need to get rid of the removed photos. @done (18-12-08 12:49)
+     Create a postListener to trigger when the content is updated, check using a regular expression for all chnages in images so i can use that value to remove the attachments
+   ☐ @critical some images are not being uploaded, e.g: .png, .svg
+
 
    ✔ Handle removing the attachments when the user removes a post. @done (18-12-07 18:58)
 

@@ -91,10 +91,9 @@ class PostController extends AbstractController
      * @Route("/{id}/edit", name="edit")
      * @param Request $request
      * @param Post $post
-     * @param UserRelationshipRepository $userRelationshipRepository
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function edit(Request $request, Post $post, UserRelationshipRepository $userRelationshipRepository)
+    public function edit(Request $request, Post $post)
     {
         $form = $this->createForm(PostType::class, $post);
 
@@ -102,14 +101,12 @@ class PostController extends AbstractController
 
         $currentUser = $this->getUser();
 
+        $oldAttachments = $post->getAttachments();
         if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
             // post is being persisted here and inside the if statement
             $em->persist($post);
-
-
             // set the publish_at date if the publish button was clicked
-
             if ($form->has('publish') && $form->get('publish')->isClicked()) {
                 $post->setPublishedAt(new \DateTime());
                 $em->persist($post);
