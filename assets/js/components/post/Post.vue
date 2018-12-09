@@ -19,7 +19,7 @@
                 </em>
             </p>
         </div><!-- media-body -->
-        <img src="assets/img/img0.jpg" class="media-img-demo align-self-center" alt="Image">
+        <img :src="getThumbnail" class="media-img-demo align-self-center" alt="Image">
     </div>
 </template>
 
@@ -48,7 +48,15 @@
         },
         computed: {
             getContent() {
-                return this.post.content.length > 300 ? this.post.content.slice(0, 300) + '...' : this.post.content
+                if (this.post.content) {
+                    return this.post.content.length > 300 ? this.post.content.slice(0, 300) + '...' : this.post.content
+                }
+            },
+            getThumbnail() {
+                if (this.post.thumbnail) {
+                    return this.post.thumbnail
+                }
+                return 'assets/img/img0.jpg'
             }
         },
         mounted() {
