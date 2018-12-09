@@ -12,13 +12,13 @@
                 {% for post in posts %}
                     <div class="row no-gutters mg-b-20">
                         <div class="col-md-4">
-                            <a href="{{ path('post.display', {'id': post.id}) }}"><img
+                            <a href="{{ path('post.edit', {'id': post.id}) }}"><img
                                         src="{{ asset('assets/img/img0.jpg') }}" class="img-fit-cover"
                                         alt=""></a>
                         </div><!-- col-4 -->
                         <div class="col-md-8">
                             <div class="post-wrapper">
-                                <a href="{{ path('post.display', {'id': post.id}) }}"
+                                <a href="{{ path('post.edit', {'id': post.id}) }}"
                                    class="activity-title">{{ post.title }}</a>
                                 <p>
                                     {{ post.content|length > 300 ? post.content|slice(0, 300) ~ '...' : post.content }}

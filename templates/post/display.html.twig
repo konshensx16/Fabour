@@ -5,12 +5,51 @@
 {% block body %}
 
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12 mg-t-20">
             {% for message in app.flashes('success') %}
                 <div class="alert alert-success mg-t-20">
                     {{ message }}
                 </div>
             {% endfor %}
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card card-connection">
+                        <div class="row row-xs">
+                            <div class="col-4 tx-primary">{{ post.viewsCounter }}</div>
+                            <div class="col-8">views on this post!</div>
+                        </div><!-- row -->
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card card-connection">
+                        <div class="row row-xs">
+                            <div class="col-4 tx-purple">{{ post.bookmarks.count }}</div>
+                            <div class="col-8">
+                                saves <br>
+                                {% if bookmarked == null %}
+                                    {% if post.bookmarks.count %}
+                                        <a href="{{ path('post.bookmark', {'id': post.id}) }}">Bookmark this too</a>
+                                    {% else %}
+                                        <a href="{{ path('post.bookmark', {'id': post.id}) }}">Be the first to bookmark this</a>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{{ path('post.unbookmark', {'id': post.id}) }}">Remove from bookmarks</a>
+                                {% endif %}
+                            </div>
+                        </div><!-- row -->
+                    </div>
+                </div>
+                {% if app.user is same as(post.user) %}
+                    <div class="col-lg-4">
+                        <div class="card card-connection">
+                            <div class="row row-xs">
+                                <div class="col-4 tx-primary"><i class="icon ion-compose"></i></div>
+                                <div class="col-8"><a href="{{ path('post.edit', {id: post.id}) }}">Edit post</a></div>
+                            </div><!-- row -->
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
             <div class="card card-recommendation mg-t-20">
                 <div class="card-body pd-25">
                     <div class="slim-card-title">{{ post.title }}</div>
@@ -55,41 +94,6 @@
 
                 </ul>
             </div>
-        </div>
-        <div class="col-lg-4 mg-t-20">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card card-connection">
-                        <div class="row row-xs">
-                            <div class="col-4 tx-primary">{{ post.viewsCounter }}</div>
-                            <div class="col-8">views on this post!</div>
-                        </div><!-- row -->
-                        <hr>
-                        <div class="row row-xs">
-                            <div class="col-4 tx-purple">{{ post.bookmarks.count }}</div>
-                            <div class="col-8">
-                                saves <br>
-                                {% if bookmarked == null %}
-                                    {% if post.bookmarks.count %}
-                                        <a href="{{ path('post.bookmark', {'id': post.id}) }}">Bookmark this too</a>
-                                    {% else %}
-                                        <a href="{{ path('post.bookmark', {'id': post.id}) }}">Be the first to bookmark this</a>
-                                    {% endif %}
-                                {% else %}
-                                    <a href="{{ path('post.unbookmark', {'id': post.id}) }}">Remove from bookmarks</a>
-                                {% endif %}
-                            </div>
-                        </div><!-- row -->
-                    </div>
-                </div>
-                <div class="col-lg-12 mg-t-20">
-                    {{ render(controller(
-                        'App\\Controller\\ProfileController::author',
-                        { 'post': post}
-                    )) }}
-                </div>
-            </div>
-
         </div>
     </div>
 
