@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Post;
 use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,6 +28,21 @@ class CategoryController extends AbstractController
         $popularPosts = $postRepository->findPopularPostsByCategoryWithLimit($category->getId(), 5);
         // TODO: get recently published posts in this category
         $recentPosts = $postRepository->findRecentPostsWithCategory($category->getId());
+
+        $regex = "~uploads/attachments/[a-zA-Z0-9]+\.\w+~";
+        /** @var Post $post */
+        foreach ($popularPosts as $post) {
+            if (preg_match($regex, $post->getContent(), $matches) > 0) {
+                $post->setThumbnail('/' . $matches[0]);
+            }
+        }
+
+        /** @var Post $post */
+        foreach ($recentPosts as $post) {
+            if (preg_match($regex, $post->getContent(), $matches) > 0) {
+                $post->setThumbnail('/' . $matches[0]);
+            }
+        }
 
         return $this->render('category/index.html.twig', [
             'controller_name' => 'CategoryController',

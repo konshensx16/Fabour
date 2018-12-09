@@ -64,20 +64,22 @@ class SearchController extends AbstractController
             $query = $request->get('form')['query'];
         }
 
-        $posts = null;
-        $users = null;
-        $friends = null;
-
         $posts = $postRepository->findPostsByName($query);
         $users = $userRepository->findUsersByName($query);
         $friends = $userRelationshipRepository->findFriendsByUsername($currentUser->getId(), $query);
 
-
         if ($filter) {
             switch ($filter) {
-                case 'post':
+                case 'posts':
                     // get post
                     // users and friends just counts
+                    $regex = "~uploads/attachments/[a-zA-Z0-9]+\.\w+~";
+                    /** @var Post $post */
+                    foreach ($posts as $post) {
+                        if (preg_match($regex, $post->getContent(), $matches) > 0) {
+                            $post->setThumbnail('/' . $matches[0]);
+                        }
+                    }
                     $users = count($users);
                     $friends = count($friends);
                     break;
@@ -101,14 +103,10 @@ class SearchController extends AbstractController
             $friends = count($friends);
         }
 
-        dump($users);
-
-
-//        if ()
         return $this->render('search/results.html.twig', [
-            'filter' => $filter ? $filter : 'post',
+            'filter' => $filter ?? 'posts',
             'query' => $query,
-            'post' => $posts,
+            'posts' => $posts,
             'users' => $users,
             'friends' => $friends
         ]);

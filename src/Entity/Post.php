@@ -74,6 +74,11 @@ class Post
      */
     private $views_counter = 0;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $thumbnail;
+
     // TODO: maybe create an updated at field that indicates when it was changed
 
     public function __construct()
@@ -266,6 +271,18 @@ class Post
                 $attachment->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getThumbnail(): ?string
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail(?string $thumbnail): self
+    {
+        $this->thumbnail = $thumbnail;
 
         return $this;
     }

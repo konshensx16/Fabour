@@ -20,7 +20,11 @@
                                     <div class="col-lg-3">
                                         <div class="card card-blog">
                                             <figure class="card-item-img bg-mantle">
-                                                <img class="img-fluid" src="http://via.placeholder.com/1000x667" alt="Image">
+                                                {% if post.thumbnail %}
+                                                    <img class="img-fluid" src="{{ post.thumbnail }}" alt="Image">
+                                                {% else %}
+                                                    <img class="img-fluid" src="http://via.placeholder.com/1000x667" alt="Image">
+                                                {% endif %}
                                             </figure>
                                             <div class="card-body">
                                                 <p class="blog-category">by {{ post.user.username }}</p>

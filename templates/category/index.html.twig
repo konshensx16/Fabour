@@ -13,7 +13,11 @@
                     <div class="col-lg-3">
                         <div class="card card-blog">
                             <figure class="card-item-img bg-mantle">
-                                <img class="img-fluid" src="http://via.placeholder.com/1000x667" alt="Image">
+                                {% if post.thumbnail %}
+                                    <img class="img-fluid" src="{{ post.thumbnail }}" alt="Image">
+                                {% else %}
+                                    <img class="img-fluid" src="http://via.placeholder.com/1000x667" alt="Image">
+                                {% endif %}
                             </figure>
                             <div class="card-body">
                                 <p class="blog-category">by {{ post.user.username }}</p>
@@ -47,7 +51,11 @@
                             <div class="row no-gutters">
                                 <div class="col-md-5 col-lg-6 col-xl-5">
                                     <figure>
-                                        <img src="http://via.placeholder.com/1000x667" class="img-fit-cover" alt="">
+                                        {% if post.thumbnail %}
+                                            <img src="{{ post.thumbnail }}" class="img-fit-cover" alt="">
+                                        {% else %}
+                                            <img src="http://via.placeholder.com/1000x667" class="img-fit-cover" alt="">
+                                        {% endif %}
                                     </figure>
                                 </div><!-- col-4 -->
                                 <div class="col-md-7 col-lg-6 col-xl-7">

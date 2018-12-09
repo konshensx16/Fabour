@@ -348,11 +348,11 @@ POSTS:
    ✔ If the user is the owner of a post that his currently viweing then display an edit button for him @done (18-12-09 12:45)
    ✔ Change the layout of the post display to be without a sidebar, put the side bar content somwhere on top @done (18-12-09 12:45)
    ☐ In categories only display published posts don't include drafts
-   ☐ Display a thumbnail for the post, as of now use the first img, later change this to allow the user to choose the image he wants.  
-     ☐ Index page
-     ☐ Profile page
-     ☐ Search results 
-     ☐ Category pages
+   ✔ Display a thumbnail for the post, as of now use the first img, later change this to allow the user to choose the image he wants. @done (18-12-09 14:55)  
+     ✔ Index page @done (18-12-09 14:55)
+     ✔ Profile page @done (18-12-09 14:54)
+     ✔ Search results @done (18-12-09 14:54)
+     ✔ Category pages @done (18-12-09 14:54)
      For the pages that are similar to index it would be BEST to reuse the same component Posts
 
 

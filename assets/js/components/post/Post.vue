@@ -56,7 +56,7 @@
                 if (this.post.thumbnail) {
                     return this.post.thumbnail
                 }
-                return 'assets/img/img0.jpg'
+                return '/assets/img/img0.jpg'
             }
         },
         mounted() {

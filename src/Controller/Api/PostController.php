@@ -41,7 +41,7 @@
                 $posts[$i]['created_at'] = ($posts[$i]['created_at'])->format('Y M d');
                 // TODO: use a regex to get the first image path in the content
                 if (preg_match($regex, $posts[$i]['content'], $matches) > 0) {
-                    $posts[$i]['thumbnail'] = $matches[0];
+                    $posts[$i]['thumbnail'] = '/' . $matches[0];
                 }
             }
             return $this->json([

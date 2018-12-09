@@ -85,7 +85,7 @@
                 'friends' => $userRelationshipRepository->findUsersWithTypeFriend($user->getId()),
                 'isFriend' => (bool)$relationship,
                 'recentFriends' => $recentlyAddedFriends,
-                'recentPosts' => $postRepository->findRecentlyPublishedPostsWithUserIdWithLimit($user->getId(), 10),
+//                'recentPosts' => $postRepository->findRecentlyPublishedPostsWithUserIdWithLimit($user->getId(), 10),
                 'profileLink' => $this->generateUrl('profile.userProfile', ['username' => $user->getUsername()], UrlGeneratorInterface::ABSOLUTE_URL),
             ]);
         }

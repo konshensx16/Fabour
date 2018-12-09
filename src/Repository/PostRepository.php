@@ -131,13 +131,24 @@ class PostRepository extends ServiceEntityRepository
      */
     public function findPostsByName(string $query)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.title like :query')
-            ->orWhere('p.content like :query')
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->orX(
+                        $qb->expr()->like('p.title', ':query'),
+                        $qb->expr()->like('p.content', ':query')
+
+                    ),
+                    $qb->expr()->isNotNull('p.published_at')
+                )
+            )
             ->setParameter('query', '%' . $query . '%')
-            ->getQuery()
-            ->getResult()
         ;
+        dump($qb->getQuery()->getSQL());
+        return $qb
+            ->getQuery()
+            ->getResult();
     }
 
     public function findLatestPosts()
