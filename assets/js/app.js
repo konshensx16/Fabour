@@ -25,6 +25,13 @@ webSocket.on("socket/connect", function (session) {
 		playSound()
     })
 
+    session.subscribe(`conversation/${document.body.dataset.userUsername}`, (uri, payload) => {
+
+        let notificationMessage = `${payload.sender}: ${payload.message}`
+        notification.confirm(notificationMessage)
+        playSound() 
+    })
+
 })
 
 webSocket.on("socket/disconnect", function (error) {

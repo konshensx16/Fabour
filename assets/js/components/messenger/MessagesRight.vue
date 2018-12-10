@@ -128,6 +128,7 @@
                 session.publish(`conversation/${this.USER.username}`, {
                     id: this.$route.params.id,
                     message: this.messageInput,
+                    sender: this.CURRENT_USER.username,
                     // the inc is by default true in the server side
                 })
                 let messageObj = {

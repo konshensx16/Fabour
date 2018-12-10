@@ -780,6 +780,8 @@ Notifications:
          ✔ Copy the notification.mp4 file programatically @done (18-12-10 18:44)
            I need to use a file-loader and configure it to handle the mp3 
 
+       ☐ Play sound for new messages when anywhere in the app
+
 Bookmarks:
   ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)
   ✔ The user cannot give a name to him bookmarks or anything (first i was tring to do something like youtube playlists but anymore :) ) @done (10/14/2018, 7:53:00 PM)

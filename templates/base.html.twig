@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/slim.css') }}">
     {% block stylesheets %}{% endblock %}
 </head>
-<body id="main-page">
+<body id="main-page" data-user-username="{{ app.user.username }}">
 <div class="slim-header">
     <div class="container">
         <div class="slim-header-left">
