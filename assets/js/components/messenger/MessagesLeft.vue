@@ -53,6 +53,7 @@
 </template>
 
 <script>
+    import {playSound} from '../../audio'
     import NewConversation from './NewConversation'
     import {mapGetters} from 'vuex'
     import Routing from '../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
@@ -110,6 +111,7 @@
             promise.then(() => {
                 session.subscribe(`conversation/${this.CURRENT_USER.username}`, (uri, payload) => {
                     this.$store.dispatch('UPDATE_CONVERSATION_LATEST_MESSAGE', payload)
+                    playSound()
                 })
             })
         },

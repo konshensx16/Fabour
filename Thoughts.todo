@@ -343,7 +343,7 @@ POSTS:
    ✔ For removal my previous approach was incorrect, i only need to remove the attachments when the user removes the entire post, or when he updates and saves the the changes, then i just need to get rid of the removed photos. @done (18-12-08 12:49)
      Create a postListener to trigger when the content is updated, check using a regular expression for all chnages in images so i can use that value to remove the attachments
    ☐ @critical some images are not being uploaded, e.g: .png, .svg
-   ☐ Viweing the drafts, when clicked should take you to the Edit action and the Display
+   ✔ Viweing the drafts, when clicked should take you to the Edit action and the Display @done (18-12-10 18:08)
    ☐ Add the Imagine Library to allow the resize and optimization of images
    ✔ If the user is the owner of a post that his currently viweing then display an edit button for him @done (18-12-09 12:45)
    ✔ Change the layout of the post display to be without a sidebar, put the side bar content somwhere on top @done (18-12-09 12:45)
@@ -774,6 +774,11 @@ Notifications:
             1,000: It was also fats like 3 seconds or something 
             10,000: 
         ✘ Okay so here's the mistake i was making, using the publish inside a loop will be limited in someway because the of the javascript, what i need some way to have like multiple computers do the same thing @cancelled (18-11-17 16:46)
+
+     ✔ Play a sound when a new notification arrives @done (18-12-10 18:44)
+       ✔ Create a separate module for this since i might want to extend this or add other functions later @done (18-12-10 18:44)
+         ✔ Copy the notification.mp4 file programatically @done (18-12-10 18:44)
+           I need to use a file-loader and configure it to handle the mp3 
 
 Bookmarks:
   ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)

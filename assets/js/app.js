@@ -2,7 +2,9 @@
 /*
 require("./bundles/goswebsocket/js/vendor/autobahn.min.js")
 require("./bundles/goswebsocket/js/gos_web_socket_client.js")
-*/ 
+*/
+
+import { playSound } from './audio'
 
 // this could be turned into something more dynamic, by disabling shared configuration
 let webSocket = WS.connect(_WS_URI)
@@ -15,21 +17,14 @@ webSocket.on("socket/connect", function (session) {
 
 	session.subscribe('notification/channel', function (uri, payload) // payload is the message itself
     {
-    	log(payload)
+
 		let notificationMessage = `${payload.username} ${payload.action}`
         notification.confirm(notificationMessage)
 
         addNotificationToList(payload);
+		playSound()
     })
 
-    // session.subscribe('friendship/channel', function (uri, payload) // payload is an object
-    // {
-    //     // TODO: Add the notification when recieved
-		// // TODO: display a small notification for the user, maybe make it click-able
-    //     // client connected
-    //     // everytime an event is published in this channel the function is executed
-    //     notification.confirm(payload['0'])
-    // })
 })
 
 webSocket.on("socket/disconnect", function (error) {

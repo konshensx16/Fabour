@@ -27,6 +27,12 @@ Encore
     .addEntry('post', './assets/js/post.js')
     .addEntry('profile', './assets/js/profile.js')
 
+    .addLoader({
+        test:  /\.(mp3)$/,
+        loader: 'file-loader',
+        
+    })
+
     /*
      * FEATURE CONFIG
      *

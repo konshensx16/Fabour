@@ -2,6 +2,7 @@
     "devDependencies": {
         "@symfony/webpack-encore": "^0.22.1",
         "babel-plugin-transform-object-rest-spread": "^6.26.0",
+        "file-loader": "^2.0.0",
         "webpack-notifier": "^1.7.0"
     },
     "license": "UNLICENSED",
