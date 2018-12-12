@@ -132,21 +132,21 @@
 
             foreach ($result as $item) {
                 switch ($item['entity_type_id']) {
-//                    case 1:
-//                        $postNotificationObjects = $notificationObjectRepository->findLatestPostNotifications($item['theCount']);
-//
-//                        foreach ($postNotificationObjects as $notification) {
-//                            $array[] = [
-//                                'id' => $notification['id'],
-//                                'action' => ' published a new post: "' . $notification['title'] . '"',
-//                                'avatar' => $notification['avatar'],
-//                                'date' => $notification['created_at'],
-//                                'url' => $this->generateUrl('post.display', ['id' => $notification['post_id']]),
-//                                'username' => $notification['username'],
-//                            ];
-//                        }
-//
-//                        break;
+                    case 1:
+                        $postNotificationObjects = $notificationObjectRepository->findLatestPostNotifications($item['theCount']);
+
+                        foreach ($postNotificationObjects as $notification) {
+                            $array[] = [
+                                'id' => $notification['id'],
+                                'action' => ' published a new post: "' . $notification['title'] . '"',
+                                'avatar' => $notification['avatar'],
+                                'date' => $notification['created_at'],
+                                'url' => $this->generateUrl('post.display', ['id' => $notification['post_id']]),
+                                'username' => $notification['username'],
+                            ];
+                        }
+
+                        break;
                     case 2:
                         $notif = $notificationObjectRepository->findLatestComments($item['theCount']);
                         dump($notif);
@@ -163,19 +163,19 @@
                         }
 
                         break;
-//                    case 3:
-//                        $bookmarkNotificationObjects = $notificationObjectRepository->findLatestBookmarkNotifications($item['theCount']);
-//                        foreach ($bookmarkNotificationObjects as $notification) {
-//                            $array[] = [
-//                                'id' => $notification['id'],
-//                                'action' => 'bookmarked your post: "' . $notification['title'] . '"',
-//                                'avatar' => $notification['avatar'],
-//                                'date' => $notification['created_at'],
-//                                'url' => $this->generateUrl('post.display', ['id' => $notification['post_id']]),
-//                                'username' => $notification['username'],
-//                            ];
-//                        }
-//                        break;
+                    case 3:
+                        $bookmarkNotificationObjects = $notificationObjectRepository->findLatestBookmarkNotifications($item['theCount']);
+                        foreach ($bookmarkNotificationObjects as $notification) {
+                            $array[] = [
+                                'id' => $notification['id'],
+                                'action' => 'bookmarked your post: "' . $notification['title'] . '"',
+                                'avatar' => $notification['avatar'],
+                                'date' => $notification['created_at'],
+                                'url' => $this->generateUrl('post.display', ['id' => $notification['post_id']]),
+                                'username' => $notification['username'],
+                            ];
+                        }
+                        break;
                 }
             }
             // NOTE: this takes less than a second to execute, maybe try millions of values ?

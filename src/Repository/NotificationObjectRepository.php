@@ -372,7 +372,7 @@
         {
             // this needs to get the limit from notifications and not from the posts
             $qb = $this->createQueryBuilder('no')
-                ->select('actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id as post_id', 'no.id')
+                ->select('actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id as post_id', 'n.id')
                 ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
                 ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p.id = no.entity_id')
                 ->innerJoin('no.notificationChange', 'ch')
@@ -393,7 +393,7 @@
         public function findLatestBookmarkNotifications(int $limit)
         {
             return $this->createQueryBuilder('no')
-                ->select('p.title', 'actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id post_id', 'no.id')
+                ->select('p.title', 'actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id post_id', 'n.id')
                 ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
                 ->innerJoin('App\Entity\Bookmark', 'b', Join::WITH, 'b.id = no.entity_id')
                 ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p = b.post')

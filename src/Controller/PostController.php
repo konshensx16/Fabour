@@ -293,7 +293,7 @@ class PostController extends AbstractController
                 'username' => $currentUser->getUsername(),
                 'action' => 'just bookmarked your post',
                 'notifier' => $post->getUser()->getUsername(),
-                'avatar' => $this->packages->getUrl('assets/img/') . $currentUser->getAvatar(),
+                'avatar' => $currentUser->getAvatar(),
                 'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
             ];
             $this->notificationManager->sendNotification($post->getUser(), $notification);
