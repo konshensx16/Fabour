@@ -60,7 +60,7 @@
         public function findNotificationsByNotifierIdWithPost(int $notifier_id, int $entity_type_id)
         {
             $qb = $this->createQueryBuilder('no')
-                ->select('actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id', 'no.id')
+                ->select('actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id as post_id', 'n.id')
                 ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
                 ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p.id = no.entity_id')
                 ->innerJoin('no.notificationChange', 'ch')
@@ -89,7 +89,7 @@
             // in the blog post the fields to get are: notificationObjectId, entity_type_id, entity_id, notifier_id
             // need to get the comment, the actor, (the notifier ?)
             $qb = $this->createQueryBuilder('no')
-                ->select('actor.username', 'actor.avatar', 'no.created_at', 'no.id as comment_id', 'p.id as post_id', 'no.id')
+                ->select('actor.username', 'actor.avatar', 'no.created_at', 'c.id as comment_id', 'p.id as post_id', 'n.id')
                 ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
                 ->innerJoin('App\Entity\Comment', 'c', Join::WITH, 'c.id = no.entity_id')
                 ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p = c.post')
@@ -117,7 +117,7 @@
         public function findNotificationsByNotifierIdWithBookmark(int $notifier_id, int $entity_type_id)
         {
             $qb = $this->createQueryBuilder('no')
-                ->select('no.id', 'p.title', 'actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id')
+                ->select('n.id', 'p.title', 'actor.username', 'actor.avatar', 'p.title', 'no.created_at', 'p.id as post_id')
                 ->innerJoin('no.notification', 'n', Join::WITH, 'no = n.notificationObject')
                 ->innerJoin('App\Entity\Bookmark', 'b', Join::WITH, 'b.id = no.entity_id')
                 ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p = b.post')

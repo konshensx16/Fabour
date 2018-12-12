@@ -61,8 +61,8 @@
                                 'action' => $post['username'] . ' published a new post: "' . $post['title'] . '"',
                                 'avatar' => $post['avatar'],
                                 'date' => $post['created_at'],
-                                'id' => $post['id'],
-                                'url' => $this->generateUrl('post.display', ['id' => $post['id']]),
+                                'id' => $post['post_id'],
+                                'url' => $this->generateUrl('post.display', ['id' => $post['post_id']]),
                             ];
                         }
                         break;
@@ -92,22 +92,19 @@
                                 'action' => $post['username'] . ' bookmarked your post: "' . $post['title'] . '"',
                                 'avatar' => $post['avatar'],
                                 'date' => $post['created_at'],
-                                'id' => $post['id'],
-                                'url' => $this->generateUrl('post.display', ['id' => $post['id']]),
+                                'id' => $post['post_id'],
+                                'url' => $this->generateUrl('post.display', ['id' => $post['post_id']]),
                             ];
                         }
                         break;
                 }
 
             }
-            dump($array);
             // sorting the array based on the id of the sub_array
             usort($array, function ($a, $b) {
-                return $b['id'] <=> $a['id'];
+                return $a['id'] <=> $b['id'];
             });
-            dump($array);
-
-
+            
             return $this->render('notification/index.html.twig', [
                 'controller_name' => 'NotificationController',
                 'result' => $array,
