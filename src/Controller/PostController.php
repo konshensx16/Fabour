@@ -184,7 +184,7 @@ class PostController extends AbstractController
             $this->notificationManager->persistCommentNotification(
                 $comment->getId(),
                 $this->getEntityTypeId(Comment::COMMENT_TYPE_ID),
-                $comment->getUser(),
+                $post->getUser(),
                 $this->getUser()
             );
             // NOTE: CODE WAS MOVED TO THE FUNCTION

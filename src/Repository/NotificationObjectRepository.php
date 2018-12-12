@@ -5,6 +5,7 @@
     use App\Entity\NotificationObject;
     use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
     use Doctrine\ORM\NonUniqueResultException;
+    use Doctrine\ORM\Query;
     use Doctrine\ORM\Query\Expr\Join;
     use Doctrine\ORM\Query\ResultSetMapping;
     use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -288,10 +289,10 @@
             // NOTE: i removed the actor fetching from the subquery and gonna move it to the main query
             // I think im just gona do a union and be done with this bullshit, fuck it it's just couple of records each time
             $sql = '
-                SELECT _no.*, COUNT(_no.post_id) AS count, actor.username, actor.avatar
+                SELECT _no.*
                 FROM (
                     SELECT no.created_at, 
-                            no.id, c.post_id, p.title, n.id as n_id, nc.id as nc_id
+                            no.id as id, c.post_id, p.title, n.id as n_id, nc.id as nc_id
                     FROM notification_object no
                     INNER JOIN notification n
                     ON n.notification_object_id = no.id 
@@ -305,12 +306,7 @@
                     ON n.notifier_id = u.id
                     WHERE n.notifier_id = :user_id
                     LIMIT '. $limit .'
-                ) AS _no
-                INNER JOIN notification_change _nc
-                ON _nc.notification_object_id = _no.id
-                INNER JOIN user actor
-                ON actor.id = _nc.actor_id
-                GROUP BY _no.post_id
+                ) AS _no 
                 ORDER BY _no.created_at DESC
             ';
             $statement = $connection->prepare($sql);
@@ -419,5 +415,32 @@
         private function getCurrentUserId()
         {
             return $this->security->getUser()->getId();
+        }
+
+        public function findLatestComments(int $limit)
+        {
+            $qb = $this->createQueryBuilder('no');
+
+            $qb
+                ->select('n.id', 'c.content', 'notifier.username as notifier_username', 'actor.username', 'actor.avatar', 'no.created_at', 'p.title', 'p.id as post_id')
+                ->innerJoin('App\Entity\Comment', 'c', Join::WITH, 'c.id = no.entity_id')
+                ->innerJoin('App\Entity\Post', 'p', Join::WITH, 'p.id = c.post')
+                ->innerJoin('no.notificationChange', 'nc')
+                ->innerJoin('no.notification', 'n')
+                ->innerJoin('n.notifier', 'notifier')
+                ->innerJoin('nc.actor', 'actor')
+                ->where(
+                    $qb->expr()->andX(
+                        $qb->expr()->eq('n.notifier', ':user_id'),
+                        $qb->expr()->neq('nc.actor', ':user_id'),
+                        $qb->expr()->eq('no.entity_type_id', ':entity_type_id')
+                    )
+                )
+                ->setParameter('user_id', $this->getCurrentUserId())
+                ->setParameter('entity_type_id', 2)
+                ->addOrderBy('no.id', 'DESC')
+            ;
+
+            return $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
         }
     }

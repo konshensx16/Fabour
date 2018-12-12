@@ -5,6 +5,7 @@
     use App\Entity\NotificationObject;
     use App\Entity\User;
     use App\Repository\NotificationObjectRepository;
+    use App\Repository\NotificationRepository;
     use Doctrine\ORM\PersistentCollection;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\Asset\Packages;
@@ -99,10 +100,12 @@
                 }
 
             }
+            dump($array);
             // sorting the array based on the id of the sub_array
             usort($array, function ($a, $b) {
                 return $b['id'] <=> $a['id'];
             });
+            dump($array);
 
 
             return $this->render('notification/index.html.twig', [
@@ -117,7 +120,7 @@
          * @return \Symfony\Component\HttpFoundation\Response
          * @throws \Doctrine\DBAL\DBALException
          */
-        public function renderNotifications(NotificationObjectRepository $notificationObjectRepository)
+        public function renderNotifications(NotificationObjectRepository $notificationObjectRepository, NotificationRepository $notificationRepository)
         {
             /** @var User $currentUser */
             $currentUser = $this->getUser();
@@ -126,63 +129,63 @@
             // TODO: bake the notifications here ? not sure where else to do it
             // TODO: change this to include the count of notifications
             $result = $notificationObjectRepository->findNotificationsDetailsByNotifierIdGroupByEntityId(4);
-//            dump($result);
+
             foreach ($result as $item) {
                 switch ($item['entity_type_id']) {
-                    case 1:
-                        $postNotificationObjects = $notificationObjectRepository->findLatestPostNotifications($item['theCount']);
-//                        dump($postNotificationObjects);
-                        foreach ($postNotificationObjects as $notification) {
-                            $array[] = [
-                                'id' => $notification['id'],
-                                'action' => ' published a new post: "' . $notification['title'] . '"',
-                                'avatar' => $notification['avatar'],
-                                'date' => $notification['created_at'],
-                                'url' => $this->generateUrl('post.display', ['id' => $notification['post_id']]),
-                                'username' => $notification['username'],
-                            ];
-                        }
-
-                        break;
+//                    case 1:
+//                        $postNotificationObjects = $notificationObjectRepository->findLatestPostNotifications($item['theCount']);
+//
+//                        foreach ($postNotificationObjects as $notification) {
+//                            $array[] = [
+//                                'id' => $notification['id'],
+//                                'action' => ' published a new post: "' . $notification['title'] . '"',
+//                                'avatar' => $notification['avatar'],
+//                                'date' => $notification['created_at'],
+//                                'url' => $this->generateUrl('post.display', ['id' => $notification['post_id']]),
+//                                'username' => $notification['username'],
+//                            ];
+//                        }
+//
+//                        break;
                     case 2:
-                        $notif = $notificationObjectRepository->groupCommentsByPosts($item['theCount']);
-//                        dump($notif);
-                        // i need to get the avatar of latest person to post a comment!
+                        $notif = $notificationObjectRepository->findLatestComments($item['theCount']);
+                        dump($notif);
                         foreach ($notif as $notification) {
 //                            dump($notification);
                             $array[] = [
                                 'id' => $notification['id'],
-                                'action' => ' new comments on: ' . $notification['title'],
+                                'action' => ' commented on: ' . $notification['title'],
                                 'avatar' => $notification['avatar'],
-                                'date' => new \DateTime($notification['created_at']),
+                                'date' => ($notification['created_at']),
                                 'url' => $this->generateUrl('post.display', ['id' => $notification['post_id']]),
-                                'username' => $notification['count'],
+                                'username' => $notification['username']
                             ];
                         }
 
                         break;
-                    case 3:
-                        $bookmarkNotificationObjects = $notificationObjectRepository->findLatestBookmarkNotifications($item['theCount']);
-//                        dump($bookmarkNotificationObjects);
-                        foreach ($bookmarkNotificationObjects as $notification) {
-                            $array[] = [
-                                'id' => $notification['id'],
-                                'action' => 'bookmarked your post: "' . $notification['title'] . '"',
-                                'avatar' => $notification['avatar'],
-                                'date' => $notification['created_at'],
-                                'url' => $this->generateUrl('post.display', ['id' => $notification['post_id']]),
-                                'username' => $notification['username'],
-                            ];
-                        }
-                        break;
+//                    case 3:
+//                        $bookmarkNotificationObjects = $notificationObjectRepository->findLatestBookmarkNotifications($item['theCount']);
+//                        foreach ($bookmarkNotificationObjects as $notification) {
+//                            $array[] = [
+//                                'id' => $notification['id'],
+//                                'action' => 'bookmarked your post: "' . $notification['title'] . '"',
+//                                'avatar' => $notification['avatar'],
+//                                'date' => $notification['created_at'],
+//                                'url' => $this->generateUrl('post.display', ['id' => $notification['post_id']]),
+//                                'username' => $notification['username'],
+//                            ];
+//                        }
+//                        break;
                 }
             }
             // NOTE: this takes less than a second to execute, maybe try millions of values ?
             //      Fill the DB with bunch of records and execute the same on them
             // sorting the array based on the date (maybe i should just include the no.id for easy work)
             usort($array, function ($a, $b) {
-                return $b['date'] <=> $a['date'];
+                return $b['id'] <=> $a['id'];
             });
+
+            dump($array);
 
 
             return $this->render('notification/notificationsList.html.twig', [

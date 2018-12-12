@@ -29,7 +29,7 @@ webSocket.on("socket/connect", function (session) {
 
         let notificationMessage = `${payload.sender}: ${payload.message}`
         notification.confirm(notificationMessage)
-        playSound() 
+        playSound()
     })
 
 })
