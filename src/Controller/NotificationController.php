@@ -104,7 +104,7 @@
             usort($array, function ($a, $b) {
                 return $a['id'] <=> $b['id'];
             });
-            
+
             return $this->render('notification/index.html.twig', [
                 'controller_name' => 'NotificationController',
                 'result' => $array,
@@ -146,7 +146,7 @@
                         break;
                     case 2:
                         $notif = $notificationObjectRepository->findLatestComments($item['theCount']);
-                        dump($notif);
+
                         foreach ($notif as $notification) {
 //                            dump($notification);
                             $array[] = [
@@ -181,9 +181,6 @@
             usort($array, function ($a, $b) {
                 return $b['id'] <=> $a['id'];
             });
-
-            dump($array);
-
 
             return $this->render('notification/notificationsList.html.twig', [
                 'notifications' => $array
