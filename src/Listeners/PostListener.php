@@ -72,13 +72,12 @@
 
                 $matches = [];
                 $regex = "~uploads/attachments/[a-zA-Z0-9]+\.\w+~";
-                dump(preg_match_all($regex, $args->getNewValue('content'), $matches));
                 if (preg_match_all($regex, $args->getNewValue('content'), $matches) > 0) {
                     $filenames = array_map(function ($match) {
-                        return basename($match[0]);
-                    }, $matches);
+                        return basename($match);
+                    }, $matches[0]);
 
-                    $recordsToRemove = $this->attachmentRepository->findFilenamesToRemove($filenames, $post->getId());
+                    $recordsToRemove = $this->attachmentRepository->findFilenamesToRemove($filenames, $post->getId()); 
 
                     /** @var Attachment $record */
                     foreach ($recordsToRemove as $record) {
@@ -90,9 +89,11 @@
                         $this->entityManager->flush();
                         $this->entityManager->commit();
                     }
+                    dump("if");
                 }
                 else if ($post->getAttachments()->count() && $matches) // if i have attachments but the new content have none, then just remove everything
                 {
+                    dump("else if");
                     // TODO: remove all post attachments
                     foreach ($post->getAttachments() as $attachment)
                     {

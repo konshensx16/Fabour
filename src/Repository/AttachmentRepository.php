@@ -50,7 +50,7 @@ class AttachmentRepository extends ServiceEntityRepository
      * @param int $post_id
      * @return mixed
      */
-    public function findFilenamesToRemove(array $filenames, int $post_id)
+    public function findFilenamesToRemove(array$filenames, int $post_id)
     {
         $qb = $this->createQueryBuilder('a');
 

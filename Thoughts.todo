@@ -344,18 +344,16 @@ POSTS:
      Create a postListener to trigger when the content is updated, check using a regular expression for all chnages in images so i can use that value to remove the attachments
    ☐ @critical some images are not being uploaded, e.g: .png, .svg
    ✔ Viweing the drafts, when clicked should take you to the Edit action and the Display @done (18-12-10 18:08)
-   ☐ Add the Imagine Library to allow the resize and optimization of images
+   ✔ Add the Imagine Library to allow the resize and optimization of images @done (18-12-14 20:30)
    ✔ If the user is the owner of a post that his currently viweing then display an edit button for him @done (18-12-09 12:45)
    ✔ Change the layout of the post display to be without a sidebar, put the side bar content somwhere on top @done (18-12-09 12:45)
-   ☐ In categories only display published posts don't include drafts
+   ✔ In categories only display published posts don't include drafts @done (18-12-14 20:31)
    ✔ Display a thumbnail for the post, as of now use the first img, later change this to allow the user to choose the image he wants. @done (18-12-09 14:55)  
      ✔ Index page @done (18-12-09 14:55)
      ✔ Profile page @done (18-12-09 14:54)
      ✔ Search results @done (18-12-09 14:54)
      ✔ Category pages @done (18-12-09 14:54)
      For the pages that are similar to index it would be BEST to reuse the same component Posts
-
-
    ✔ Handle removing the attachments when the user removes a post. @done (18-12-07 18:58)
 
    ✔ Allow the user to remove a post. @done (18-12-07 18:58)
