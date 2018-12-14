@@ -19,11 +19,16 @@
          * @var ContainerInterface
          */
         private $container;
+        /**
+         * @var ImageManager
+         */
+        private $imageManager;
 
-        public function __construct(ContainerInterface $container, FileManager $fileManager)
+        public function __construct(ContainerInterface $container, FileManager $fileManager, ImageManager $imageManager)
         {
             $this->fileManager = $fileManager;
             $this->container = $container;
+            $this->imageManager = $imageManager;
         }
 
         /**
@@ -45,33 +50,8 @@
         public function uploadAttachment(UploadedFile $file)
         {
             $this->setUploadDirectory();
-            // TODO: optimize the image
-            // if the width is greater than 1058px then make the width 1058px
-            $imagine = new Imagine();
 
-            $fileExtension = $file->guessExtension();
-            $filename = $this->fileManager->generateUniqueName() . '.' . $fileExtension;
-            $image = $imagine->open($file);
-
-            $dimensions = $image->getSize();
-
-            if ($dimensions->getWidth() > ImageManager::MAX_WIDTH)
-            {
-                $dimensions = $dimensions->widen(ImageManager::MAX_WIDTH);
-            }
-
-            $image
-                ->crop(
-                    new Point(0, 0),
-                    $dimensions
-                )
-                ->save(
-                    $this->getUploadsDirectory() . '/' . $filename
-                );
-
-
-            // TODO: this line might get removed since the imagine library will be saving the file
-//            $filename = $this->fileManager->uploadFile($file);
+            $filename = $this->imageManager->optimizeByResizing($file, $this->getUploadsDirectory());
 
             return [
                 'path' => $this->getUploadsDirectoryWithoutRoot() . '/' . $filename,

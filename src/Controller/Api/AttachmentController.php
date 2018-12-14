@@ -41,19 +41,19 @@ class AttachmentController extends AbstractController
         $em->getConnection()->beginTransaction();
 
         $file = $request->files->get('file');
-        // NOTE: this
+
         $filenameAndPath = $this->attachmentManager->uploadAttachment($file);
 
-//        $attachment = new Attachment();
-//        $attachment->setFilename($filenameAndPath['filename']);
-//        $attachment->setPath($filenameAndPath['path']);
-//        $attachment->setCreatedAt(new \DateTime());
+        $attachment = new Attachment();
+        $attachment->setFilename($filenameAndPath['filename']);
+        $attachment->setPath($filenameAndPath['path']);
+        $attachment->setCreatedAt(new \DateTime());
 
-//        $attachment->setPost($post);
-//        $post->addAttachment($attachment);
-//
-//        $em->persist($attachment);
-//        $em->flush();
+        $attachment->setPost($post);
+        $post->addAttachment($attachment);
+
+        $em->persist($attachment);
+        $em->flush();
 
         $em->getConnection()->commit();
 
