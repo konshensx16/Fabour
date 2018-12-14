@@ -9,6 +9,7 @@
         "friendsofsymfony/jsrouting-bundle": "^2.2",
         "gos/react-amqp": "0.1.2",
         "gos/web-socket-bundle": "^1.8.13",
+        "imagine/imagine": "^1.2",
         "predis/predis": "^1.1",
         "react/event-loop": "0.4.0",
         "sensio/framework-extra-bundle": "^5.1",

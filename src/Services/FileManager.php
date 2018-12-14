@@ -77,7 +77,7 @@ class FileManager
      * Generate a unique name
      * @return string
      */
-    private function generateUniqueName()
+    public function generateUniqueName()
     {
         return md5(uniqid());
     }

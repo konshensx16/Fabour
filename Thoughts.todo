@@ -780,7 +780,10 @@ Notifications:
          ✔ Copy the notification.mp4 file programatically @done (18-12-10 18:44)
            I need to use a file-loader and configure it to handle the mp3 
 
-       ☐ Play sound for new messages when anywhere in the app
+       ✔ Play sound for new messages when anywhere in the app @done (18-12-10 19:25)
+         ✔ Include the sender username in the notification @done (18-12-10 19:25)
+         Add the lil indicator the the top of the page when a new message arrives.
+
 
 Bookmarks:
   ✔ The user can only have one list and not mulitple @done (10/14/2018, 7:53:01 PM)
@@ -1157,5 +1160,13 @@ VUE & VUEX NOTES:
       ☐ Need to persist the attachment information to the databse
         Might need to include the 
       ☐ When removing the image i should remove it from the attachments folder too
+
+
+Image optimisation:
+   ✔ Require the imagine library @done (18-12-14 20:08)
+   ✘ Create an event to handle the new file @cancelled (18-12-14 19:25)
+   ✔ Create a separate service to optimize the image by just passing it the file?? @done (18-12-14 20:08)
+   ☐ Dispatch the event right before uploading the file.
+     NOTE: max_width <= 1058px 
 COMMAND GENERATE ROUTES.JSON: 
   bin/console fos:js-routing:dump --format=json --target=assets/js/routes.json
