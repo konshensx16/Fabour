@@ -27,6 +27,7 @@ class ImageManager
      * Checks the width and if greater than the max value, the set the width to the max value
      * @param UploadedFile $file
      * @param string $uploadsDirectory
+     * @return string
      */
     public function optimizeByResizing(UploadedFile $file, string $uploadsDirectory)
     {
@@ -45,8 +46,7 @@ class ImageManager
         }
 
         $image
-            ->crop(
-                new Point(0, 0),
+            ->resize(
                 $dimensions
             )
             ->save(

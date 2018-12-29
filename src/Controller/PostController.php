@@ -370,7 +370,7 @@ class PostController extends AbstractController
     }
 
     private function checkOwnership(Post $post)
-    { 
+    {
         if (!$this->userManager->checkPostOwnership($post)) {
             throw new AccessDeniedException("Not enough permission to access this page");
         }

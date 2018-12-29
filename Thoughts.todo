@@ -1079,7 +1079,8 @@ BUGS:
     ✔ @critical The user avatar in the realtime notifications are not working properly @done (18-11-13 18:23)
     ✔ @critical when vieweing a post the avatar of the author is not showing @done (18-11-13 18:14)
     ☐ @critical the npm run watch not working and throwing an error
-    ☐ I can edit other users posts, this shouldn't happen
+    ✔ I can edit other users posts, this shouldn't happen @done (18-12-29 13:35)
+    ✔ @critical the images being resized the wrong way, instead of squashing the image im cropping it @done (18-12-29 13:43)
 
 MAJOR CHANGES:
    ✔ Change the user avatar from only storing the name to storing the full path @done (18-11-09 05:50)
