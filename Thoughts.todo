@@ -388,7 +388,7 @@ POSTS:
             ✔ Refactor the friendship code into the notificationManager @done (18-12-05 20:10)
         ✔ Refactor the post publishing code into a the notificationManager if possible @done (18-12-05 20:29)
 
-      ☐ Remove all attachment when you remove the entire post
+      ✔ Remove all attachment when you remove the entire post @done (18-12-29 13:15)
       ✔ Make the images in the posts to be responsive @done (18-12-29 13:02)
          NOTE : this is currently fixed by adding a class to the content-wrapper (content-body) and all images now have a style similar to bootstrap's img-responsive
       ☐ Add an auto-save functionality that saves the user changes every 30 secs or something similar

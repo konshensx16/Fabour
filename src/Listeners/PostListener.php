@@ -89,21 +89,39 @@
                         $this->entityManager->flush();
                         $this->entityManager->commit();
                     }
-                    dump("if");
                 }
-                else if ($post->getAttachments()->count() && $matches) // if i have attachments but the new content have none, then just remove everything
+                else if ($matches) // if i have attachments but the new content have none, then just remove everything
                 {
-                    dump("else if");
-                    // TODO: remove all post attachments
-                    foreach ($post->getAttachments() as $attachment)
-                    {
-                        $entity = $this->entityManager->merge($attachment);
-                        $this->entityManager->remove($entity);
-                        $this->attachmentManager->removeAttachment($attachment->getFilename());
-                    }
-                    $this->entityManager->flush();
+                    $this->removeAllPostAttachments($post);
                 }
 
             }
+        }
+
+        /**
+         * @param Post $post
+         * @throws \Exception
+         */
+        public function removeAllPostAttachments(Post $post)
+        {
+            if ($post->getAttachments()->count()) {
+                foreach ($post->getAttachments() as $attachment)
+                {
+                    $entity = $this->entityManager->merge($attachment);
+                    $this->entityManager->remove($entity);
+                    $this->attachmentManager->removeAttachment($attachment->getFilename());
+                }
+                $this->entityManager->flush();
+            }
+        }
+
+        /**
+         * @param Post $post
+         * @param LifecycleEventArgs $args
+         * @throws \Exception
+         */
+        public function postRemove(Post $post, LifecycleEventArgs $args)
+        {
+            $this->removeAllPostAttachments($post);
         }
     }
