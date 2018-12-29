@@ -17,11 +17,13 @@ use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
 use App\Services\AttachmentManager;
 use App\Services\NotificationManager;
+use App\Services\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Flex\Response;
@@ -52,12 +54,17 @@ class PostController extends AbstractController
      * @var AttachmentManager
      */
     private $attachmentManager;
+    /**
+     * @var UserManager
+     */
+    private $userManager;
 
     public function __construct(TopicManager $topicManager,
                                 PusherDecorator $pusher,
                                 Packages $packages,
                                 NotificationManager $notificationManager,
-                                AttachmentManager $attachmentManager
+                                AttachmentManager $attachmentManager,
+                                UserManager $userManager
     )
     {
         $this->topicManager = $topicManager;
@@ -65,6 +72,7 @@ class PostController extends AbstractController
         $this->packages = $packages;
         $this->notificationManager = $notificationManager;
         $this->attachmentManager = $attachmentManager;
+        $this->userManager = $userManager;
     }
 
 
@@ -92,9 +100,12 @@ class PostController extends AbstractController
      * @param Request $request
      * @param Post $post
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function edit(Request $request, Post $post)
     {
+        $this->checkOwnership($post);
+
         $form = $this->createForm(PostType::class, $post);
 
         $form->handleRequest($request);
@@ -219,6 +230,7 @@ class PostController extends AbstractController
     public function deletePost (Post $post)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->checkOwnership($post);
 
         // note: grant if the user is the publisher
         if ($post->getUser() === $this->getUser())  {
@@ -356,4 +368,13 @@ class PostController extends AbstractController
     {
         return $this->getParameter($name . '_type_id');
     }
+
+    private function checkOwnership(Post $post)
+    { 
+        if (!$this->userManager->checkPostOwnership($post)) {
+            throw new AccessDeniedException("Not enough permission to access this page");
+        }
+    }
+
+
 }

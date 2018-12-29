@@ -30,7 +30,7 @@ class CustomConverter implements ParamConverterInterface
     public function supports(ParamConverter $configuration)
     {
         // TODO: Implement supports() method.
-        dump($configuration);
+//        dump($configuration);
 
         return false;
     }
