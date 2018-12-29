@@ -50,7 +50,7 @@ class AttachmentRepository extends ServiceEntityRepository
      * @param int $post_id
      * @return mixed
      */
-    public function findFilenamesToRemove(array$filenames, int $post_id)
+    public function findFilenamesToRemove(array $filenames, int $post_id)
     {
         $qb = $this->createQueryBuilder('a');
 
@@ -63,37 +63,6 @@ class AttachmentRepository extends ServiceEntityRepository
             )
         ;
 
-        dump($qb->getQuery()->getSQL());
-
         return $qb->getQuery()->getResult();
     }
-
-//    /**
-//     * @return Attachment[] Returns an array of Attachment objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Attachment
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

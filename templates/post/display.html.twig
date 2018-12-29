@@ -61,7 +61,9 @@
                         </div><!-- media-body -->
                         <span class="tx-12">{{ post.createdAt|date('Y-M-d h:m:s')}}</span>
                     </div><!-- media -->
-                    {{ post.content|raw }}
+                    <div class="content-body">
+                        {{ post.content|raw }}
+                    </div>
                 </div><!-- card-body -->
             </div>
             <div class="section-wrapper mg-t-20" style="overflow:hidden">

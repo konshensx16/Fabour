@@ -387,6 +387,10 @@ POSTS:
             ✔ Refactor the bookmark code @done (18-12-05 19:42)
             ✔ Refactor the friendship code into the notificationManager @done (18-12-05 20:10)
         ✔ Refactor the post publishing code into a the notificationManager if possible @done (18-12-05 20:29)
+
+      ☐ Remove all attachment when you remove the entire post
+      ✔ Make the images in the posts to be responsive @done (18-12-29 13:02)
+         NOTE : this is currently fixed by adding a class to the content-wrapper (content-body) and all images now have a style similar to bootstrap's img-responsive
       ☐ Add an auto-save functionality that saves the user changes every 30 secs or something similar
       ☐ Need better error reposting for post publishing  
         For now just add a "Save draft" button to this, later add the aut-save stuff when everything is working.
@@ -1074,6 +1078,7 @@ BUGS:
     ☐ In the messages page, the footer is not suppossed to be there, for now just hiding it in the layout file, but i need a real solution
     ✔ @critical The user avatar in the realtime notifications are not working properly @done (18-11-13 18:23)
     ✔ @critical when vieweing a post the avatar of the author is not showing @done (18-11-13 18:14)
+    ☐ @critical the npm run watch not working and throwing an error
 
 MAJOR CHANGES:
    ✔ Change the user avatar from only storing the name to storing the full path @done (18-11-09 05:50)
