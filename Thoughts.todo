@@ -360,6 +360,12 @@ POSTS:
      ✔ Create the action @done (18-12-07 18:58)
      ✔ Include the button somewhere in the fron-end @done (18-12-07 18:58)
 
+   AUTOSAVE POST:
+      ☐ Save using keys ctrl + s 
+         LINK: https://stackoverflow.com/questions/16006583/capturing-ctrlz-key-combination-in-javascript
+      ☐ Autosave using time Interval each 30 seconds or something
+
+
      IDEAS: 
        maybe get rid of the borders around the inputs
        Make the body area much bigger (maybe the whole screen or something like that)

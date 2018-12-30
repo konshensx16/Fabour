@@ -81,3 +81,13 @@ tinymce.init({
         input.click();
     }
 });
+
+// listen for key combination
+window.addEventListener('keydown', (e) => {
+    e = e || window.event
+    e.preventDefault();
+    if (e.keyCode == 115 && e.ctrlKey)
+    {
+        alert("ctrl = S clicked")
+    }
+})
