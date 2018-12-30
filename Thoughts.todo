@@ -361,9 +361,10 @@ POSTS:
      ✔ Include the button somewhere in the fron-end @done (18-12-07 18:58)
 
    AUTOSAVE POST:
-      ☐ Save using keys ctrl + s 
+      ☐ Save using keys ctrl + s
          LINK: https://stackoverflow.com/questions/16006583/capturing-ctrlz-key-combination-in-javascript
       ☐ Autosave using time Interval each 30 seconds or something
+          This is not saving but it's displaying an message when you try to leave the page without persisting changes you made
 
 
      IDEAS: 

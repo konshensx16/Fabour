@@ -1,11 +1,12 @@
-
 import tinymce from 'tinymce'
 import 'tinymce/themes/modern/theme'
+
 require('../../node_modules/tinymce/skins/lightgray/skin.min.css')
 require('../../node_modules/tinymce/skins/lightgray/content.min.css')
 // plugins: add all required plugins here
 import 'tinymce/plugins/advlist'
 import 'tinymce/plugins/autolink'
+import 'tinymce/plugins/autosave'
 import 'tinymce/plugins/lists'
 import 'tinymce/plugins/link'
 import 'tinymce/plugins/image'
@@ -38,7 +39,9 @@ let postAttachmentsUrl = Routing.generate('api.attachment.postimage', {id: post_
 
 tinymce.init({
     selector: '.editable',
-    plugins: 'image code',
+    height: "480",
+    plugins: 'image code autosave',
+    auto_save_interval: "5s",
     toolbar: 'undo redo | link image | code',
     // enable title field in the Image dialog
     image_title: true,
@@ -47,7 +50,7 @@ tinymce.init({
     images_upload_url: postAttachmentsUrl,
     file_picker_types: 'image',
     // and here's our custom image picker
-    file_picker_callback: function(cb, value, meta) {
+    file_picker_callback: function (cb, value, meta) {
         var input = document.createElement('input');
         input.setAttribute('type', 'file');
         input.setAttribute('accept', 'image/*');
@@ -58,7 +61,7 @@ tinymce.init({
         // just in case, and visually hide it. And do not forget do remove it
         // once you do not need it anymore.
 
-        input.onchange = function() {
+        input.onchange = function () {
             var file = this.files[0];
 
             var reader = new FileReader();
@@ -67,13 +70,13 @@ tinymce.init({
                 // registry. In the next release this part hopefully won't be
                 // necessary, as we are looking to handle it internally.
                 var id = 'blobid' + (new Date()).getTime();
-                var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                var blobCache = tinymce.activeEditor.editorUpload.blobCache;
                 var base64 = reader.result.split(',')[1];
                 var blobInfo = blobCache.create(id, file, base64);
                 blobCache.add(blobInfo);
 
                 // call the callback and populate the Title field with the file name
-                cb(blobInfo.blobUri(), { title: file.name });
+                cb(blobInfo.blobUri(), {title: file.name});
             };
             reader.readAsDataURL(file);
         };
@@ -83,11 +86,11 @@ tinymce.init({
 });
 
 // listen for key combination
-window.addEventListener('keydown', (e) => {
-    e = e || window.event
-    e.preventDefault();
-    if (e.keyCode == 115 && e.ctrlKey)
-    {
-        alert("ctrl = S clicked")
+document.body.onkeydown = (e) => {
+    let evtobj = window.event ? event : e
+    if (evtobj.keyCode == 83 && evtobj.ctrlKey) {
+        e.preventDefault()
+        // save the post
+        // submbi the post using an ajax request
     }
-})
+}
