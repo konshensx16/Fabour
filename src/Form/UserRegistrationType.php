@@ -31,7 +31,7 @@ class UserRegistrationType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Password goes here...'
                 ],
-                'type' => PasswordType::class
+                'type' => PasswordType::class,
             ])
         ;
     }

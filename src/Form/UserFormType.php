@@ -16,10 +16,17 @@ class UserFormType extends AbstractType
         $builder
             ->add('_username', TextType::class, [
                 'attr' => [
-                    'autofocus' => 'autofocus'
+                    'autofocus'     => 'autofocus',
+                    'placeholder'   => 'Username...',
+                    'class' => 'mg-b-10'
                 ]
             ])
-            ->add('_password', PasswordType::class)
+            ->add('_password', PasswordType::class, [
+                'label' => false,
+                'attr' => [
+                    'placeholder'   => 'Password...'
+                ]
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Sign in',
                 'attr' => [
