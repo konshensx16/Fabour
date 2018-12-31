@@ -21,9 +21,9 @@ security:
                provider: my_provider
                default_target_path: home.index
                always_use_default_target_path: true
-            guard:
-               authenticators:
-                   - App\Security\RegistrationLoginAuthenticator
+#            guard:
+#               authenticators:
+#                   - App\Security\RegistrationLoginAuthenticator
 
             logout:
                path: logout

@@ -116,7 +116,7 @@ class RegistrationLoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        
+
     }
 
     /**
