@@ -33,11 +33,6 @@ class UserRegistrationType extends AbstractType
                 ],
                 'type' => PasswordType::class
             ])
-            ->add('submit', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-success pull-right'
-                ]
-            ]);
         ;
     }
 

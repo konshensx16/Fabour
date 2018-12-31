@@ -64,7 +64,8 @@ class RegistrationLoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function supports(Request $request)
     {
-        // TODO: Implement supports() method.
+        // TODO: change this later this cannot stay like this
+        return true;
     }
 
     /**
@@ -92,7 +93,10 @@ class RegistrationLoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        // TODO: Implement getCredentials() method.
+        return array(
+           'username' => $request->request->get('_username'),
+           'password' => $request->request->get('_password'),
+       );
     }
 
     /**
@@ -112,7 +116,7 @@ class RegistrationLoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        // TODO: Implement getUser() method.
+        
     }
 
     /**
@@ -173,6 +177,7 @@ class RegistrationLoginAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         // redirect the user to the index page ?
+        dump("success called");
         return new RedirectResponse($this->router->generate('home.index'), 302);
     }
 

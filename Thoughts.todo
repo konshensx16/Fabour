@@ -1189,5 +1189,6 @@ Create the registration page:
   ✔ Create the controller @done (18-12-31 21:41)
   ✔ Create the view @done (18-12-31 21:41)
   ✔ Create the Type and everything related to making it work @done (18-12-31 21:41)
-  ☐ Log the user in after registration and redirect hom to the index
+  ☐ Log the user in after registration and redirect hom to the index (Not working)
       Should probably redirect him the edit his profile but whatever this is easy and can be changed later, also nobody want to be bothered with that studff, he'll edit it when he wants to edit it 
+  ☐ @medium i think theres a problem with the entiy since the doctrine:schema:update is failing with an error 

@@ -4,10 +4,14 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserRegistrationType;
+use App\Security\RegistrationLoginAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Guard\Provider\GuardAuthenticationProvider;
 
@@ -31,10 +35,11 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/", name="createAccount")
      * @param Request $request
-     * @param GuardAuthenticatorHandler $handler
+     * @param TokenStorageInterface $tokenStorage
+     * @param AuthenticationManagerInterface $authenticationManager
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function signUp(Request $request, GuardAuthenticatorHandler $handler)
+    public function signUp(Request $request, TokenStorageInterface $tokenStorage, AuthenticationManagerInterface $authenticationManager)
     {
         $em = $this->getDoctrine()->getManager();
         $user = new User();
@@ -50,11 +55,19 @@ class RegistrationController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            // TODO: log the user in and redirect him to the profile edit page
-//            $handler->authenticateUserAndHandleSuccess(
-//                $user,
-//                $request,
-//            );
+            // TODO: log the user in and redirect him to the profile edit page (index for now)
+            $unauthenticatedToken = new UsernamePasswordToken(
+                $user->getUsername(),
+                $user->getPassword(),
+                'main'
+            );
+
+            $authenticatedToken = $authenticationManager
+                ->authenticate($unauthenticatedToken);
+
+            $tokenStorage->setToken($authenticatedToken);
+
+            return $this->redirect($this->generateUrl('home.index'), 302);
         }
 
         return $this->render('registration/index.html.twig', [

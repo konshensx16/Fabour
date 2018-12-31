@@ -11,6 +11,7 @@ class UserListener
     public function prePersist(User $user, LifecycleEventArgs $args)
     {
         $user->setCreatedAt(new \DateTime());
+        $user->setLastSeen(new \DateTime());
     }
 
    
