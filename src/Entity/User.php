@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -30,10 +31,14 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $username;
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min = 6,
+     *     minMessage = "Password length is too short, has to be 6 characters minimum"
+     * )
      */
     private $password;
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $email;
     /**
@@ -47,7 +52,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $avatar = '/assets/img/avatar.png';
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $about;
 
