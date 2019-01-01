@@ -1071,47 +1071,12 @@ Messaging:
           As of now the function should return the previous 20 messages, but i need to send some sort of parameter to get me the result each time
           ✘ Change the existing function to take an offset so i can re-use the same function and not create a new one @cancelled (18-11-20 20:01)
           ✔ Actually i should create a new function because the current functions name is quite specific to the use-case, and wouldn't matches the new functionality @done (18-11-20 20:16)
-BUGS:    
-    ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
-    ✔ In the post.display, when the logged in user is the publisher of the post don't display a add to friends button @done (10/21/2018, 2:24:32 AM)
-    ✔ In the userProfile the recent posts are in the opposite sense @done (10/21/2018, 2:24:30 AM)
-      ✔ Get just 10 posts for te profile @done (10/21/2018, 2:24:29 AM)
-    ✔ The posts in the index page are in reverse order (should be DESC) @done (10/21/2018, 3:42:13 PM)
-    ☐ When viewing another user post, in the author profile section display a remove from friend (or just get rid of the button) if he's already in your friends list!
-    ☐ Order of notifications when displaying them all is messed up (shpecially the bokmarks)
-    ☐ In the notifications when a user approve your request, clicking the notifications takes you to your profile instead of the guys who approved your request!
-    ☐ Admin one is friend with jasmine but when viweing her posts it still display "add as friend" button 
-    ✔ When viewing search results, users and friends avatars are messed up because i didn't change them after handling the the user avatars! @done (18-10-29 20:17)
-    ☐ In the messages page, the footer is not suppossed to be there, for now just hiding it in the layout file, but i need a real solution
-    ✔ @critical The user avatar in the realtime notifications are not working properly @done (18-11-13 18:23)
-    ✔ @critical when vieweing a post the avatar of the author is not showing @done (18-11-13 18:14)
-    ☐ @critical the npm run watch not working and throwing an error
-    ✔ I can edit other users posts, this shouldn't happen @done (18-12-29 13:35)
-    ✔ @critical the images being resized the wrong way, instead of squashing the image im cropping it @done (18-12-29 13:43)
-
-MAJOR CHANGES:
-   ✔ Change the user avatar from only storing the name to storing the full path @done (18-11-09 05:50)
-     ✔ Update the user entity @done (18-11-09 00:09)
-     ✔ Change where the user uploads the image @done (18-11-09 00:09)
-     ✔ Change all other page where the avatar was shown to handle the new avatar value @done (18-11-09 05:50)
-     Where to change the directory:
-       ✔ Messages @done (18-11-09 00:19)
-         NOTE:  i think i still need to handle the avatars in the notifications (not even sure if im using any)
-       ✔ Posts @done (18-11-09 00:23)
-       ✔ Comments @done (18-11-09 00:23)
-       ✔ Profile @done (18-11-09 00:27)
-       ✔ Search results (posts, users, friends) @done (18-11-09 00:25)
-       ✔ Notifications @done (18-11-09 06:18)
-       ✔ pending friends requests @done (18-11-09 06:18)
-       ✔ Profile edit page @done (18-11-09 06:18)
 
 SOME ERROS FOR FUTURE CASES:
   ✔ Mysql wouldn't connect @done (18-11-14 18:30)
     ERROR: ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
     FIX: 
       Just restart the mysql servie and it should work, well it did work for me!
-
-
 
 VUE & VUEX NOTES:
   LINK: https://medium.com/dailyjs/mastering-vuex-zero-to-hero-e0ca1f421d45
@@ -1192,3 +1157,48 @@ Create the registration page:
   ✔ Log the user in after registration and redirect hom to the index (Not working) @done (18-12-31 23:51)
       Should probably redirect him the edit his profile but whatever this is easy and can be changed later, also nobody want to be bothered with that studff, he'll edit it when he wants to edit it 
   ☐ @medium i think theres a problem with the entiy since the doctrine:schema:update is failing with an error 
+
+
+BUGS:    
+    ✔ Users without any posts are not displaying the message, just empty space! @done (10/21/2018, 2:26:38 AM)
+    ✔ In the post.display, when the logged in user is the publisher of the post don't display a add to friends button @done (10/21/2018, 2:24:32 AM)
+    ✔ In the userProfile the recent posts are in the opposite sense @done (10/21/2018, 2:24:30 AM)
+      ✔ Get just 10 posts for te profile @done (10/21/2018, 2:24:29 AM)
+    ✔ The posts in the index page are in reverse order (should be DESC) @done (10/21/2018, 3:42:13 PM)
+    ☐ When viewing another user post, in the author profile section display a remove from friend (or just get rid of the button) if he's already in your friends list!
+    ☐ Order of notifications when displaying them all is messed up (shpecially the bokmarks)
+    ☐ In the notifications when a user approve your request, clicking the notifications takes you to your profile instead of the guys who approved your request!
+    ☐ Admin one is friend with jasmine but when viweing her posts it still display "add as friend" button 
+    ✔ When viewing search results, users and friends avatars are messed up because i didn't change them after handling the the user avatars! @done (18-10-29 20:17)
+    ☐ In the messages page, the footer is not suppossed to be there, for now just hiding it in the layout file, but i need a real solution
+    ✔ @critical The user avatar in the realtime notifications are not working properly @done (18-11-13 18:23)
+    ✔ @critical when vieweing a post the avatar of the author is not showing @done (18-11-13 18:14)
+    ☐ @critical the npm run watch not working and throwing an error
+    ✔ I can edit other users posts, this shouldn't happen @done (18-12-29 13:35)
+    ✔ @critical the images being resized the wrong way, instead of squashing the image im cropping it @done (18-12-29 13:43)
+
+MAJOR CHANGES:
+   ✔ Change the user avatar from only storing the name to storing the full path @done (18-11-09 05:50)
+     ✔ Update the user entity @done (18-11-09 00:09)
+     ✔ Change where the user uploads the image @done (18-11-09 00:09)
+     ✔ Change all other page where the avatar was shown to handle the new avatar value @done (18-11-09 05:50)
+     Where to change the directory:
+       ✔ Messages @done (18-11-09 00:19)
+         NOTE:  i think i still need to handle the avatars in the notifications (not even sure if im using any)
+       ✔ Posts @done (18-11-09 00:23)
+       ✔ Comments @done (18-11-09 00:23)
+       ✔ Profile @done (18-11-09 00:27)
+       ✔ Search results (posts, users, friends) @done (18-11-09 00:25)
+       ✔ Notifications @done (18-11-09 06:18)
+       ✔ pending friends requests @done (18-11-09 06:18)
+       ✔ Profile edit page @done (18-11-09 06:18)
+   ☐ Create the session table using an entity so it can be migrated when DevOps"ing".
+     What the session entity should like, (Note the name is in plural unlike other tables and entities `sessions`)
+      +---------------+------------------+------+-----+---------+-------+
+      | Field         | Type             | Null | Key | Default | Extra |
+      +---------------+------------------+------+-----+---------+-------+
+      | sess_id       | varchar(128)     | NO   | PRI | NULL    |       | -> the name should be `sess_id` instead of just `id`
+      | sess_data     | blob             | NO   |     | NULL    |       | -> this is done correctly 
+      | sess_time     | int(10) unsigned | NO   |     | NULL    |       | -> not sure how to make a field unsigned for now its (int)
+      | sess_lifetime | mediumint(9)     | NO   |     | NULL    |       | -> no `mediumint` in doctrine so i just used integer
+      +---------------+------------------+------+-----+---------+-------+
