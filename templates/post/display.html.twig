@@ -11,45 +11,47 @@
                     {{ message }}
                 </div>
             {% endfor %}
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="card card-connection">
-                        <div class="row row-xs">
-                            <div class="col-4 tx-primary">{{ post.viewsCounter }}</div>
-                            <div class="col-8">views on this post!</div>
-                        </div><!-- row -->
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card card-connection">
-                        <div class="row row-xs">
-                            <div class="col-4 tx-purple">{{ post.bookmarks.count }}</div>
-                            <div class="col-8">
-                                saves <br>
-                                {% if bookmarked == null %}
-                                    {% if post.bookmarks.count %}
-                                        <a href="{{ path('post.bookmark', {'id': post.id}) }}">Bookmark this too</a>
-                                    {% else %}
-                                        <a href="{{ path('post.bookmark', {'id': post.id}) }}">Be the first to bookmark this</a>
-                                    {% endif %}
-                                {% else %}
-                                    <a href="{{ path('post.unbookmark', {'id': post.id}) }}">Remove from bookmarks</a>
-                                {% endif %}
-                            </div>
-                        </div><!-- row -->
-                    </div>
-                </div>
-                {% if app.user is same as(post.user) %}
+            {% if app.user %}
+                <div class="row">
                     <div class="col-lg-4">
                         <div class="card card-connection">
                             <div class="row row-xs">
-                                <div class="col-4 tx-primary"><i class="icon ion-compose"></i></div>
-                                <div class="col-8"><a href="{{ path('post.edit', {id: post.id}) }}">Edit post</a></div>
+                                <div class="col-4 tx-primary">{{ post.viewsCounter }}</div>
+                                <div class="col-8">views on this post!</div>
                             </div><!-- row -->
                         </div>
                     </div>
-                {% endif %}
-            </div>
+                    <div class="col-lg-4">
+                        <div class="card card-connection">
+                            <div class="row row-xs">
+                                <div class="col-4 tx-purple">{{ post.bookmarks.count }}</div>
+                                <div class="col-8">
+                                    saves <br>
+                                    {% if bookmarked == null %}
+                                        {% if post.bookmarks.count %}
+                                            <a href="{{ path('post.bookmark', {'id': post.id}) }}">Bookmark this too</a>
+                                        {% else %}
+                                            <a href="{{ path('post.bookmark', {'id': post.id}) }}">Be the first to bookmark this</a>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{{ path('post.unbookmark', {'id': post.id}) }}">Remove from bookmarks</a>
+                                    {% endif %}
+                                </div>
+                            </div><!-- row -->
+                        </div>
+                    </div>
+                    {% if app.user is same as(post.user) %}
+                        <div class="col-lg-4">
+                            <div class="card card-connection">
+                                <div class="row row-xs">
+                                    <div class="col-4 tx-primary"><i class="icon ion-compose"></i></div>
+                                    <div class="col-8"><a href="{{ path('post.edit', {id: post.id}) }}">Edit post</a></div>
+                                </div><!-- row -->
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
             <div class="card card-recommendation mg-t-20">
                 <div class="card-body pd-25">
                     <div class="slim-card-title">{{ post.title }}</div>
@@ -67,8 +69,17 @@
                 </div><!-- card-body -->
             </div>
             <div class="section-wrapper mg-t-20" style="overflow:hidden">
-                <label class="section-title">Have any thoughts on this?</label>
-                {{ form(comment_form) }}
+                {% if app.user %}
+                    <label class="section-title">Have any thoughts on this?</label>
+                    {{ form(comment_form) }}
+                {% else %}
+                    <label class="section-title">
+                        <a href="{{ path('login') }}">Sign in </a>
+                        or
+                        <a href="{{ path('register.createAccount') }}">Sign up</a>
+                        to join the discussion :)
+                    </label>
+                {% endif %}
             </div>
             <div class="section-wrapper mg-t-20">
                 <label class="section-title">{{ post.comments.count }} Comments</label>

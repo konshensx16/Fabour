@@ -37,7 +37,7 @@ class SubCategory
     private $slug;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="subcategories")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="subcategories", cascade={"persist", "remove"})
      */
     private $category;
 

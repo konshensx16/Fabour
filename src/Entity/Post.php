@@ -18,7 +18,7 @@ class Post
 
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -49,7 +49,7 @@ class Post
     private $attachments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SubCategory", inversedBy="posts")
+     * @ORM\ManyToOne(targetEntity="App\Entity\SubCategory", inversedBy="posts", cascade={"persist", "remove"})
      * @Assert\NotBlank()
      */
     private $subCategory;

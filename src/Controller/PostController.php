@@ -168,7 +168,6 @@ class PostController extends AbstractController
         $commentForm = $this->createForm(CommentType::class, $comment);
 
         if (!($post->getUser() === $this->getUser())) {
-            // TODO: increment the vew counter for this post if not the publisher is viewing it
             $currentViews = $post->getViewsCounter();
             $post->setViewsCounter(++$currentViews);
             $em->persist($post);
@@ -184,40 +183,45 @@ class PostController extends AbstractController
             // TODO: find another (better) way to set the comment to the post!
             //      maybe i need a to set cascade to persist and remove (both Post and Comment for now)
             //      Tbh, there's no way doctrine could figure out what the fuck im talking about in this place
-            $comment->setPost($post);
-            // TODO: change this to a transaction so in case of error the user will not be notified of the comment by error!
-            $em->persist($comment);
-            $em->flush();
+            if (!empty($this->getUser())) {
+                $comment->setPost($post);
+                // TODO: change this to a transaction so in case of error the user will not be notified of the comment by error!
+                $em->persist($comment);
+                $em->flush();
 
-            // NOTE: CODE WAS MOVED TO ThE NOTIFICATION MANAGER SERVICE
-            //      i feel like this code should return some number or a bool, that i can use to decide
-            //      either the send the notification or not (in case of failure)
-            $this->notificationManager->persistCommentNotification(
-                $comment->getId(),
-                $this->getEntityTypeId(Comment::COMMENT_TYPE_ID),
-                $post->getUser(),
-                $this->getUser()
-            );
-            // NOTE: CODE WAS MOVED TO THE FUNCTION
-            $notification = [
-                'username' => $currentUser->getUsername(),
-                'action' => 'just commented on your post',
-                'notifier' => $post->getUser()->getUsername(),
-                'avatar' => $currentUser->getAvatar(),
-                'url' => $this->generateUrl('post.display', ['id' => $post->getId()]) . '#' . $comment->getId(),
-            ];
-            $this->notificationManager->sendNotification($post->getUser(), $notification);
+                // NOTE: CODE WAS MOVED TO ThE NOTIFICATION MANAGER SERVICE
+                //      i feel like this code should return some number or a bool, that i can use to decide
+                //      either the send the notification or not (in case of failure)
+                $this->notificationManager->persistCommentNotification(
+                    $comment->getId(),
+                    $this->getEntityTypeId(Comment::COMMENT_TYPE_ID),
+                    $post->getUser(),
+                    $this->getUser()
+                );
+                // NOTE: CODE WAS MOVED TO THE FUNCTION
+                $notification = [
+                    'username' => $currentUser->getUsername(),
+                    'action' => 'just commented on your post',
+                    'notifier' => $post->getUser()->getUsername(),
+                    'avatar' => $currentUser->getAvatar(),
+                    'url' => $this->generateUrl('post.display', ['id' => $post->getId()]) . '#' . $comment->getId(),
+                ];
+                $this->notificationManager->sendNotification($post->getUser(), $notification);
+                // check if the user has already bookmarked this
+                $bookmarked = $bookmarkRepository->findByUserAndPost(
+                    $this->getUser()->getId(),
+                    $post->getId()
+                );
+                // don't really need to catch anything! i was just testing if it throws any exceptions
+                $this->addFlash('success', 'Your comment was posted!');
+            }
 
-            // don't really need to catch anything! i was just testing if it throws any exceptions
-            $this->addFlash('success', 'Your comment was posted!');
         }
+
         return $this->render('post/display.html.twig', [
             'post' => $post,
             'comment_form' => $commentForm->createView(),
-            'bookmarked' => $bookmarkRepository->findByUserAndPost(
-                $this->getUser()->getId(),
-                $post->getId()
-            ),
+            'bookmarked' => $bookmarked ?? null
         ]);
     }
 

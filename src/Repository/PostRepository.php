@@ -181,7 +181,7 @@ class PostRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findRecentlyPublishedPostsByWithLimit(string $username, int $limit = 10, int $offset = 0)
+    public function findRecentlyPublishedPostsByWithLimit(int $limit = 10, int $offset = 0)
     {
         $qb = $this->createQueryBuilder('p');
         // p.id, p.title, p.content, u.username, subcategory.name

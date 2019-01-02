@@ -1204,14 +1204,25 @@ MAJOR CHANGES:
       +---------------+------------------+------+-----+---------+-------+
     ☐ Create a custom authentictor to handle facebook login
     ☐ The interface should handle both authenticated and unauthenticated users
-      ☐ Changing the layout file and index.html.twig for authenticated and none authenticated users
+      ✔ Changing the layout file and index.html.twig for authenticated and none authenticated users @done (19-01-02 19:19)
         ✔ base file @done (19-01-02 18:08)
-          ☐ Add login and register links when the user is a guest
-        ☐ Only include the app.js file if authenticated 
-        ☐ 
-      ☐ Only authenticated users can post comments
+          ✔ Add login and register links when the user is a guest @done (19-01-02 19:19)
+        ✔ Only include the app.js file if authenticated @done (19-01-02 19:19)
+      ✔ @critical guests can't see any posts -> js error related to the data-user-username attribute @done (19-01-02 19:17)
+        NOTES:
+            - The getPosts function uses the username to return the recent published posts
+            - The username was never used which means i can just get rid of it 
+            @critical DO MORE TESTS ON THIS AREA
+      ✔ Only authenticated users can bookmark and edit posts @done (19-01-02 19:26)
+        ✔ Update the post display function to only check for bookmarks if the user is logged in @done (19-01-02 19:24)
+         ✔ if the user is not signed in then remove the top bar dispaying the views and bookmarks @done (19-01-02 19:26)
+      ✔ Only authenticated users can post comments @done (19-01-02 19:32)
+        ✔ Change the controller's action to be secured @done (19-01-02 19:29)
+        ✔ Changes the template to the necessary @done (19-01-02 19:32)
       ☐ Only authenticated users can see entire profile of other users.
 
     ☐ Customize the invalid credentials message.
     ☐ Maybe i should add translation to the entire application?.
     ✔ Add a message when the application is brand new and there are no posts to see (Posts.Vue) @done (19-01-02 18:00)
+    ✔ @critical categories not showing the page and throwing an exception @done (19-01-02 18:35)
+      This is just because i didn't load the fixtures which means the categories are not loaded (Empty database)

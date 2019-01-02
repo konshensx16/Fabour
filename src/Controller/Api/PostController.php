@@ -33,7 +33,7 @@
                 $posts = $postRepository->findRecentlyPublishedPostsByUsernameWithLimit($username);
                 $total = $postRepository->getTotalPostsByUsername($username);
             } else {
-                $posts = $postRepository->findRecentlyPublishedPostsByWithLimit($this->getUser()->getUsername());
+                $posts = $postRepository->findRecentlyPublishedPostsByWithLimit();
                 $total = $postRepository->getTotalPosts();
             }
             // format the created_at string so i can pass it directly
