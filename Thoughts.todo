@@ -1192,7 +1192,7 @@ MAJOR CHANGES:
        ✔ Notifications @done (18-11-09 06:18)
        ✔ pending friends requests @done (18-11-09 06:18)
        ✔ Profile edit page @done (18-11-09 06:18)
-   ☐ Create the session table using an entity so it can be migrated when DevOps"ing".
+   ✔ Create the session table using an entity so it can be migrated when DevOps"ing". @done (19-01-01 12:15)
      What the session entity should like, (Note the name is in plural unlike other tables and entities `sessions`)
       +---------------+------------------+------+-----+---------+-------+
       | Field         | Type             | Null | Key | Default | Extra |
@@ -1202,3 +1202,16 @@ MAJOR CHANGES:
       | sess_time     | int(10) unsigned | NO   |     | NULL    |       | -> not sure how to make a field unsigned for now its (int)
       | sess_lifetime | mediumint(9)     | NO   |     | NULL    |       | -> no `mediumint` in doctrine so i just used integer
       +---------------+------------------+------+-----+---------+-------+
+    ☐ Create a custom authentictor to handle facebook login
+    ☐ The interface should handle both authenticated and unauthenticated users
+      ☐ Changing the layout file and index.html.twig for authenticated and none authenticated users
+        ✔ base file @done (19-01-02 18:08)
+          ☐ Add login and register links when the user is a guest
+        ☐ Only include the app.js file if authenticated 
+        ☐ 
+      ☐ Only authenticated users can post comments
+      ☐ Only authenticated users can see entire profile of other users.
+
+    ☐ Customize the invalid credentials message.
+    ☐ Maybe i should add translation to the entire application?.
+    ✔ Add a message when the application is brand new and there are no posts to see (Posts.Vue) @done (19-01-02 18:00)

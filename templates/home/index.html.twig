@@ -4,7 +4,12 @@
 
 {% block body %}
     <div class="slim-pageheader">
-        <h6 class="slim-pagetitle">Welcome back {{ app.user.username }}</h6>
+        {% if app.user %}
+            <h6 class="slim-pagetitle">Welcome back {{ app.user.username }}</h6>
+        {% else %}
+            <h6 class="slim-pagetitle">Hello there stranger :)</h6>
+        {% endif %}
+
     </div>
 
     <div class="section-wrapper mg-t-20" id="posts">

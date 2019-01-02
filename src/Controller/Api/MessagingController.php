@@ -31,7 +31,6 @@ class MessagingController extends AbstractController
      */
     public function previousMessages($id, $offset = 20, ConversationRepository $conversationRepository)
     {
-
         // TODO: load the previous conversation
         $messagesList = $conversationRepository->findPreviousMessageByConversationIdWithOffset($id, $offset);
         $messages = [];

@@ -16,8 +16,9 @@
     <!-- Slim CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/slim.css') }}">
     {% block stylesheets %}{% endblock %}
+
 </head>
-<body id="main-page" data-user-username="{{ app.user.username }}">
+<body id="main-page" {% if app.user %}data-user-username="{{ app.user.username }}"{% endif %}>
 <div class="slim-header">
     <div class="container">
         <div class="slim-header-left">
@@ -30,9 +31,23 @@
         </div><!-- slim-header-left -->
 
         <div class="slim-header-right">
-            {{ render(controller(
-                'App\\Controller\\HomeController::renderIcons'
-            )) }}
+            {% if app.user %}
+                {{ render(controller(
+                    'App\\Controller\\HomeController::renderIcons'
+                )) }}
+            {% else %}
+                <nav class="nav">
+                    <a href="{{ path('login') }}" class="nav-link">
+                        <i class="icon ion-log-in"></i>
+                        <span>Sign in</span>
+                    </a>
+                    <a href="{{ path('register.createAccount') }}" class="nav-link">
+                        <i class="icon ion-android-arrow-dropup-circle"></i>
+                        <span>Sign up</span>
+                    </a>
+                </nav>
+            {% endif %}
+
         </div><!-- header-right -->
     </div><!-- container -->
 </div><!-- slim-header -->
@@ -107,12 +122,15 @@
 
 {#<script src="{{ asset('assets/js/slim.js') }}"></script>#}
 {# <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> #}
+
+{% if app.user %}
 <script src="{{ asset('bundles/goswebsocket/js/vendor/autobahn.min.js') }}"></script>
 <script src="{{ asset('bundles/goswebsocket/js//gos_web_socket_client.js') }}"></script>
 <script type="text/javascript">
     var _WS_URI = "ws://{{ gos_web_socket_server_host }}:{{ gos_web_socket_server_port }}"
 </script>
-<script type="text/javascript" src="{{ asset('build/app.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('build/app.js') }}"></script>
+{% endif %}
 {% block javascripts %}{% endblock %}
 </body>
 </html>

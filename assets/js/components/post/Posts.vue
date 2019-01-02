@@ -1,10 +1,11 @@
 <template>
     <div>
+        <h2 v-if="!isPostsEmpty" class="text-center">There are no posts at the moment</h2>
+
         <template v-for="post in posts">
             <Post :post="post"/>
         </template>
-
-        <div class="d-flex ht-300 pos-relative align-items-center" v-if="loading" style="margin: 0 auto;">
+        <div class="d-flex ht-300 pos-relative align-items-center" v-if="loading && isPostsEmpty" style="margin: 0 auto;">
             <div class="sk-cube-grid">
                 <div class="sk-cube sk-cube1"></div>
                 <div class="sk-cube sk-cube2"></div>
@@ -51,6 +52,11 @@
                 loading: true,
                 offset: 10,
                 total: 0
+            }
+        },
+        computed: {
+            isPostsEmpty: function () {
+                return !!parseInt(this.posts.length)
             }
         },
         components: {Post},

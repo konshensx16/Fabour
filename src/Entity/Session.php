@@ -13,7 +13,7 @@ class Session
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer", name="sess_id")
+     * @ORM\Column(type="string", length=128, name="sess_id")
      */
     private $id;
 

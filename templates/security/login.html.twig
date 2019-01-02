@@ -12,7 +12,7 @@
                 <h3 class="signin-title-secondary">Sign in to continue.</h3>
 
                 {% if error %}
-                    <span class="error">{{ error.messageKey }}</span>
+                    <span class="error">{{ error.messageKey|trans }}</span>
                 {% endif %}
 
                 {{ form_start(form) }}
