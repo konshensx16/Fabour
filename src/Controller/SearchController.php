@@ -67,7 +67,7 @@ class SearchController extends AbstractController
      */
     public function handleSearch(Request $request, $query, $filter, PostRepository $postRepository, UserRepository $userRepository, UserRelationshipRepository $userRelationshipRepository)
     {
-        // get the query from the request
+        // TODO: THIS IS NOT GOOD AND IT SHOULD BE CHANGED LATER
         $currentUser = $this->getUser();
 
         // if query is not defined then get the result from the request
@@ -76,6 +76,11 @@ class SearchController extends AbstractController
         }
 
         $posts = $postRepository->findPostsByName($query);
+        /** @var Post $post */
+        foreach ($posts as $post) {
+            $post->setContent(strip_tags($post->getContent()));
+            $post->setThumbnail($this->imageManager->getThumbnail($post));
+        }
         $users = $userRepository->findUsersByName($query);
         $friends = null;
         if ($currentUser instanceof User) {
@@ -87,12 +92,6 @@ class SearchController extends AbstractController
                 case 'posts':
                     // get post
                     // users and friends just counts
-                    $regex = "~uploads/attachments/[a-zA-Z0-9]+\.\w+~";
-                    /** @var Post $post */
-                    foreach ($posts as $post) {
-                        $post->setThumbnail($this->imageManager->getThumbnail($post));
-                    }
-                    dump($posts);
                     $users = count($users);
                     $friends = $friends ? count($friends) : null;
                     break;

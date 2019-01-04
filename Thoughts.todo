@@ -1255,6 +1255,12 @@ MAJOR CHANGES:
     ✔ Messages section is stricly for signed in users @done (19-01-04 15:11)
       ✔ Deny access to everything in the controller @done (19-01-04 15:11)
 
+    ✔ Get rid of the html content that has special chars for the preview @done (19-01-04 15:29)
+      ✔ API get posts is done @done (19-01-04 15:23)
+      ✔ categoryies @done (19-01-04 15:24)
+      ✔ search results @done (19-01-04 15:29)
+      ✔ User profile posts @done (19-01-04 15:29)
+
 
 
 

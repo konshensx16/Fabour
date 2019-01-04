@@ -38,6 +38,7 @@
             }
             // format the created_at string so i can pass it directly
             for ($i = 0; $i < count($posts); $i++) {
+                $posts[$i]['content'] = strip_tags($posts[$i]['content']);
                 $posts[$i]['created_at'] = ($posts[$i]['created_at'])->format('Y M d');
                 // TODO: use a regex to get the first image path in the content
                 if (preg_match($regex, $posts[$i]['content'], $matches) > 0) {
@@ -73,6 +74,7 @@
             }
             // format the created_at string so i can pass it directly
             for ($i = 0; $i < count($posts); $i++) {
+                $posts[$i]['content'] = strip_tags($posts[$i]['content']);
                 $posts[$i]['created_at'] = ($posts[$i]['created_at'])->format('Y M d');
             }
             return $this->json($posts);
