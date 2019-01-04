@@ -6,9 +6,12 @@ use App\Repository\BookmarkRepository;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 
 /**
  * @Route("/bookmark", name="bookmark.")
+ * @Security("is_granted('ROLE_USER')")
  * Class BookmarkController
  * @package App\Controller
  */

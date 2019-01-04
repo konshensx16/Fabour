@@ -1245,10 +1245,15 @@ MAJOR CHANGES:
       ✔ This is normal because it was only for singed in users @done (19-01-04 12:26)
       ✔ Dont't display friends section for unauthenticated users @done (19-01-04 12:26)
 
-    ☐ Search is not displaying the thumbnail of posts
+    ✔ Search is not displaying the thumbnail of posts @done (19-01-04 13:09)
       ✔ Maybe its time to create an images manager @done (19-01-04 12:41)
         ✔ Add the getThumbnail function that takes a post and returns the thumbnail as a string @done (19-01-04 12:42)
       ✔ The filter is too strong i need to lower the opacity for the image to show @done (19-01-04 12:50)
+    ✔ User should not be able to access any sort of bookmarks functionality if not signed in @done (19-01-04 14:55)
+      ✔ deny access to Adding and removing bookmarks functions PostController @done (19-01-04 14:59)
+    ✔ Deny access to notifications @done (19-01-04 15:02)
+    ✔ Messages section is stricly for signed in users @done (19-01-04 15:11)
+      ✔ Deny access to everything in the controller @done (19-01-04 15:11)
 
 
 

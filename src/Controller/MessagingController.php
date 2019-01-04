@@ -6,12 +6,12 @@ use App\Entity\Conversation;
 use App\Entity\Message;
 use App\Repository\ConversationRepository;
 use App\Repository\UserRelationshipRepository;
-use App\Repository\UserRepository;
 use App\Services\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -21,6 +21,8 @@ use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route("/messages", name="messages.")
+ * @Security("is_granted('ROLE_USER')")
+ *
  */
 class MessagingController extends AbstractController
 {

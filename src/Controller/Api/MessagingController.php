@@ -5,9 +5,11 @@ namespace App\Controller\Api;
 use App\Repository\ConversationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/api/messages", name="api.messages.")
+ * @Security("is_granted('ROLE_USER')")
  */
 class MessagingController extends AbstractController
 {

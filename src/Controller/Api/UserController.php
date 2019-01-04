@@ -62,7 +62,6 @@ class UserController extends AbstractController
                     'messages' => 'user was not found'
                 ]);
             } else {
-                // TODO: turn the object into an array
                 $array = [
                     'username' => $user->getUsername(),
                     'avatar' => $user->getAvatar(),

@@ -18,6 +18,7 @@ use App\Services\UserManager;
 
 /**
  * @Route("/friends", name="friends.")
+ * @Security("is_granted('ROLE_USER')")
  * Class FriendsController
  * @package App\Controller
  */
@@ -203,7 +204,6 @@ class FriendsController extends AbstractController
         );
         // check if the record exists
         if ($relationship) {
-            // TODO: remove the record from the db
             $entityManager->remove($relationship);
 
             $entityManager->flush();

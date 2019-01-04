@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Post;
 use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
+use App\Services\ImageManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,6 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends AbstractController
 {
     /**
+     * @var ImageManager
+     */
+    private $imageManager;
+
+    public function __construct(ImageManager $imageManager)
+    {
+        $this->imageManager = $imageManager;
+    }
+    
+    /**
      * @Route("/single/{slug}", name="category", options={"expose"=true})
      * @param Category $category
      * @param PostRepository $postRepository
@@ -24,24 +35,19 @@ class CategoryController extends AbstractController
      */
     public function category(Category $category, PostRepository $postRepository)
     {
-        // TODO: get popular posts based on views
+        // get popular posts based on views
         $popularPosts = $postRepository->findPopularPostsByCategoryWithLimit($category->getId(), 5);
-        // TODO: get recently published posts in this category
+        // get recently published posts in this category
         $recentPosts = $postRepository->findRecentPostsWithCategory($category->getId());
 
-        $regex = "~uploads/attachments/[a-zA-Z0-9]+\.\w+~";
         /** @var Post $post */
         foreach ($popularPosts as $post) {
-            if (preg_match($regex, $post->getContent(), $matches) > 0) {
-                $post->setThumbnail('/' . $matches[0]);
-            }
+            $post->setThumbnail($this->imageManager->getThumbnail($post));
         }
 
         /** @var Post $post */
         foreach ($recentPosts as $post) {
-            if (preg_match($regex, $post->getContent(), $matches) > 0) {
-                $post->setThumbnail('/' . $matches[0]);
-            }
+            $post->setThumbnail($this->imageManager->getThumbnail($post));
         }
 
         return $this->render('category/index.html.twig', [
@@ -63,6 +69,5 @@ class CategoryController extends AbstractController
             'categories' => $categoryRepository->findAll(),
         ]);
     }
-
-
+    
 }

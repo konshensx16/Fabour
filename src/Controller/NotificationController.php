@@ -2,24 +2,22 @@
 
     namespace App\Controller;
 
-    use App\Entity\NotificationObject;
     use App\Entity\User;
     use App\Repository\NotificationObjectRepository;
     use App\Repository\NotificationRepository;
-    use Doctrine\ORM\PersistentCollection;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\Asset\Packages;
     use Symfony\Component\Routing\Annotation\Route;
+    use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
     /**
      * @Route("/notifications", name="notifications.")
+     * @Security("is_granted('ROLE_USER')")
      * Class NotificationController
      * @package App\Controller
      */
     class NotificationController extends AbstractController
     {
-
-
         /**
          * @var Packages
          */
@@ -29,7 +27,6 @@
         {
             $this->packages = $packages;
         }
-
 
         /**
          * @Route("/all", name="all")

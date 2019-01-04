@@ -4,23 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Bookmark;
 use App\Entity\Comment;
-use App\Entity\Notification;
-use App\Entity\NotificationChange;
-use App\Entity\NotificationObject;
 use App\Entity\Post;
 use App\Entity\User;
-use App\Entity\UserRelationship;
 use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\BookmarkRepository;
 use App\Repository\PostRepository;
-use App\Repository\UserRelationshipRepository;
 use App\Services\AttachmentManager;
 use App\Services\NotificationManager;
 use App\Services\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
@@ -78,6 +74,7 @@ class PostController extends AbstractController
 
     /**
      * @Route("/create", name="create")
+     * @Security("is_granted('ROLE_USER')")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function create()
@@ -271,6 +268,7 @@ class PostController extends AbstractController
 
     /**
      * @Route("/{id}/bookmark", name="bookmark")
+     * @Security("is_granted('ROLE_USER')")
      * @param Post $post
      * @param BookmarkRepository $bookmarkRepository
      * @param EntityManagerInterface $entityManager
@@ -323,6 +321,7 @@ class PostController extends AbstractController
 
     /**
      * @Route("/{id}/unbookmark", name="unbookmark")
+     * @Security("is_granted('ROLE_USER')")
      * @param Post $post
      * @param BookmarkRepository $bookmarkRepository
      * @param EntityManagerInterface $entityManager
