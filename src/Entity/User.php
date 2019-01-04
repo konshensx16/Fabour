@@ -18,6 +18,10 @@ use Symfony\Component\Validator\Constraints\DateTime;
 class User implements UserInterface, \Serializable, EquatableInterface
 {
 
+    // TODO: THESE SHOULD NOT BE HERE THEY HAVE NOTHING TO DO WITH THE USER
+    //      THEY SHOULD BE IN AUTH OR SECURITY CLASS
+    public const IS_AUTHENTICATED_FULLY = 'IS_AUTHENTICATED_FULLY';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

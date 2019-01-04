@@ -1219,10 +1219,30 @@ MAJOR CHANGES:
       ✔ Only authenticated users can post comments @done (19-01-02 19:32)
         ✔ Change the controller's action to be secured @done (19-01-02 19:29)
         ✔ Changes the template to the necessary @done (19-01-02 19:32)
-      ☐ Only authenticated users can see entire profile of other users.
+      ✔ Only authenticated users can see entire profile of other users. @done (19-01-04 11:43)
+        ✔ Maybe i shoudl hide just a bunch of fields @done (19-01-04 11:58)
+          ✔ I should get rid of the add to friends button @done (19-01-04 11:49)
+            ✔ Fix the controller to not take any actions if not authenticated @done (19-01-04 11:50)
+          ✔ "Recently became friends with" section should not be visible right now @done (19-01-04 11:58)
+
+
+        ✔ Change the userProfile.html.twig to check if the user is signed in before using the var app.user (for the profile edit) @done (19-01-04 11:42)
+        ✔ So when the user tries to access the profile/username he'll get the given user's profile, but when access just /profile he'll get his profile, which doesn't exist @done (19-01-04 11:41)
+          ✘ Maybe separate the functions into two separate routes and deny the access to the other one @cancelled (19-01-04 11:41)
+            NOTE: i don't like this because it means duplicating the view or using way too much of statments in the template
+            Solution used: if the user is not signed in b and we dont have a username set to view the profile, then deny, but if the username is set even though we are not signed in then allow access to the profile
+      ☐ @medium there a small flickering that says no posts when the posts are still loading, this ain't right
 
     ☐ Customize the invalid credentials message.
     ☐ Maybe i should add translation to the entire application?.
     ✔ Add a message when the application is brand new and there are no posts to see (Posts.Vue) @done (19-01-02 18:00)
     ✔ @critical categories not showing the page and throwing an exception @done (19-01-02 18:35)
       This is just because i didn't load the fixtures which means the categories are not loaded (Empty database)
+
+
+
+
+
+
+IDEAS:
+  - Give the user (in profile settings) the ability to choose which fields to viewers

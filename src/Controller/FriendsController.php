@@ -12,6 +12,7 @@ use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Services\UserManager;
 
@@ -72,6 +73,7 @@ class FriendsController extends AbstractController
      */
     public function addAsFriend(User $user, UserRelationshipRepository $userRelationshipRepository, EntityManagerInterface $entityManager)
     {
+        $this->denyAccessUnlessGranted(User::IS_AUTHENTICATED_FULLY);
         /** @var User $currentUser */
         $currentUser = $this->getUser();
 

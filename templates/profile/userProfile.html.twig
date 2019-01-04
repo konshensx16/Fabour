@@ -28,11 +28,13 @@
                 </div><!-- card-body -->
                 <div class="card-footer">
                     <a href="{{ profileLink }}" class="card-profile-direct">{{ profileLink }}</a>
-                    {% if app.user.username == profile.username %}
-                        <div>
-                            <a href="{{ path('profile.edit') }}">Edit Profile</a>
-                            <a href="">Profile Settings</a>
-                        </div>
+                    {% if app.user is defined and app.user is not null %}
+                        {% if app.user.username == profile.username %}
+                            <div>
+                                <a href="{{ path('profile.edit') }}">Edit Profile</a>
+                                <a href="">Profile Settings</a>
+                            </div>
+                        {% endif %}
                     {% endif %}
                 </div><!-- card-footer -->
             </div><!-- card -->
@@ -111,10 +113,12 @@
                                     Remove from friends
                                 </a>
                             {% else %}
-                                <a class="btn btn-primary btn-signin mg-b-0"
-                                   href="{{ path('friends.addAsFriend', {'id': profile.id}) }}">
-                                    Add to friends
-                                </a>
+                                {% if app.user is defined and app.user is not null %}
+                                    <a class="btn btn-primary btn-signin mg-b-0"
+                                       href="{{ path('friends.addAsFriend', {'id': profile.id}) }}">
+                                        Add to friends
+                                    </a>
+                                {% endif %}
                             {% endif %}
                         {% endif %}
                     </div>
@@ -171,7 +175,13 @@
                             </div><!-- media -->
                         {% endfor %}
                     {% else %}
-                        This users has not friends at the moment, maybe add him? :)
+                        {% if app.user is defined and app.user is not null and recentFriends is null %}
+                            This users has not friends at the moment, maybe add him? :)
+                        {% else %}
+                            You must <a href="{{ path('login') }}">sing in</a> or <a
+                                href="{{ path('register.createAccount') }}">sign up</a> to see ths section.
+                        {% endif %}
+                        
                     {% endif %}
                 </div><!-- media-list -->
             </div><!-- card -->

@@ -14,6 +14,7 @@
     use Symfony\Component\HttpFoundation\File\UploadedFile;
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\Routing\Annotation\Route;
+    use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
     use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
     use Symfony\Component\Security\Core\User\UserInterface;
     use App\Services\FileManager;
@@ -48,11 +49,18 @@
             // server-side rendering no need to worry about sensitive information getting out!
             // If the user is not logged in he will be redirected to somewhere else!
             // TODO: redirect the user to the login page if note authenticated!
-            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+            // No need to redirect, the guest should be able to access profiles but no do ANYTHING, just look
+//            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
             // TODO: Increment the views_counter for the user if someone is seeing this page
             // TODO: test this stuff further more, just to make sure everything is working fine!
             $user = null;
             $relationship = null;
+            // if not logged in redirect him to the sing in page
+            if (!$this->isUserSignedIn() && is_null($username)) {
+                return $this->redirect(
+                    $this->generateUrl('login'), 302
+                );
+            }
             // if no username, display the current logged in user
             if (!$username) {
                 $user = $this->getUser();
@@ -60,11 +68,20 @@
                 $user = $userRepository->findOneBy([
                     'username' => $username
                 ]);
+                // This function is only available for logged in users
                 // TODO: check if the current user is friends with the $user
-                $relationship = $userRelationshipRepository->findOneFriendById(
-                    $this->getUser()->getId(),
-                    $user->getId()
-                );
+                if ($this->isUserSignedIn()) {
+                    $relationship = $userRelationshipRepository->findOneFriendById(
+                        $this->getUser()->getId(),
+                        $user->getId()
+                    );
+                    if ($this->isUserSignedIn()) {
+                        $recentlyAddedFriends = $userRelationshipRepository->findFriendsWithLimitById($user->getId(), 5);
+                    }
+                    $friends = $userRelationshipRepository->findUsersWithTypeFriend($user->getId());
+                    $profileLink = $this->generateUrl('profile.userProfile', ['username' => $user->getUsername()], UrlGeneratorInterface::ABSOLUTE_URL);
+                }
+
             }
 
             if (!($user === $this->getUser())) {
@@ -78,20 +95,23 @@
             }
 
             // TODO: Get the last five friends the user added
-            $recentlyAddedFriends = $userRelationshipRepository->findFriendsWithLimitById($user->getId(), 5);
+            // TODO: what am gonna do now needs to be moved up i think
+
+
 
             return $this->render('profile/userProfile.html.twig', [
                 'profile' => $user,
-                'friends' => $userRelationshipRepository->findUsersWithTypeFriend($user->getId()),
+                'friends' => $friends ?? null, // i think this would be null anyways
                 'isFriend' => (bool)$relationship,
-                'recentFriends' => $recentlyAddedFriends,
+                'recentFriends' => $recentlyAddedFriends ?? null,
 //                'recentPosts' => $postRepository->findRecentlyPublishedPostsWithUserIdWithLimit($user->getId(), 10),
-                'profileLink' => $this->generateUrl('profile.userProfile', ['username' => $user->getUsername()], UrlGeneratorInterface::ABSOLUTE_URL),
+                'profileLink' => $profileLink ?? null
             ]);
         }
 
         /**
          * @Route("/edit/", name="edit")
+         * @Security("is_granted('ROLE_USER')")
          * @param Request $request
          * @param EntityManagerInterface $manager
          * @return \Symfony\Component\HttpFoundation\Response
@@ -103,7 +123,6 @@
         {
             // TODO: check if the user has enough permissions to change information
             // the logged in user should be able to change his info
-            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
             /** @var User $user */
             $user = $this->getUser();
             if (!$user instanceof UserInterface) {
@@ -131,7 +150,6 @@
                     // set the new name to the user
                     $user->setAvatar($filenameWithUploadPath);
                 }
-
 
                 // upload the profile picture that we got from the request and save the new name to the database
                 $manager->persist($user);
@@ -181,6 +199,16 @@
         public function getUploadsDirWithoutRoot()
         {
             return $this->getParameter('avatars_dir_no_root');
+        }
+
+        /**
+         * Checks if the user is signed in
+         * NOTE: this might need to change, i don't feel comfortable with this logic.
+         * @return bool
+         */
+        private function isUserSignedIn()
+        {
+            return $this->getUser() instanceof UserInterface;
         }
 
 
