@@ -6977,7 +6977,10 @@ a.text-dark:hover, a.text-dark:focus {
     opacity: 0.2;
     transition: all 0.2s ease-in-out; }
   .card-item-img:hover img, .card-item-img:focus img {
-    opacity: 0.5; }
+    opacity: 1; }
+.card-item-img img, .card-item-img img {
+  opacity: 0.6;
+}
 
 .card-header-tabs {
   margin-left: -5px; }

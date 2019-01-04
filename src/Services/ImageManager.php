@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Entity\Post;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Point;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -54,6 +55,17 @@ class ImageManager
             );
 
         return $filename;
+    }
+
+    public function getThumbnail(Post $post)
+    {
+        $matches = [];
+        $regex = "~uploads/attachments/[a-zA-Z0-9]+\.\w+~";
+        if (preg_match($regex, $post->getContent(), $matches) > 0) {
+            $post->setThumbnail('/' . $matches[0]);
+        }
+
+        return $post->getThumbnail();
     }
 
 }

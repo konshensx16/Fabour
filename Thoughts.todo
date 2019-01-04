@@ -1237,13 +1237,18 @@ MAJOR CHANGES:
       ☐ @medium there a small flickering that says no posts when the posts are still loading, this ain't right
 
     ☐ Customize the invalid credentials message.
-    ☐ Maybe i should add translation to the entire application?.
+    ☐ Maybe i should add translation to the entire application?
     ✔ Add a message when the application is brand new and there are no posts to see (Posts.Vue) @done (19-01-02 18:00)
     ✔ @critical categories not showing the page and throwing an exception @done (19-01-02 18:35)
       This is just because i didn't load the fixtures which means the categories are not loaded (Empty database)
-    ☐ @critical when searching for something it return false, FIX ASAP
+    ✔ @critical when searching for something it return false, FIX ASAP @done (19-01-04 12:26)
       ✔ This is normal because it was only for singed in users @done (19-01-04 12:26)
       ✔ Dont't display friends section for unauthenticated users @done (19-01-04 12:26)
+
+    ☐ Search is not displaying the thumbnail of posts
+      ✔ Maybe its time to create an images manager @done (19-01-04 12:41)
+        ✔ Add the getThumbnail function that takes a post and returns the thumbnail as a string @done (19-01-04 12:42)
+      ✔ The filter is too strong i need to lower the opacity for the image to show @done (19-01-04 12:50)
 
 
 

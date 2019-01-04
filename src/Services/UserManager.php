@@ -47,6 +47,6 @@ class UserManager
      */
     public function checkPostOwnership(Post $post) : bool
     {
-        return $this->security->getUser()->getId() === $post->getUser()->getId();
+        return $this->security->getUser() === $post->getUser();
     }
 }
