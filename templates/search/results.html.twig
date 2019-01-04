@@ -60,17 +60,22 @@
                             {% endif %}
                         </div>
                     {% elseif filter == 'friends' %}
-                        <div class="slim-card-title mg-b-20">Viewing your friends</div>
+                        <div class="slim-card-title mg-b-20">Searching your friends</div>
                         <div class="row row-sm">
-                            {% if friends %}
+                            {% if friends and app.user is not null %}
                                 {% for userRelationship in friends %}
+                                    {# i think this shoudl be changed to something that doesn't include controllers for more speed #}
                                     {{ render(controller(
                                         'App\\Controller\\ProfileController::profile',
                                         { 'user': userRelationship.relatedUser }
                                     )) }}
                                 {% endfor %}
                             {% else %}
-                                <p>Sorry, no users in your friends list matched your query, maybe you mispelled it? </p>
+                                {% if app.user is not null %}
+                                    <p>Sorry, no users in your friends list matched your query, maybe you mispelled it? </p>
+                                {% elseif friends is null %}
+                                    You must be<a href="{{ path('login') }}">&nbsp;signed in&nbsp;</a> to view your friends.
+                                {% endif %}
                             {% endif %}
                         </div>
                     {% endif %}

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\User;
 use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
 use App\Repository\UserRepository;
@@ -56,9 +57,7 @@ class SearchController extends AbstractController
     {
         // get the query from the request
         $currentUser = $this->getUser();
-        if (!$currentUser instanceof UserInterface) {
-            return false;
-        }
+
         // if query is not defined then get the result from the request
         if (!$query) {
             $query = $request->get('form')['query'];
@@ -66,7 +65,10 @@ class SearchController extends AbstractController
 
         $posts = $postRepository->findPostsByName($query);
         $users = $userRepository->findUsersByName($query);
-        $friends = $userRelationshipRepository->findFriendsByUsername($currentUser->getId(), $query);
+        $friends = null;
+        if ($currentUser instanceof User) {
+            $friends = $userRelationshipRepository->findFriendsByUsername($currentUser->getId(), $query);
+        }
 
         if ($filter) {
             switch ($filter) {
@@ -81,13 +83,13 @@ class SearchController extends AbstractController
                         }
                     }
                     $users = count($users);
-                    $friends = count($friends);
+                    $friends = $friends ? count($friends) : null;
                     break;
                 case 'users':
                     // get the users
                     // friends and post just counts
                     $posts = count($posts);
-                    $friends = count($friends);
+                    $friends = $friends ? count($friends) : null;
                     break;
                 case 'friends':
                     // get friends
@@ -100,7 +102,7 @@ class SearchController extends AbstractController
         else
         {
             $users = count($users);
-            $friends = count($friends);
+            $friends = $friends ? count($friends) : null;
         }
 
         return $this->render('search/results.html.twig', [

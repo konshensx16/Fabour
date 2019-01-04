@@ -1241,7 +1241,9 @@ MAJOR CHANGES:
     ✔ Add a message when the application is brand new and there are no posts to see (Posts.Vue) @done (19-01-02 18:00)
     ✔ @critical categories not showing the page and throwing an exception @done (19-01-02 18:35)
       This is just because i didn't load the fixtures which means the categories are not loaded (Empty database)
-
+    ☐ @critical when searching for something it return false, FIX ASAP
+      ✔ This is normal because it was only for singed in users @done (19-01-04 12:26)
+      ✔ Dont't display friends section for unauthenticated users @done (19-01-04 12:26)
 
 
 

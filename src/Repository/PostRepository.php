@@ -145,7 +145,6 @@ class PostRepository extends ServiceEntityRepository
             )
             ->setParameter('query', '%' . $query . '%')
         ;
-        dump($qb->getQuery()->getSQL());
         return $qb
             ->getQuery()
             ->getResult();
