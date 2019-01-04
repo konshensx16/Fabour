@@ -7,11 +7,18 @@
 
 {% block body %}
 <div class="slim-pageheader">
-    <h6 class="slim-pagetitle">Welcome back {{ app.user.username }}</h6>
+    {% if user is not null %}
+        {% if app.user is not null and app.user.id is same as(user.id) %}
+            <h6 class="slim-pagetitle">All your posts {{ user.username }}</h6>
+        {% else %}
+            <h6 class="slim-pagetitle">All {{ user.username }} posts</h6>
+        {% endif %}
+
+    {% endif %}
 </div>
 
 <div class="section-wrapper mg-t-20" id="posts">
-    <Posts :username="{{ app.user.username|json_encode }}"/>
+    <Posts :username="{{ user.username|json_encode }}"/>
 </div>
 {% endblock %}
 

@@ -353,7 +353,8 @@ class PostController extends AbstractController
     public function userPosts(User $user)
     {
         return $this->render('post/userPosts.html.twig', [
-            'post' => $user->getPosts(),
+            'posts' => $user->getPosts(),
+            'user' => $user,
         ]);
     }
 

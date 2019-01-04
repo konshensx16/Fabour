@@ -1224,7 +1224,10 @@ MAJOR CHANGES:
           ✔ I should get rid of the add to friends button @done (19-01-04 11:49)
             ✔ Fix the controller to not take any actions if not authenticated @done (19-01-04 11:50)
           ✔ "Recently became friends with" section should not be visible right now @done (19-01-04 11:58)
-
+        ✔ Theres some sort of problem when trying to view the users profile "posts" @done (19-01-04 12:10)
+           ✔ @critical First what i have over there is wrong, it will always get you the user logged in posts @done (19-01-04 12:10)
+             ✔ Pass the user to the view and user that value for to get the username @done (19-01-04 12:10)
+             ✔ Chnage the view and the message that's being displayed at top @done (19-01-04 12:10)
 
         ✔ Change the userProfile.html.twig to check if the user is signed in before using the var app.user (for the profile edit) @done (19-01-04 11:42)
         ✔ So when the user tries to access the profile/username he'll get the given user's profile, but when access just /profile he'll get his profile, which doesn't exist @done (19-01-04 11:41)
