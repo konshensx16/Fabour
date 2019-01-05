@@ -31,7 +31,7 @@
                                                 <h5 class="blog-title"><a
                                                             href="{{ path('post.display', {'id': post.id}) }}">{{ post.title }}</a></h5>
                                                 <p class="blog-text">
-                                                    {{ post.content|length > 160 ? post.content|slice(0, 157) ~ '...' : post.content|e('html') }}
+                                                    {{ post.content|striptags|length > 160 ? post.content|striptags|slice(0, 157) ~ '...' : post.content|e('html')|striptags }}
                                                 </p>
                                                 <p class="blog-links">
                                                     <a href="">{{ post.viewsCounter }} Views</a>

@@ -57,7 +57,7 @@ class ImageManager
         return $filename;
     }
 
-    public function getThumbnail(&$post)
+    public function getThumbnail($post)
     {
         $regex = "~uploads/attachments/[a-zA-Z0-9]+\.\w+~";
         $matches = [];

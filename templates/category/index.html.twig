@@ -24,7 +24,7 @@
                                 <h5 class="blog-title"><a
                                             href="{{ path('post.display', {'id': post.id}) }}">{{ post.title }}</a></h5>
                                 <p class="blog-text">
-                                    {{ post.content|length > 160 ? post.content|slice(0, 157) ~ '...' : post.content|e('html') }}
+                                    {{ post.content|striptags|length > 160 ? post.content|striptags|slice(0, 157) ~ '...' : post.content|striptags|e('html') }}
                                 </p>
                                 <p class="blog-links">
                                     <a href="">{{ post.viewsCounter }} Views</a>
@@ -63,7 +63,7 @@
                                     <h5 class="blog-title"><a
                                                 href="{{ path('post.display', {'id': post.id}) }}">{{ post.title }}</a></h5>
                                     <p class="blog-text">
-                                        {{ post.content|length > 255 ? post.content|slice(0, 253) ~ '...' : post.content|e('html') }}
+                                        {{ post.content|striptags|trim(side='left')|length > 255 ? post.content|striptags|trim(side='left')|slice(0, 253) ~ '...' : post.content|striptags|trim(side='left')|e('html') }}
                                     </p>
                                     <span class="blog-date">{{ post.createdAt|date('Y-m-d H:m') }}</span>
                                 </div><!-- col-8 -->

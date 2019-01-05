@@ -42,13 +42,11 @@ class CategoryController extends AbstractController
 
         /** @var Post $post */
         foreach ($popularPosts as $post) {
-            $post->setContent(strip_tags($post->getContent()));
             $post->setThumbnail($this->imageManager->getThumbnail($post));
         }
 
         /** @var Post $post */
         foreach ($recentPosts as $post) {
-            $post->setContent(strip_tags($post->getContent()));
             $post->setThumbnail($this->imageManager->getThumbnail($post));
         }
 

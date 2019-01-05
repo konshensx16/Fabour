@@ -79,7 +79,6 @@ class SearchController extends AbstractController
         /** @var Post $post */
         foreach ($posts as $post) {
             $post->setThumbnail($this->imageManager->getThumbnail($post));
-            $post->setContent(strip_tags($post->getContent()));
         }
         $users = $userRepository->findUsersByName($query);
         $friends = null;
