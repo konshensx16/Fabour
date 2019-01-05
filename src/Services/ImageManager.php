@@ -57,15 +57,25 @@ class ImageManager
         return $filename;
     }
 
-    public function getThumbnail(Post $post)
+    public function getThumbnail(&$post)
     {
-        $matches = [];
         $regex = "~uploads/attachments/[a-zA-Z0-9]+\.\w+~";
-        if (preg_match($regex, $post->getContent(), $matches) > 0) {
-            $post->setThumbnail('/' . $matches[0]);
+        $matches = [];
+
+        // check if the post is an array or a post entity
+        if ($post instanceof Post) {
+            if (preg_match($regex, $post->getContent(), $matches) > 0) {
+                // set the thumbnail and just return
+               return ('/' . $matches[0]);
+            }
+        } else if (is_array($post))
+        {
+            if (preg_match($regex, $post['content'], $matches) > 0) {
+                return '/' . $matches[0];
+            }
+
         }
 
-        return $post->getThumbnail();
     }
 
 }

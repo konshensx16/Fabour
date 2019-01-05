@@ -40283,3 +40283,7 @@ a.hover-white-8:hover, a.hover-white-8:focus {
   max-width: 100%;
   height:auto;
 }
+
+.red {
+  color: #e71b1b;
+}

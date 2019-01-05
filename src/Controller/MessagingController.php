@@ -39,12 +39,17 @@ class MessagingController extends AbstractController
      * @var UserManager
      */
     private $userManager;
+    /**
+     * @var \App\Services\Serializer
+     */
+    private $serializer;
 
-    public function __construct(\Twig_Extensions_Extension_Date $twig_date, \Twig_Environment $environment, UserManager $userManager)
+    public function __construct(\Twig_Extensions_Extension_Date $twig_date, \Twig_Environment $environment, UserManager $userManager, \App\Services\Serializer $serializer)
     {
         $this->twig_date = $twig_date;
         $this->environment = $environment;
         $this->userManager = $userManager;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -164,24 +169,24 @@ class MessagingController extends AbstractController
      */
     public function newConversation(User $user, ConversationRepository $conversationRepository, EntityManagerInterface $entityManager)
     {
-        // TODO: get the conversation
+        // get the conversation
         $currentUser = $this->getUser();
         // NOTE: the current user could be the first_user or the second, same thing goes for the other user, so i need to handle both cases
         $conversation = $conversationRepository->findConversationByUsers($currentUser->getId(), $user->getId());
 
-        // TODO: check if the current user and that friend are already in a conversation
+        // check if the current user and that friend are already in a conversation
         // NOTE: there should be either one record or none
         if (is_null($conversation)) {
-            // TODO: create the new conversation
+            // create the new conversation
             $conversation = new Conversation(); // there's nothing wrong with using the same variable since at this point im sure it will be null
-            $conversation->setFirstUser($currentUser);
+            $conversation->setFirstUser($currentUser); // this is the creator of the conversation
             $conversation->setSecondUser($user);
 
             $entityManager->persist($conversation);
             $entityManager->flush();
         }
 
-        return $this->redirect($this->generateUrl('messages.conversation', ['id' => $conversation->getId()]));
+        return $this->redirect($this->generateUrl('messages.conversation', ['id' => $conversation->getId(), 'username' => $user->getUsername()]));
     }
 
     /**
@@ -215,13 +220,12 @@ class MessagingController extends AbstractController
                 throw new \Exception('Opps something bad happened!!');
             }
 
-            // TODO: mark the messages as read before sending them to the user
+            // mark the messages as read before sending them to the user
             $conversationRepository->updateMessagesReadAt($conversation->getId(), $currentUser->getId());
 
             $latestMessages = $conversationRepository->findLatestMessagesByConversationIdWithLimit($conversation->getId());
             $messages = [];
             foreach ($latestMessages  as $item) {
-                dump($item['created_at'] . $item['message']);
                 $messages[] = [
                     'username' => $item['senderUsername'],
                     'avatar' => $item['senderAvatar'],
@@ -237,8 +241,34 @@ class MessagingController extends AbstractController
     }
 
     /**
+     * @Route("/remove/{id}", name="removeConversation", options={"expose"=true})
+     * @param Conversation $conversation
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function removeConversation(Conversation $conversation)
+    {
+        $currentUser = $this->getUser();
+        // TODO: check if the user is able to remove the conversation
+        if ($currentUser === $conversation->getFirstUser()) {
+            // remove the record
+            $em = $this->getDoctrine()->getManager();
+
+            $em->remove($conversation);
+            $em->flush();
+
+            return $this->json([
+                'success' => true,
+            ]);
+        }
+
+        return $this->json([
+            'failure' => false,
+        ]);
+    }
+
+    /**
      * Given a conversation and a user, this will check if the user is the first or the second
-     * NOTE: in this case the user is always the currentUser (this will be removed if the situitation changes)
+     * NOTE: in this case the user is always the currentUser (this will be removed if the situation changes)
      * @param Conversation $conversation
      * @param User $user
      * @return User|bool|null
@@ -246,10 +276,10 @@ class MessagingController extends AbstractController
     private function getOtherUser(Conversation $conversation, User $user)
     {
         if ($conversation->getFirstUser() === $user) {
-            // TODO: get the second user username and avatar
+            // get the second user username and avatar
             return $conversation->getSecondUser();
         } else if ($conversation->getSecondUser() === $user) {
-            // TODO: get the first_user username and avatar
+            // get the first_user username and avatar
             return $conversation->getFirstUser();
         }
         return false;
@@ -257,6 +287,8 @@ class MessagingController extends AbstractController
 
     /**
      * Checks if im the owner of the message or not
+     * TODO: read the not below to decide
+     * NOTE: This is not user anymore? i can just get rid of it i guess
      * @param Message $message
      * @return User|null
      */
@@ -276,10 +308,6 @@ class MessagingController extends AbstractController
      */
     private function isCurrentUserSender(array $message)
     {
-//        dump($this->getUser()->getId());
-//        dump($message['sender_id']);
-//        dump((int)$message['sender_id'] === $this->getUser()->getId()); die;
-
         return (int)$message['sender_id'] === $this->getUser()->getId();
     }
 
@@ -294,38 +322,21 @@ class MessagingController extends AbstractController
     {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
-//
-        if (!$currentUser instanceof UserInterface) {
-            throw new \Exception('You\'re not logged in!');
-        }
-
-        $encoders = [new JsonEncoder()];
-        $normalizers = [
-            (new ObjectNormalizer())
-                ->setCircularReferenceHandler(function ($object) {
-                    return $object->getId();
-                })
-                ->setIgnoredAttributes([
-                    'post',
-                    'comments',
-                    'bookmarks',
-                    'notificationChanges',
-                    'sentMessages',
-                    'receivedMessages',
-                    'conversations',
-                    'friends'
-                ])
+        $attributesToIgnore = [
+            'post',
+            'comments',
+            'bookmarks',
+            'notificationChanges',
+            'sentMessages',
+            'receivedMessages',
+            'conversations',
+            'friends'
         ];
 
-        $serializer = new Serializer($normalizers, $encoders);
-
         $friends = $userRelationshipRepository->findFriendsWithLimitByIdJustRelatedUser($currentUser->getId(), $username);
-        // TODO: fix the avatar of the friends
 //        dump($friends); die;
         return $this->json([
-            'friends' => $serializer->serialize($friends, 'json')
-//            'friends' => $currentUser->getFriends()->toArray()
-
+            'friends' => $this->serializer->serializeToJson($friends, $attributesToIgnore)
         ]);
     }
 

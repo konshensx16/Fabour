@@ -20,7 +20,7 @@ class Serializer
      * @param array $ignoredAttributes
      * @return bool|float|int|string
      */
-    public function serializeJson($data, array $ignoredAttributes = [])
+    public function serializeToJson($data, array $ignoredAttributes = [])
     {
         $normalizers = [
             (new ObjectNormalizer())

@@ -23,6 +23,10 @@ export default {
         CONVERSATION: state => id => {
             return state.conversations[id]
         },
+        CONVERSATIONS_COUNT: state => {
+            console.log(state.conversations.length)
+            return state.conversations
+        },
         LOADING_MESSAGES: state => {
             return state.loadingMessages
         },
@@ -55,7 +59,6 @@ export default {
             let conversation = state.conversations[payload.id]
             conversation.message = payload.message
             conversation.date = 'Just now'
-            // TODO: inc the count of messages
             if (conversation.count >= 0 && conversation.count < 10 && payload.inc) {
                 conversation.count++
             }
@@ -75,11 +78,10 @@ export default {
             context.commit('SET_CONVERSATIONS', data[0])
         },
         GET_MESSAGES: async (context, payload) => {
-            // TODO: check if we already have messages then there's no need to make requests
             if (!context.state.conversations[payload].messages.length) {
                 let url = Routing.generate('messages.latestMessages', {'conversation_id': payload})
                 let {data} = await axiosInstance.get(url)
-                //TODO: set the messages to the conversation and not the messages id
+                // set the messages to the conversation and not the messages id
                 context.commit('SET_MESSAGES', {data: data[0], id: payload})
                 context.commit('SET_LOADING_MESSAGES', false)
             }

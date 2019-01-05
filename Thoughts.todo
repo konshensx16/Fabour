@@ -1260,6 +1260,18 @@ MAJOR CHANGES:
       ✔ categoryies @done (19-01-04 15:24)
       ✔ search results @done (19-01-04 15:29)
       ✔ User profile posts @done (19-01-04 15:29)
+    ☐ Messages section 
+      ☐ The search is returning nothing whatever i type
+        NOTE: i'm a fucking idiot because this is normal, i have no friends atm :(
+        ☐ Display a messages when user don't have any conversations
+        ☐ Missing parameter for url in MessagingController line 189 (when trying to create a new conversation)
+        ☐ Users need to be able to remove a conversation.
+          ☐ Create the end-point which returns either success or failure upon finishing 
+          ☐ Handle the front integration in vue 
+          NOTE: I think i have a database design failure, because the conversation when removed will be removed for both users, which is not a good thing lol 
+          ✔ Which user is the creator of the conversation. (the firstUser is the creator of the conversation) @done (19-01-05 00:45)
+          ☐ Add another record for the other user whereeverything will be duplicated in both the records
+      ✔ Create a new conversation is not working somehow @done (19-01-05 00:43)
 
 
 

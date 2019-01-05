@@ -39,6 +39,9 @@
                     </div>
                 </div><!-- media-body -->
             </router-link><!-- media -->
+            <h2 class="text-center" v-if="hasConversations"  style="display: flex; align-items: center; width: 100%; height: 100%;">
+                <i class="fa fa-leaf fa-5x" style="align-self: center; width: 100%;"></i>
+            </h2>
             <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;">
                 <div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
             </div>
@@ -84,7 +87,6 @@
         data() {
             return {
                 isOpen: !true,
-                conversations: [],
                 loading: true
             }
         },
@@ -92,8 +94,12 @@
             // mix the getters into computed with object spread operator
             ...mapGetters([
                 'CONVERSATIONS',
-                'CURRENT_USER'
-            ])
+                'CURRENT_USER',
+                'CONVERSATIONS_COUNT'
+            ]),
+            hasConversations : function () {
+                return this.CONVERSATIONS_COUNT.length
+            }
         },
         methods: {
             unreadMessagesCounter: function (conversation) {

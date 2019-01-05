@@ -3,6 +3,7 @@
     namespace App\Controller\Api;
 
     use App\Repository\PostRepository;
+    use App\Services\ImageManager;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpKernel\Event\PostResponseEvent;
     use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +17,16 @@
     {
 
         /**
+         * @var ImageManager
+         */
+        private $imageManager;
+
+        public function __construct(ImageManager $imageManager)
+        {
+            $this->imageManager = $imageManager;
+        }
+
+        /**
          * NOTE: this will get 20 posts for a given user, if no username is provided then the current user's
          *         username will be used
          * TODO: this will need to change if i need other urls in the route
@@ -27,7 +38,7 @@
          */
         public function getPosts($username, PostRepository $postRepository)
         {
-            $regex = "~uploads/attachments/[a-zA-Z0-9]+\.\w+~";
+//            $regex = "~uploads/attachments/[a-zA-Z0-9]+\.\w+~";
 
             if (!is_null($username)) {
                 $posts = $postRepository->findRecentlyPublishedPostsByUsernameWithLimit($username);
@@ -38,12 +49,9 @@
             }
             // format the created_at string so i can pass it directly
             for ($i = 0; $i < count($posts); $i++) {
-                $posts[$i]['content'] = strip_tags($posts[$i]['content']);
                 $posts[$i]['created_at'] = ($posts[$i]['created_at'])->format('Y M d');
-                // TODO: use a regex to get the first image path in the content
-                if (preg_match($regex, $posts[$i]['content'], $matches) > 0) {
-                    $posts[$i]['thumbnail'] = '/' . $matches[0];
-                }
+                $posts[$i]['thumbnail'] = $this->imageManager->getThumbnail($posts[$i]);
+                $posts[$i]['content'] = strip_tags($posts[$i]['content']);
             }
             return $this->json([
                 'posts' => $posts,
@@ -76,6 +84,7 @@
             for ($i = 0; $i < count($posts); $i++) {
                 $posts[$i]['content'] = strip_tags($posts[$i]['content']);
                 $posts[$i]['created_at'] = ($posts[$i]['created_at'])->format('Y M d');
+                // TODO: add the thumbnail to the more posts
             }
             return $this->json($posts);
         }

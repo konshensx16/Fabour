@@ -60,6 +60,7 @@
             }
         },
         mounted() {
+            console.log(this.post)
         }
     }
 </script>

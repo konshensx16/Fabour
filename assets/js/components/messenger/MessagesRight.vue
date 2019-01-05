@@ -12,6 +12,8 @@
                 <div class="message-option">
                     <div class="d-none d-sm-flex">
                         <a href=""><i class="icon ion-ios-gear-outline"></i></a>
+                    </div><div class="d-none d-sm-flex">
+                        <a href="#" v-on:click.prevent="removeConversation()"><i class="icon ion-ios-trash-outline red"></i></a>
                     </div>
                     <div class="d-sm-none">
                         <a href=""><i class="icon ion-more"></i></a>
@@ -98,6 +100,12 @@
             }
         },
         methods: {
+            removeConversation() {
+                // TODO: send a message to remove, maybe i should display a confirmation messages
+                if (confirm('Are you sure you want to remove the conversation, this operation cannot be undone')) {
+                    console.log("Alright will be removed right now ")
+                }
+            },
             async onScroll(e) {
                 if (e.target.scrollTop === 0) {
                     if (this.currentMessagesCount < this.totalMessages) {
