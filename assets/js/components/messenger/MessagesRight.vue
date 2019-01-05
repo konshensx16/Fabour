@@ -76,7 +76,16 @@
 <script>
     import {mapGetters} from 'vuex'
     import _ from 'lodash'
+    import axios from 'axios'
+    import Routing from '../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
 
+    const routes = require('../../routes.json')
+
+    const axiosInstance = axios.create({
+        headers: {'X-Requested-With': 'XMLHttpRequest'}
+    })
+
+    Routing.setRoutingData(routes)
     let webSocket = WS.connect(_WS_URI)
     let session
 
@@ -100,10 +109,26 @@
             }
         },
         methods: {
-            removeConversation() {
-                // TODO: send a message to remove, maybe i should display a confirmation messages
+            async removeConversation() {
+                // send a message to remove, maybe i should display a confirmation messages
                 if (confirm('Are you sure you want to remove the conversation, this operation cannot be undone')) {
-                    console.log("Alright will be removed right now ")
+                    let url = Routing.generate('messages.removeConversation', {
+                        id: this.$route.params.id,
+                    })
+
+                    let {data} = await axiosInstance.get(url)
+                    console.log(data)
+
+                    // refresh the page after the conversation has been removed
+                    if (data.success) {
+                        let redirectUrl = Routing.generate('messages.messaging')
+
+                        window.location.href = redirectUrl
+                    } else if (data.failure)
+                    {
+                        alert('Something happened: ', data.failure)
+                    }
+
                 }
             },
             async onScroll(e) {

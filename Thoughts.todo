@@ -1271,6 +1271,7 @@ MAJOR CHANGES:
           NOTE: I think i have a database design failure, because the conversation when removed will be removed for both users, which is not a good thing lol 
           ✔ Which user is the creator of the conversation. (the firstUser is the creator of the conversation) @done (19-01-05 00:45)
           ☐ Add another record for the other user whereeverything will be duplicated in both the records
+      ☐ The conversation ID should not be incremental, it should be either UUID or a hex
       ✔ Create a new conversation is not working somehow @done (19-01-05 00:43)
 
 

@@ -29,7 +29,7 @@ class Conversation
     private $second_user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="conversation")
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="conversation", cascade={"persist", "remove"})
      */
     private $messages;
 

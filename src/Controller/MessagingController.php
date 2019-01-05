@@ -53,7 +53,7 @@ class MessagingController extends AbstractController
     }
 
     /**
-     * @Route("/", name="messaging")
+     * @Route("/", name="messaging", options={"expose"=true})
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index()
@@ -186,7 +186,7 @@ class MessagingController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirect($this->generateUrl('messages.conversation', ['id' => $conversation->getId(), 'username' => $user->getUsername()]));
+        return $this->redirect($this->generateUrl('messages.conversation', ['id' => $conversation->getId(), 'userId' => $user->getId()]));
     }
 
     /**
