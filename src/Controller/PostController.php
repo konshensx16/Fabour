@@ -109,6 +109,7 @@ class PostController extends AbstractController
 
         $currentUser = $this->getUser();
 
+        // TODO: is this really needed ?
         $oldAttachments = $post->getAttachments();
         if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
@@ -122,7 +123,7 @@ class PostController extends AbstractController
                 // CODE HERE WAS MOVED TO THE FUNCTION
                 $friendsNames = $this->notificationManager->persistPostNotification(
                     $currentUser->getId(),
-                    $post->getId(),
+                    $post->getId()->toString(),
                     $this->getEntityTypeId(Post::POST_TYPE_ID),
                     $currentUser
                 );

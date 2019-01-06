@@ -19,7 +19,6 @@ class ImageManager
 
     public function __construct(FileManager $fileManager)
     {
-
         $this->fileManager = $fileManager;
     }
 

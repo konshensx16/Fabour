@@ -11,6 +11,7 @@
         "gos/web-socket-bundle": "^1.8.13",
         "imagine/imagine": "^1.2",
         "predis/predis": "^1.1",
+        "ramsey/uuid-doctrine": "^1.5",
         "react/event-loop": "0.4.0",
         "sensio/framework-extra-bundle": "^5.1",
         "snc/redis-bundle": "^2.1",

@@ -5,7 +5,9 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Id\UuidGenerator;
 
 
 /**
@@ -17,9 +19,11 @@ class Post
     const POST_TYPE_ID = 'post';
 
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var Uuid
+     * @ORM\Id
+     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
     private $id;
 
@@ -81,6 +85,10 @@ class Post
 
     // TODO: maybe create an updated at field that indicates when it was changed
 
+    /**
+     * Post constructor.
+     * @throws \Exception
+     */
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -88,7 +96,7 @@ class Post
         $this->attachments = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
