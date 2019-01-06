@@ -1273,6 +1273,8 @@ MAJOR CHANGES:
           ☐ Add another record for the other user whereeverything will be duplicated in both the records
       ☐ The conversation ID should not be incremental, it should be either UUID or a hex
       ✔ Create a new conversation is not working somehow @done (19-01-05 00:43)
+      ☐ When viweing a post preview there's a very annoying &nbsp; that i need to get rid off
+      ☐ Viweing a single sub category doesn't work at all
 
 
 

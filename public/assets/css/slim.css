@@ -13603,7 +13603,8 @@ textarea.parsley-success:focus {
   @media (min-width: 576px) {
     .media-demo {
       display: flex;
-      padding: 40px; } }
+      padding: 40px;
+      padding-right: 50%;} }
 
 .media-img-demo {
   display: flex;
@@ -40286,4 +40287,26 @@ a.hover-white-8:hover, a.hover-white-8:focus {
 
 .red {
   color: #e71b1b;
+}
+
+.post-bg-img::before {
+  position: absolute;
+  content: '';
+  background: linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,1));
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -10;
+}
+
+
+.post-bg-img {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-radius: 5px;
+  z-index: 1;
 }
