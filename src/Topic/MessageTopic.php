@@ -77,7 +77,7 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
     public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible)
     {
         $currentUser = $this->security->getUser();
-        // TODO: Check if the user not the same current logged in user
+        // Check if the user not the same current logged in user
         // NOTE: im not sure how is thing going to work
         $recipient = $event['recipient'];
         $sender= $event['sender'];
@@ -89,13 +89,13 @@ class MessageTopic implements TopicInterface, PushableTopicInterface
 
         $message = $event['message'];
 
-        // TODO: check if the currentUser is logged in
+        // check if the currentUser is logged in
         if (!$currentUser instanceof UserInterface) {
             return false;
         }
-        // TODO: save the message message before sending it, if it's not saved then don't even save it
+        // save the message message before sending it, if it's not saved then don't even send it
         $this->messageManager->saveMessage($message, $recipient, $conversation_id, $sender);
-        // TODO: send the message to just the other user
+        // send the message to just the other user
         $user = $this->clientManipulator->findByUsername($topic, $recipient);
         if ($user) {
             $topic->broadcast([

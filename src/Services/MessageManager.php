@@ -44,7 +44,7 @@ class MessageManager
      * @param string $message
      * @param string $recipient
      * @param int $conversation_id
-     * @param User $sender
+     * @param string $sender
      * @throws \Exception
      */
     public function saveMessage(string $message, string $recipient, int $conversation_id, string $sender)
@@ -58,7 +58,7 @@ class MessageManager
         $recipientObject = $this->userRepository->findOneBy([
             'username' => $recipient
         ]);
-        // TODO: get the conversation object
+        // get the conversation object
         $conversation = $this->conversationRepository->find($conversation_id);
 
         $senderObject = $this->userRepository->findOneBy([
@@ -71,8 +71,7 @@ class MessageManager
         $messageObject->setReciepent($recipientObject);
         $messageObject->setSender($senderObject);
 
-
-        // TODO: set the conversation_id
+        // set the conversation_id
         $messageObject->setConversation($conversation);
 
         $this->entityManager->persist($messageObject);

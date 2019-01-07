@@ -1271,10 +1271,14 @@ MAJOR CHANGES:
           NOTE: I think i have a database design failure, because the conversation when removed will be removed for both users, which is not a good thing lol 
           ✔ Which user is the creator of the conversation. (the firstUser is the creator of the conversation) @done (19-01-05 00:45)
           ☐ Add another record for the other user whereeverything will be duplicated in both the records
+
       ☐ The conversation ID should not be incremental, it should be either UUID or a hex
       ✔ Create a new conversation is not working somehow @done (19-01-05 00:43)
-      ☐ When viweing a post preview there's a very annoying &nbsp; that i need to get rid off
-      ☐ Viweing a single sub category doesn't work at all
+      ☐ Messages are empty on the other side (real time)
+      ✔ @critical messages are not being persisted at all @done (19-01-07 17:31)
+        Actually they're now, i just restarted the websockets server, not sure if that was the problem
+    ☐ When viweing a post preview there's a very annoying &nbsp; that i need to get rid off
+    ☐ Viweing a single sub category doesn't work at all
 
 
 

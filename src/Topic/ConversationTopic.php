@@ -57,7 +57,7 @@ class ConversationTopic implements TopicInterface {
     // this looks like the place where to send to count of connected clients
     public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible)
     {
-        // TODO: need to check if the user connected before moving further
+        // need to check if the user connected before moving further
         $username = $request->getAttributes()->get('username');
         $user = $this->clientManipulator->findByUsername($topic, $username);
         if ($user) {
