@@ -43,7 +43,7 @@
                 return Routing.generate('profile.userProfile', {'username': parameter})
             },
             generateCategoryUrl(parameter) {
-                return Routing.generate('category.category', {'slug': parameter})
+                return Routing.generate('category.subcategory', {'slug': parameter})
             }
         },
         computed: {

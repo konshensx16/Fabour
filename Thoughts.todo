@@ -1278,7 +1278,16 @@ MAJOR CHANGES:
       ✔ @critical messages are not being persisted at all @done (19-01-07 17:31)
         Actually they're now, i just restarted the websockets server, not sure if that was the problem
     ☐ When viweing a post preview there's a very annoying &nbsp; that i need to get rid off
-    ☐ Viweing a single sub category doesn't work at all
+    ☐ @critical pubishing a post throws a fatal error
+    
+
+Re-creating Category system:
+   Everything here is being done to fox the issue below, because i need to allow the user to see posts by using the sub-categories as well:
+    ✔ Viweing a single sub category doesn't work at all @done (19-01-12 12:02)
+    NOTE: i need to preserver the current behaviour, meaning the user can see posts by categories i just need to add support for viweing posts by subcategory
+      ✔ Create the action and the repository query @done (19-01-12 11:58)
+      ✔ Update the pos.vue component to use the sub-category link @done (19-01-12 12:02)
+     
 
 
 

@@ -62,7 +62,7 @@ class NotificationManager
         $this->userRelationshipRepository = $userRelationshipRepository;
     }
 
-    public function persistPostNotification(int $user_id, int $entity_id, int $entity_type_id, User $actor)
+    public function persistPostNotification(int $user_id, $entity_id, int $entity_type_id, User $actor) // removed the type int from entity_id since using the uuid string value
     {
         // send a notification to all friends of the publisher
         // get all friends of the user

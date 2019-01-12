@@ -266,4 +266,25 @@ class PostRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findRecentPostsWithSubCategory(int $subcategory_id)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+//            ->innerJoin('p.subCategory', 's', 'WITH', 's = p.subCategory')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('p.subCategory', ':subcategory_id'),
+                    $qb->expr()->isNotNull('p.published_at')
+                )
+            )
+            ->setParameter('subcategory_id', $subcategory_id)
+            ->orderBy('p.created_at', 'DESC')
+
+        ;
+
+        // i need to get the category just by using the sub_category
+        return $qb->getQuery()->getResult()
+            ;
+    }
 }
