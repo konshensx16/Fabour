@@ -77,7 +77,7 @@
                         return basename($match);
                     }, $matches[0]);
 
-                    $recordsToRemove = $this->attachmentRepository->findFilenamesToRemove($filenames, $post->getId()); 
+                    $recordsToRemove = $this->attachmentRepository->findFilenamesToRemove($filenames, $post->getId()->toString());
 
                     /** @var Attachment $record */
                     foreach ($recordsToRemove as $record) {

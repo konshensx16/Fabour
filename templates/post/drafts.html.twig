@@ -12,7 +12,7 @@
                 {% for post in posts %}
                     <div class="row no-gutters mg-b-20">
                         <div class="col-md-4">
-                            <a href="{{ path('post.edit', {'id': post.id}) }}"><img
+                            <a href="{{ path('post.edit', {'uuid': post.id|uuid_encode}) }}"><img
                                         src="{{ asset('assets/img/img0.jpg') }}" class="img-fit-cover"
                                         alt=""></a>
                         </div><!-- col-4 -->

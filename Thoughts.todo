@@ -1274,11 +1274,14 @@ MAJOR CHANGES:
 
       ☐ The conversation ID should not be incremental, it should be either UUID or a hex
       ✔ Create a new conversation is not working somehow @done (19-01-05 00:43)
-      ☐ Messages are empty on the other side (real time)
+      ✘ Messages are empty on the other side (real time) @cancelled (19-01-12 12:03)
+        I think this is not longer heppning because i reverted all changes the originaly caused this problem
       ✔ @critical messages are not being persisted at all @done (19-01-07 17:31)
         Actually they're now, i just restarted the websockets server, not sure if that was the problem
-    ☐ When viweing a post preview there's a very annoying &nbsp; that i need to get rid off
-    ☐ @critical pubishing a post throws a fatal error
+    ☐ @critical When viweing a post preview there's a very annoying &nbsp; that i need to get rid off
+         NOTE: this has been here for a long time fix it
+    ☐ @critical error when updating a post (mainly because of the images)
+    ✔ @critical pubishing a post throws a fatal error @done (19-01-12 12:03)
     
 
 Re-creating Category system:
@@ -1287,7 +1290,23 @@ Re-creating Category system:
     NOTE: i need to preserver the current behaviour, meaning the user can see posts by categories i just need to add support for viweing posts by subcategory
       ✔ Create the action and the repository query @done (19-01-12 11:58)
       ✔ Update the pos.vue component to use the sub-category link @done (19-01-12 12:02)
+
+Refator listeners:
+   NOTE: i need to refactor the listeners to use the entityManager that comes with the arguments insteaf of injecting it
+     ☐ Get the entity manager using this approach (the above)
+     ☐ Change from injecting the repository to getting it using the embedded entity manager
      
+USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
+    ✔ Use HashId to encode and decode the integer values @done (19-01-14 20:21)
+      Initial step iu working, more to go, EVERYTHING BELOW SHOULD BECHANGED AND TESTED BEFORE MOVING ON
+      ☐ Edit
+      ☐ Display
+      ☐ Remove
+      ☐ Publish draft
+      ☐ Bookmark
+      ☐ Unbookmark
+      ☐ use the twig extension to generate the require links
+
 
 
 

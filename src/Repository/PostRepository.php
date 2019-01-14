@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Services\UuidEncoder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -17,9 +18,12 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
  */
 class PostRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    use FindByEncodedIdTrait;
+
+    public function __construct(RegistryInterface $registry, UuidEncoder $uuidEncoder)
     {
         parent::__construct($registry, Post::class);
+        $this->uuidEncoder = $uuidEncoder;
     }
 
     /**

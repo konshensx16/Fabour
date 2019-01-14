@@ -13,6 +13,7 @@ use App\Repository\PostRepository;
 use App\Services\AttachmentManager;
 use App\Services\NotificationManager;
 use App\Services\UserManager;
+use App\Services\UuidEncoder;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
@@ -22,6 +23,7 @@ use Symfony\Component\Asset\Packages;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Flex\Response;
 
 /**
@@ -54,13 +56,18 @@ class PostController extends AbstractController
      * @var UserManager
      */
     private $userManager;
+    /**
+     * @var UuidEncoder
+     */
+    private $uuidEncoder;
 
     public function __construct(TopicManager $topicManager,
                                 PusherDecorator $pusher,
                                 Packages $packages,
                                 NotificationManager $notificationManager,
                                 AttachmentManager $attachmentManager,
-                                UserManager $userManager
+                                UserManager $userManager,
+                                UuidEncoder $uuidEncoder
     )
     {
         $this->topicManager = $topicManager;
@@ -69,6 +76,7 @@ class PostController extends AbstractController
         $this->notificationManager = $notificationManager;
         $this->attachmentManager = $attachmentManager;
         $this->userManager = $userManager;
+        $this->uuidEncoder = $uuidEncoder;
     }
 
 
@@ -89,11 +97,14 @@ class PostController extends AbstractController
         $em->persist($post);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('post.edit', ['id' => $post->getId()]));
+        return $this->redirect($this->generateUrl('post.edit', [
+            'uuid' => $this->uuidEncoder->encode($post->getId())
+        ]));
     }
 
     /**
-     * @Route("/{id}/edit", name="edit")
+     * @Route("/{uuid}/edit", name="edit")
+     * @Entity("post", expr="repository.findOneByEncodedId(uuid)")
      * @param Request $request
      * @param Post $post
      * @return \Symfony\Component\HttpFoundation\Response
@@ -229,13 +240,13 @@ class PostController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Exception
      */
-    public function deletePost (Post $post)
+    public function deletePost(Post $post)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $this->checkOwnership($post);
 
         // note: grant if the user is the publisher
-        if ($post->getUser() === $this->getUser())  {
+        if ($post->getUser() === $this->getUser()) {
             $em = $this->getDoctrine()->getManager();
             // TODO: remove all the attachments
             foreach ($post->getAttachments() as $attachment) {
