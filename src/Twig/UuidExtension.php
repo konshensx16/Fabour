@@ -5,6 +5,7 @@ namespace App\Twig;
 use App\Services\UuidEncoder;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+
 class UuidExtension extends AbstractExtension
 {
     private $encoder;
@@ -14,15 +15,18 @@ class UuidExtension extends AbstractExtension
         $this->encoder = $encoder;
     }
 
-    public function getFunctions(): array
+    public function getFilters(): array
     {
-        return [
-            new TwigFilter(
-                'uuid_encode',
-                [$this, 'encodeUuid'],
-                ['is_safe' => ['html']]
-            ),
-        ];
+        return array(
+            new TwigFilter('encode_url', array($this, 'encodeUuid')),
+        );
+//        return [
+//            new TwigFilter(
+//                'uuid_encode',
+//                [$this, 'encodeUuid'],
+//                ['is_safe' => ['html']]
+//            ),
+//        ];
     }
 
     public function encodeUuid(int $uuid): string

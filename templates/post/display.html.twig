@@ -45,7 +45,7 @@
                             <div class="card card-connection">
                                 <div class="row row-xs">
                                     <div class="col-4 tx-primary"><i class="icon ion-compose"></i></div>
-                                    <div class="col-8"><a href="{{ path('post.edit', {id: post.id}) }}">Edit post</a></div>
+                                    <div class="col-8"><a href="{{ path('post.edit', {uuid: post.id|encode_url}) }}">Edit post</a></div>
                                 </div><!-- row -->
                             </div>
                         </div>

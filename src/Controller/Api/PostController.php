@@ -4,6 +4,7 @@
 
     use App\Repository\PostRepository;
     use App\Services\ImageManager;
+    use App\Services\UuidEncoder;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\HttpKernel\Event\PostResponseEvent;
     use Symfony\Component\Routing\Annotation\Route;
@@ -20,10 +21,15 @@
          * @var ImageManager
          */
         private $imageManager;
+        /**
+         * @var UuidEncoder
+         */
+        private $uuidEncoder;
 
-        public function __construct(ImageManager $imageManager)
+        public function __construct(ImageManager $imageManager, UuidEncoder $uuidEncoder)
         {
             $this->imageManager = $imageManager;
+            $this->uuidEncoder = $uuidEncoder;
         }
 
         /**
@@ -52,6 +58,7 @@
                 $posts[$i]['created_at'] = ($posts[$i]['created_at'])->format('Y M d');
                 $posts[$i]['thumbnail'] = $this->imageManager->getThumbnail($posts[$i]);
                 $posts[$i]['content'] = strip_tags($posts[$i]['content']);
+                $posts[$i]['id'] = $this->uuidEncoder->encode($posts[$i]['id']);
             }
             return $this->json([
                 'posts' => $posts,

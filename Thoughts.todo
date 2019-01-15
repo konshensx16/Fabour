@@ -1299,13 +1299,18 @@ Refator listeners:
 USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
     ✔ Use HashId to encode and decode the integer values @done (19-01-14 20:21)
       Initial step iu working, more to go, EVERYTHING BELOW SHOULD BECHANGED AND TESTED BEFORE MOVING ON
-      ☐ Edit
-      ☐ Display
+      ✔ Edit @done (19-01-15 18:41)
+      ✔ Display @done (19-01-15 18:41)
       ☐ Remove
       ☐ Publish draft
       ☐ Bookmark
       ☐ Unbookmark
       ☐ use the twig extension to generate the require links
+      ☐ Search results
+
+
+
+ ☐ @low comments should be loaded asyn
 
 
 

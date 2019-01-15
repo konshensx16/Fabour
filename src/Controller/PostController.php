@@ -134,7 +134,7 @@ class PostController extends AbstractController
                 // CODE HERE WAS MOVED TO THE FUNCTION
                 $friendsNames = $this->notificationManager->persistPostNotification(
                     $currentUser->getId(),
-                    $post->getId()->toString(),
+                    $post->getId(),
                     $this->getEntityTypeId(Post::POST_TYPE_ID),
                     $currentUser
                 );
@@ -163,7 +163,8 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="display", options={"expose"=true}, requirements={"page"="\d+"})
+     * @Route("/{uuid}", name="display", options={"expose"=true})
+     * @Entity("post", expr="repository.findOneByEncodedId(uuid)")
      * @param Request $request
      * @param Post $post
      * @param EntityManagerInterface $em
@@ -213,7 +214,7 @@ class PostController extends AbstractController
                     'action' => 'just commented on your post',
                     'notifier' => $post->getUser()->getUsername(),
                     'avatar' => $currentUser->getAvatar(),
-                    'url' => $this->generateUrl('post.display', ['id' => $post->getId()]) . '#' . $comment->getId(),
+                    'url' => $this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($post->getId())]) . '#' . $comment->getId(),
                 ];
                 $this->notificationManager->sendNotification($post->getUser(), $notification);
                 // check if the user has already bookmarked this
