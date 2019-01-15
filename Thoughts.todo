@@ -1303,11 +1303,12 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
       ✔ Display @done (19-01-15 18:41)
       ☐ Remove
       ✔ Publish draft @done (19-01-15 19:29)
-      ☐ Categories
-      ☐ Bookmark
-      ☐ Unbookmark
-      ☐ use the twig extension to generate the require links
+      ✔ Categories @done (19-01-15 19:42)
+      ✔ Bookmark @done (19-01-15 19:39)
+      ✔ Unbookmark @done (19-01-15 19:39)
+      ✔ use the twig extension to generate the require links @done (19-01-15 19:42)
       ☐ Search results
+      ☐ Notifications
 
 
 

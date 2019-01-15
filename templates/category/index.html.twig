@@ -22,7 +22,7 @@
                             <div class="card-body">
                                 <p class="blog-category">by {{ post.user.username }}</p>
                                 <h5 class="blog-title"><a
-                                            href="{{ path('post.display', {'id': post.id}) }}">{{ post.title }}</a></h5>
+                                            href="{{ path('post.display', {'uuid': post.id|encode_url}) }}">{{ post.title }}</a></h5>
                                 <p class="blog-text">
                                     {{ post.content|striptags|length > 160 ? post.content|striptags|slice(0, 157) ~ '...' : post.content|striptags|e('html') }}
                                 </p>
@@ -61,7 +61,7 @@
                                 <div class="col-md-7 col-lg-6 col-xl-7">
                                     <p class="blog-category tx-danger">{{ post.subCategory }}</p>
                                     <h5 class="blog-title"><a
-                                                href="{{ path('post.display', {'id': post.id}) }}">{{ post.title }}</a></h5>
+                                                href="{{ path('post.display', {'uuid': post.id|encode_url}) }}">{{ post.title }}</a></h5>
                                     <p class="blog-text">
                                         {{ post.content|striptags|trim(side='left')|length > 255 ? post.content|striptags|trim(side='left')|slice(0, 253) ~ '...' : post.content|striptags|trim(side='left')|e('html') }}
                                     </p>
