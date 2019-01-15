@@ -68,8 +68,7 @@
         {
             // check if the content has changed
             if ($args->hasChangedField('content')) {
-                // TODO: get the diff between the two contents (original vs old)
-
+                // get the diff between the two contents (original vs old)
                 $matches = [];
                 $regex = "~uploads/attachments/[a-zA-Z0-9]+\.\w+~";
                 if (preg_match_all($regex, $args->getNewValue('content'), $matches) > 0) {
@@ -77,7 +76,7 @@
                         return basename($match);
                     }, $matches[0]);
 
-                    $recordsToRemove = $this->attachmentRepository->findFilenamesToRemove($filenames, $post->getId()->toString());
+                    $recordsToRemove = $this->attachmentRepository->findFilenamesToRemove($filenames, $post->getId());
 
                     /** @var Attachment $record */
                     foreach ($recordsToRemove as $record) {

@@ -8,6 +8,8 @@ use App\Services\AttachmentManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+
 
 /**
  * @Route("/api/attachment", name="api.attachment.")
@@ -27,8 +29,8 @@ class AttachmentController extends AbstractController
     }
 
     /**
-     * @Route("/postimage/{id}", name="postimage", options={"expose"=true})
-     *
+     * @Route("/postimage/{uuid}", name="postimage", options={"expose"=true})
+     * @Entity("post", expr="repository.findOneByEncodedId(uuid)")
      * @param Request $request
      * @param Post $post I might want to check if the post actually exists, but that something for the future
      * @return \Symfony\Component\HttpFoundation\Response

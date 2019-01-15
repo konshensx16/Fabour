@@ -27,8 +27,8 @@
                                     {{ post.content|striptags|length > 160 ? post.content|striptags|slice(0, 157) ~ '...' : post.content|striptags|e('html') }}
                                 </p>
                                 <p class="blog-links">
-                                    <a href="">{{ post.viewsCounter }} Views</a>
-                                    <a href="">{{ post.comments.count }} Comments</a>
+                                    <a href="{{ path('post.display', {'uuid': post.id|encode_url}) }}">{{ post.viewsCounter }} Views</a>
+                                    <a href="{{ path('post.display', {'uuid': post.id|encode_url}) }}">{{ post.comments.count }} Comments</a>
                                 </p>
                             </div><!-- card-body -->
                         </div>
@@ -42,7 +42,6 @@
 
     <div class="section-wrapper mg-t-20">
         <label class="section-title">Recently published</label>
-
         <div class="row">
             {% if recentPosts %}
                 {% for post in recentPosts %}

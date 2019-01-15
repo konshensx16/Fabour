@@ -145,7 +145,7 @@ class PostController extends AbstractController
                     'action' => 'just published a new post',
                     'notifiers' => $friendsNames,
                     'avatar' => $currentUser->getAvatar(),
-                    'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
+                    'url' => $this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($post->getId())]),
                 ];
 
                 $this->notificationManager->sendNotificationToMultipleUsers($notification);
@@ -238,7 +238,8 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="delete")
+     * @Route("/delete/{uuid}", name="delete")
+     * @Entity("post", expr="repository.findOneByEncodedId(uuid)")
      * @param Post $post
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Exception
@@ -251,7 +252,8 @@ class PostController extends AbstractController
         // note: grant if the user is the publisher
         if ($post->getUser() === $this->getUser()) {
             $em = $this->getDoctrine()->getManager();
-            // TODO: remove all the attachments
+            // TODO: maybe this should be in the post listener and done after the post has been removed
+            // remove all the attachments
             foreach ($post->getAttachments() as $attachment) {
                 $this->attachmentManager->removeAttachment($attachment->getFilename());
             }

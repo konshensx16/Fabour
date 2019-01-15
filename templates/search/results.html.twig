@@ -29,7 +29,7 @@
                                             <div class="card-body">
                                                 <p class="blog-category">by {{ post.user.username }}</p>
                                                 <h5 class="blog-title"><a
-                                                            href="{{ path('post.display', {'id': post.id}) }}">{{ post.title }}</a></h5>
+                                                            href="{{ path('post.display', {'uuid': post.id|encode_url}) }}">{{ post.title }}</a></h5>
                                                 <p class="blog-text">
                                                     {{ post.content|striptags|length > 160 ? post.content|striptags|slice(0, 157) ~ '...' : post.content|e('html')|striptags }}
                                                 </p>

@@ -52,7 +52,7 @@ class Post
     private $attachments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SubCategory", inversedBy="posts", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\SubCategory", inversedBy="posts")
      * @Assert\NotBlank()
      */
     private $subCategory;

@@ -1301,20 +1301,24 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
       Initial step iu working, more to go, EVERYTHING BELOW SHOULD BECHANGED AND TESTED BEFORE MOVING ON
       ✔ Edit @done (19-01-15 18:41)
       ✔ Display @done (19-01-15 18:41)
-      ☐ Remove
+      ✔ Remove @done (19-01-15 20:05)
+      ✔ Attachment upload @done (19-01-15 20:07)
+      ✔ Real time notifications ? @done (19-01-15 20:12)
       ✔ Publish draft @done (19-01-15 19:29)
       ✔ Categories @done (19-01-15 19:42)
       ✔ Bookmark @done (19-01-15 19:39)
       ✔ Unbookmark @done (19-01-15 19:39)
       ✔ use the twig extension to generate the require links @done (19-01-15 19:42)
-      ☐ Search results
-      ☐ Notifications
+      ✔ Search results @done (19-01-15 19:47)
+      ✔ Notifications @done (19-01-15 19:55)
 
 
 
  ☐ @low comments should be loaded asyn
  ✔ @critical There's some sort of a bug when bookmarking a post (that you published) @done (19-01-15 19:25)
    When displaying a post that I wrote i should only see how many people bookmarked my post, (Not be able to bookmark it)
+ ☐ @critical i think notifications are in the wrong order, AGAIN !!!!!!!!! I DIDN'T EVEN TOUCH THEM WHAT THE FUCK BRUH 
+ ☐ @critical pass the username instead of id when apporving a user friendship request 
 
 
 

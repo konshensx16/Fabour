@@ -64,8 +64,8 @@
                                 'action' => $post['username'] . ' published a new post: "' . $post['title'] . '"',
                                 'avatar' => $post['avatar'],
                                 'date' => $post['created_at'],
-                                'id' => $post['post_id'],
-                                'url' => $this->generateUrl('post.display', ['id' => $post['post_id']]),
+                                'id' => $post['post_id'], // TODO: what am i using this for? because this needs to be encoded
+                                'url' => $this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($post['post_id'])]),
                             ];
                         }
                         break;
@@ -81,7 +81,7 @@
                                 'avatar' => $comment['avatar'],
                                 'date' => $comment['created_at'],
                                 'id' => $comment['id'],
-                                'url' => $this->generateUrl('post.display', ['id' => $comment['post_id']]) . '#' . $comment['comment_id'],
+                                'url' => $this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($comment['post_id'])]) . '#' . $comment['comment_id'],
                             ];
                         }
                         break;
@@ -96,7 +96,7 @@
                                 'avatar' => $post['avatar'],
                                 'date' => $post['created_at'],
                                 'id' => $post['post_id'],
-                                'url' => $this->generateUrl('post.display', ['id' => $post['post_id']]),
+                                'url' => $this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($post['post_id'])]),
                             ];
                         }
                         break;
