@@ -5,6 +5,7 @@
     use App\Entity\User;
     use App\Repository\NotificationObjectRepository;
     use App\Repository\NotificationRepository;
+    use App\Services\UuidEncoder;
     use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     use Symfony\Component\Asset\Packages;
     use Symfony\Component\Routing\Annotation\Route;
@@ -22,10 +23,15 @@
          * @var Packages
          */
         private $packages;
+        /**
+         * @var UuidEncoder
+         */
+        private $uuidEncoder;
 
-        public function __construct(Packages $packages)
+        public function __construct(Packages $packages, UuidEncoder $uuidEncoder)
         {
             $this->packages = $packages;
+            $this->uuidEncoder = $uuidEncoder;
         }
 
         /**
@@ -135,7 +141,7 @@
                                 'action' => ' published a new post: "' . $notification['title'] . '"',
                                 'avatar' => $notification['avatar'],
                                 'date' => $notification['created_at'],
-                                'url' => $this->generateUrl('post.display', ['id' => $notification['post_id']]),
+                                'url' => $this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($notification['post_id'])]),
                                 'username' => $notification['username'],
                             ];
                         }
@@ -151,7 +157,7 @@
                                 'action' => ' commented on: ' . $notification['title'],
                                 'avatar' => $notification['avatar'],
                                 'date' => ($notification['created_at']),
-                                'url' => $this->generateUrl('post.display', ['id' => $notification['post_id']]),
+                                'url' => $this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($notification['post_id'])]),
                                 'username' => $notification['username']
                             ];
                         }
@@ -165,7 +171,7 @@
                                 'action' => 'bookmarked your post: "' . $notification['title'] . '"',
                                 'avatar' => $notification['avatar'],
                                 'date' => $notification['created_at'],
-                                'url' => $this->generateUrl('post.display', ['id' => $notification['post_id']]),
+                                'url' => $this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($notification['post_id'])]),
                                 'username' => $notification['username'],
                             ];
                         }

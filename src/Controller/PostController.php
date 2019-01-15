@@ -187,13 +187,12 @@ class PostController extends AbstractController
         $commentForm->handleRequest($request);
 
         if ($commentForm->isSubmitted()) {
-
             $currentUser = $this->getUser();
             // handle the comment and shit
             // TODO: find another (better) way to set the comment to the post!
             //      maybe i need a to set cascade to persist and remove (both Post and Comment for now)
             //      Tbh, there's no way doctrine could figure out what the fuck im talking about in this place
-            if (!empty($this->getUser())) {
+            if (!($this->getUser())) {
                 $comment->setPost($post);
                 // TODO: change this to a transaction so in case of error the user will not be notified of the comment by error!
                 $em->persist($comment);
@@ -217,15 +216,18 @@ class PostController extends AbstractController
                     'url' => $this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($post->getId())]) . '#' . $comment->getId(),
                 ];
                 $this->notificationManager->sendNotification($post->getUser(), $notification);
-                // check if the user has already bookmarked this
-                $bookmarked = $bookmarkRepository->findByUserAndPost(
-                    $this->getUser()->getId(),
-                    $post->getId()
-                );
                 // don't really need to catch anything! i was just testing if it throws any exceptions
                 $this->addFlash('success', 'Your comment was posted!');
             }
 
+        }
+
+        // check if user is signed in && check if the user has already bookmarked this
+        if (!($this->getUser())) {
+            $bookmarked = $bookmarkRepository->findByUserAndPost(
+                $this->getUser()->getId(),
+                $post->getId()
+            );
         }
 
         return $this->render('post/display.html.twig', [
@@ -280,19 +282,23 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/bookmark", name="bookmark")
+     * @Route("/{uuid}/bookmark", name="bookmark")
+     * @Entity("post", expr="repository.findOneByEncodedId(uuid)")
      * @Security("is_granted('ROLE_USER')")
      * @param Post $post
      * @param BookmarkRepository $bookmarkRepository
      * @param EntityManagerInterface $entityManager
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function bookmark(Post $post, BookmarkRepository $bookmarkRepository, EntityManagerInterface $entityManager)
     {
         $currentUser = $this->getUser();
-
-        // TODO: if the user already has then do nothing
+        if ($this->getUser() === $post->getUser()) {
+            throw new \Exception('This operation cannot be done');
+        }
         // NOTE: This might throw an error if no results are returned, might want to do heavy tests on this!
+        // if the user already has this bookmark then do nothing
         $alreadyExists = $bookmarkRepository->findByUserAndPost(
             $this->getUser()->getId(),
             $post->getId()
@@ -321,7 +327,7 @@ class PostController extends AbstractController
                 'action' => 'just bookmarked your post',
                 'notifier' => $post->getUser()->getUsername(),
                 'avatar' => $currentUser->getAvatar(),
-                'url' => $this->generateUrl('post.display', ['id' => $post->getId()]),
+                'url' => $this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($post->getId())]),
             ];
             $this->notificationManager->sendNotification($post->getUser(), $notification);
 
@@ -329,7 +335,7 @@ class PostController extends AbstractController
 
         }
 
-        return $this->redirect($this->generateUrl('post.display', ['id' => $post->getId()]));
+        return $this->redirect($this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($post->getId())]));
     }
 
     /**

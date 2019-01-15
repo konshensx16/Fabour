@@ -15,13 +15,13 @@
                 {% for bookmark in bookmarks %}
                     <div class="row no-gutters mg-b-20">
                         <div class="col-md-4">
-                            <a href="{{ path('post.display', {'id': bookmark.id}) }}"><img
+                            <a href="{{ path('post.display', {'uuid': bookmark.id|encode_url}) }}"><img
                                         src="{{ asset('assets/img/img0.jpg') }}" class="img-fit-cover"
                                         alt=""></a>
                         </div><!-- col-4 -->
                         <div class="col-md-8">
                             <div class="post-wrapper">
-                                <a href="{{ path('post.display', {'id': bookmark.id}) }}"
+                                <a href="{{ path('post.display', {'uuid': bookmark.id|encode_url}) }}"
                                    class="activity-title">{{ bookmark.title }}</a>
                                 <p class="mg-b-0">
                                     <span href="" class="d-block">{{ bookmark.username }}

@@ -27,15 +27,21 @@
                                 <div class="col-4 tx-purple">{{ post.bookmarks.count }}</div>
                                 <div class="col-8">
                                     saves <br>
-                                    {% if bookmarked == null %}
-                                        {% if post.bookmarks.count %}
-                                            <a href="{{ path('post.bookmark', {'id': post.id}) }}">Bookmark this too</a>
-                                        {% else %}
-                                            <a href="{{ path('post.bookmark', {'id': post.id}) }}">Be the first to bookmark this</a>
-                                        {% endif %}
+                                    {% if app.user is same as(post.user) %}
+                                        for this post
                                     {% else %}
-                                        <a href="{{ path('post.unbookmark', {'id': post.id}) }}">Remove from bookmarks</a>
+                                        {#What the fuck am i even doing here??#}
+                                        {% if bookmarked == null %}
+                                            {% if post.bookmarks.count %}
+                                                <a href="{{ path('post.bookmark', {'uuid': post.id|encode_url}) }}">Bookmark this too</a>
+                                            {% else %}
+                                                <a href="{{ path('post.bookmark', {'uuid': post.id|encode_url}) }}">Be the first to bookmark this</a>
+                                            {% endif %}
+                                        {% else %}
+                                            <a href="{{ path('post.unbookmark', {'uuid': post.id|encode_url}) }}">Remove from bookmarks</a>
+                                        {% endif %}
                                     {% endif %}
+
                                 </div>
                             </div><!-- row -->
                         </div>

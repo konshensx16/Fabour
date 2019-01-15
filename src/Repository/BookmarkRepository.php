@@ -28,7 +28,7 @@ class BookmarkRepository extends ServiceEntityRepository
      * @return Bookmark Returns a single bookmark that corresponds to the user_id and post_id
      */
 
-    public function findByUserAndPost($user_id, $post_id)
+    public function findByUserAndPost(int $user_id, int $post_id)
     {
         try {
             return $this->createQueryBuilder('b')
