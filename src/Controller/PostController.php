@@ -223,7 +223,7 @@ class PostController extends AbstractController
         }
 
         // check if user is signed in && check if the user has already bookmarked this
-        if (!($this->getUser())) {
+        if (!is_null($this->getUser())) {
             $bookmarked = $bookmarkRepository->findByUserAndPost(
                 $this->getUser()->getId(),
                 $post->getId()
@@ -339,7 +339,8 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/unbookmark", name="unbookmark")
+     * @Route("/{uuid}/unbookmark", name="unbookmark")
+     * @Entity("post", expr="repository.findOneByEncodedId(uuid)")
      * @Security("is_granted('ROLE_USER')")
      * @param Post $post
      * @param BookmarkRepository $bookmarkRepository
@@ -360,7 +361,7 @@ class PostController extends AbstractController
 
         $this->addFlash('success', 'Removed from your bookmarks');
 
-        return $this->redirect($this->generateUrl('post.display', ['id' => $post->getId()]));
+        return $this->redirect($this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($post->getId())]));
     }
 
     /**

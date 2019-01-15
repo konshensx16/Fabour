@@ -1302,7 +1302,7 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
       ✔ Edit @done (19-01-15 18:41)
       ✔ Display @done (19-01-15 18:41)
       ☐ Remove
-      ☐ Publish draft
+      ✔ Publish draft @done (19-01-15 19:29)
       ☐ Categories
       ☐ Bookmark
       ☐ Unbookmark
