@@ -1317,12 +1317,15 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
  ☐ @low comments should be loaded asyn
  ✔ @critical There's some sort of a bug when bookmarking a post (that you published) @done (19-01-15 19:25)
    When displaying a post that I wrote i should only see how many people bookmarked my post, (Not be able to bookmark it)
- ☐ @critical i think notifications are in the wrong order, AGAIN !!!!!!!!! I DIDN'T EVEN TOUCH THEM WHAT THE FUCK BRUH 
+ ✔ @critical i think notifications are in the wrong order, AGAIN !!!!!!!!! I DIDN'T EVEN TOUCH THEM WHAT THE FUCK BRUH @done (19-01-16 19:27)
+     NOTE: This seems to be in the right order right now, tried postign a comment, publishing and bookmarking 
+     WRONG: what happends is types are being grouped, 
+ ✔ @critical the user cannot post a comment, (Nothing is happening when submitting) @done (19-01-16 19:23)
  ☐ @critical pass the username instead of id when apporving a user friendship request 
  ✔ @critical edit profile isn't working for someweird reason @done (19-01-16 19:10)
    ERROR: Call to a member function getId() on null (goto: 76)
    Making the same mistake again, the /profile/edit (in this case /edit is being considered a username and my controller is trying to find a user in the db with the username "edit")
- ☐ Category route "all", when clicking on a sub category it redirects to the parent "big" category, which is the wrong behaviour
+ ✔ Category route "all", when clicking on a sub category it redirects to the parent "big" category, which is the wrong behaviour @done (19-01-16 19:16)
 
 
 

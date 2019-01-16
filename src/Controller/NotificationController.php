@@ -105,8 +105,10 @@
             }
             // sorting the array based on the id of the sub_array
             usort($array, function ($a, $b) {
-                return $a['id'] <=> $b['id'];
+                return $a['date'] <=> $b['date'];
             });
+
+            dump($array);
 
             return $this->render('notification/index.html.twig', [
                 'controller_name' => 'NotificationController',

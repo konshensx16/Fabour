@@ -192,7 +192,7 @@ class PostController extends AbstractController
             // TODO: find another (better) way to set the comment to the post!
             //      maybe i need a to set cascade to persist and remove (both Post and Comment for now)
             //      Tbh, there's no way doctrine could figure out what the fuck im talking about in this place
-            if (!($this->getUser())) {
+            if (!is_null($this->getUser())) {
                 $comment->setPost($post);
                 // TODO: change this to a transaction so in case of error the user will not be notified of the comment by error!
                 $em->persist($comment);
