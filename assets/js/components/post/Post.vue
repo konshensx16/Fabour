@@ -37,7 +37,7 @@
         },
         methods: {
             generatePostUrl(parameter) {
-                return Routing.generate('post.display', {id: parameter})
+                return Routing.generate('post.display', {uuid: parameter})
             },
             generateProfileUrl(parameter) {
                 return Routing.generate('profile.userProfile', {'username': parameter})

@@ -1319,6 +1319,9 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
    When displaying a post that I wrote i should only see how many people bookmarked my post, (Not be able to bookmark it)
  ☐ @critical i think notifications are in the wrong order, AGAIN !!!!!!!!! I DIDN'T EVEN TOUCH THEM WHAT THE FUCK BRUH 
  ☐ @critical pass the username instead of id when apporving a user friendship request 
+ ✔ @critical edit profile isn't working for somewird reason @done (19-01-16 19:10)
+   ERROR: Call to a member function getId() on null (goto: 76)
+   Making the same mistake again, the /profile/edit (in this case /edit is being considered a username and my controller is trying to find a user in the db with the username "edit")
 
 
 

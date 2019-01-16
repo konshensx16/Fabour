@@ -35,7 +35,7 @@
         }
 
         /**
-         * @Route("/{username?}", name="userProfile", options={"expose"=true})
+         * @Route("/user/{username?}", name="userProfile", options={"expose"=true})
          * @param $username
          * @param UserRepository $userRepository
          * @param UserRelationshipRepository $userRelationshipRepository
