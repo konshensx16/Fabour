@@ -19,32 +19,28 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-//    /**
-//     * @return Comment[] Returns an array of Comment objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Comment
+    /**
+     * Get comments for a given post, this should offset and get 10 comments each time
+     * @param int $post_id
+     * @return mixed
+     */
+    public function findCommentsForPost(int $post_id)
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb = $this->createQueryBuilder('c');
+
+        $qb->select('u.avatar', 'u.username', 'u.id as user_id' , 'c.content', 'c.id as comment_id', 'c.created_at')
+            ->innerJoin('c.user', 'u')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('c.post', $post_id)
+                )
+            );
+
+
+        return $qb->getQuery()->getArrayResult();
+
+
+
     }
-    */
 }

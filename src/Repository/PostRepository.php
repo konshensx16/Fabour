@@ -284,11 +284,11 @@ class PostRepository extends ServiceEntityRepository
             )
             ->setParameter('subcategory_id', $subcategory_id)
             ->orderBy('p.created_at', 'DESC')
-
         ;
 
         // i need to get the category just by using the sub_category
-        return $qb->getQuery()->getResult()
-            ;
+        return $qb->getQuery()->getResult();
     }
+
+
 }
