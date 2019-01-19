@@ -23,9 +23,11 @@ class CommentRepository extends ServiceEntityRepository
     /**
      * Get comments for a given post, this should offset and get 10 comments each time
      * @param int $post_id
+     * @param int $limit
+     * @param int $offset
      * @return mixed
      */
-    public function findCommentsForPost(int $post_id)
+    public function findCommentsForPostWithLimitAndOffset(int $post_id, int $limit = 10, int $offset = 0)
     {
         $qb = $this->createQueryBuilder('c');
 
@@ -35,12 +37,33 @@ class CommentRepository extends ServiceEntityRepository
                 $qb->expr()->andX(
                     $qb->expr()->eq('c.post', $post_id)
                 )
-            );
-
+            )
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+        ;
 
         return $qb->getQuery()->getArrayResult();
 
 
 
+    }
+
+    /**
+     * @param int $post_id
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findTotalCommentsCountForPost(int $post_id)
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb
+            ->select(
+                $qb->expr()->count('c.id')
+            )
+            ->where(
+                $qb->expr()->eq('c.post', $post_id)
+            )
+        ;
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }

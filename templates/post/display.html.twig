@@ -87,33 +87,42 @@
                     </label>
                 {% endif %}
             </div>
-            <div class="section-wrapper mg-t-20">
-                <label class="section-title">{{ post.comments.count }} Comments</label>
 
-                <ul class="media-list-demo">
-                    {% if post.comments.count %}
-                        {% for comment in post.comments %}
-                            <li class="media" id="{{ comment.id }}">
-                                <img class="media-img" src="{{ comment.user.avatar  }}" alt="">
 
-                                <div class="media-body">
-                                    <h6 class="tx-inverse mg-b-10">
-                                        <a href="{{ path('profile.userProfile', {'username': comment.user.username}) }}">
-                                            {{ comment.user.username }}
-                                        </a>
-                                        <small>{{ comment.createdAt|date('Y-M-D h:m:s') }}</small>
-                                    </h6>
-                                    {{ comment.content }}
-                                </div>
-                            </li>
-                        {% endfor %}
-                    {% else %}
-                        This post has no comments, be the first.
-                    {% endif %}
+            <div class="section-wrapper mg-t-20" id="comments">
 
-                </ul>
+                <Comments :post_id="{{ post.id|encode_url|json_encode }}" />
+
+                {#<label class="section-title">{{ post.comments.count }} Comments</label>#}
+
+                {#<ul class="media-list-demo">#}
+                    {#{% if post.comments.count %}#}
+                        {#{% for comment in post.comments %}#}
+                            {#<li class="media" id="{{ comment.id }}">#}
+                                {#<img class="media-img" src="{{ comment.user.avatar  }}" alt="">#}
+
+                                {#<div class="media-body">#}
+                                    {#<h6 class="tx-inverse mg-b-10">#}
+                                        {#<a href="{{ path('profile.userProfile', {'username': comment.user.username}) }}">#}
+                                            {#{{ comment.user.username }}#}
+                                        {#</a>#}
+                                        {#<small>{{ comment.createdAt|date('Y-M-D h:m:s') }}</small>#}
+                                    {#</h6>#}
+                                    {#{{ comment.content }}#}
+                                {#</div>#}
+                            {#</li>#}
+                        {#{% endfor %}#}
+                    {#{% else %}#}
+                        {#This post has no comments, be the first.#}
+                    {#{% endif %}#}
+
+                {#</ul>#}
             </div>
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('build/comments.js') }}"></script>
 {% endblock %}

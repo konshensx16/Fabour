@@ -24,6 +24,7 @@ Encore
     // .addStyleEntry('app', './assets/css/app.css')
     .addEntry('conversation', './assets/js/conversation.js')
     .addEntry('posts', './assets/js/posts.js')
+    .addEntry('comments', './assets/js/comments.js')
     .addEntry('post', './assets/js/post.js')
     .addEntry('profile', './assets/js/profile.js')
 
