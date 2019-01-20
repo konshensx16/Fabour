@@ -76,26 +76,23 @@
             let secondUrl;
 
             url = Routing.generate('api.comment.getCommentsForPost', {uuid: this.post_id})
-            // secondUrl = Routing.generate('api.comments.getMorePosts', {offset: this.offset, post_id: this.post_id})
             // let secondUrl = Routing.generate('api.comments.getPosts')
             let {data} = await axiosInstance.get(url)
             // console.log(data)
             this.comments = data.comments
             this.total = data.total
             this.loading = false
-            //
-            // window.addEventListener('scroll', async (e) => {
-            //     if (((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) && this.offset < this.total) {
-            //         this.loading = true
-            //         let {data} = await axiosInstance.get(secondUrl)
-            //         console.log(data)
-            //         this.comments = [...this.comments, ...data]
-            //         this.offset += data.length
-            //         console.log(this.offset)
-            //
-            //         this.loading = false
-            //     }
-            // })
+            secondUrl = Routing.generate('api.comment.getMoreCommentsForPost', {offset: this.offset, uuid: this.post_id})
+
+            window.addEventListener('scroll', async (e) => {
+                if (((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) && this.offset < this.total) {
+                    this.loading = true
+                    let {data} = await axiosInstance.get(secondUrl)
+                    this.comments = [...this.comments, ...data]
+                    this.offset += data.length
+                    this.loading = false
+                }
+            })
         },
     }
 </script>

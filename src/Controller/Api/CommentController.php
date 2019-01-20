@@ -15,6 +15,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
  */
 class CommentController extends AbstractController
 {
+    const COMMENTS_LIMIT = 10;
+
     /**
      * @var CommentRepository
      */
@@ -59,4 +61,21 @@ class CommentController extends AbstractController
             'total'    => $totalCommentsCount
         ]);
     }
+
+    /**
+     * @Route("moreComments/{uuid}/{offset}", name="getMoreCommentsForPost", options={"expose"=true})
+     * @Entity("post", expr="repository.findOneByEncodedId(uuid)")
+     * @param Post $post
+     * @param int $offset
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getMoreCommentsForPost(Post $post, int $offset)
+    {
+        $comments = $this->commentRepository->findCommentsForPostWithLimitAndOffset($post->getId(), self::COMMENTS_LIMIT, $offset);
+        for ($i = 0; $i < count($comments); $i++) {
+            $comments[$i]['created_at'] = $this->dateManager->timeAgo(($comments[$i]['created_at']));
+        }
+        return $this->json($comments);
+    }
+
 }

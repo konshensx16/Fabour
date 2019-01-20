@@ -12,28 +12,6 @@
             {{ comment.content }}
         </div>
     </li>
-    <!--<div class="media media-demo mg-t-20 post-bg-img" v-bind:style="{ backgroundImage: 'url(' + getThumbnail + ')' }">-->
-        <!--<div class="media-body mg-sm-t-0">-->
-            <!--<h5 class="tx-inverse mg-b-20">-->
-                <!--<a :href="generatePostUrl(post.id)">{{ post.title }}</a>-->
-            <!--</h5>-->
-            <!--<p>-->
-                <!--{{ getContent }}-->
-            <!--</p>-->
-            <!--<p>-->
-                <!--<strong>-->
-                    <!--<a :href="generateProfileUrl(post.username)">{{ post.username }}</a>-->
-                    <!--in-->
-                    <!--<a :href="generateCategoryUrl(post.slug)">{{ post.name }}</a>-->
-                <!--</strong>-->
-                <!--<br>-->
-                <!--<em>-->
-                    <!--{{ post.created_at }}-->
-                <!--</em>-->
-            <!--</p>-->
-        <!--</div>&lt;!&ndash; media-body &ndash;&gt;-->
-        <!--<img :src="getThumbnail" class="media-img-demo align-self-center" alt="Image">-->
-    <!--</div>-->
 </template>
 
 <script>
@@ -52,11 +30,6 @@
             generateProfileUrl(parameter) {
                 return Routing.generate('profile.userProfile', {'username': parameter})
             }
-        },
-        computed: {
-
-        },
-        mounted() {
         }
     }
 </script>

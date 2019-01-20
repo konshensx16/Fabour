@@ -1318,7 +1318,10 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
     ✔ Create the api/controller for comments @done (19-01-19 13:53)
     ✔ Expose the action and regenerate the routes.json file @done (19-01-19 13:53)
     ✔ Create a function (repository) to fetch the comments (as an array) @done (19-01-19 14:46)
-    ☐ Create the vue component for the comments
+    ✔ Create the end-point to fetch more comments when scrolling @done (19-01-20 12:33)
+    ☐ @high maybe i should use a date to fetch the other comments instead of id, because if somebody inserted a new comment while fetching data there's going to be some confusion or duplicate comments
+    ✔ Create the vue component for the comments @done (19-01-20 12:34)
+      ☐ @low Add a computed function to show just three first lines for very long comments!
       NOTE: dont forget to decode the response to json object (since it's a string)
 
  ✔ @critical There's some sort of a bug when bookmarking a post (that you published) @done (19-01-15 19:25)
