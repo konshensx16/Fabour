@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\FindByEncodedIdTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Comment
 {
-
+//    use FindByEncodedIdTrait;
     const COMMENT_TYPE_ID = 'comment';
 
     public function __construct()

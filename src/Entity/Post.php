@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\EntityIdTrait;
+use App\Services\UuidEncoder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -37,14 +38,14 @@ class Post
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
-     */
-    private $user;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="post", cascade={"persist", "remove"})
      */
     private $comments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
+     */
+    private $user;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Attachment", mappedBy="post", cascade={"persist", "remove"})
@@ -292,5 +293,10 @@ class Post
         $this->thumbnail = $thumbnail;
 
         return $this;
+    }
+
+    public function getUUID()
+    {
+        return $this->encoder->encode($this->id);
     }
 }

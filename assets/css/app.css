@@ -2,3 +2,6 @@
 .medium textarea {
     border: none;
 }
+.faded {
+    opacity: .5;
+}

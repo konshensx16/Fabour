@@ -1342,3 +1342,4 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
 
 IDEAS:
   - Give the user (in profile settings) the ability to choose which fields to viewers
+  - Maybe add replies to the comments section? 

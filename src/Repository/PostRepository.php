@@ -6,6 +6,7 @@ use App\Entity\Post;
 use App\Services\UuidEncoder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
 
@@ -288,6 +289,54 @@ class PostRepository extends ServiceEntityRepository
 
         // i need to get the category just by using the sub_category
         return $qb->getQuery()->getResult();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function getCountPosts()
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select(
+            $qb->expr()->count('p.id')
+        )
+        ;
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function getPosts(?int $offset = 0, int $limit = 1)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select()
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+        ;
+
+        return $qb->getQuery()->getArrayResult();
     }
 
 

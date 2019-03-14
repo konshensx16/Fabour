@@ -231,7 +231,6 @@
         },
         updated (){
             this.scrollDown()
-
         }
     }
 </script>

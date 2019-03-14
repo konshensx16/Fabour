@@ -8,6 +8,6 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     modules: {
         messages: messagesModule,
-        user: userStore
+        user: userStore,
     }
 })

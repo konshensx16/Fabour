@@ -2,16 +2,22 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Comment;
 use App\Entity\Post;
+use App\Entity\User;
 use App\Repository\CommentRepository;
 use App\Services\DateManager;
 use App\Services\Serializer;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 
 /**
- * @Route("/api/comment/", name="api.comment.")
+ * @Route("/api/comment", name="api.comment.")
  */
 class CommentController extends AbstractController
 {
@@ -26,10 +32,16 @@ class CommentController extends AbstractController
      */
     private $dateManager;
 
-    public function __construct(CommentRepository $commentRepository, DateManager $dateManager)
+    /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    public function __construct(CommentRepository $commentRepository, DateManager $dateManager, EntityManagerInterface $entityManager)
     {
         $this->commentRepository = $commentRepository;
         $this->dateManager = $dateManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -43,7 +55,7 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("comments/{uuid}", name="getCommentsForPost", options={"expose"=true})
+     * @Route("/comments/{uuid}", name="getCommentsForPost", options={"expose"=true})
      * @Entity("post", expr="repository.findOneByEncodedId(uuid)")
      * @param Post $post
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -63,7 +75,47 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("moreComments/{uuid}/{offset}", name="getMoreCommentsForPost", options={"expose"=true})
+     * @Route("/{id}/delete", name="delete", methods={"DELETE"}, options={"expose"=true})
+     * @param Comment $comment
+     * @return bool|Response
+     */
+    public function deleteComment(Comment $comment)
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+
+        if (!$currentUser->getId() === $comment->getUser()->getId())
+            return false;
+        // remove the comment
+        if ($comment) {
+            $this->entityManager->remove($comment);
+            $this->entityManager->flush();
+
+            return new Response(null, Response::HTTP_NO_CONTENT);
+        }
+        return false;
+    }
+
+    /**
+     * @Route("/{id}/update", name="update", methods={"DELETE"}, options={"expose"=true})
+     * @param Comment $comment
+     * @return bool
+     */
+    public function updateComment(Comment $comment)
+    {
+        dump($comment);die;
+        // remove the comment
+        if ($comment) {
+            $this->entityManager->remove($comment);
+            $this->entityManager->flush();
+
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @Route("/moreComments/{uuid}/{offset}", name="getMoreCommentsForPost", options={"expose"=true})
      * @Entity("post", expr="repository.findOneByEncodedId(uuid)")
      * @param Post $post
      * @param int $offset

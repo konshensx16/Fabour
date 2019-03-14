@@ -1,14 +1,11 @@
 <template>
     <div>
-        <label class="section-title">{{ total }} Comments</label>
-        <!--<h2 v-if="!isPostsEmpty" class="text-center">There are no posts at the moment</h2>-->
-
-
-
+        <label class="section-title">{{ TOTAL }} Comments</label>
         <ul class="media-list-demo">
             <!--{% for comment in post.comments %}-->
-            <template v-for="comment in comments">
-                <Comment :comment="comment" />
+            <h2 v-if="isEmpty" class="text-center">It's quite down here!</h2>
+            <template v-if="!isEmpty" v-for="comment in COMMENTS">
+                <Comment :comment="comment"/>
             </template>
         </ul>
         <div class="d-flex ht-300 pos-relative align-items-center" v-if="loading" style="margin: 0 auto;">
@@ -31,6 +28,7 @@
 
 <script>
     import Comment from './Comment'
+    import { mapGetters } from 'vuex'
     import axios from 'axios'
     import _ from 'lodash'
     import Routing from '../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
@@ -54,15 +52,13 @@
         },
         data() {
             return {
-                comments: [],
                 loading: true,
-                offset: 10,
-                total: 0
             }
         },
         computed: {
-            isPostsEmpty: function () {
-                return !!parseInt(this.comments.length)
+            ...mapGetters(['COMMENTS', 'TOTAL']),
+            isEmpty() {
+                return this.COMMENTS.length <= 0
             }
         },
         components: {Comment},
@@ -72,24 +68,15 @@
             }
         },
         async mounted() {
-            let url;
-            let secondUrl;
-
-            url = Routing.generate('api.comment.getCommentsForPost', {uuid: this.post_id})
-            // let secondUrl = Routing.generate('api.comments.getPosts')
-            let {data} = await axiosInstance.get(url)
-            // console.log(data)
-            this.comments = data.comments
-            this.total = data.total
+            await this.$store.dispatch('GET_COMMENTS', {
+                postId: this.post_id
+            })
             this.loading = false
-            secondUrl = Routing.generate('api.comment.getMoreCommentsForPost', {offset: this.offset, uuid: this.post_id})
-
             window.addEventListener('scroll', async (e) => {
-                if (((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) && this.offset < this.total) {
+                if (((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) && this.offset < this.TOTAL) {
                     this.loading = true
-                    let {data} = await axiosInstance.get(secondUrl)
-                    this.comments = [...this.comments, ...data]
-                    this.offset += data.length
+                    await this.$store.dispatch('GET_MORE_COMMENTS',
+                        {postId: this.post_id})
                     this.loading = false
                 }
             })

@@ -2,51 +2,62 @@
 
 namespace App\Controller;
 
-use App\Entity\Post;
-use App\Repository\CategoryRepository;
+use App\Entity\Tutorial;
+use App\Form\TutorialType;
 use App\Repository\PostRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use App\Repository\TutorialRepository;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/tutorial", name="tutorial")
- **/
+ * @Route("/tutorial", name="tutorial.")
+ */
 class TutorialController extends AbstractController
 {
-
     /**
-     * @Route("/post/{id}")
-     * @Entity("post", expr="repository.findPublishedById(id)", options={"converter"="custom_conveter"})
-     * @param Post $post
+     * @Route("/", methods={"GET"})
+     * @param PostRepository $postRepository
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getPost(Post $post)
+    public function index(PostRepository $postRepository)
     {
+        $tutorial = new Tutorial();
+        $form = $this->createForm(TutorialType::class, $tutorial);
+
+//        $tutorial->setTitle('Hello ttke');
+//        $tutorial->setContent('This is the content of the tutorial instance');
+
+        
         return $this->render('tutorial/index.html.twig', [
-            'post' => $post
+            'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/tester")
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/find")
+     *
+     * @param TutorialRepository $tutorialRepository
+     * @return void
      */
-    public function tester(Request $request, CategoryRepository $categoryRepository)
-    {
-        dump($request->getMethod());
-        if ($request->getMethod() == 'POST') {
-            dump($request->request); die;
-        }
+    public function findByCategory(TutorialRepository $tutorialRepository) {
+        $em = $this->getDoctrine()->getManager();
 
-        return $this->render('tutorial/remove.html.twig', [
-            'categories' => $categoryRepository->findAll()
-        ]);
+        $product = new Tutorial();
+
+        $product->setTitle('new title');
+        $product->setContent('new content');
+
+        $product->setCategories(['men', 'jeans']);
+
+        $em->persist($product);
+        $em->flush();
+
+        $data = $tutorialRepository->findAll();
+
+        dump($data); die;
+        
     }
-
-
-
 }
