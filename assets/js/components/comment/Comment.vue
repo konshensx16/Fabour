@@ -8,13 +8,13 @@
                     {{ comment.username }}
                 </a>
                 <small>{{ comment.created_at }}</small>
-                <div class="dropdown dropdown-c pull-right">
+                <div class="dropdown dropdown-c pull-right" v-if="owner">
                     <a href="#" class="logged-user" data-toggle="dropdown">
                         <i class="fa fa-ellipsis-h"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <nav class="nav">
-                            <a :href="editUrl" class="nav-link"><i class="icon ion-edit"></i> Edit</a>
+                            <a href="#" class="nav-link"><i class="icon ion-edit"></i> Edit</a>
                             <a href="#" @click.prevent="deleteComment()" class="nav-link text-danger"><i
                                     class="icon ion-trash-a"></i> Delete</a>
                         </nav>
@@ -35,7 +35,7 @@
 
 <script>
     import Routing from '../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
-    import axios from 'axios'
+    import { mapGetters } from 'vuex'
 
     const routes = require('../../routes.json');
 
@@ -47,9 +47,9 @@
             comment: Object
         },
         data() {
-          return {
-              loading: false
-          }
+            return {
+                loading: false
+            }
         },
         methods: {
             generateProfileUrl(parameter) {
@@ -65,14 +65,17 @@
             }
         },
         computed: {
-            editUrl() {
-                return Routing.generate('api.comment.update', {'id': this.comment.comment_id})
-            },
-            deleteUrl() {
-                return Routing.generate('api.comment.delete', {'id': this.comment.comment_id})
+            ...mapGetters(['CURRENT_USER']),
+            owner() {
+                // FIXME: using only the username to check maybe i should use the id instead ?
+                if (this.CURRENT_USER) {
+                    // return true
+                    return this.comment.username === this.CURRENT_USER.username;
+                }
+                return false;
             }
-        }
-    }
+        },
+    };
 </script>
 
 <style>

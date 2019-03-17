@@ -56,7 +56,7 @@
             }
         },
         computed: {
-            ...mapGetters(['COMMENTS', 'TOTAL']),
+            ...mapGetters(['COMMENTS', 'TOTAL', 'CURRENT_USER']),
             isEmpty() {
                 return this.COMMENTS.length <= 0
             }
@@ -68,6 +68,7 @@
             }
         },
         async mounted() {
+            await this.$store.dispatch('GET_CURRENT_USER');
             await this.$store.dispatch('GET_COMMENTS', {
                 postId: this.post_id
             })

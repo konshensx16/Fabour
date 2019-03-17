@@ -12,4 +12,6 @@ gos_server:
 npm:
 	npm run watch
 router:
-	bin/console debug:router 
+	bin/console debug:router
+phpstorm:
+	nohup phpstorm.sh & 

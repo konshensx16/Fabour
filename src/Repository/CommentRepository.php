@@ -40,6 +40,7 @@ class CommentRepository extends ServiceEntityRepository
             )
             ->setMaxResults($limit)
             ->setFirstResult($offset)
+            ->orderBy('c.id', 'DESC')
         ;
 
         return $qb->getQuery()->getArrayResult();

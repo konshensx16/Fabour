@@ -27,6 +27,17 @@ export default {
             return state.currentUser
         }
     },
+    mutations: {
+        SET_USER: (state, payload) => {
+            state.user = payload.user
+        },
+        SET_LOADING_USER: (state, payload) => {
+            state.loadingUser = payload
+        },
+        SET_CURRENT_USER: (state, payload) => {
+            state.currentUser = payload.user
+        }
+    },
     actions: {
         GET_USER: async (context, payload) => {
             let url = Routing.generate('api.user.getUser', {id: payload}) // will get admin always, must change
@@ -41,17 +52,6 @@ export default {
                 let { data } = await axiosInstance.get(url)
                 context.commit('SET_CURRENT_USER', data)
             }
-        }
-    },
-    mutations: {
-        SET_USER: (state, payload) => {
-            state.user = payload.user
-        },
-        SET_LOADING_USER: (state, payload) => {
-            state.loadingUser = payload
-        },
-        SET_CURRENT_USER: (state, payload) => {
-            state.currentUser = payload.user
         }
     }
 }
