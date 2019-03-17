@@ -12,6 +12,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -97,21 +99,22 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/update", name="update", methods={"DELETE"}, options={"expose"=true})
+     * @Route("/{id}/update", name="update", methods={"PATCH"}, options={"expose"=true})
+     * @param Request $request
      * @param Comment $comment
-     * @return bool
+     * @return JsonResponse|bool
      */
-    public function updateComment(Comment $comment)
+    public function updateComment(Request $request, Comment $comment)
     {
-        dump($comment);die;
-        // remove the comment
-        if ($comment) {
-            $this->entityManager->remove($comment);
+        $newContent = $request->get('content');
+        if ($newContent && $comment) {
+            $comment->setContent($newContent);
+            $this->entityManager->persist($comment);
             $this->entityManager->flush();
 
-            return true;
+            return new JsonResponse($newContent, Response::HTTP_OK);
         }
-        return false;
+        return new JsonResponse(false, Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     /**

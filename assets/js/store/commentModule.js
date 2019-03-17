@@ -29,6 +29,11 @@ export default {
             })
 
             state.comments = [...rs]
+        },
+        CHANGE_COMMENT: (state, { data, commentId }) => {
+            state.comments.find(
+                comment => comment.id === commentId
+            ).content = data
         }
     },
     getters: {
@@ -43,7 +48,7 @@ export default {
         }
     },
     actions: {
-        GET_COMMENTS: async ({commit}, { postId }) => {
+        GET_COMMENTS: async ({commit}, {postId}) => {
             let url = Routing.generate('api.comment.getCommentsForPost', {uuid: postId})
             let {data} = await axiosInstance.get(
                 url
@@ -68,12 +73,31 @@ export default {
         },
         DELETE_COMMENT: async ({commit}, {commentId}) => {
             let url = Routing.generate('api.comment.delete', {'id': commentId})
-            let { status } = await axios.delete(url)
+            let {status} = await axios.delete(url)
             if (status === 200 || status === 204) {
                 commit('REMOVE_COMMENT', {
                     commentId
                 })
             }
+        },
+        UPDATE_COMMENT: ({commit}, {commentId, content}) => {
+            return new Promise((resolve, reject) => {
+                let formData = new FormData()
+                formData.append('content', content)
+                formData.append('_method', 'PATCH')
+                let url = Routing.generate('api.comment.update', {'id': commentId})
+                axios.post(url, formData)
+                    .then(({data, status}) => {
+                        if (status === 200) {
+                            resolve(status)
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error)
+                        reject(error)
+                    })
+            })
+
         }
     }
 }

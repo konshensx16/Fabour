@@ -14,19 +14,16 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <nav class="nav">
-                            <a href="#" class="nav-link"><i class="icon ion-edit"></i> Edit</a>
-                            <a href="#" @click.prevent="deleteComment()" class="nav-link text-danger"><i
+                            <a href="#" class="nav-link" style="width: 100%" @click.prevent="editComment()"><i class="icon ion-edit"></i> Edit</a>
+                            <a href="#" style="width: 100%" @click.prevent="deleteComment()" class="nav-link text-danger"><i
                                     class="icon ion-trash-a"></i> Delete</a>
                         </nav>
                     </div><!-- dropdown-menu -->
                 </div><!-- dropdown -->
             </h6>
-
-
-            {{ comment.content }}
-
-            <div class="blocked-ui">
-
+            <EditForm :comment="comment" v-if="editing" v-on:hide-form="editing = false"/>
+            <div ref="commentContent" v-show="!editing">
+                {{ comment.content }}
             </div>
         </div>
 
@@ -34,6 +31,7 @@
 </template>
 
 <script>
+    import EditForm from './EditForm'
     import Routing from '../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
     import { mapGetters } from 'vuex'
 
@@ -43,15 +41,21 @@
 
     export default {
         name: 'comment',
+        components: {EditForm},
         props: {
             comment: Object
         },
         data() {
             return {
-                loading: false
+                loading: false,
+                editing: false
             }
         },
         methods: {
+            doSomething(val) {
+                console.log('hehehehe')
+                this.editing = false
+            },
             generateProfileUrl(parameter) {
                 return Routing.generate('profile.userProfile', {'username': parameter})
             },
@@ -62,6 +66,9 @@
                     commentId: this.comment.comment_id
                 })
                 this.loading = false
+            },
+            editComment () {
+                this.editing = true
             }
         },
         computed: {

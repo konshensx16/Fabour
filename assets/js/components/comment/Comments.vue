@@ -29,18 +29,11 @@
 <script>
     import Comment from './Comment'
     import { mapGetters } from 'vuex'
-    import axios from 'axios'
-    import _ from 'lodash'
     import Routing from '../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
 
     const routes = require('../../routes.json');
 
     Routing.setRoutingData(routes)
-
-    const axiosInstance = axios.create({
-        headers: {'X-Requested-With': 'XMLHttpRequest'}
-    })
-
 
     export default {
         name: 'comments',
@@ -75,7 +68,6 @@
             this.loading = false
             window.addEventListener('scroll', async (e) => {
                 if (((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) && this.OFFSET < this.TOTAL) {
-                    console.log('at the bottom')
                     this.loading = true
                     await this.$store.dispatch('GET_MORE_COMMENTS',
                         {postId: this.post_id})
