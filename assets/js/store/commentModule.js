@@ -37,6 +37,9 @@ export default {
         },
         TOTAL: state => {
             return state.total
+        },
+        OFFSET: state => {
+            return state.offset
         }
     },
     actions: {

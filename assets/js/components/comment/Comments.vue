@@ -56,7 +56,7 @@
             }
         },
         computed: {
-            ...mapGetters(['COMMENTS', 'TOTAL', 'CURRENT_USER']),
+            ...mapGetters(['COMMENTS', 'TOTAL', 'OFFSET', 'CURRENT_USER']),
             isEmpty() {
                 return this.COMMENTS.length <= 0
             }
@@ -74,7 +74,8 @@
             })
             this.loading = false
             window.addEventListener('scroll', async (e) => {
-                if (((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) && this.offset < this.TOTAL) {
+                if (((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) && this.OFFSET < this.TOTAL) {
+                    console.log('at the bottom')
                     this.loading = true
                     await this.$store.dispatch('GET_MORE_COMMENTS',
                         {postId: this.post_id})
