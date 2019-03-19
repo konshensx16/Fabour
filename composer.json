@@ -11,6 +11,7 @@
         "gos/web-socket-bundle": "^1.8.13",
         "hashids/hashids": "^3.0",
         "imagine/imagine": "^1.2",
+        "knplabs/knp-paginator-bundle": "^3.0",
         "predis/predis": "^1.1",
         "ramsey/uuid": "^3.8",
         "ramsey/uuid-doctrine": "^1.5",

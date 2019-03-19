@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Entity\User;
 use App\Services\UuidEncoder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -292,29 +293,6 @@ class PostRepository extends ServiceEntityRepository
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function getCountPosts()
     {
         $qb = $this->createQueryBuilder('p');
@@ -337,6 +315,26 @@ class PostRepository extends ServiceEntityRepository
         ;
 
         return $qb->getQuery()->getArrayResult();
+    }
+
+    public function findPublicationsByUserId(int $userId)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->select()
+            ->innerJoin('p.user', 'u')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('u.id', $userId),
+                    $qb->expr()->isNotNull('p.published_at')
+                )
+            )
+        ;
+
+
+
+        return $qb;
     }
 
 

@@ -17,6 +17,7 @@ use App\Services\UuidEncoder;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
@@ -277,9 +278,40 @@ class PostController extends AbstractController
         $currentUser = $this->getUser();
 
         $posts = $postRepository->findDraftsForUser($currentUser->getId());
+        dump($posts); die;
 
         return $this->render('post/drafts.html.twig', [
             'posts' => $posts
+        ]);
+    }
+
+    /**
+     * @Route("/posts/publications", name="publications")
+     * @param Request $request
+     * @param PostRepository $postRepository
+     * @param PaginatorInterface $paginator
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function publications(Request $request, PostRepository $postRepository, PaginatorInterface $paginator)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $currentUser = $this->getUser();
+        $publications = [];
+
+        if ($currentUser) {
+//            $publicationsQuery = $postRepository->findPublicationsByUserId($currentUser->getId());
+            $publicationsQuery = $postRepository->findAll();
+
+            $pagination = $paginator->paginate(
+                $publicationsQuery, /* query NOT result */
+                $request->query->getInt('page', 1), /*page number*/
+                10 /*limit per page*/
+            );
+        }
+
+        return $this->render('post/publications.html.twig', [
+            'pagination' => $pagination
         ]);
     }
 

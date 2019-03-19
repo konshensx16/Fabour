@@ -15,3 +15,5 @@ router:
 	bin/console debug:router
 phpstorm:
 	nohup phpstorm.sh & 
+cache:
+	bin/console cache:clear

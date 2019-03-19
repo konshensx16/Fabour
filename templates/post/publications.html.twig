@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    User publications
+{% endblock %}
+
+{% block body %}
+    <div class="slim-pageheader">
+        <h6 class="slim-pagetitle">Your publications</h6>
+    </div>
+
+    <div class="section-wrapper mg-t-20">
+        <label class="section-title">You have {{ pagination.getTotalItemCount }} publications </label>
+        <div class="row">
+            <table class="table table-striped table-bordered">
+                <tr>
+                    {# sorting of properties based on query components #}
+                    <th>{{ knp_pagination_sortable(pagination, 'Id', 'a.id') }}</th>
+                    <th{% if pagination.isSorted('title') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Title', 'title') }}</th>
+                    <th>Published at</th>
+                    <th>Actions</th>
+                </tr>
+
+                {# table body #}
+                {% for article in pagination %}
+                    <tr {% if loop.index is odd %}class="color"{% endif %}>
+                        <td>{{ article.id }}</td>
+                        <td>{{ article.title }}</td>
+                        <td>{{ article.publishedAt|date('Y-m-d') }}</td>
+                        <td>Edit & Delete</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {# display navigation #}
+            {#<div class="col-lg-12">#}
+                <div class="text-center">
+                    {{ knp_pagination_render(pagination, null, {}, {
+                        'position': 'centered',
+                        'rounded': true,
+                    }) }}
+                </div>
+            {#</div>#}
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
