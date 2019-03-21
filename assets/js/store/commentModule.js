@@ -9,7 +9,8 @@ export default {
     state: {
         comments: [],
         total: 0,
-        offset: 0
+        offset: 0,
+        lastDate: undefined
     },
     mutations: {
         APPEND_COMMENTS: (state, payload) => {
@@ -30,10 +31,13 @@ export default {
 
             state.comments = [...rs]
         },
-        CHANGE_COMMENT: (state, { data, commentId }) => {
+        CHANGE_COMMENT: (state, {data, commentId}) => {
             state.comments.find(
                 comment => comment.id === commentId
             ).content = data
+        },
+        SET_LAST_DATE: (state, {data}) => {
+            state.lastDate = data
         }
     },
     getters: {
@@ -45,6 +49,9 @@ export default {
         },
         OFFSET: state => {
             return state.offset
+        },
+        LAST_DATE: state => {
+            return state.lastDate
         }
     },
     actions: {
@@ -55,7 +62,13 @@ export default {
             )
             // use mutations
             commit('APPEND_COMMENTS', data.comments)
+            commit('INCREMENT_OFFSET', data.comments.length)
             commit('SET_TOTAL', data.total)
+            console.log(data.comments.length)
+            console.log(data.comments[data.comments.length - 1].comment_id)
+            commit('SET_LAST_DATE', {
+                data: data.comments[data.comments.length - 1].comment_id
+            })
 
             // this.comments = data.comments
             // this.total = data.total
