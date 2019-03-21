@@ -42,6 +42,7 @@ class PostType extends AbstractType
                 'label' => 'Post body'
             ])
             ->add('category', EntityType::class, [
+
                 'class' => 'App\Entity\Category',
                 'placeholder' => 'Select a Category',
                 'mapped' => false

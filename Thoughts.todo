@@ -404,7 +404,9 @@ POSTS:
       Database Schema:
          Post TABLE :
            Add another fields called published_at, if this value is set to a date then it means the post is a publication and the other users should be able to see it, if NULL then this is a draft and other users should not be able to see this.
-
+      Note about the draft:
+        The draft will not show up in the drafts is the user hasn't selected a category and saved the changes, it will just be somewhere in the system (Not accessible at all, so this needs to be fixed)
+        ☐ @critical add a default value for the category upon creation
 
   
 Categories:
@@ -1146,7 +1148,7 @@ Image optimisation:
    ☐ Dispatch the event right before uploading the file.
      NOTE: max_width <= 1058px 
 COMMAND GENERATE ROUTES.JSON: 
-  bin/console fos:js-routing:dump --format=json --target=assets/js/routes.json
+makphp  bin/console fos:js-routing:dump --format=json --target=assets/js/routes.json
 
 
 
@@ -1343,3 +1345,4 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
 IDEAS:
   - Give the user (in profile settings) the ability to choose which fields to viewers
   - Maybe add replies to the comments section? 
+  - @high Add user email verification to check whether the user is real or not!

@@ -8,6 +8,7 @@ use App\Services\UuidEncoder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
 
@@ -22,10 +23,21 @@ class PostRepository extends ServiceEntityRepository
 {
     use FindByEncodedIdTrait;
 
-    public function __construct(RegistryInterface $registry, UuidEncoder $uuidEncoder)
+    /**
+     * @var RegistryInterface
+     */
+    private $registry;
+    /**
+     * @var PaginatorInterface
+     */
+    private $paginator;
+
+    public function __construct(RegistryInterface $registry, UuidEncoder $uuidEncoder, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Post::class);
         $this->uuidEncoder = $uuidEncoder;
+        $this->registry = $registry;
+        $this->paginator = $paginator;
     }
 
     /**
@@ -257,8 +269,8 @@ class PostRepository extends ServiceEntityRepository
 
         $qb
             ->select('p.id', 'p.title', 'p.content', 'u.username', 'sc.name', 'sc.slug', 'p.created_at')
-            ->innerJoin('p.user', 'u', Join::WITH, 'p.user = u')
-            ->innerJoin('p.subCategory', 'sc', Join::WITH, 'p.subCategory = sc')
+            ->innerJoin('p.user', 'u')
+            ->innerJoin('p.subCategory', 'sc')
             ->where(
                 $qb->expr()->andX(
                     $qb->expr()->eq('u.id', ':user_id'),
@@ -269,6 +281,8 @@ class PostRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->orderBy('p.created_at', 'DESC')
         ;
+
+        dump($qb->getQuery()->getSQL());
 
         return $qb->getQuery()->getResult();
     }
@@ -335,6 +349,29 @@ class PostRepository extends ServiceEntityRepository
 
 
         return $qb;
+    }
+
+    public function findPaginatedPostsByUserId(int $userId, int $page)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->select()
+            ->innerJoin('p.user', 'u')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('u.id', $userId),
+                    $qb->expr()->isNotNull('p.published_at')
+                )
+            )
+        ;
+        $pagination = $this->paginator->paginate(
+            $qb, /* query NOT result */
+            $page, /*page number*/
+            10 /*limit per page*/
+        );
+
+        return $pagination;
     }
 
 

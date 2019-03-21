@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Bookmark;
+use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Post;
+use App\Entity\SubCategory;
 use App\Entity\User;
 use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\BookmarkRepository;
+use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
+use App\Repository\SubCategoryRepository;
 use App\Services\AttachmentManager;
 use App\Services\NotificationManager;
 use App\Services\UserManager;
@@ -84,14 +88,23 @@ class PostController extends AbstractController
     /**
      * @Route("/create", name="create")
      * @Security("is_granted('ROLE_USER')")
+     * @param SubCategoryRepository $subCategoryRepository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function create()
+    public function create(SubCategoryRepository $subCategoryRepository)
     {
         // i need the form
         $post = new Post();
         $post->setTitle('This is just a draft...');
         $post->setContent('Remove this and start writing here...');
+
+        // setting the default category for newly created posts
+        // NOTE: doing this because this will not be considered as a draft if it
+        //  does not contains a category and subcategory
+
+        // FIXME: this might cause problem if i truncate the BD and re-seed
+        $subcategory = $subCategoryRepository->find(1);
+        $post->setSubCategory($subcategory);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -152,6 +165,7 @@ class PostController extends AbstractController
                 $this->notificationManager->sendNotificationToMultipleUsers($notification);
 
                 $this->addFlash('success', 'Congratulations, your post was successfully published :)');
+                return $this->redirect($this->generateUrl('post.display', ['uuid' => $this->uuidEncoder->encode($post->getId())]));
             }
             // handle the request and shit
             $em->flush();
@@ -278,7 +292,7 @@ class PostController extends AbstractController
         $currentUser = $this->getUser();
 
         $posts = $postRepository->findDraftsForUser($currentUser->getId());
-        dump($posts); die;
+//        dump($posts); die;
 
         return $this->render('post/drafts.html.twig', [
             'posts' => $posts
@@ -296,18 +310,17 @@ class PostController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        /** @var User $currentUser */
         $currentUser = $this->getUser();
         $publications = [];
 
         if ($currentUser) {
 //            $publicationsQuery = $postRepository->findPublicationsByUserId($currentUser->getId());
-            $publicationsQuery = $postRepository->findAll();
-
-            $pagination = $paginator->paginate(
-                $publicationsQuery, /* query NOT result */
-                $request->query->getInt('page', 1), /*page number*/
-                10 /*limit per page*/
+            $pagination = $postRepository->findPaginatedPostsByUserId(
+                $currentUser->getId(),
+                $request->query->getInt('page', 1)
             );
+
         }
 
         return $this->render('post/publications.html.twig', [
