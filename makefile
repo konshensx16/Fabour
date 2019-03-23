@@ -3,6 +3,8 @@ db:
 schema:
 	php bin/console doctrine:schema:update --force
 	php bin/console doctrine:fixtures:load
+regenerate:
+	bin/console make:entity --regenerate
 routes:
 	php bin/console fos:js-routing:dump --format=json --target=assets/js/routes.json
 server:

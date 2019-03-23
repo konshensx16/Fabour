@@ -91,6 +91,16 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $views_counter = 0;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastPasswordReset;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $resetPasswordToken;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user", cascade={"persist", "remove"})
      */
     private $posts;
@@ -140,6 +150,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
         $this->receivedMessages = new ArrayCollection();
         $this->sentMessages = new ArrayCollection();
         $this->conversations = new ArrayCollection();
+        $this->lastPasswordReset = new \DateTime();
     }
 
     public function getId(): ?int
@@ -588,6 +599,30 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function setTwitter(string $twitter): self
     {
         $this->twitter = $twitter;
+
+        return $this;
+    }
+
+    public function getResetPasswordToken(): ?string
+    {
+        return $this->resetPasswordToken;
+    }
+
+    public function setResetPasswordToken(?string $resetPasswordToken): self
+    {
+        $this->resetPasswordToken = $resetPasswordToken;
+
+        return $this;
+    }
+
+    public function getLastPasswordReset(): ?\DateTimeInterface
+    {
+        return $this->lastPasswordReset;
+    }
+
+    public function setLastPasswordReset(?\DateTimeInterface $lastPasswordReset): self
+    {
+        $this->lastPasswordReset = $lastPasswordReset;
 
         return $this;
     }

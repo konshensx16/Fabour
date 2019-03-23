@@ -1322,6 +1322,7 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
     ✔ Create a function (repository) to fetch the comments (as an array) @done (19-01-19 14:46)
     ✔ Create the end-point to fetch more comments when scrolling @done (19-01-20 12:33)
     ☐ @high maybe i should use a date to fetch the other comments instead of id, because if somebody inserted a new comment while fetching data there's going to be some confusion or duplicate comments
+      ☐ Use the last item date to get more comments 
     ✔ Create the vue component for the comments @done (19-01-20 12:34)
       ☐ @low Add a computed function to show just three first lines for very long comments!
       NOTE: dont forget to decode the response to json object (since it's a string)
@@ -1339,7 +1340,11 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
  ✔ Category route "all", when clicking on a sub category it redirects to the parent "big" category, which is the wrong behaviour @done (19-01-16 19:16)
 
 
-
+Forgot password stuff:
+  ✔ Create the action to display and generate the token (and sent it as well ) @done (19-03-23 01:41)
+  ☐ create the route that will check if the token is valid 
+  ☐ redirect to the page where the user enters his new pasword
+  ☐ remove the reset_password token and set a date for the new lastPasswordReset field
 
 
 IDEAS:

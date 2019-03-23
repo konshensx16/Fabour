@@ -34,4 +34,6 @@ class SecurityController extends Controller
     public function logout()
     {
     }
+
+
 }
