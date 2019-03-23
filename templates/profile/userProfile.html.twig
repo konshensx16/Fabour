@@ -8,13 +8,27 @@
     <div class="slim-pageheader">
         <h6 class="slim-pagetitle">{{ profile.username }} Profile</h6>
     </div>
+    {% if security %}
+        <div class="row row-xs">
+            <div class="col-sm-6 col-lg-12">
 
+                {% for alert in security %}
+                    <div class="alert alert-outline alert-info" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <strong> <i class="fa fa-{{ alert.icon }}"></i> </strong> {{ alert.message }}
+                    </div>
+                {% endfor %}
+            </div><!-- col-3 -->
+        </div>
+    {% endif %}
     <div class="row row-sm">
         <div class="col-lg-8">
             <div class="card card-profile">
                 <div class="card-body">
                     <div class="media">
-                        <img src="{{ profile.avatar  }}" alt="">
+                        <img src="{{ profile.avatar }}" alt="">
                         <div class="media-body">
                             <h3 class="card-profile-name">{{ profile.username }}</h3>
                             <p class="card-profile-position">Joined on: {{ profile.createdAt|date('Y-M-d h:m:s') }}</p>
@@ -44,31 +58,31 @@
                     <div class="slim-card-title mg-b-20">Latest Posts</div>
                     <Posts :username="{{ profile.username|json_encode }}"/>
                     {#{% if recentPosts|length %}#}
-                        {#{% for post in recentPosts %}#}
-                            {#<div class="row no-gutters mg-b-20">#}
-                                {#<div class="col-md-4">#}
-                                    {#<a href="{{ path('post.display', {'id': post.id}) }}"><img#}
-                                                {#src="{{ asset('assets/img/img0.jpg') }}" class="img-fit-cover"#}
-                                                {#alt=""></a>#}
-                                {#</div><!-- col-4 -->#}
-                                {#<div class="col-md-8">#}
-                                    {#<div class="post-wrapper">#}
-                                        {#<a href="{{ path('post.display', {'id': post.id}) }}"#}
-                                           {#class="activity-title">{{ post.title }}</a>#}
-                                        {#<p>#}
-                                            {#{{ post.content|length > 300 ? post.content|slice(0, 300) ~ '...' : post.content }}#}
-                                        {#</p>#}
-                                        {#<p class="mg-b-0">#}
-                                            {#<a href="" class="d-block">{{ post.user.username }}#}
-                                                {#in {{ post.subCategory }}</a>#}
-                                            {#<span>{{ post.createdAt|date('Y M d') }} .</span>#}
-                                        {#</p>#}
-                                    {#</div><!-- post-wrapper -->#}
-                                {#</div><!-- col-8 -->#}
-                            {#</div><!-- row -->#}
-                        {#{% endfor %}#}
+                    {#{% for post in recentPosts %}#}
+                    {#<div class="row no-gutters mg-b-20">#}
+                    {#<div class="col-md-4">#}
+                    {#<a href="{{ path('post.display', {'id': post.id}) }}"><img#}
+                    {#src="{{ asset('assets/img/img0.jpg') }}" class="img-fit-cover"#}
+                    {#alt=""></a>#}
+                    {#</div><!-- col-4 -->#}
+                    {#<div class="col-md-8">#}
+                    {#<div class="post-wrapper">#}
+                    {#<a href="{{ path('post.display', {'id': post.id}) }}"#}
+                    {#class="activity-title">{{ post.title }}</a>#}
+                    {#<p>#}
+                    {#{{ post.content|length > 300 ? post.content|slice(0, 300) ~ '...' : post.content }}#}
+                    {#</p>#}
+                    {#<p class="mg-b-0">#}
+                    {#<a href="" class="d-block">{{ post.user.username }}#}
+                    {#in {{ post.subCategory }}</a>#}
+                    {#<span>{{ post.createdAt|date('Y M d') }} .</span>#}
+                    {#</p>#}
+                    {#</div><!-- post-wrapper -->#}
+                    {#</div><!-- col-8 -->#}
+                    {#</div><!-- row -->#}
+                    {#{% endfor %}#}
                     {#{% else %}#}
-                        {#<h3>Welp! there are no posts at the moment, check back later...</h3>#}
+                    {#<h3>Welp! there are no posts at the moment, check back later...</h3>#}
                     {#{% endif %}#}
 
 
@@ -134,7 +148,8 @@
                         <div><i class="icon ion-link tx-24 lh-0"></i></div>
                         <div class="media-body mg-l-15 mg-t-4">
                             <h6 class="tx-14 tx-gray-700">Website</h6>
-                            <a href="http://{{ profile.website ?? '#' }}" class="d-block">{{ profile.website ?? 'Empty' }}</a>
+                            <a href="http://{{ profile.website ?? '#' }}"
+                               class="d-block">{{ profile.website ?? 'Empty' }}</a>
                         </div><!-- media-body -->
                     </div><!-- media -->
                     <div class="media mg-t-25">
@@ -155,7 +170,8 @@
                         <div><i class="icon ion-social-twitter tx-18 lh-0"></i></div>
                         <div class="media-body mg-l-15 mg-t-2">
                             <h6 class="tx-14 tx-gray-700">Twitter</h6>
-                            <a href="https://twitter.com/{{ profile.twitter ?? '#' }}" class="d-block">{{ profile.twitter ?? 'Empty' }}</a>
+                            <a href="https://twitter.com/{{ profile.twitter ?? '#' }}"
+                               class="d-block">{{ profile.twitter ?? 'Empty' }}</a>
                         </div><!-- media-body -->
                     </div><!-- media -->
                 </div><!-- media-list -->
@@ -186,49 +202,49 @@
             </div><!-- card -->
 
             {#<div class="card card-people-list mg-t-20">#}
-                {#<div class="slim-card-title">People you may know</div>#}
-                {#<div class="media-list">#}
-                    {#<div class="media">#}
-                        {#<img src="http://via.placeholder.com/500x500" alt="">#}
-                        {#<div class="media-body">#}
-                            {#<a href="">Amber Heard</a>#}
-                            {#<p>Software Engineer</p>#}
-                        {#</div><!-- media-body -->#}
-                        {#<a href=""><i class="icon ion-person-add tx-20"></i></a>#}
-                    {#</div><!-- media -->#}
-                    {#<div class="media">#}
-                        {#<img src="http://via.placeholder.com/500x500" alt="">#}
-                        {#<div class="media-body">#}
-                            {#<a href="">Richard Salomon</a>#}
-                            {#<p>Architect</p>#}
-                        {#</div><!-- media-body -->#}
-                        {#<a href=""><i class="icon ion-person-add tx-20"></i></a>#}
-                    {#</div><!-- media -->#}
-                    {#<div class="media">#}
-                        {#<img src="http://via.placeholder.com/500x500" alt="">#}
-                        {#<div class="media-body">#}
-                            {#<a href="">Warren Vito</a>#}
-                            {#<p>Sales Representative</p>#}
-                        {#</div><!-- media-body -->#}
-                        {#<a href=""><i class="icon ion-person-add tx-20"></i></a>#}
-                    {#</div><!-- media -->#}
-                    {#<div class="media">#}
-                        {#<img src="http://via.placeholder.com/500x500" alt="">#}
-                        {#<div class="media-body">#}
-                            {#<a href="">Charlene Plateros</a>#}
-                            {#<p>Sales Representative</p>#}
-                        {#</div><!-- media-body -->#}
-                        {#<a href=""><i class="icon ion-person-add tx-20"></i></a>#}
-                    {#</div><!-- media -->#}
-                    {#<div class="media">#}
-                        {#<img src="http://via.placeholder.com/500x500" alt="">#}
-                        {#<div class="media-body">#}
-                            {#<a href="">Allan Palban</a>#}
-                            {#<p>Sales Representative</p>#}
-                        {#</div><!-- media-body -->#}
-                        {#<a href=""><i class="icon ion-person-add tx-20"></i></a>#}
-                    {#</div><!-- media -->#}
-                {#</div><!-- media-list -->#}
+            {#<div class="slim-card-title">People you may know</div>#}
+            {#<div class="media-list">#}
+            {#<div class="media">#}
+            {#<img src="http://via.placeholder.com/500x500" alt="">#}
+            {#<div class="media-body">#}
+            {#<a href="">Amber Heard</a>#}
+            {#<p>Software Engineer</p>#}
+            {#</div><!-- media-body -->#}
+            {#<a href=""><i class="icon ion-person-add tx-20"></i></a>#}
+            {#</div><!-- media -->#}
+            {#<div class="media">#}
+            {#<img src="http://via.placeholder.com/500x500" alt="">#}
+            {#<div class="media-body">#}
+            {#<a href="">Richard Salomon</a>#}
+            {#<p>Architect</p>#}
+            {#</div><!-- media-body -->#}
+            {#<a href=""><i class="icon ion-person-add tx-20"></i></a>#}
+            {#</div><!-- media -->#}
+            {#<div class="media">#}
+            {#<img src="http://via.placeholder.com/500x500" alt="">#}
+            {#<div class="media-body">#}
+            {#<a href="">Warren Vito</a>#}
+            {#<p>Sales Representative</p>#}
+            {#</div><!-- media-body -->#}
+            {#<a href=""><i class="icon ion-person-add tx-20"></i></a>#}
+            {#</div><!-- media -->#}
+            {#<div class="media">#}
+            {#<img src="http://via.placeholder.com/500x500" alt="">#}
+            {#<div class="media-body">#}
+            {#<a href="">Charlene Plateros</a>#}
+            {#<p>Sales Representative</p>#}
+            {#</div><!-- media-body -->#}
+            {#<a href=""><i class="icon ion-person-add tx-20"></i></a>#}
+            {#</div><!-- media -->#}
+            {#<div class="media">#}
+            {#<img src="http://via.placeholder.com/500x500" alt="">#}
+            {#<div class="media-body">#}
+            {#<a href="">Allan Palban</a>#}
+            {#<p>Sales Representative</p>#}
+            {#</div><!-- media-body -->#}
+            {#<a href=""><i class="icon ion-person-add tx-20"></i></a>#}
+            {#</div><!-- media -->#}
+            {#</div><!-- media-list -->#}
             {#</div><!-- card -->#}
 
 

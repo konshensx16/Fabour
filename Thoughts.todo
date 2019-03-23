@@ -1342,9 +1342,13 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
 
 Forgot password stuff:
   ✔ Create the action to display and generate the token (and sent it as well ) @done (19-03-23 01:41)
-  ☐ create the route that will check if the token is valid 
-  ☐ redirect to the page where the user enters his new pasword
-  ☐ remove the reset_password token and set a date for the new lastPasswordReset field
+  ✔ create the route that will check if the token is valid @done (19-03-23 16:28)
+  ✔ redirect to the page where the user enters his new pasword @done (19-03-23 16:28)
+  ✔ remove the reset_password token and set a date for the new lastPasswordReset field @done (19-03-23 16:28)
+  ☐ Add a notification saying that the user has changed his password
+    ☐ This notification is not going to be real time, so i just need to persist it 
+  ✔ Add a small header in the user profile that includes some security alerts (I want to make it dismissable) @done (19-03-23 20:59)
+
 
 
 IDEAS:

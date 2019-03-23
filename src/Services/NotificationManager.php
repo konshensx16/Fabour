@@ -102,6 +102,7 @@ class NotificationManager
         return $friendsNames;
     }
 
+
     /**
      * @param int $entity_id
      * @param int $entity_type_id
@@ -169,6 +170,15 @@ class NotificationManager
 
         $this->entityManager->persist($notification);
         $this->entityManager->flush();
+    }
+
+    public function sendNotificationToCurrentUser(array $data)
+    {
+        try {
+            $this->pusher->push($data, 'notification_topic');
+        } catch (\Exception $e) {
+            $e->getTrace();
+        }
     }
 
     public function sendNotification(User $owner, array $data)

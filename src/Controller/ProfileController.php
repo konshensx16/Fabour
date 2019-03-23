@@ -61,15 +61,28 @@
                     $this->generateUrl('login'), 302
                 );
             }
+            $security = [];
+
             // if no username, display the current logged in user
             if (!$username) {
+                /** @var User $user */
                 $user = $this->getUser();
+
+                if ($user->getLastPasswordReset()) {
+                    $security[] = [
+                        'type'      => 'passwordReset',
+                        'icon'      => 'bell',
+                        'state'     => 'info',
+                        'message'   => 'Your password was last reset on the ' . $user->getLastPasswordReset()->format('Y-d-m h:m')
+                    ];
+                }
+
             } else {
                 $user = $userRepository->findOneBy([
                     'username' => $username
                 ]);
                 // This function is only available for logged in users
-                // TODO: check if the current user is friends with the $user
+                // check if the current user is friends with the $user
                 if ($this->isUserSignedIn()) {
                     $relationship = $userRelationshipRepository->findOneFriendById(
                         $this->getUser()->getId(),
@@ -98,14 +111,14 @@
             // TODO: what am gonna do now needs to be moved up i think
 
 
-
             return $this->render('profile/userProfile.html.twig', [
                 'profile' => $user,
                 'friends' => $friends ?? null, // i think this would be null anyways
                 'isFriend' => (bool)$relationship,
                 'recentFriends' => $recentlyAddedFriends ?? null,
 //                'recentPosts' => $postRepository->findRecentlyPublishedPostsWithUserIdWithLimit($user->getId(), 10),
-                'profileLink' => $profileLink ?? null
+                'profileLink'   => $profileLink ?? null,
+                'security'      => $security
             ]);
         }
 

@@ -3,8 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
-use Psr\Log\NullLogger;
+use App\Repository\UserRepository; 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -153,6 +152,9 @@ class UserController extends AbstractController
 
                     $em->persist($user);
                     $em->flush();
+
+                    // TODO: send a notification saying that the user has changed his password
+                    // TODO: send the notification
 
                     $this->addFlash('success', 'Use your new password to login');
                     return $this->redirect($this->generateUrl('login'));
