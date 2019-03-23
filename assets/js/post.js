@@ -34,8 +34,8 @@ const routes = require('./routes.json');
 Routing.setRoutingData(routes)
 
 let post_id = document.querySelector('#edit_form')
-
-let postAttachmentsUrl = Routing.generate('api.attachment.postimage', {id: post_id.dataset.postId})
+console.log(post_id.dataset.postId)
+let postAttachmentsUrl = Routing.generate('api.attachment.postimage', {uuid: post_id.dataset.postId})
 
 tinymce.init({
     selector: '.editable',

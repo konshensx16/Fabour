@@ -39,7 +39,6 @@ class AttachmentController extends AbstractController
     public function postImage(Request $request, Post $post)
     {
         $em = $this->getDoctrine()->getManager();
-
         $em->getConnection()->beginTransaction();
 
         $file = $request->files->get('file');
