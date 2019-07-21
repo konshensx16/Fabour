@@ -16,7 +16,7 @@
     "dependencies": {
         "ajv": "^6.5.4",
         "autobahn": "^18.10.2",
-        "axios": "^0.18.0",
+        "axios": "^0.18.1",
         "bloodhound-js": "^1.2.3",
         "cropperjs": "^1.4.3",
         "lodash": "^4.17.11",
