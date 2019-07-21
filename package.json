@@ -19,7 +19,7 @@
         "axios": "^0.18.0",
         "bloodhound-js": "^1.2.3",
         "cropperjs": "^1.4.3",
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.13",
         "notyf": "^2.0.1",
         "tinymce": "^4.9.0",
         "typeahead": "^0.2.2",
