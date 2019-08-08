@@ -57,22 +57,20 @@ class StringToArrayTransformer implements DataTransformerInterface
      */
     public function reverseTransform($string)
     {
-        // TODO: maybe check if this is slow or not ?!?!
-        $arrayOfValues = explode(',', $string);
+        $names = array_unique(array_filter(array_map('trim', explode(',', $string))));
+        $tagRepository = $this->entityManager->getRepository(Tag::class);
+        $tags = $tagRepository->findBy([
+            'name' => $names
+        ]);
+        $newNames = array_diff($names, $tags);
         $tags = [];
-        // TODO: check if the tag already exists. avoid duplicates
-        foreach ($arrayOfValues as $k => $v) {
+        foreach ($newNames as $k => $v) {
             $v = trim($v);
             $tag = new Tag();
             $tag->setName($v);
             $tag->setSlug($this->slugify->slugify($v));
             $tags[] = $tag;
-
-            $this->entityManager->persist($tag);
         }
-
-        $this->entityManager->flush();
-        dump($tags);
         return $tags;
     }
 }

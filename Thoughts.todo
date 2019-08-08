@@ -1357,14 +1357,22 @@ IDEAS:
   - @high Add user email verification to check whether the user is real or not!
 
 Adding Tags to posts:
-  ☐ Create the relationship between the posts and the tags table (ManyToMany)
+  ✔ Create the relationship between the posts and the tags table (ManyToMany) @done (19-08-08 15:35)
       Fields: ID, name, slug, (no timestamps)
-  ☐ Create the data transformer
+  ✔ Create the data transformer @done (19-08-08 15:35)
     ☐ Check if the tags already exists or not, to avoid duplicates
     This should be applieds to the parent that is holding the newly created type, and not within the type itself.
-  ☐ Create the custom type ?? Optional i think
-  ☐ Persist the code to SC with the title of "custom types" for future ease of search.
-  ☐ Add the pils design to the displayed tags 
+  ✔ Create the custom type ?? Optional i think @done (19-08-08 15:36)
+  ✔ Persist the code to SC with the title of "custom types" for future ease of search. @done (19-08-08 15:36)
+  ✔ Add the pils design to the displayed tags @done (19-08-08 15:36)
+    ✘ When removing a tag maybe make it editable (Youtube tags style) @cancelled (19-08-08 15:36)
+  ✔ Display the tags when displaying the post @done (19-08-08 16:41)
+  ✔ make tags clickable @done (19-08-08 16:41)
+    ✔ Clicking a tag should get all posts tagged with the that tag @done (19-08-08 16:41)
+    ✔ Create the controller with three methods @done (19-08-08 16:41)
+      ✔ Show action => display every single tag that was ever created @done (19-08-08 16:41)
+      ✔ Showtag action => display all posts for a certain tag @done (19-08-08 16:41)
+
 
 
 Translation:

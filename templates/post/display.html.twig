@@ -33,12 +33,15 @@
                                         {#What the fuck am i even doing here??#}
                                         {% if bookmarked == null %}
                                             {% if post.bookmarks.count %}
-                                                <a href="{{ path('post.bookmark', {'uuid': post.id|encode_url}) }}">Bookmark this too</a>
+                                                <a href="{{ path('post.bookmark', {'uuid': post.id|encode_url}) }}">Bookmark
+                                                    this too</a>
                                             {% else %}
-                                                <a href="{{ path('post.bookmark', {'uuid': post.id|encode_url}) }}">Be the first to bookmark this</a>
+                                                <a href="{{ path('post.bookmark', {'uuid': post.id|encode_url}) }}">Be
+                                                    the first to bookmark this</a>
                                             {% endif %}
                                         {% else %}
-                                            <a href="{{ path('post.unbookmark', {'uuid': post.id|encode_url}) }}">Remove from bookmarks</a>
+                                            <a href="{{ path('post.unbookmark', {'uuid': post.id|encode_url}) }}">Remove
+                                                from bookmarks</a>
                                         {% endif %}
                                     {% endif %}
 
@@ -51,7 +54,8 @@
                             <div class="card card-connection">
                                 <div class="row row-xs">
                                     <div class="col-4 tx-primary"><i class="icon ion-compose"></i></div>
-                                    <div class="col-8"><a href="{{ path('post.edit', {uuid: post.id|encode_url}) }}">Edit post</a></div>
+                                    <div class="col-8"><a href="{{ path('post.edit', {uuid: post.id|encode_url}) }}">Edit
+                                            post</a></div>
                                 </div><!-- row -->
                             </div>
                         </div>
@@ -64,15 +68,24 @@
                     <div class="media align-items-center mg-y-25">
                         <img src="{{ post.user.avatar }}" class="wd-40 rounded-circle" alt="">
                         <div class="media-body mg-l-15">
-                            <h6 class="tx-14 mg-b-2">by <a href="{{ path('profile.userProfile', {'username': post.user.username }) }}">{{ post.user.username }}</a></h6>
+                            <h6 class="tx-14 mg-b-2">by <a
+                                        href="{{ path('profile.userProfile', {'username': post.user.username }) }}">{{ post.user.username }}</a>
+                            </h6>
                             <p class="mg-b-0">{{ post.subCategory }}</p>
                         </div><!-- media-body -->
-                        <span class="tx-12">{{ post.createdAt|date('Y-M-d h:m:s')}}</span>
+                        <span class="tx-12">{{ post.createdAt|date('Y-M-d h:m:s') }}</span>
                     </div><!-- media -->
                     <div class="content-body">
                         {{ post.content|raw }}
                     </div>
                 </div><!-- card-body -->
+                <div class="card-footer">
+                    {% for tag in post.tags %}
+                        <a href="{{ path('tag.single', {'slug': tag.slug}) }}">
+                            <span class="badge badge-pill badge-dark">{{ tag }}</span>
+                        </a>
+                    {% endfor %}
+                </div>
             </div>
             <div class="section-wrapper mg-t-20" style="overflow:hidden">
                 {% if app.user %}
@@ -90,33 +103,7 @@
 
 
             <div class="section-wrapper mg-t-20" id="comments">
-
-                <Comments :post_id="{{ post.id|encode_url|json_encode }}" />
-
-                {#<label class="section-title">{{ post.comments.count }} Comments</label>#}
-
-                {#<ul class="media-list-demo">#}
-                    {#{% if post.comments.count %}#}
-                        {#{% for comment in post.comments %}#}
-                            {#<li class="media" id="{{ comment.id }}">#}
-                                {#<img class="media-img" src="{{ comment.user.avatar  }}" alt="">#}
-
-                                {#<div class="media-body">#}
-                                    {#<h6 class="tx-inverse mg-b-10">#}
-                                        {#<a href="{{ path('profile.userProfile', {'username': comment.user.username}) }}">#}
-                                            {#{{ comment.user.username }}#}
-                                        {#</a>#}
-                                        {#<small>{{ comment.createdAt|date('Y-M-D h:m:s') }}</small>#}
-                                    {#</h6>#}
-                                    {#{{ comment.content }}#}
-                                {#</div>#}
-                            {#</li>#}
-                        {#{% endfor %}#}
-                    {#{% else %}#}
-                        {#This post has no comments, be the first.#}
-                    {#{% endif %}#}
-
-                {#</ul>#}
+                <Comments :post_id="{{ post.id|encode_url|json_encode }}"/>
             </div>
         </div>
     </div>
