@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
  {% block title %}Editing {{ post.title }}{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+{% endblock %}
+
 {% block body %}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success mg-t-20">
@@ -9,8 +14,8 @@
     {% endfor %}
     <div class="section-wrapper mg-t-20">
         {{ form_start(form, {'attr': {'data-post-id': post.id|encode_url, 'id': 'edit_form'}}) }}
-            {{ form_errors(form) }}
-            {{ form(form) }}
+        {{ form_errors(form) }}
+        {{ form(form) }}
         {{ form_end(form) }}
         {% if post.user is same as(app.user) %}
             <a class="btn btn-danger" href="{{ path('post.delete', {'uuid': post.id|encode_url}) }}">REMOVE THE POST</a>
@@ -19,8 +24,10 @@
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('build/post.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
     <script>
-        $(function() {
+        $(function () {
             'use strict';
             // Inline editor
 
@@ -28,8 +35,7 @@
             let $post_category = $("#post_category")
             let $token = $("#post_token")
 
-            $post_category.change(function ()
-            {
+            $post_category.change(function () {
                 let $form = $(this).closest('form')
 
                 let data = {}
@@ -37,18 +43,12 @@
                 data[$token.attr('name')] = $token.val()
                 data[$post_category.attr('name')] = $post_category.val()
 
-                $.post($form.attr('action'), data).then(function (response)
-                {
+                $.post($form.attr('action'), data).then(function (response) {
                     $("#post_subCategory").replaceWith(
                         $(response).find("#post_subCategory")
                     )
                 })
             })
-
-            function log(msg)
-            {
-                console.log(msg)
-            }
         });
     </script>
 {% endblock %}

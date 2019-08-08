@@ -5,3 +5,6 @@
 .faded {
     opacity: .5;
 }
+.bootstrap-tagsinput {
+    width: 100% !important;
+}

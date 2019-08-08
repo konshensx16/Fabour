@@ -2,6 +2,9 @@
     "cboden/ratchet": {
         "version": "v0.4.1"
     },
+    "cocur/slugify": {
+        "version": "v3.2"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {

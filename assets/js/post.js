@@ -34,7 +34,7 @@ const routes = require('./routes.json');
 Routing.setRoutingData(routes)
 
 let post_id = document.querySelector('#edit_form')
-console.log(post_id.dataset.postId)
+
 let postAttachmentsUrl = Routing.generate('api.attachment.postimage', {uuid: post_id.dataset.postId})
 
 tinymce.init({
@@ -91,6 +91,9 @@ document.body.onkeydown = (e) => {
     if (evtobj.keyCode == 83 && evtobj.ctrlKey) {
         e.preventDefault()
         // save the post
-        // submbi the post using an ajax request
+        // submit the post using an ajax request
     }
 }
+
+// bootstrap tags inputs
+// $('#post_tags').tagsinput();

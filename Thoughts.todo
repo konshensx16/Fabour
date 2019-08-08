@@ -2,7 +2,7 @@ A topic is the server side representation of a pubsub channel
   
   NOTES TO MYSELF:
     trying to get the number of clients connected to the channel
-    ☐ Tried to get the number by INC++ the counter on each connect which didn't workm (always one 1) 
+    ☐ Tried to get the number by INC++ the counter on each connect which didn't workm (always one 1)
     ☐ Might try to get the vale from the back-end, on each connect the back-end wil send us back the number of connected clients
     ☐ The number of connected clients is the number of subscriptions ?? ABSOLUTELY FUCKING NOT 
     ☐ Using events could be the better solution since it provides a onClientConnect method, but currenctly cannot get it to work because of this
@@ -1355,3 +1355,18 @@ IDEAS:
   - Give the user (in profile settings) the ability to choose which fields to viewers
   - Maybe add replies to the comments section? 
   - @high Add user email verification to check whether the user is real or not!
+
+Adding Tags to posts:
+  ☐ Create the relationship between the posts and the tags table (ManyToMany)
+      Fields: ID, name, slug, (no timestamps)
+  ☐ Create the data transformer
+    ☐ Check if the tags already exists or not, to avoid duplicates
+    This should be applieds to the parent that is holding the newly created type, and not within the type itself.
+  ☐ Create the custom type ?? Optional i think
+  ☐ Persist the code to SC with the title of "custom types" for future ease of search.
+  ☐ Add the pils design to the displayed tags 
+
+
+Translation:
+  ☐ Maybe add translation to the entire application, it should not be that tedious 
+  

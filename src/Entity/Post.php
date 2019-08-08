@@ -83,6 +83,11 @@ class Post
      */
     private $thumbnail;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="posts", cascade={"persist"})
+     */
+    private $tags;
+
     // TODO: maybe create an updated at field that indicates when it was changed
 
     /**
@@ -94,6 +99,7 @@ class Post
         $this->comments = new ArrayCollection();
         $this->bookmarks = new ArrayCollection();
         $this->attachments = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId()
@@ -298,5 +304,33 @@ class Post
     public function getUUID()
     {
         return $this->encoder->encode($this->id);
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+            $tag->addPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+            $tag->removePost($this);
+        }
+
+        return $this;
     }
 }

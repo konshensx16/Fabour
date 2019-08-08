@@ -3,6 +3,12 @@ db:
 schema:
 	php bin/console doctrine:schema:update --force
 	php bin/console doctrine:fixtures:load
+schemaUpdate:
+	php bin/console doctrine:schema:update --force
+schemaDump:
+	php bin/console doctrine:schema:update --dump-sql
+validate:
+	php bin/console doctrine:schema:validate
 regenerate:
 	bin/console make:entity --regenerate
 routes:

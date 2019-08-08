@@ -127,15 +127,11 @@ class PostController extends AbstractController
     public function edit(Request $request, Post $post)
     {
         $this->checkOwnership($post);
-
         $form = $this->createForm(PostType::class, $post);
-
         $form->handleRequest($request);
 
         $currentUser = $this->getUser();
 
-        // TODO: is this really needed ?
-        $oldAttachments = $post->getAttachments();
         if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
             // post is being persisted here and inside the if statement

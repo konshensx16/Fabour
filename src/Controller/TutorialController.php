@@ -27,10 +27,6 @@ class TutorialController extends AbstractController
         $tutorial = new Tutorial();
         $form = $this->createForm(TutorialType::class, $tutorial);
 
-//        $tutorial->setTitle('Hello ttke');
-//        $tutorial->setContent('This is the content of the tutorial instance');
-
-        
         return $this->render('tutorial/index.html.twig', [
             'form' => $form->createView()
         ]);
