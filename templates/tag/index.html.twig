@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TagController!{% endblock %}
+
+{% block body %}
+    <div class="col-lg-12 mg-t-20">
+        <div class="section-wrapper mg-t-20" style="overflow:hidden">
+            {% for tag in tags %}
+                <a href="{{ path('tag.single', {'slug': tag.slug}) }}">
+                    <span class="badge badge-pill badge-dark">{{ tag }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
