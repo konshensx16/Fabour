@@ -132,8 +132,12 @@ class PostController extends AbstractController
 
         $currentUser = $this->getUser();
 
+//        dump($post);die;
+
         if ($form->isSubmitted()) {
+
             $em = $this->getDoctrine()->getManager();
+            dump($post->getTags());
             // post is being persisted here and inside the if statement
             $em->persist($post);
             // set the publish_at date if the publish button was clicked

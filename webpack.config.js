@@ -28,7 +28,6 @@ Encore
     .addEntry('comments', './assets/js/comments.js')
     .addEntry('post', './assets/js/post.js')
     .addEntry('profile', './assets/js/profile.js')
-    .addEntry('tutorial', './assets/js/tutorial.js')
 
     .addLoader({
         test:  /\.(mp3)$/,
