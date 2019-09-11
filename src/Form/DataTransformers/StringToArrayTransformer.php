@@ -33,21 +33,6 @@ class StringToArrayTransformer implements DataTransformerInterface
      */
     public function transform($array)
     {
-        dump($array);
-//        $tagNames = [] ;
-//        /**
-//         * @var integer $k
-//         * @var Tag $value
-//         */
-//        foreach ($array as $k => $value) {
-//            $tagNames[] = $value->getName();
-//        }
-//
-//        if (is_null($array)) {
-//            return null;
-//        }
-//        dump(implode(', ', $tagNames));
-
         return implode(', ', $array);
     }
 
@@ -58,17 +43,16 @@ class StringToArrayTransformer implements DataTransformerInterface
     public function reverseTransform($string)
     {
         $names = array_unique(array_filter(array_map('trim', explode(',', $string))));
-        $tagRepository = $this->entityManager->getRepository(Tag::class);
-        $tags = $tagRepository->findBy([
+        $tags = $this->entityManager->getRepository(Tag::class)->findBy([
             'name' => $names
         ]);
+
         $newNames = array_diff($names, $tags);
-        $tags = [];
-        foreach ($newNames as $k => $v) {
-            $v = trim($v);
+
+        foreach ($newNames as $name) {
             $tag = new Tag();
-            $tag->setName($v);
-            $tag->setSlug($this->slugify->slugify($v));
+            $tag->setName($name);
+            $tag->setSlug($this->slugify->slugify($name));
             $tags[] = $tag;
         }
         return $tags;
