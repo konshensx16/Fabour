@@ -20,6 +20,11 @@
         <!-- passwords that contain special characters (@, %, :, +) must be urlencoded -->
         <env name="REDIS_URL" value="redis://localhost"/>
         <!-- ###- snc/redis-bundle ### -->
+
+        <!-- ###+ hwi/oauth-bundle ### -->
+        <env name="FB_ID" value=""/>
+        <env name="FB_SECRET" value=""/>
+        <!-- ###- hwi/oauth-bundle ### -->
     </php>
 
     <testsuites>

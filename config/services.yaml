@@ -180,9 +180,14 @@ services:
         tags:
             - { name: twig.extension }
 
-
-
     # listeners
     App\Listeners\MessageListener:
         tags:
             - { name: doctrine.orm.entity_listener }
+
+    my.oauth_aware.user_provider.service:
+        class: App\Security\MyEntityUserProvider
+        arguments:
+            - '@doctrine'
+            - 'App\Entity\User'
+            - {facebook: facebookID}

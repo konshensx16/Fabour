@@ -561,6 +561,7 @@ Profile:
 
     ✔ @critical when updating the information, the avatar each time requires to change, i only need to update the avatar if i have some new value to replace the old, otherwise, just update the other stuff @done (18-11-24 20:46)
     ✔ Remove the edit profile and profile settings from other persons profiles @done (18-11-24 20:59)
+    ☐ Display the fullname instead of the username in the profile section and across the whole application 
   BUGS:
     When the user doesn't exist, redirect to an error page or display an error page (404)
 
@@ -573,7 +574,7 @@ Search:
       NOTE: i did nothing and it's working now ????
   ✔ Creat the action which handles the search @done (10/21/2018, 4:03:17 PM)
     ✔ This will redirect to another page containing all search results (Create and leave empty) @done (10/21/2018, 4:03:18 PM)
-    ☐ Probably will try to include typeahead authocomplete and blooddhound suggestions engine
+    ☐ Probably will try to include typeahead autocomplete and blooddhound suggestions engine
   ✔ Render a side bar with all the different section and search results in it @done (10/21/2018, 4:03:23 PM)
     ✔ Posts @done (10/21/2018, 4:03:24 PM)
     ✔ Users @done (10/21/2018, 4:03:24 PM)
@@ -1372,10 +1373,18 @@ Adding Tags to posts:
     ✔ Create the controller with three methods @done (19-08-08 16:41)
       ✔ Show action => display every single tag that was ever created @done (19-08-08 16:41)
       ✔ Showtag action => display all posts for a certain tag @done (19-08-08 16:41)
-  ☐ @critical when editing the tags, they're being replaced instead of appending
-    ☐ Keep the old ones and add the new tags
-      NOTE: maybe i should remove the cascade persistence and do this manually ?!
+  ✔ @critical when editing the tags, they're being replaced instead of appending @done (19-09-11 22:29)
+    ✔ Keep the old ones and add the new tags @done (19-09-11 22:29)
 
+Social Login:
+  ☐ Should i create a separate entity for social login ?!
+  ☐ Add social login to the website such as facebook, google, and twitter
+    ✔ Install and configure the bundle @done (19-09-16 19:10)
+    ✔ Create the facebook application as a start @done (19-09-16 19:10)
+    ☐ Add resources to the application
+      ✔ Facebook @done (19-09-16 19:21)
+      ☐ Google
+      ☐ Twitter  
 README:
   ☐ Add different section to the readme 
   ☐ Add couple of screen shots to each one of the sections (one should be enough)

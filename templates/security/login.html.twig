@@ -23,6 +23,16 @@
                 {{ form_start(form) }}
                     {{ form_widget(form._username, {'attr': {'value': last_username}}) }}
                 {{ form_end(form) }}
+                <div class="signup-separator"><span>Or sign in using</span></div>
+                <a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}" class="btn btn-facebook btn-block">
+                    <span>Facebook</span>
+                </a>
+
+                <a href="{{ path('hwi_oauth_service_redirect', {'service': 'twitter' }) }}" class="btn btn-twitter btn-block">
+                    <span>Twitter</span>
+                </a>
+
+                <div class="signup-separator mt-3"><span>Other options</span></div>
 
                 <p class="mg-b-0">Forgot your password? <a href="{{ path('security.reset.password') }}">Reset the password</a></p>
                 <p class="mg-b-0">Don't have an account? <a href="{{ path('register.createAccount') }}">Sign Up</a></p>

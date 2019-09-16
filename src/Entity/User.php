@@ -34,7 +34,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     private $username;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(
      *     min = 6,
      *     minMessage = "Password length is too short, has to be 6 characters minimum"
@@ -139,6 +139,18 @@ class User implements UserInterface, \Serializable, EquatableInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Conversation", mappedBy="first_user")
      */
     private $conversations;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $facebookID;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $facebookAccessToken;
 
     public function __construct()
     {
@@ -623,6 +635,30 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function setLastPasswordReset(?\DateTimeInterface $lastPasswordReset): self
     {
         $this->lastPasswordReset = $lastPasswordReset;
+
+        return $this;
+    }
+
+    public function getFacebookAccessToken(): ?string
+    {
+        return $this->facebookAccessToken;
+    }
+
+    public function setFacebookAccessToken(string $facebookAccessToken): self
+    {
+        $this->facebookAccessToken = $facebookAccessToken;
+
+        return $this;
+    }
+
+    public function getFacebookID(): ?string
+    {
+        return $this->facebookID;
+    }
+
+    public function setFacebookID(?string $facebookID): self
+    {
+        $this->facebookID = $facebookID;
 
         return $this;
     }
