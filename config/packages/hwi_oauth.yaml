@@ -12,3 +12,8 @@ hwi_oauth:
             options:
                 display: popup
                 csrf: true
+        google:
+            type:                google
+            client_id:           '%env(GOOGLE_ID)%'
+            client_secret:       '%env(GOOGLE_SECRET)%'
+            scope:               "email profile"

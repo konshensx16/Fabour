@@ -562,6 +562,7 @@ Profile:
     ✔ @critical when updating the information, the avatar each time requires to change, i only need to update the avatar if i have some new value to replace the old, otherwise, just update the other stuff @done (18-11-24 20:46)
     ✔ Remove the edit profile and profile settings from other persons profiles @done (18-11-24 20:59)
     ☐ Display the fullname instead of the username in the profile section and across the whole application 
+      ☐ Add the first and last name fields to the user entity 
   BUGS:
     When the user doesn't exist, redirect to an error page or display an error page (404)
 
@@ -1377,14 +1378,17 @@ Adding Tags to posts:
     ✔ Keep the old ones and add the new tags @done (19-09-11 22:29)
 
 Social Login:
-  ☐ Should i create a separate entity for social login ?!
-  ☐ Add social login to the website such as facebook, google, and twitter
+  ✘ Should i create a separate entity for social login ?! @cancelled (19-09-16 20:01)
+  ✔ Add social login to the website such as facebook, google, and twitter @done (19-09-16 20:01)
     ✔ Install and configure the bundle @done (19-09-16 19:10)
     ✔ Create the facebook application as a start @done (19-09-16 19:10)
-    ☐ Add resources to the application
+    ✔ Create the google application @done (19-09-16 20:01)
+    ☐ Create the twitter application
+      ☐ Needs to be reviwed and accepted by twitter
+    ✔ Add resources to the application @done (19-09-16 20:01)
       ✔ Facebook @done (19-09-16 19:21)
-      ☐ Google
-      ☐ Twitter  
+      ✔ Google @done (19-09-16 20:01)
+      ✔ Twitter @done (19-09-16 20:01)  
 README:
   ☐ Add different section to the readme 
   ☐ Add couple of screen shots to each one of the sections (one should be enough)

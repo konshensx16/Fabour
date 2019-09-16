@@ -152,6 +152,30 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     private $facebookAccessToken;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $googleID;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $googleAccessToken;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $twitterID;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $twitterAccessToken;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -659,6 +683,54 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function setFacebookID(?string $facebookID): self
     {
         $this->facebookID = $facebookID;
+
+        return $this;
+    }
+
+    public function getGoogleID(): ?string
+    {
+        return $this->googleID;
+    }
+
+    public function setGoogleID(?string $googleID): self
+    {
+        $this->googleID = $googleID;
+
+        return $this;
+    }
+
+    public function getGoogleAccessToken(): ?string
+    {
+        return $this->googleAccessToken;
+    }
+
+    public function setGoogleAccessToken(?string $googleAccessToken): self
+    {
+        $this->googleAccessToken = $googleAccessToken;
+
+        return $this;
+    }
+
+    public function getTwitterID(): ?string
+    {
+        return $this->twitterID;
+    }
+
+    public function setTwitterID(?string $twitterID): self
+    {
+        $this->twitterID = $twitterID;
+
+        return $this;
+    }
+
+    public function getTwitterAccessToken(): ?string
+    {
+        return $this->twitterAccessToken;
+    }
+
+    public function setTwitterAccessToken(?string $twitterAccessToken): self
+    {
+        $this->twitterAccessToken = $twitterAccessToken;
 
         return $this;
     }

@@ -39,11 +39,13 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
         $user->setFacebookAccessToken($response->getAccessToken());
         return $user;
     }
+
     /**
      * Connects the response to the user object.
      *
      * @param UserInterface $user The user object
      * @param UserResponseInterface $response The oauth response
+     * @throws \TypeError
      */
     public function connect(UserInterface $user, UserResponseInterface $response)
     {
