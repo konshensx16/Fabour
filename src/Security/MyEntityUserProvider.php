@@ -19,14 +19,16 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
             throw new \RuntimeException(sprintf("No property defined for entity for resource owner '%s'.", $resourceOwnerName));
         }
         $serviceName = $response->getResourceOwner()->getName();
-        $setterId = 'set'. ucfirst($serviceName) . 'ID';
-        $setterAccessToken = 'set'. ucfirst($serviceName) . 'AccessToken';
+        $setterId = 'set' . ucfirst($serviceName) . 'ID';
+        $setterAccessToken = 'set' . ucfirst($serviceName) . 'AccessToken';
         // unique integer
         $username = $response->getUsername();
         if (null === $user = $this->findUser(array($this->properties[$resourceOwnerName] => $username))) {
             // TODO: Create the user
             $user = new User();
             $user->setEmail($response->getEmail());
+            $user->setFirstName($response->getFirstName());
+            $user->setLastName($response->getLastName());
             $user->$setterId($username);
             $user->setUsername($username);
             $user->$setterAccessToken($response->getAccessToken());
@@ -59,10 +61,11 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
             $this->disconnect($previousUser, $response);
         }
         $serviceName = $response->getResourceOwner()->getName();
-        $setter = 'set'. ucfirst($serviceName) . 'AccessToken';
+        $setter = 'set' . ucfirst($serviceName) . 'AccessToken';
         $user->$setter($response->getAccessToken());
         $this->updateUser($user, $response);
     }
+
     /**
      * ##STOLEN#
      * Gets the property for the response.
@@ -81,6 +84,7 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
         }
         return $this->properties[$resourceOwnerName];
     }
+
     /**
      * Disconnects a user.
      *
@@ -95,6 +99,7 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
         $accessor->setValue($user, $property, null);
         $this->updateUser($user, $response);
     }
+
     /**
      * Update the user and persist the changes to the database.
      * @param UserInterface $user
@@ -105,6 +110,8 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
         $user->setEmail($response->getEmail());
         // TODO: Add more fields?!
         $user->setUsername($response->getUsername());
+        $user->setFirstName($response->getFirstName());
+        $user->setLastName($response->getLastName());
         $this->em->persist($user);
         $this->em->flush();
     }

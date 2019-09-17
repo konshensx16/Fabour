@@ -15,6 +15,8 @@
         {{ form_start(form, {'attr': {'id': 'profile_form'}}) }}
             {{ form_row(form.locale) }}
             {{ form_row(form.avatar) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
             <img class="img-responsive" src="{{ app.user.avatar}}" alt="" id="avatar">
             <input type="hidden" id="blob_holder" name="blob_holder">
             {{ form_row(form.about) }}

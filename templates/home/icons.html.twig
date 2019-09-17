@@ -33,7 +33,7 @@
         {% else %}
             <img src="{{ asset('assets/img/') ~ app.user.avatar  }}" alt="">
         {% endif %}
-        <span>{{ app.user.username }}</span>
+        <span>{{ app.user.firstName ~ " " ~ app.user.lastName }}</span>
         <i class="fa fa-angle-down"></i>
     </a>
     <div class="dropdown-menu dropdown-menu-right">

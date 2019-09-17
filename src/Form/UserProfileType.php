@@ -23,6 +23,8 @@ class UserProfileType extends AbstractType
                     'onchange' => 'previewFile()'
                 ]
             ])
+            ->add('firstName')
+            ->add('lastName')
             ->add('website')
             ->add('phone')
             ->add('twitter')

@@ -5,7 +5,7 @@
 {% block body %}
     <div class="slim-pageheader">
         {% if app.user %}
-            <h6 class="slim-pagetitle">Welcome back {{ app.user.username }}</h6>
+            <h6 class="slim-pagetitle">Welcome back {{ app.user.firstName ~ " " ~ app.user.lastName }}</h6>
         {% else %}
             <h6 class="slim-pagetitle">Hello there stranger :)</h6>
         {% endif %}

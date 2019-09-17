@@ -1,10 +1,10 @@
 <div class="col-sm-6 col-lg-4">
     <div class="card-contact mg-b-20">
         <div class="tx-center">
-            <a href="{{ path('profile.userProfile', {'username': profile.username}) }}">
+            <a href="{{ path('profile.userProfile', {'username': profile.firstName ~ " " ~ profile.lastName}) }}">
             <img src="{{ profile.avatar }}" class="card-img" alt=""></a>
             <h5 class="mg-t-10 mg-b-5"><a href="{{ path('profile.userProfile', {'username': profile.username}) }}"
-                                          class="contact-name">{{ profile.username }}</a></h5>
+                                          class="contact-name">{{ profile.firstName ~ " " ~ profile.lastName }}</a></h5>
             <p>{{ profile.about|length > 130 ? profile.about|slice(0, 127) ~ '...' : profile.about }}</p>
         </div><!-- tx-center -->
     </div><!-- card -->

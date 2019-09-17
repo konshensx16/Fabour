@@ -6,7 +6,7 @@
 
 {% block body %}
     <div class="slim-pageheader">
-        <h6 class="slim-pagetitle">{{ profile.username }} Profile</h6>
+        <h6 class="slim-pagetitle">{{ profile.firstName ~ "" ~ profile.lastName }} Profile</h6>
     </div>
     {% if security %}
         <div class="row row-xs">
@@ -30,7 +30,7 @@
                     <div class="media">
                         <img src="{{ profile.avatar }}" alt="">
                         <div class="media-body">
-                            <h3 class="card-profile-name">{{ profile.username }}</h3>
+                            <h3 class="card-profile-name">{{ profile.firstName ~ " " ~ profile.lastName }}</h3> <em>{{ profile.username }}</em>
                             <p class="card-profile-position">Joined on: {{ profile.createdAt|date('Y-M-d h:m:s') }}</p>
                             <p>Last seen: {{ profile.lastSeen|time_diff }}</p>
 

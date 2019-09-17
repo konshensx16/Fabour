@@ -561,8 +561,8 @@ Profile:
 
     ✔ @critical when updating the information, the avatar each time requires to change, i only need to update the avatar if i have some new value to replace the old, otherwise, just update the other stuff @done (18-11-24 20:46)
     ✔ Remove the edit profile and profile settings from other persons profiles @done (18-11-24 20:59)
-    ☐ Display the fullname instead of the username in the profile section and across the whole application 
-      ☐ Add the first and last name fields to the user entity 
+    ✔ Display the fullname instead of the username in the profile section and across the whole application @done (19-09-17 21:55)
+      ✔ Add the first and last name fields to the user entity @done (19-09-17 21:55)
   BUGS:
     When the user doesn't exist, redirect to an error page or display an error page (404)
 
