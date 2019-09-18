@@ -9,7 +9,7 @@ gos_web_socket:
             vhost: '/'
 
     server:
-        port: 8080        #The port the socket server will listen on
+        port: 64565        #The port the socket server will listen on
         host: 127.0.0.1   #The host ip to bind to
         router:
             resources:

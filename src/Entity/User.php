@@ -178,16 +178,16 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     private $googleAccessToken;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @var string
-     */
+//    /**
+//     * @ORM\Column(type="string", length=255, nullable=true)
+//     * @var string
+//     */
 //    private $twitterID;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @var string
-     */
+//    /**
+//     * @ORM\Column(type="string", length=255, nullable=true)
+//     * @var string
+//     */
 //    private $twitterAccessToken;
 
     public function __construct()
