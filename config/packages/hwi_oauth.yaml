@@ -17,3 +17,9 @@ hwi_oauth:
             client_id:           '%env(GOOGLE_ID)%'
             client_secret:       '%env(GOOGLE_SECRET)%'
             scope:               "email profile"
+#        twitter:
+#            type:                twitter
+#            client_id:           '%env(TWITTER_ID)%'
+#            client_secret:       '%env(TWITTER_SECRET)%'
+#            options:
+#                include_email: true

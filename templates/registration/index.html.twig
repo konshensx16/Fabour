@@ -34,8 +34,15 @@
                 {{ form_end(form) }}
                 <div class="signup-separator"><span>or signup using</span></div>
 
-                <button class="btn btn-facebook btn-block">Sign Up Using Facebook</button>
-                <button class="btn btn-twitter btn-block">Sign Up Using Twitter</button>
+                <a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}"
+                   class="btn btn-facebook btn-block">
+                    <span>Facebook</span>
+                </a>
+                <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}"
+                   class="btn btn-google btn-block">
+                    <span>Google</span>
+                </a>
+                {#<button class="btn btn-twitter btn-block">Sign Up Using Twitter</button>#}
 
                 <p class="mg-t-40 mg-b-0">Already have an account? <a href="{{ path('login') }}">Sign In</a></p>
             </div><!-- signin-box -->
@@ -45,7 +52,9 @@
             <div class="signin-box">
                 <h2 class="slim-logo"><a href="index.html">slim<span>.</span></a></h2>
 
-                <p>We are excited to launch our new company and product Slim. After being featured in too many magazines to mention and having created an online stir, we know that ThemePixels is going to be big. We also hope to win Startup Fictional Business of the Year this year.</p>
+                <p>We are excited to launch our new company and product Slim. After being featured in too many magazines
+                    to mention and having created an online stir, we know that ThemePixels is going to be big. We also
+                    hope to win Startup Fictional Business of the Year this year.</p>
 
                 <p>Browse our site and see for yourself why you need Slim.</p>
 

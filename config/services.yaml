@@ -190,4 +190,4 @@ services:
         arguments:
             - '@doctrine'
             - 'App\Entity\User'
-            - {facebook: facebookID, google: googleID, twitter: twitterID}
+            - {facebook: facebookID, google: googleID} # twitter was removed, just add it here when neede

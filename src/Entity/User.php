@@ -182,13 +182,13 @@ class User implements UserInterface, \Serializable, EquatableInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @var string
      */
-    private $twitterID;
+//    private $twitterID;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @var string
      */
-    private $twitterAccessToken;
+//    private $twitterAccessToken;
 
     public function __construct()
     {
@@ -725,29 +725,29 @@ class User implements UserInterface, \Serializable, EquatableInterface
         return $this;
     }
 
-    public function getTwitterID(): ?string
-    {
-        return $this->twitterID;
-    }
-
-    public function setTwitterID(?string $twitterID): self
-    {
-        $this->twitterID = $twitterID;
-
-        return $this;
-    }
-
-    public function getTwitterAccessToken(): ?string
-    {
-        return $this->twitterAccessToken;
-    }
-
-    public function setTwitterAccessToken(?string $twitterAccessToken): self
-    {
-        $this->twitterAccessToken = $twitterAccessToken;
-
-        return $this;
-    }
+//    public function getTwitterID(): ?string
+//    {
+//        return $this->twitterID;
+//    }
+//
+//    public function setTwitterID(?string $twitterID): self
+//    {
+//        $this->twitterID = $twitterID;
+//
+//        return $this;
+//    }
+//
+//    public function getTwitterAccessToken(): ?string
+//    {
+//        return $this->twitterAccessToken;
+//    }
+//
+//    public function setTwitterAccessToken(?string $twitterAccessToken): self
+//    {
+//        $this->twitterAccessToken = $twitterAccessToken;
+//
+//        return $this;
+//    }
 
     public function getFirstName(): ?string
     {

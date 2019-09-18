@@ -14,6 +14,7 @@ class MyEntityUserProvider extends EntityUserProvider implements AccountConnecto
 {
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
+
         $resourceOwnerName = $response->getResourceOwner()->getName();
         if (!isset($this->properties[$resourceOwnerName])) {
             throw new \RuntimeException(sprintf("No property defined for entity for resource owner '%s'.", $resourceOwnerName));
