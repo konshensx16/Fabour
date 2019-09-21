@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Notification;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @method Notification|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +15,26 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class NotificationRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    private $security;
+
+    public function __construct(RegistryInterface $registry, Security $security)
     {
         parent::__construct($registry, Notification::class);
+        $this->security = $security;
+    }
+
+    public function updateStatusMarkAllAsRead()
+    {
+        $qb = $this->createQueryBuilder('n');
+
+        $qb->update()
+            ->set('n.status', ':status')
+            ->where('n.notifier = :userId')
+            ->setParameter('userId', $this->security->getUser()->getId())
+            ->setParameter('status', 1)
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 
 //    /**

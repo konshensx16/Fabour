@@ -72,12 +72,12 @@ class NotificationManager
         $notificationObject = new NotificationObject();
         $notificationObject->setEntityId($entity_id);
         $notificationObject->setEntityTypeId($entity_type_id);
-        $notificationObject->setStatus(1);
+        $notificationObject->setStatus(0);
 
         $notificationChange = new NotificationChange();
         $notificationChange->setNotificationObject($notificationObject);
         $notificationChange->setActor($actor); // current user
-        $notificationChange->setStatus(1);
+        $notificationChange->setStatus(0);
 
         $this->entityManager->persist($notificationObject);
         $this->entityManager->persist($notificationChange);
@@ -92,7 +92,7 @@ class NotificationManager
             $notification->setNotificationObject($notificationObject);
             // this is for every single friend in the list
             $notification->setNotifier($friend->getRelatedUser());
-            $notification->setStatus(1);
+            $notification->setStatus(0);
 
             $this->entityManager->persist($notification);
 
@@ -111,25 +111,24 @@ class NotificationManager
      */
     public function persistCommentNotification(int $entity_id, int $entity_type_id, User $notifier, User $actor)
     {
-
         // TODO: put this code in an event or a service and trigger the event
         // NOTE: make sure to not make a typo as this would ruin everything from this point on
         $notificationObject = new NotificationObject();
 
         $notificationObject->setEntityTypeId($entity_type_id);
         $notificationObject->setEntityId($entity_id);
-        $notificationObject->setStatus(1);
+        $notificationObject->setStatus(0);
 
         $notificationChange = new NotificationChange();
         $notificationChange->setActor($actor);
         $notificationChange->setNotificationObject($notificationObject);
-        $notificationChange->setStatus(1);
+        $notificationChange->setStatus(0);
 
         $notification = new Notification();
         $notification->setNotificationObject($notificationObject);
         // this is the person who should get the notification, in this case all the friends ?
         $notification->setNotifier($notifier);
-        $notification->setStatus(1);
+        $notification->setStatus(0);
 
         $this->entityManager->persist($notificationObject);
         $this->entityManager->persist($notificationChange);
@@ -151,12 +150,12 @@ class NotificationManager
         $notificationObject = new NotificationObject();
         $notificationObject->setEntityId($entity_id);
         $notificationObject->setEntityTypeId($entity_type_id);
-        $notificationObject->setStatus(1);
+        $notificationObject->setStatus(0);
 
         $notificationChange = new NotificationChange();
         $notificationChange->setNotificationObject($notificationObject);
         $notificationChange->setActor($actor);
-        $notificationChange->setStatus(1);
+        $notificationChange->setStatus(0);
 
         $this->entityManager->persist($notificationObject);
         $this->entityManager->persist($notificationChange);
@@ -166,7 +165,7 @@ class NotificationManager
         // this is for every single friend in the list
         // notifier is the person to notify
         $notification->setNotifier($notifier);
-        $notification->setStatus(1);
+        $notification->setStatus(0);
 
         $this->entityManager->persist($notification);
         $this->entityManager->flush();

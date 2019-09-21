@@ -13,17 +13,17 @@
         <label class="section-title">Edit Your Profile</label>
 
         {{ form_start(form, {'attr': {'id': 'profile_form'}}) }}
-            {{ form_row(form.locale) }}
-            {{ form_row(form.avatar) }}
-            {{ form_row(form.firstName) }}
-            {{ form_row(form.lastName) }}
-            <img class="img-responsive" src="{{ app.user.avatar}}" alt="" id="avatar">
-            <input type="hidden" id="blob_holder" name="blob_holder">
-            {{ form_row(form.about) }}
-            {{ form_row(form.website) }}
-            {{ form_row(form.phone) }}
-            {{ form_row(form.twitter) }}
-            <button type="submit" class="btn btn-success pull-right">Update</button>
+        {{ form_row(form.locale) }}
+        {{ form_row(form.avatar) }}
+        <img class="img-responsive" src="{{ app.user.avatar }}" alt="" id="avatar">
+        <input type="hidden" id="blob_holder" name="blob_holder">
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.about) }}
+        {{ form_row(form.website) }}
+        {{ form_row(form.phone) }}
+        {{ form_row(form.twitter) }}
+        <button type="submit" class="btn btn-success pull-right">Update</button>
         {{ form_end(form) }}
 
     </div>

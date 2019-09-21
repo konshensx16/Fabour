@@ -342,7 +342,6 @@ POSTS:
        WHY? : having an attachments table allows me to remove the attachments quickly and efficiently from the server (uploads/attachments) because each post will have a post_id that it belongs to, 
    ✔ For removal my previous approach was incorrect, i only need to remove the attachments when the user removes the entire post, or when he updates and saves the the changes, then i just need to get rid of the removed photos. @done (18-12-08 12:49)
      Create a postListener to trigger when the content is updated, check using a regular expression for all chnages in images so i can use that value to remove the attachments
-   ☐ @critical some images are not being uploaded, e.g: .png, .svg
    ✔ Viweing the drafts, when clicked should take you to the Edit action and the Display @done (18-12-10 18:08)
    ✔ Add the Imagine Library to allow the resize and optimization of images @done (18-12-14 20:30)
    ✔ If the user is the owner of a post that his currently viweing then display an edit button for him @done (18-12-09 12:45)
@@ -359,6 +358,8 @@ POSTS:
    ✔ Allow the user to remove a post. @done (18-12-07 18:58)
      ✔ Create the action @done (18-12-07 18:58)
      ✔ Include the button somewhere in the fron-end @done (18-12-07 18:58)
+   ☐ @critical some images are not being uploaded, e.g: .png, .svg
+   ☐ @high Display a proper message error when uploading a very large image.
 
    AUTOSAVE POST:
       ☐ Save using keys ctrl + s
@@ -701,7 +702,6 @@ Notifications:
         ✔ Also for friend_approval @done (10/27/2018, 6:38:42 PM)
           ✔ Test the things above @done (10/27/2018, 6:38:43 PM)
     ✔ Create a single Topic to handle all notifications, in this case the notification action and everything will be constructed in the controller @done (10/27/2018, 6:26:39 PM)
-
     Grouping notifications:
       Grouping will obviously by entity_type_id which
       The problem i'm seeing is in grouping by same postm e.g: if three people comment on a specific post the notification should look like '3 people commnted on your post', this means i need to get the comments for the postm group themm and then send the notification? 
@@ -753,9 +753,14 @@ Notifications:
 
     READ & UNREAD STATUS:
       ☐ When the user checks a notification it should be marked as read (status = 1)
+        ☐ All the three notification related entities has a column status, which one is the correct one!? I THINK ITS NOTIFICATION
       ☐ I need a way to mark the status as read when the user clicks on it
         In both the dropdown and the full list
-      ☐ I need to handle the click of 'Mark all as read'
+      ✔ I need to handle the click of 'Mark all as read' @done (19-09-21 11:48)
+
+      REFACTOR:
+        ☐ I think i need to rewrite the notifications system  instead if using the type as an integer i can just save the name space and the class in the database(type) e.g "App\Entity\Post", and just use that when retreiving data instead of using a switch statement and three different functions 
+
 
     BUGS:
       ✔ When the user is not connected the broadcast (obviously) will fail, because the user is not in the session! @done (10/27/2018, 6:26:37 PM)
@@ -1319,6 +1324,8 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
 
 
  LOAD COMMENT ASYNC :
+    ✔ @critical comments are not being loaded ?! @done (19-09-18 22:00)
+      NOTE: just had to build and include the build files
     ✔ Create the api/controller for comments @done (19-01-19 13:53)
     ✔ Expose the action and regenerate the routes.json file @done (19-01-19 13:53)
     ✔ Create a function (repository) to fetch the comments (as an array) @done (19-01-19 14:46)

@@ -64,8 +64,6 @@ export default {
             commit('APPEND_COMMENTS', data.comments)
             commit('INCREMENT_OFFSET', data.comments.length)
             commit('SET_TOTAL', data.total)
-            console.log(data.comments.length)
-            console.log(data.comments[data.comments.length - 1].comment_id)
             commit('SET_LAST_DATE', {
                 data: data.comments[data.comments.length - 1].comment_id
             })
