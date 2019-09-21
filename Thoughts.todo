@@ -754,13 +754,14 @@ Notifications:
     READ & UNREAD STATUS:
       ☐ When the user checks a notification it should be marked as read (status = 1)
         ☐ All the three notification related entities has a column status, which one is the correct one!? I THINK ITS NOTIFICATION
-      ☐ I need a way to mark the status as read when the user clicks on it
+      ✔ I need a way to mark the status as read when the user clicks on it @done (19-09-21 12:59)
+        NOTE: when rendering the links in the notification dropdown, add a parameter that mentions the location where this is comming from e.g: notification, and inside the display function check if we have then dispatch an event or something to mark the notification as read.
         In both the dropdown and the full list
       ✔ I need to handle the click of 'Mark all as read' @done (19-09-21 11:48)
 
       REFACTOR:
         ☐ I think i need to rewrite the notifications system  instead if using the type as an integer i can just save the name space and the class in the database(type) e.g "App\Entity\Post", and just use that when retreiving data instead of using a switch statement and three different functions 
-
+        ☐ Notifications ID needs to be UUID and not just a regular incremental value   
 
     BUGS:
       ✔ When the user is not connected the broadcast (obviously) will fail, because the user is not in the session! @done (10/27/2018, 6:26:37 PM)

@@ -141,6 +141,7 @@ class NotificationController extends AbstractController
                     foreach ($postNotificationObjects as $notification) {
                         $array[] = [
                             'id' => $notification['id'],
+                            'status' => $notification['status'],
                             'action' => ' published a new post: "' . $notification['title'] . '"',
                             'avatar' => $notification['avatar'],
                             'date' => $notification['created_at'],
@@ -157,6 +158,7 @@ class NotificationController extends AbstractController
 //                            dump($notification);
                         $array[] = [
                             'id' => $notification['id'],
+                            'status' => $notification['status'],
                             'action' => ' commented on: ' . $notification['title'],
                             'avatar' => $notification['avatar'],
                             'date' => ($notification['created_at']),
@@ -171,6 +173,7 @@ class NotificationController extends AbstractController
                     foreach ($bookmarkNotificationObjects as $notification) {
                         $array[] = [
                             'id' => $notification['id'],
+                            'status' => $notification['status'],
                             'action' => 'bookmarked your post: "' . $notification['title'] . '"',
                             'avatar' => $notification['avatar'],
                             'date' => $notification['created_at'],
@@ -196,8 +199,10 @@ class NotificationController extends AbstractController
     /**
      * Mark all user notifications as read (change the status = 1)
      * @Route("/markAllAsRead", name="markAllAsRead")
+     * @param Request $request
      * @param NotificationObjectRepository $notificationObjectRepository
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @param NotificationRepository $notificationRepository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function markAllAsRead(Request $request, NotificationObjectRepository $notificationObjectRepository, NotificationRepository $notificationRepository)
     {

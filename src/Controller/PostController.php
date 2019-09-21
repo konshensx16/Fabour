@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Bookmark;
 use App\Entity\Category;
 use App\Entity\Comment;
+use App\Entity\Notification;
 use App\Entity\Post;
 use App\Entity\SubCategory;
 use App\Entity\User;
@@ -12,6 +13,7 @@ use App\Form\CommentType;
 use App\Form\PostType;
 use App\Repository\BookmarkRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\NotificationRepository;
 use App\Repository\PostRepository;
 use App\Repository\SubCategoryRepository;
 use App\Services\AttachmentManager;
@@ -186,8 +188,17 @@ class PostController extends AbstractController
      * @param BookmarkRepository $bookmarkRepository
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function display(Request $request, Post $post, EntityManagerInterface $em, BookmarkRepository $bookmarkRepository)
+    public function display(Request $request, Post $post, EntityManagerInterface $em, BookmarkRepository $bookmarkRepository, NotificationRepository $notificationRepository)
     {
+
+        $notification = (bool)$request->query->get('ref');
+        $notificationID = $request->query->get('notif_id') ? (int)$this->uuidEncoder->decode() : 0;
+        $read = !(bool)$request->query->get('read');
+
+        if ($read && $notification && $notificationID) {
+            // TODO: mark the comment as read.
+            $notificationRepository->updateStatusMarkNotificationAsRead($notificationID);
+        }
         $comment = new Comment();
         // need the comment form
         $commentForm = $this->createForm(CommentType::class, $comment);

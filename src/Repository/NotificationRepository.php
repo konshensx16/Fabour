@@ -37,6 +37,24 @@ class NotificationRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function updateStatusMarkNotificationAsRead(int $notificationId)
+    {
+        $qb = $this->createQueryBuilder('n');
+
+        $q = $qb->update()
+            ->set('n.status', ':status')
+            ->where('n.notifier = :userId')
+            ->andWhere('n.id = :notificationId')
+            ->setParameter('notificationId', $notificationId)
+            ->setParameter('userId', $this->security->getUser()->getId())
+            ->setParameter('status', 1)
+            ->getQuery()
+        ;
+
+        return $q->execute();
+
+    }
+
 //    /**
 //     * @return Notification[] Returns an array of Notification objects
 //     */

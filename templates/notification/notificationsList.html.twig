@@ -16,7 +16,7 @@
             {% if notifications %}
                 {% for notification in notifications %}
                     <!-- loop starts here -->
-                    <a href="{{ notification.url }}" class="dropdown-link">
+                    <a href="{{ notification.url }}?notif_id={{ notification.id|encode_url }}&ref=notification_dropdown&read={{ notification.status }}" class="dropdown-link {{ notification.status ? "read" : "" }}">
                         <div class="media">
                             <img src="{{ notification.avatar }}" alt="">
                             <div class="media-body">
@@ -28,8 +28,7 @@
                 {% endfor %}
             {% endif %}
             <div class="dropdown-list-footer">
-                <a href="{{ path('notifications.all') }}"><i class="fa fa-angle-down"></i> Show All
-                    Notifications</a>
+                <a href="{{ path('notifications.all') }}"><i class="fa fa-angle-down"></i> Show All Notifications</a>
             </div>
         </div><!-- dropdown-list -->
     </div><!-- dropdown-menu-right -->
