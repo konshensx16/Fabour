@@ -8,7 +8,21 @@
 + Vuejs (Reactive parts of the application)
 + TinyMCE (editor)
 + Imagine (Images manipulation)
++ UUidEncode (HashIds)
 
-# FIXME: add another section where to state different parts of the application, like messaging and user profile, etc...
+### Login page
+![Login Page](READMEAssets/login.png)
 
 
+### Home page
+![Home Page](READMEAssets/homepage_loggedin.png)
+
+
+### Profile page
+![Profile Page](READMEAssets/profile.png)
+
+
+### Category page
+![Category Page](READMEAssets/category.png)
+
+#### TODO: add the conversation and chatting screenshots.
