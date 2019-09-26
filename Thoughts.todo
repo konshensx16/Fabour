@@ -766,7 +766,7 @@ Notifications:
     BUGS:
       ✔ When the user is not connected the broadcast (obviously) will fail, because the user is not in the session! @done (10/27/2018, 6:26:37 PM)
       ✔ The notifications in the (all) page are not being loaded properly ~ currently ordering them in the controller using usort (Mght change if any good alternative is found!) @done (10/27/2018, 11:13:29 PM)
-          Steps to getting a list if all notifications (from my dropbox paper: Grouping notifications):
+          Steps to getting a list of all notifications (from my dropbox paper: Grouping notifications):
             ``` SQL
                 SELECT n_o.id, n_o.entity_id, n_o.entity_type_id, n.notifier_id
                 FROM notification_object no
@@ -823,10 +823,7 @@ Bookmarks:
   ✔ Create a page where the user can see all his bookmarks (Creating a controller but leaving some functions in the PostController) @done (10/21/2018, 4:56:00 PM)
     ✔ Need to display the latest bookmarked post first @done (10/21/2018, 4:55:59 PM)
   ✔ Add a created_at field to the bookmark so i can use to order the results, @done (10/21/2018, 4:55:50 PM)
-    And also display to the user when he added that post to the bookmarks (users like to have control over everything :) )
-  
-
-
+    And also display to the user when he added that post to the bookmarks (users like to have control over everything :))
 Messaging:
     For now messaging will be between two friends, later on maybe add a way so that logged in (or all, depends) users can talk in categories 
     NOTE :Meaning each category would have some sort of a room will users can chat and discuss posts, ideas, opinions...
@@ -1086,7 +1083,7 @@ SOME ERROS FOR FUTURE CASES:
   ✔ Mysql wouldn't connect @done (18-11-14 18:30)
     ERROR: ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
     FIX: 
-      Just restart the mysql servie and it should work, well it did work for me!
+      Just restart the mysql service and it should work, well it did work for me!
 
 VUE & VUEX NOTES:
   LINK: https://medium.com/dailyjs/mastering-vuex-zero-to-hero-e0ca1f421d45
@@ -1348,7 +1345,9 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
    ERROR: Call to a member function getId() on null (goto: 76)
    Making the same mistake again, the /profile/edit (in this case /edit is being considered a username and my controller is trying to find a user in the db with the username "edit")
  ✔ Category route "all", when clicking on a sub category it redirects to the parent "big" category, which is the wrong behaviour @done (19-01-16 19:16)
-
+ ☐ @critical comment not loading with error data.comments[(data.comments.length - 1)] is undefined.
+   NOTE: trying to access comment of a post that has no comments 
+   
 
 Forgot password stuff:
   ✔ Create the action to display and generate the token (and sent it as well ) @done (19-03-23 01:41)

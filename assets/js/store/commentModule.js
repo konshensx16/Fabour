@@ -64,12 +64,12 @@ export default {
             commit('APPEND_COMMENTS', data.comments)
             commit('INCREMENT_OFFSET', data.comments.length)
             commit('SET_TOTAL', data.total)
-            commit('SET_LAST_DATE', {
-                data: data.comments[data.comments.length - 1].comment_id
-            })
+            if (data.comments.length) {
+                commit('SET_LAST_DATE', {
+                    data: data.comments[data.comments.length - 1].comment_id
+                })
+            }
 
-            // this.comments = data.comments
-            // this.total = data.total
         },
         GET_MORE_COMMENTS: async ({commit, state}, {postId}) => {
             // todo get more comments
