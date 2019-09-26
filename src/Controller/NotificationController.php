@@ -250,8 +250,7 @@ class NotificationController extends AbstractController
         $anotherResult = $notificationObjectRepository->groupCommentsByPosts();
 
         $result = $notificationObjectRepository->findCountCommentsForPost(13); // 13 => Something is happening!
-
-//            dump($anotherResult);
+        dump($anotherResult);
         die;
     }
 }

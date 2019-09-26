@@ -277,7 +277,7 @@
          * @return mixed
          * @throws \Doctrine\DBAL\DBALException
          */
-        public function groupCommentsByPosts(int $limit)
+        public function groupCommentsByPosts(int $limit = 4)
         {
             // TODO: fix the concatenation of the limit, i should bind the parameter no matter what.
             $connection = $this->getEntityManager()->getConnection();

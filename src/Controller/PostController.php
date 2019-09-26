@@ -192,7 +192,7 @@ class PostController extends AbstractController
     {
 
         $notification = (bool)$request->query->get('ref');
-        $notificationID = $request->query->get('notif_id') ? (int)$this->uuidEncoder->decode() : 0;
+        $notificationID = $request->query->get('notif_id') ? (int)$this->uuidEncoder->decode($request->query->get('notif_id')) : 0;
         $read = !(bool)$request->query->get('read');
 
         if ($read && $notification && $notificationID) {

@@ -689,7 +689,8 @@ Notifications:
     ✔ Refactor the websocket notifications to match the database stuff @done (10/27/2018, 6:38:47 PM)
         ✔ PostController::create @done (10/24/2018, 8:59:19 PM)
         ✔ Comment Notification @done (10/24/2018, 8:59:59 PM)
-        ☐ Include the bookmarking to be sent via a notification too!
+        ✔ Include the bookmarking to be sent via a notification too! @done (19-09-26 18:35)
+          Does this mean just add the notification the dropdown or send a realtime notification ? (This was already being done!)
     ✔ Add the notification to the list after the user get's it @done (10/27/2018, 6:38:44 PM)
         Not sure if want to keep it always four elements and delete the last element in the list (probably what i'll do after i get this to work)
         ✔ Include the required data to construct a notification for the list @done (10/25/2018, 8:25:32 PM)
@@ -1328,11 +1329,15 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
     ✔ Expose the action and regenerate the routes.json file @done (19-01-19 13:53)
     ✔ Create a function (repository) to fetch the comments (as an array) @done (19-01-19 14:46)
     ✔ Create the end-point to fetch more comments when scrolling @done (19-01-20 12:33)
-    ☐ @high maybe i should use a date to fetch the other comments instead of id, because if somebody inserted a new comment while fetching data there's going to be some confusion or duplicate comments
-      ☐ Use the last item date to get more comments 
+    ✘ @high maybe i should use a date to fetch the other comments instead of id, because if somebody inserted a new comment while fetching data there's going to be some confusion or duplicate comments @cancelled (19-09-26 18:30)
+      NOTE: This will never happend because the ID of the latest written record will be the max and not the first and pushing everything else, But will this work for a UUID ?! I think not.
+      ✘ Use the last item date to get more comments @cancelled (19-09-26 18:31)
     ✔ Create the vue component for the comments @done (19-01-20 12:34)
-      ☐ @low Add a computed function to show just three first lines for very long comments!
+      ☐ @low Add a computed function to show just three first lines for very long comments! I think it's fine if we show everything, 
+      NOTE: this is fucking stupid because this depends on the user and whether he likes to just press a button to see the rest of the comment or just see it there without clicking anything, so yeah, ignoring this for now.
       NOTE: dont forget to decode the response to json object (since it's a string)
+    ✔ @high change the input to a textarea to be able to store and load long comments. @done (19-09-26 18:25)
+    ☐ @low displaying the latest comment on top of the list, IS THAT THE PROPER THING FOR COMMENTS ? 
 
  ✔ @critical There's some sort of a bug when bookmarking a post (that you published) @done (19-01-15 19:25)
    When displaying a post that I wrote i should only see how many people bookmarked my post, (Not be able to bookmark it)
@@ -1345,9 +1350,9 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
    ERROR: Call to a member function getId() on null (goto: 76)
    Making the same mistake again, the /profile/edit (in this case /edit is being considered a username and my controller is trying to find a user in the db with the username "edit")
  ✔ Category route "all", when clicking on a sub category it redirects to the parent "big" category, which is the wrong behaviour @done (19-01-16 19:16)
- ☐ @critical comment not loading with error data.comments[(data.comments.length - 1)] is undefined.
+ ✔ @critical comment not loading with error data.comments[(data.comments.length - 1)] is undefined. @done (19-09-26 18:20)
    NOTE: trying to access comment of a post that has no comments 
-   
+
 
 Forgot password stuff:
   ✔ Create the action to display and generate the token (and sent it as well ) @done (19-03-23 01:41)

@@ -7615,7 +7615,7 @@ p {
   .dropdown-list .dropdown-link:hover .media, .dropdown-list .dropdown-link:focus .media {
     background-color: #f8f9fa; }
   .dropdown-list .dropdown-link.read .media {
-    background-color: #f8f9fa; }
+    background-color: #cacdd0; }
   .dropdown-list .dropdown-link.read:hover .media, .dropdown-list .dropdown-link.read:focus .media {
     background-color: #e9ecef; }
 
