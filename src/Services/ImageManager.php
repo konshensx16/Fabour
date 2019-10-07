@@ -25,6 +25,7 @@ class ImageManager
     /**
      * Optimize an image by reducing the size and saving it as a jpeg
      * Checks the width and if greater than the max value, the set the width to the max value
+     * NOTE:this does not work in tests, im not sure why ?
      * @param UploadedFile $file
      * @param string $uploadsDirectory
      * @return string
@@ -40,8 +41,7 @@ class ImageManager
 
         $dimensions = $image->getSize();
 
-        if ($dimensions->getWidth() > ImageManager::MAX_WIDTH)
-        {
+        if ($dimensions->getWidth() > ImageManager::MAX_WIDTH) {
             $dimensions = $dimensions->widen(ImageManager::MAX_WIDTH);
         }
 
@@ -52,7 +52,6 @@ class ImageManager
             ->save(
                 $uploadsDirectory . '/' . $filename
             );
-
         return $filename;
     }
 
@@ -65,10 +64,9 @@ class ImageManager
         if ($post instanceof Post) {
             if (preg_match($regex, $post->getContent(), $matches) > 0) {
                 // set the thumbnail and just return
-               return ('/' . $matches[0]);
+                return ('/' . $matches[0]);
             }
-        } else if (is_array($post))
-        {
+        } else if (is_array($post)) {
             if (preg_match($regex, $post['content'], $matches) > 0) {
                 return '/' . $matches[0];
             }

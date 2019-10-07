@@ -34,7 +34,7 @@
         /**
          * @throws \Exception
          */
-        public function setUploadDirectory()
+        private function setUploadDirectory()
         {
             $this->fileManager->setUploadsDirectory(
                 $this->getUploadsDirectory()
@@ -49,6 +49,7 @@
          */
         public function uploadAttachment(UploadedFile $file)
         {
+
             $this->setUploadDirectory();
 
             $filename = $this->imageManager->optimizeByResizing($file, $this->getUploadsDirectory());

@@ -16,7 +16,6 @@
      */
     class PostController extends AbstractController
     {
-
         /**
          * @var ImageManager
          */

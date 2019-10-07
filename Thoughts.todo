@@ -1402,10 +1402,21 @@ Social Login:
       ✔ Google @done (19-09-16 20:01)
       ✔ Twitter @done (19-09-16 20:01)  
 README:
-  ☐ Add different section to the readme 
-  ☐ Add couple of screen shots to each one of the sections (one should be enough)
-  ☐ 
+  ✔ Add different section to the readme @done (19-10-07 21:45)
+  ✔ Add couple of screen shots to each one of the sections (one should be enough) @done (19-10-07 21:45)
+  ☐ Add chat and conversation screenshots.
 
 Translation:
   ☐ Maybe add translation to the entire application, it should not be that tedious 
+  
+Unit tests:
+  ✔ Create some a basic test. @done (19-10-02 19:34)
+  ☐ Testing the user manager
+  ☐ Test the file uploading services 
+    ☐ AvatarManager
+    ✔ AttachmentManager @done (19-10-07 22:53)
+      ☐ Remove all the files on teardown
+      ☐ Use an sqlite db for testing
+      ☐ Get the upload parameter from the container to remove the uploaded files 
+  ☐ Test the DataTransformer for the tags
   

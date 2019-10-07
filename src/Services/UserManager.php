@@ -1,14 +1,15 @@
-<?php 
+<?php
 
 namespace App\Services;
 
 use App\Entity\Post;
+use App\Entity\User;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Security\Core\Security;
 
-class UserManager 
+class UserManager
 {
-	/**
+    /**
      * @var Packages
      */
     private $packages;
@@ -25,19 +26,14 @@ class UserManager
 
     /**
      * Return the correct full url of the user avatar
-     * @param  string $avatar [description]
+     * @param User $user
      * @return string [type] [description]
      */
-    public function getUserAvatar(string $avatar) : string
+    public function getUserAvatar(User $user): string
     {
-        if ($avatar === 'avatar.png')
-        {
-            return $this->packages->getUrl('assets/img/') . $avatar;
-        }
-        else
-        {
-            return $this->packages->getUrl('uploads/avatars/') . $avatar;
-        }
+        if ($user->getAvatar() === 'avatar.png')
+            return $this->packages->getUrl('assets/img/') . $user->getAvatar();
+        return $this->packages->getUrl('uploads/avatars/') . $user->getAvatar();
     }
 
     /**
@@ -45,7 +41,7 @@ class UserManager
      * @param Post $post
      * @return bool
      */
-    public function checkPostOwnership(Post $post) : bool
+    public function checkPostOwnership(Post $post): bool
     {
         return $this->security->getUser() === $post->getUser();
     }

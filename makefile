@@ -25,3 +25,5 @@ phpstorm:
 	nohup phpstorm.sh & 
 cache:
 	bin/console cache:clear
+test:
+	php bin/console make:unit-test

@@ -8,10 +8,12 @@ use App\Repository\ConversationRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRelationshipRepository;
 use App\Repository\UserRepository;
+use App\Services\AttachmentManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -37,12 +39,17 @@ class HomeController extends AbstractController
     private $packages;
 
     private $userManager;
+    /**
+     * @var AttachmentManager
+     */
+    private $attachmentManager;
 
-    public function __construct(PusherDecorator $pusher, Packages $packages, UserManager $userManager)
+    public function __construct(PusherDecorator $pusher, Packages $packages, UserManager $userManager, AttachmentManager $attachmentManager)
     {
         $this->userManager = $userManager;
         $this->pusher = $pusher;
         $this->packages = $packages;
+        $this->attachmentManager = $attachmentManager;
     }
 
     /**
@@ -168,7 +175,7 @@ class HomeController extends AbstractController
         try {
             $this->pusher->push([
                 'action' => 'wants to add you as a friend',
-                'avatar' => $this->userManager->getUserAvatar($currentUser->getAvatar()),
+                'avatar' => $this->userManager->getUserAvatar($currentUser),
                 'notifier' => 'admin',
                 'url' => $this->generateUrl('friends.pending'),
                 'username' => $currentUser->getUsername(),
@@ -180,7 +187,7 @@ class HomeController extends AbstractController
         return $this->json(
             [
                 'type' => 'success',
-                'avatar' => $this->userManager->getUserAvatar($currentUser->getAvatar())
+                'avatar' => $this->userManager->getUserAvatar($currentUser)
             ]
         );
     }
@@ -230,8 +237,7 @@ class HomeController extends AbstractController
 
         $friendsNames = [];
 
-        foreach ($users as $user)
-        {
+        foreach ($users as $user) {
             $friendsNames[] = $user->getUsername();
         }
         try {
@@ -274,12 +280,9 @@ class HomeController extends AbstractController
      */
     private function getUserAvatar(string $avatar)
     {
-        if ($avatar === 'avatar.png')
-        {
+        if ($avatar === 'avatar.png') {
             return $this->packages->getUrl('assets/img/') . $avatar;
-        }
-        else
-        {
+        } else {
             return $this->packages->getUrl('uploads/avatars/') . $avatar;
         }
     }
