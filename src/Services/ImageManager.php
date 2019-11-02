@@ -36,6 +36,7 @@ class ImageManager
 
         $fileExtension = $file->guessExtension();
         $filename = $this->fileManager->generateUniqueName() . '.' . $fileExtension;
+
         $image = $imagine->open($file);
 
         $dimensions = $image->getSize();
@@ -44,7 +45,7 @@ class ImageManager
         {
             $dimensions = $dimensions->widen(ImageManager::MAX_WIDTH);
         }
-
+//        var_dump($uploadsDirectory . '/' . $filename);
         $image
             ->resize(
                 $dimensions

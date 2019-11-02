@@ -1222,24 +1222,24 @@ MAJOR CHANGES:
             @critical DO MORE TESTS ON THIS AREA
       ✔ Only authenticated users can bookmark and edit posts @done (19-01-02 19:26)
         ✔ Update the post display function to only check for bookmarks if the user is logged in @done (19-01-02 19:24)
-         ✔ if the user is not signed in then remove the top bar dispaying the views and bookmarks @done (19-01-02 19:26)
+         ✔ if the user is not signed in then remove the top bar displaying the views and bookmarks @done (19-01-02 19:26)
       ✔ Only authenticated users can post comments @done (19-01-02 19:32)
         ✔ Change the controller's action to be secured @done (19-01-02 19:29)
         ✔ Changes the template to the necessary @done (19-01-02 19:32)
       ✔ Only authenticated users can see entire profile of other users. @done (19-01-04 11:43)
-        ✔ Maybe i shoudl hide just a bunch of fields @done (19-01-04 11:58)
+        ✔ Maybe i should hide just a bunch of fields @done (19-01-04 11:58)
           ✔ I should get rid of the add to friends button @done (19-01-04 11:49)
             ✔ Fix the controller to not take any actions if not authenticated @done (19-01-04 11:50)
           ✔ "Recently became friends with" section should not be visible right now @done (19-01-04 11:58)
-        ✔ Theres some sort of problem when trying to view the users profile "posts" @done (19-01-04 12:10)
+        ✔ There's some sort of problem when trying to view the users profile "posts" @done (19-01-04 12:10)
            ✔ @critical First what i have over there is wrong, it will always get you the user logged in posts @done (19-01-04 12:10)
              ✔ Pass the user to the view and user that value for to get the username @done (19-01-04 12:10)
-             ✔ Chnage the view and the message that's being displayed at top @done (19-01-04 12:10)
+             ✔ Change the view and the message that's being displayed at top @done (19-01-04 12:10)
 
         ✔ Change the userProfile.html.twig to check if the user is signed in before using the var app.user (for the profile edit) @done (19-01-04 11:42)
         ✔ So when the user tries to access the profile/username he'll get the given user's profile, but when access just /profile he'll get his profile, which doesn't exist @done (19-01-04 11:41)
           ✘ Maybe separate the functions into two separate routes and deny the access to the other one @cancelled (19-01-04 11:41)
-            NOTE: i don't like this because it means duplicating the view or using way too much of statments in the template
+            NOTE: i don't like this because it means duplicating the view or using way too much of statements in the template
             Solution used: if the user is not signed in b and we dont have a username set to view the profile, then deny, but if the username is set even though we are not signed in then allow access to the profile
       ☐ @medium there a small flickering that says no posts when the posts are still loading, this ain't right
 
@@ -1259,12 +1259,12 @@ MAJOR CHANGES:
     ✔ User should not be able to access any sort of bookmarks functionality if not signed in @done (19-01-04 14:55)
       ✔ deny access to Adding and removing bookmarks functions PostController @done (19-01-04 14:59)
     ✔ Deny access to notifications @done (19-01-04 15:02)
-    ✔ Messages section is stricly for signed in users @done (19-01-04 15:11)
+    ✔ Messages section is strictly for signed in users @done (19-01-04 15:11)
       ✔ Deny access to everything in the controller @done (19-01-04 15:11)
 
     ✔ Get rid of the html content that has special chars for the preview @done (19-01-04 15:29)
       ✔ API get posts is done @done (19-01-04 15:23)
-      ✔ categoryies @done (19-01-04 15:24)
+      ✔ categories @done (19-01-04 15:24)
       ✔ search results @done (19-01-04 15:29)
       ✔ User profile posts @done (19-01-04 15:29)
     ☐ Messages section 
@@ -1277,15 +1277,15 @@ MAJOR CHANGES:
           ✔ Handle the front integration in vue @done (19-01-08 18:16)
           NOTE: I think i have a database design failure, because the conversation when removed will be removed for both users, which is not a good thing lol 
           ✔ Which user is the creator of the conversation. (the firstUser is the creator of the conversation) @done (19-01-05 00:45)
-          ☐ Add another record for the other user whereeverything will be duplicated in both the records
+          ☐ Add another record for the other user where everything will be duplicated in both the records
 
       ☐ The conversation ID should not be incremental, it should be either UUID or a hex
       ✔ Create a new conversation is not working somehow @done (19-01-05 00:43)
       ✘ Messages are empty on the other side (real time) @cancelled (19-01-12 12:03)
-        I think this is not longer heppning because i reverted all changes the originaly caused this problem
+        I think this is not longer happening because i reverted all changes the originally caused this problem
       ✔ @critical messages are not being persisted at all @done (19-01-07 17:31)
         Actually they're now, i just restarted the websockets server, not sure if that was the problem
-    ☐ @critical When viweing a post preview there's a very annoying &nbsp; that i need to get rid off
+    ☐ @critical When viewing a post preview there's a very annoying &nbsp; that i need to get rid off
          NOTE: this has been here for a long time fix it
     ☐ @critical error when updating a post (mainly because of the images)
     ✔ @critical pubishing a post throws a fatal error @done (19-01-12 12:03)
@@ -1293,19 +1293,19 @@ MAJOR CHANGES:
 
 Re-creating Category system:
    Everything here is being done to fox the issue below, because i need to allow the user to see posts by using the sub-categories as well:
-    ✔ Viweing a single sub category doesn't work at all @done (19-01-12 12:02)
+    ✔ Viewing a single sub category doesn't work at all @done (19-01-12 12:02)
     NOTE: i need to preserver the current behaviour, meaning the user can see posts by categories i just need to add support for viweing posts by subcategory
       ✔ Create the action and the repository query @done (19-01-12 11:58)
       ✔ Update the pos.vue component to use the sub-category link @done (19-01-12 12:02)
 
-Refator listeners:
+Refactor listeners:
    NOTE: i need to refactor the listeners to use the entityManager that comes with the arguments insteaf of injecting it
      ☐ Get the entity manager using this approach (the above)
      ☐ Change from injecting the repository to getting it using the embedded entity manager
      
 USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
     ✔ Use HashId to encode and decode the integer values @done (19-01-14 20:21)
-      Initial step iu working, more to go, EVERYTHING BELOW SHOULD BECHANGED AND TESTED BEFORE MOVING ON
+      Initial step iu working, more to go, EVERYTHING BELOW SHOULD BE CHANGED AND TESTED BEFORE MOVING ON
       ✔ Edit @done (19-01-15 18:41)
       ✔ Display @done (19-01-15 18:41)
       ✔ Remove @done (19-01-15 20:05)
@@ -1337,11 +1337,11 @@ USING UUIDs AND AUTO_INCREMENT VALUES TOGETHER:
  ✔ @critical There's some sort of a bug when bookmarking a post (that you published) @done (19-01-15 19:25)
    When displaying a post that I wrote i should only see how many people bookmarked my post, (Not be able to bookmark it)
  ✔ @critical i think notifications are in the wrong order, AGAIN !!!!!!!!! I DIDN'T EVEN TOUCH THEM WHAT THE FUCK BRUH @done (19-01-16 19:27)
-     NOTE: This seems to be in the right order right now, tried postign a comment, publishing and bookmarking 
-     WRONG: what happends is types are being grouped, 
+     NOTE: This seems to be in the right order right now, tried posting a comment, publishing and bookmarking
+     WRONG: what happened is types are being grouped,
  ✔ @critical the user cannot post a comment, (Nothing is happening when submitting) @done (19-01-16 19:23)
- ☐ @critical pass the username instead of id when apporving a user friendship request 
- ✔ @critical edit profile isn't working for someweird reason @done (19-01-16 19:10)
+ ☐ @critical pass the username instead of id when approving a user friendship request
+ ✔ @critical edit profile isn't working for some weird reason @done (19-01-16 19:10)
    ERROR: Call to a member function getId() on null (goto: 76)
    Making the same mistake again, the /profile/edit (in this case /edit is being considered a username and my controller is trying to find a user in the db with the username "edit")
  ✔ Category route "all", when clicking on a sub category it redirects to the parent "big" category, which is the wrong behaviour @done (19-01-16 19:16)
@@ -1370,7 +1370,7 @@ Adding Tags to posts:
       Fields: ID, name, slug, (no timestamps)
   ✔ Create the data transformer @done (19-08-08 15:35)
     ✔ Check if the tags already exists or not, to avoid duplicates @done (19-08-08 17:04)
-    This should be applieds to the parent that is holding the newly created type, and not within the type itself.
+    This should be applied to the parent that is holding the newly created type, and not within the type itself.
   ✔ Create the custom type ?? Optional i think @done (19-08-08 15:36)
   ✔ Persist the code to SC with the title of "custom types" for future ease of search. @done (19-08-08 15:36)
   ✔ Add the pils design to the displayed tags @done (19-08-08 15:36)
@@ -1391,7 +1391,7 @@ Social Login:
     ✔ Create the facebook application as a start @done (19-09-16 19:10)
     ✔ Create the google application @done (19-09-16 20:01)
     ☐ Create the twitter application
-      ☐ Needs to be reviwed and accepted by twitter
+      ☐ Needs to be reviewed and accepted by twitter
     ✔ Add resources to the application @done (19-09-16 20:01)
       ✔ Facebook @done (19-09-16 19:21)
       ✔ Google @done (19-09-16 20:01)

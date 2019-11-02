@@ -24,6 +24,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Gos\Bundle\WebSocketBundle\DataCollector\PusherDecorator;
 use Gos\Bundle\WebSocketBundle\Topic\TopicManager;
 use Knp\Component\Pager\PaginatorInterface;
+use phpDocumentor\Reflection\Element;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
@@ -134,12 +135,10 @@ class PostController extends AbstractController
 
         $currentUser = $this->getUser();
 
-//        dump($post);die;
-
         if ($form->isSubmitted()) {
 
             $em = $this->getDoctrine()->getManager();
-            dump($post->getTags());
+//            dump($post);die;
             // post is being persisted here and inside the if statement
             $em->persist($post);
             // set the publish_at date if the publish button was clicked
@@ -171,6 +170,8 @@ class PostController extends AbstractController
             }
             // handle the request and shit
             $em->flush();
+
+            return $this->redirect($this->generateUrl('post.display', ['id' => $this->uuidEncoder->encode($post->getId())]));
 
         }
         return $this->render('post/edit.html.twig', [
@@ -303,7 +304,6 @@ class PostController extends AbstractController
         $currentUser = $this->getUser();
 
         $posts = $postRepository->findDraftsForUser($currentUser->getId());
-//        dump($posts); die;
 
         return $this->render('post/drafts.html.twig', [
             'posts' => $posts

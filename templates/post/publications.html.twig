@@ -24,7 +24,7 @@
                 {# table body #}
                 {% for article in pagination %}
                     <tr {% if loop.index is odd %}class="color"{% endif %}>
-                        <td>{{ article.id }}</td>
+                        <td><a href="{{ path('post.display', {'uuid': article.id|encode_url}) }}">{{ article.id|encode_url }}</a></td>
                         <td>{{ article.title }}</td>
                         <td>{{ article.publishedAt|date('Y-m-d') }}</td>
                         <td>Edit & Delete</td>

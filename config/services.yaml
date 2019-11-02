@@ -145,10 +145,10 @@ services:
     # end of thinking
     pdo:
         class: PDO
-        arguments:
-            - 'mysql:host=127.0.0.1;port=3306;dbname=websockets'
+        arguments: # these values better be retrieved from the env file.
+            - 'mysql:host=127.0.0.1;port=3306;dbname=fabour'
             - 'root'
-            - '000000'
+            - 'root'
         calls:
             - [ setAttribute, [3, 2] ] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
 
