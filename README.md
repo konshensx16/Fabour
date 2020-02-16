@@ -25,4 +25,23 @@
 ### Category page
 ![Category Page](READMEAssets/category.png)
 
-#### TODO: add the conversation and chatting screenshots.
+
+### Conversation page
+![Conversation Page](READMEAssets/conversation.png)
+
+
+### New friend request page
+![New friend request  Page](READMEAssets/friend.png)
+
+
+
+### Accepted requested Notification (Realtime notification)
+
+#### Bottom right 
+![Accepted requested Notification (Realtime notification) Page](READMEAssets/accepted.png)
+
+
+
+### GOS Server running.
+#### GOS required that you use the address 127.0.0.1 instead of localhost, otherwise the user will always be authenticated anonymously and not tokens are generated.
+![GOS Server Page](READMEAssets/gos_server.png)
