@@ -21,7 +21,7 @@
         "cropperjs": "^1.4.3",
         "lodash": "^4.17.15",
         "notyf": "^2.0.1",
-        "tinymce": "^4.9.0",
+        "tinymce": "^4.9.7",
         "typeahead": "^0.2.2",
         "vue": "^2.5.17",
         "vue-loader": "^15.0.11",
