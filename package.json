@@ -14,7 +14,7 @@
         "build": "encore production"
     },
     "dependencies": {
-        "ajv": "^6.5.4",
+        "ajv": "^6.12.3",
         "autobahn": "^18.10.2",
         "axios": "^0.18.1",
         "bloodhound-js": "^1.2.3",
